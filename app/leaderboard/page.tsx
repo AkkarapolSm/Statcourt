@@ -232,7 +232,7 @@ export default function LeaderboardPage() {
   ];
 
   return (
-    <div className="bg-[#F8F9FD] text-slate-900 font-sans min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased selection:bg-[#DC2626] selection:text-white">
       {/* Universal Navigation Bar */}
       <Navbar />
 
@@ -258,44 +258,50 @@ export default function LeaderboardPage() {
         </div>
       </div>
 
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-        
-        {/* 2. Main Title Section & Action Buttons */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500 font-mono tracking-wider uppercase">
-              <Trophy className="w-4 h-4 text-amber-500" />
-              <span>ทำเนียบสถิตินักกีฬาบาสเกตบอลเยาวชนและระดับอุดมศึกษาแห่งชาติ</span>
+      {/* 2. Signature Hero Header Section (Consistent with /tournaments, /team, and /matches) */}
+      <section className="bg-[#0F172A] text-white py-10 sm:py-12 border-b border-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 court-grid-pattern opacity-15 pointer-events-none" />
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/20 border border-[#AF101A]/40 text-[#FFDAD6] text-xs font-mono font-bold tracking-widest uppercase">
+                <Trophy className="w-3.5 h-3.5 text-[#DC2626]" />
+                <span>NATIONAL ATHLETE EFFICIENCY DIRECTORY</span>
+              </div>
+              <h1 className="font-headline-xl text-white uppercase tracking-wider text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight">
+                ทำเนียบอันดับผลงานนักกีฬาบาสเกตบอลไทย
+              </h1>
+              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                ฐานข้อมูลสถิติมาตรฐาน FIBA และการจัดอันดับผลงานรายบุคคลเพื่อการเฟ้นหานักกีฬา (Scouting)
+                เข้าสู่ระบบโควตากีฬา TCAS และทุนการศึกษาระดับอุดมศึกษาทั่วประเทศ
+              </p>
             </div>
-            <h1 className="font-headline-xl text-2xl sm:text-4xl uppercase tracking-tight text-slate-900 font-black">
-              ทำเนียบอันดับผลงานนักกีฬาบาสเกตบอลไทย <span className="text-[#DC2626] font-normal text-xl sm:text-3xl">(FIBA EFF LEADERBOARD)</span>
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
-              ฐานข้อมูลสถิติมาตรฐาน FIBA และการจัดอันดับผลงานรายบุคคลเพื่อการเฟ้นหานักกีฬา (Scouting) 
-              เข้าสู่ระบบโควตากีฬา TCAS และทุนการศึกษาระดับอุดมศึกษาทั่วประเทศ
-            </p>
-          </div>
 
-          <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-center font-mono">
-            <button
-              type="button"
-              onClick={handleExportCsv}
-              className="inline-flex items-center gap-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 font-bold text-xs px-3.5 py-2.5 rounded-xl transition shadow-sm cursor-pointer"
-            >
-              <Download className="w-4 h-4 text-slate-600" />
-              <span>ส่งออก CSV (EXPORT)</span>
-            </button>
+            {/* Action Buttons: Export CSV & TCAS Certificate */}
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start md:self-center font-mono">
+              <button
+                type="button"
+                onClick={handleExportCsv}
+                className="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-lg transition shadow-sm cursor-pointer"
+              >
+                <Download className="w-4 h-4 text-slate-400" />
+                <span>ส่งออก CSV (EXPORT)</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setIsTcasAuditModalOpen(true)}
-              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-[#AF101A] hover:from-red-500 hover:to-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md shadow-red-950/20 cursor-pointer"
-            >
-              <FileCheck className="w-4 h-4" />
-              <span>ใบรับรองสถิติ TCAS</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsTcasAuditModalOpen(true)}
+                className="inline-flex items-center gap-1.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs px-4 py-2.5 rounded-lg transition shadow-md cursor-pointer"
+              >
+                <FileCheck className="w-4 h-4" />
+                <span>ใบรับรองสถิติ TCAS</span>
+              </button>
+            </div>
           </div>
         </div>
+      </section>
+
+      <main className="flex-grow max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
 
         {/* 3. Position Filter Pills Bar */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar font-mono text-xs">
