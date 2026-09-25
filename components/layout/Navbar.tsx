@@ -145,11 +145,11 @@ export default function Navbar() {
           badge: "Top 50",
         },
         {
-          href: "/matches/match-bcc-ds-01/film",
-          label: "Game Film Room",
-          desc: "เทปบันทึกเกมย้อนหลังและแท็กติกเพลย์",
+          href: "/matches",
+          label: "Matches & Game Film",
+          desc: "คลังแมตช์แข่งขันและเทปวิดีโอย้อนหลัง",
           icon: Film,
-          badge: "HD Tape",
+          badge: "HD Film",
         },
         {
           href: "/official/console/match-bcc-ds-01",
