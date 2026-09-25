@@ -1,0 +1,36 @@
+name: StatCourt CI
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: TypeScript Strict Validation
+        run: npx tsc --noEmit
+
+      - name: Run Test Suite
+        run: npm test
+
+      - name: Next.js ESLint Linting
+        run: npm run lint

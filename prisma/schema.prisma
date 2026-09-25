@@ -1,0 +1,439 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  phoneNumber      String?          @unique
+  role             String           @default("ATHLETE") // ATHLETE, COACH, OFFICIAL, ADMIN
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  athleteProfile   AthleteProfile?
+  coachProfile     CoachProfile?
+  officialProfile  OfficialProfile?
+  auditLogs        AuditLog[]
+}
+
+model AthleteProfile {
+  id                String              @id @default(cuid())
+  userId            String              @unique
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName         String
+  lastName          String
+  birthDate         DateTime
+  primaryPosition   String              // POINT_GUARD, SHOOTING_GUARD, SMALL_FORWARD, POWER_FORWARD, CENTER
+  secondaryPosition String?
+  heightCm          Float
+  weightKg          Float?
+  wingspanCm        Float?
+  standingReachCm   Float?
+  schoolOrClub      String
+  province          String
+  jerseyNumber      Int?
+  bio               String?
+  avatarUrl         String?
+  tcasReferenceCode String?
+
+  seasonStats       AthleteSeasonStats?
+  events            MatchEvent[]
+  gearItems         MarketplaceItem[]
+  teamRosters       RosterMember[]
+  matchParticipations MatchParticipant[]
+
+  // Extended Persistence Relations
+  academicRecords     AcademicRecord[]
+  scoutProfileViews   ScoutProfileView[]
+  digitalPlayerPass   DigitalPlayerPass?
+  attendances         PlayerAttendance[]
+  injuryLogs          InjuryLog[]
+}
+
+model AthleteSeasonStats {
+  id                String         @id @default(cuid())
+  athleteId         String         @unique
+  athlete           AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  ageCategory       String         @default("U18") // U14, U16, U18, Open
+  gamesPlayed       Int            @default(0)
+  points            Int            @default(0)
+  rebounds          Int            @default(0)
+  assists           Int            @default(0)
+  steals            Int            @default(0)
+  blocks            Int            @default(0)
+  turnovers         Int            @default(0)
+  fouls             Int            @default(0)
+  fgMade            Int            @default(0)
+  fgMissed          Int            @default(0)
+  ftMade            Int            @default(0)
+  ftMissed          Int            @default(0)
+  fg3Made           Int            @default(0)
+  fg3Missed         Int            @default(0)
+
+  // FIBA Standard Metrics (FIBA LiveStats Standard)
+  eff               Int            @default(0)   // Total FIBA Efficiency
+  effPerGame        Float          @default(0.0) // FIBA EFF / Game (Official Ranking Index)
+  efgPct            Float          @default(0.0) // Effective Field Goal Percentage (eFG%)
+  tsPct             Float          @default(0.0) // True Shooting Percentage (TS%)
+  astToRatio        Float          @default(0.0) // Assist to Turnover Ratio
+
+  // Computed Per Game & Rate Metrics
+  per               Float          @default(0.0)
+  ppg               Float          @default(0.0)
+  rpg               Float          @default(0.0)
+  apg               Float          @default(0.0)
+  spg               Float          @default(0.0)
+  bpg               Float          @default(0.0)
+  fgPct             Float          @default(0.0)
+  ftPct             Float          @default(0.0)
+
+  // Radar Ratings (0 - 100)
+  scoringRating     Float          @default(0.0)
+  playmakingRating  Float          @default(0.0)
+  defenseRating     Float          @default(0.0)
+  athleticismRating Float          @default(0.0)
+
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model CoachProfile {
+  id                String            @id @default(cuid())
+  userId            String            @unique
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName          String
+  organization      String
+  phoneNumber       String
+  idVerificationUrl String?
+  isVerified        Boolean           @default(false)
+  
+  managedTeams      Team[]
+}
+
+model OfficialProfile {
+  id                String                 @id @default(cuid())
+  userId            String                 @unique
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName          String
+  licensingBody     String
+  licenseNumber     String?
+  approvalStatus    String                 @default("PENDING") // PENDING, APPROVED, REJECTED
+  pinHash           String?                // Hashed PIN for table console authentication
+  
+  recordedEvents    MatchEvent[]
+}
+
+model Team {
+  id                String            @id @default(cuid())
+  name              String
+  shortName         String?
+  institution       String
+  logoUrl           String?
+  primaryColor      String?
+  coachId           String?
+  coach             CoachProfile?     @relation(fields: [coachId], references: [id])
+  roster            RosterMember[]
+  homeMatches       Match[]           @relation("HomeTeam")
+  awayMatches       Match[]           @relation("AwayTeam")
+
+  // Extended Persistence Relations
+  practiceSessions  PracticeSession[]
+  playbookItems     PlaybookItem[]
+}
+
+model RosterMember {
+  id                String            @id @default(cuid())
+  teamId            String
+  team              Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  athleteId         String
+  athlete           AthleteProfile    @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  jerseyNumber      Int
+
+  @@unique([teamId, athleteId])
+}
+
+model Tournament {
+  id                 String            @id @default(cuid())
+  name               String
+  organizer          String?
+  isOfficialEndorsed Boolean           @default(true)
+  region             String?
+  province           String?
+  venue              String?
+  location           String
+  startDate          DateTime
+  endDate            DateTime
+  category           String            @default("U18") // U14, U16, U18, Open
+  status             String            @default("OPEN") // OPEN, CLOSING_SOON, IN_PROGRESS, COMPLETED
+  maxTeams           Int               @default(16)
+  registeredTeams    Int               @default(0)
+  entryFeeThb        Float             @default(0)
+  rulesPdfUrl        String?
+  contactPerson      String?
+  contactPhone       String?
+  bannerColor        String?
+  matches            Match[]
+  createdAt          DateTime          @default(now())
+}
+
+model Match {
+  id                 String            @id @default(cuid())
+  tournamentId       String
+  tournament         Tournament        @relation(fields: [tournamentId], references: [id])
+  homeTeamId         String
+  homeTeam           Team              @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId         String
+  awayTeam           Team              @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  homeScore          Int               @default(0)
+  awayScore          Int               @default(0)
+  currentQuarter     Int               @default(1)
+  gameClockSec       Int               @default(600)
+  status             String            @default("SCHEDULED") // SCHEDULED, LIVE, HALF_TIME, COMPLETED, DISPUTED
+  rawVideoUrl        String?
+  scoresheetPhotoUrl String?
+  
+  events             MatchEvent[]
+  participants       MatchParticipant[]
+  disputeAuditLogs   MatchDisputeAuditLog[]
+  createdAt          DateTime          @default(now())
+}
+
+model MatchEvent {
+  id                String            @id @default(cuid())
+  matchId           String
+  match             Match             @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  officialId        String
+  official          OfficialProfile   @relation(fields: [officialId], references: [id])
+  athleteId         String?
+  athlete           AthleteProfile?   @relation(fields: [athleteId], references: [id])
+  teamId            String?
+  
+  eventType         String            // TWO_POINT_MADE, THREE_POINT_MADE, etc.
+  points            Int               @default(0)
+  quarter           Int
+  gameClockDisplay  String
+  videoElapsedSec   Int?
+  isVerified        Boolean           @default(true)
+  
+  telestrationNotes VideoTelestrationNote[]
+  createdAt         DateTime          @default(now())
+  
+  @@index([matchId, athleteId])
+}
+
+model MatchParticipant {
+  id            String         @id @default(cuid())
+  matchId       String
+  match         Match          @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  athleteId     String
+  athlete       AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  
+  isStarter     Boolean        @default(false)
+  minutesPlayed Int            @default(0)
+  createdAt     DateTime       @default(now())
+
+  @@unique([matchId, athleteId])
+  @@index([athleteId, createdAt])
+}
+
+model MarketplaceItem {
+  id                String            @id @default(cuid())
+  sellerId          String
+  seller            AthleteProfile    @relation(fields: [sellerId], references: [id])
+  title             String
+  brand             String
+  model             String
+  size              String
+  condition         String
+  category          String            @default("Footwear")
+  priceThb          Float
+  isSold            Boolean           @default(false)
+  imageUrls         String            @default("[]") // JSON string array of URLs
+  createdAt         DateTime          @default(now())
+}
+
+model AuditLog {
+  id                String            @id @default(cuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  action            String
+  targetEntity      String
+  targetId          String
+  metadataJson      String            @default("{}")
+  createdAt         DateTime          @default(now())
+}
+
+// ==========================================
+// 1. ACADEMIC & SCOUTING RECRUITMENT
+// ==========================================
+model AcademicRecord {
+  id             String         @id @default(cuid())
+  athleteId      String
+  athlete        AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  schoolYear     Int            // e.g. 2568, 2569
+  gradeLevel     String         // M4, M5, M6
+  semester       Int            // 1, 2
+  gpa            Float          // e.g. 3.45
+  transcriptUrl  String?
+  isVerified     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+
+  @@index([athleteId])
+}
+
+model ScoutProfileView {
+  id           String         @id @default(cuid())
+  athleteId    String
+  athlete      AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  scoutId      String
+  scoutName    String?
+  organization String?
+  viewCount    Int            @default(1)
+  lastViewed   DateTime       @default(now())
+
+  @@unique([athleteId, scoutId])
+}
+
+// ==========================================
+// 2. TOURNAMENT INTEGRITY & DIGITAL PASS
+// ==========================================
+model DigitalPlayerPass {
+  id               String         @id @default(cuid())
+  athleteId        String         @unique
+  athlete          AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  idCardNumberHash String         // Hashed Thai National ID for privacy
+  dateOfBirth      DateTime
+  verifiedAge      Int
+  qrPassCode       String         @unique
+  status           String         @default("ACTIVE") // ACTIVE, SUSPENDED, BANNED
+  banReason        String?
+  bannedUntil      DateTime?
+  createdAt        DateTime       @default(now())
+}
+
+model VideoTelestrationNote {
+  id             String     @id @default(cuid())
+  matchEventId   String
+  matchEvent     MatchEvent @relation(fields: [matchEventId], references: [id], onDelete: Cascade)
+  authorId       String
+  drawingJson    String     // Vector drawings, arrows, player highlights
+  commentText    String
+  timestampSec   Int
+  createdAt      DateTime   @default(now())
+}
+
+// ==========================================
+// 3. TEAM OPERATIONS & SPORTS SCIENCE
+// ==========================================
+model PracticeSession {
+  id           String             @id @default(cuid())
+  teamId       String
+  team         Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  title        String
+  sessionDate  DateTime
+  durationMin  Int                @default(120)
+  location     String
+  attendances  PlayerAttendance[]
+  createdAt    DateTime           @default(now())
+}
+
+model PlayerAttendance {
+  id          String          @id @default(cuid())
+  sessionId   String
+  session     PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  athleteId   String
+  athlete     AthleteProfile  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  status      String          // PRESENT, LATE, EXCUSED, ABSENT
+  notes       String?
+
+  @@unique([sessionId, athleteId])
+}
+
+model InjuryLog {
+  id              String         @id @default(cuid())
+  athleteId       String
+  athlete         AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  injuryType      String         // ANKLE_SPRAIN, ACL_TEAR, KNEE_CONTUSION
+  severity        String         // MILD, MODERATE, SEVERE
+  occurredDate    DateTime
+  expectedReturn  DateTime?
+  status          String         @default("ACTIVE") // ACTIVE, RECOVERED, UNDER_EVALUATION
+  notes           String?
+  createdAt       DateTime       @default(now())
+}
+
+model PlaybookItem {
+  id          String   @id @default(cuid())
+  teamId      String
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  title       String
+  category    String   // OFFENSE, DEFENSE, INBOUND, PRESS_BREAK
+  playJson    String   // 2D animation coordinates and steps
+  createdAt   DateTime @default(now())
+}
+
+// ==========================================
+// 4. OPPORTUNITIES & SCHOLARSHIPS
+// ==========================================
+model Opportunity {
+  id               String                   @id @default(cuid())
+  title            String
+  institution      String
+  type             String                   // SCHOLARSHIP, ATHLETE_QUOTA, PROFESSIONAL_TRYOUT, CAMP_INVITATION
+  level            String                   // HIGH_SCHOOL, UNIVERSITY, SEMI_PRO
+  funding          String                   // FULL_100, PARTIAL_50, QUOTA_ONLY
+  deadline         DateTime
+  openSpots        Int                      @default(1)
+  province         String
+  region           String
+  requirementsJson String                   @default("[]")
+  minHeightCm      Int?
+  minGpax          Float?
+  contactEmail     String?
+  contactPhone     String?
+  description      String?
+  status           String                   @default("OPEN")
+  applications     OpportunityApplication[]
+  createdAt        DateTime                 @default(now())
+}
+
+model OpportunityApplication {
+  id                String      @id @default(cuid())
+  opportunityId     String
+  opportunity       Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  athleteId         String?
+  applicantName     String
+  applicantTcasCode String?
+  applicantGpax     String
+  applicantPosition String
+  applicantPhone    String
+  applicantNotes    String?
+  status            String      @default("PENDING") // PENDING, REVIEWING, ACCEPTED, REJECTED
+  createdAt         DateTime    @default(now())
+}
+
+// ==========================================
+// 5. OFFICIAL MATCH DISPUTE & AUDIT TRAIL
+// ==========================================
+model MatchDisputeAuditLog {
+  id               String   @id @default(cuid())
+  matchId          String
+  match            Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  operatorLicense  String   // e.g. BSAT-TABLE-2026-088
+  operatorName     String   // e.g. Somchai Srivichai
+  actionType       String   // SCORE_ADJUST, FOUL_RECORD, CLOCK_SYNC, ACTION_REVERSED, SHOT_CLOCK_RESET, DISPUTE_CHALLENGE, TABLE_LOGIN, TABLE_LOGOUT
+  quarter          Int      @default(1)
+  gameClockDisplay String   @default("10:00")
+  detailsJson      String   @default("{}") // Previous & new values, player ID, points, reason
+  digitalSignature String   // HMAC-SHA256 signature linking audit record
+  ipAddress        String?
+  timestamp        DateTime @default(now())
+
+  @@index([matchId, timestamp])
+}
+
