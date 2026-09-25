@@ -196,71 +196,52 @@ export default function MatchFilmReviewPage({
   });
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased selection:bg-[#DC2626] selection:text-white">
       <Navbar />
 
-      <main className="flex-1 pb-16 max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4">
-        {/* Breadcrumb & Navigation */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs font-mono">
-          <div className="flex items-center gap-2 text-slate-400">
-            <Link href="/" className="hover:text-white transition">หน้าแรก</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <Link href="/tournaments" className="hover:text-white transition">ทัวร์นาเมนต์</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="text-amber-400 font-bold">GAME FILM ROOM (เทปวิเคราะห์แมตช์)</span>
-          </div>
-
-          {/* Quick links to Live and Official Table */}
-          <div className="flex items-center gap-2">
-            <Link
-              href="/live"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-950/60 hover:bg-red-900 border border-red-800 text-red-300 font-sans text-xs font-bold transition shadow-sm"
-              title="สลับไปยังศูนย์ถ่ายทอดสดแบบ Real-time"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-              </span>
-              <span>ชมถ่ายทอดสด (LIVE HUB)</span>
-            </Link>
-
-            <Link
-              href={`/official/console/${matchId}`}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-sans text-xs font-bold transition"
-            >
-              <Shield className="w-3.5 h-3.5 text-brand-primary" />
-              <span className="hidden sm:inline">โต๊ะกรรมการ (OFFICIAL)</span>
-            </Link>
-
-            <button
-              onClick={handleCopyLink}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-sans text-xs transition cursor-pointer"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>{copiedLink ? "คัดลอกแล้ว!" : "แชร์เทป"}</span>
-            </button>
-          </div>
+      {/* 1. Top Crimson Sub-Banner (Standard StatCourtTH header) */}
+      <div className="bg-[#991B1B] text-white py-2 px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 text-xs select-none">
+        <div className="flex items-center gap-2 flex-wrap font-mono">
+          <span className="bg-white text-[#991B1B] font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-sans">
+            FIBA SCOUT &amp; FILM REVIEW
+          </span>
+          <span className="font-bold tracking-wide text-[11px]">
+            เทปบันทึกการแข่งขันและระบบวิเคราะห์แท็กติก (Hudl-grade Telestration Room)
+          </span>
         </div>
 
-        {/* Match Header Banner */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sm:p-5 mb-6 shadow-xl backdrop-blur">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Tournament & Context */}
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-brand-primary/20 border border-brand-primary/40 text-brand-primary font-mono text-[10px] font-black tracking-widest uppercase">
-                  HUDL-GRADE TAPE
+        <div className="flex items-center gap-3 font-mono text-[11px]">
+          <span className="text-red-100 hidden sm:inline">Click-to-Clip Marker (-8s) • Event Filtering Active</span>
+          <Link href="/matches" className="text-white hover:underline flex items-center gap-1 font-bold">
+            <span>คลังแมตช์ทั้งหมด (Match Central)</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+
+      {/* 2. Hero Header Section (Consistent with /tournaments and /team standard) */}
+      <section className="bg-[#0F172A] text-white py-8 sm:py-10 border-b border-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 court-grid-pattern opacity-15 pointer-events-none" />
+        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-3xl">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#AF101A]/30 border border-[#AF101A]/50 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
+                  <Film className="w-3.5 h-3.5 text-[#DC2626]" />
+                  <span>HUDL-GRADE TAPE</span>
                 </span>
-                <span className="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-800 text-emerald-400 font-mono text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-400 font-mono text-[10px] font-bold">
                   VERIFIED STATS
                 </span>
                 <span className="text-xs text-slate-400 font-mono hidden sm:inline">
                   MATCH ID: {matchId}
                 </span>
               </div>
-              <h1 className="text-lg sm:text-xl font-black text-white tracking-tight">
+
+              <h1 className="font-headline-xl text-white uppercase tracking-wider text-2xl sm:text-3xl lg:text-4xl font-normal leading-tight">
                 {matchData.tournamentName || "TOA Youth Basketball League Thailand 2026 - รอบ 8 ทีมสุดท้าย"}
               </h1>
+
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-sans pt-0.5">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5 text-slate-500" />
@@ -270,43 +251,62 @@ export default function MatchFilmReviewPage({
                   <MapPin className="w-3.5 h-3.5 text-slate-500" />
                   <span>อาคารนิมิบุตร สนามกีฬาแห่งชาติ กรุงเทพฯ</span>
                 </span>
-                <span className="flex items-center gap-1 text-amber-400 font-mono font-bold">
-                  <Film className="w-3.5 h-3.5" />
-                  <span>ความยาวเทป: 1080p HD (60 FPS)</span>
+                <span className="text-amber-400 font-mono font-bold">
+                  1080p HD (60 FPS) • {events.length} เหตุการณ์
                 </span>
               </div>
             </div>
 
-            {/* Final Match Score Card */}
-            <div className="flex items-center gap-4 sm:gap-6 bg-slate-950/90 border border-slate-800/80 rounded-xl px-4 py-3 shrink-0">
-              <div className="text-right">
-                <div className="text-xs font-bold text-slate-300 truncate max-w-[130px] sm:max-w-none">
-                  {homeTeam.shortName || homeTeam.name}
+            {/* Final Match Score Card & Quick Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+              <div className="flex items-center gap-4 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 font-mono">
+                <div className="text-right">
+                  <div className="text-xs font-bold text-slate-300">
+                    {homeTeam.shortName || homeTeam.name}
+                  </div>
+                  <div className="text-2xl font-black text-red-400">
+                    {matchData.homeScore ?? 75}
+                  </div>
                 </div>
-                <div className="text-2xl font-black font-mono text-red-400">
-                  {matchData.homeScore ?? 75}
+
+                <div className="text-center px-1">
+                  <span className="text-[10px] text-slate-500 font-bold block">FT</span>
+                  <span className="text-xs text-slate-600 font-bold">VS</span>
+                </div>
+
+                <div className="text-left">
+                  <div className="text-xs font-bold text-slate-300">
+                    {awayTeam.shortName || awayTeam.name}
+                  </div>
+                  <div className="text-2xl font-black text-blue-400">
+                    {matchData.awayScore ?? 63}
+                  </div>
                 </div>
               </div>
 
-              <div className="text-center px-1">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 block">
-                  FT
-                </span>
-                <span className="text-xs font-mono text-slate-600 font-bold">VS</span>
-              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/live"
+                  className="px-3.5 py-2.5 rounded-lg bg-red-950 hover:bg-red-900 border border-red-800 text-red-200 font-mono font-bold text-xs uppercase flex items-center gap-1.5 transition"
+                >
+                  <Radio className="w-3.5 h-3.5 text-[#DC2626]" />
+                  <span>ดูสด (LIVE)</span>
+                </Link>
 
-              <div className="text-left">
-                <div className="text-xs font-bold text-slate-300 truncate max-w-[130px] sm:max-w-none">
-                  {awayTeam.shortName || awayTeam.name}
-                </div>
-                <div className="text-2xl font-black font-mono text-blue-400">
-                  {matchData.awayScore ?? 63}
-                </div>
+                <button
+                  onClick={handleCopyLink}
+                  className="px-3.5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs transition cursor-pointer"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
+      {/* 3. Main Film Review Container */}
+      <main className="flex-1 pb-16 max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6">
         {/* PRIMARY FILM PLAYER COMPONENT */}
         <section className="mb-8">
           <GameFilmPlayer
@@ -318,55 +318,55 @@ export default function MatchFilmReviewPage({
           />
         </section>
 
-        {/* Scout & Coaching Staff Review Console (Tabs) */}
-        <section className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+        {/* Scout & Coaching Staff Review Console (Clean White Card Design) */}
+        <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           {/* Navigation Bar */}
-          <div className="flex border-b border-slate-800 bg-slate-950/80 overflow-x-auto">
+          <div className="flex border-b border-slate-200 bg-[#F8F9FC] overflow-x-auto font-mono text-xs">
             <button
               onClick={() => setActiveTab("CLIPS")}
-              className={`px-5 py-3 text-xs sm:text-sm font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              className={`px-5 py-3 font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
                 activeTab === "CLIPS"
-                  ? "border-brand-primary text-white bg-slate-900/60"
-                  : "border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30"
+                  ? "border-[#DC2626] text-[#DC2626] bg-white shadow-xs"
+                  : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <Film className="w-4 h-4 text-brand-primary" />
+              <Film className="w-4 h-4 text-[#DC2626]" />
               <span>CLICK-TO-CLIP BREAKDOWN ({events.length} จังหวะ)</span>
             </button>
 
             <button
               onClick={() => setActiveTab("NOTES")}
-              className={`px-5 py-3 text-xs sm:text-sm font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              className={`px-5 py-3 font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
                 activeTab === "NOTES"
-                  ? "border-brand-primary text-white bg-slate-900/60"
-                  : "border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30"
+                  ? "border-[#DC2626] text-[#DC2626] bg-white shadow-xs"
+                  : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <FileText className="w-4 h-4 text-amber-400" />
+              <FileText className="w-4 h-4 text-amber-600" />
               <span>COACH TELESTRATION NOTES ({coachNotes.length})</span>
             </button>
 
             <button
               onClick={() => setActiveTab("BOXSCORE")}
-              className={`px-5 py-3 text-xs sm:text-sm font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              className={`px-5 py-3 font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
                 activeTab === "BOXSCORE"
-                  ? "border-brand-primary text-white bg-slate-900/60"
-                  : "border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30"
+                  ? "border-[#DC2626] text-[#DC2626] bg-white shadow-xs"
+                  : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <Activity className="w-4 h-4 text-emerald-400" />
+              <Activity className="w-4 h-4 text-emerald-600" />
               <span>SCOUTING BOX SCORE</span>
             </button>
 
             <button
               onClick={() => setActiveTab("MATCHUP")}
-              className={`px-5 py-3 text-xs sm:text-sm font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
+              className={`px-5 py-3 font-bold flex items-center gap-2 border-b-2 transition whitespace-nowrap cursor-pointer ${
                 activeTab === "MATCHUP"
-                  ? "border-brand-primary text-white bg-slate-900/60"
-                  : "border-transparent text-slate-400 hover:text-white hover:bg-slate-900/30"
+                  ? "border-[#DC2626] text-[#DC2626] bg-white shadow-xs"
+                  : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <Swords className="w-4 h-4 text-blue-400" />
+              <Swords className="w-4 h-4 text-blue-600" />
               <span>KEY MATCHUP DUEL</span>
             </button>
           </div>
@@ -375,52 +375,60 @@ export default function MatchFilmReviewPage({
             {/* TAB 1: Click-to-Clip Breakdown */}
             {activeTab === "CLIPS" && (
               <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
                   <div>
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#DC2626]" />
                       <span>รายการเพลย์สำคัญที่มาร์กเกอร์บนแถบเวลาวิดีโอ (Event Marker Log)</span>
                     </h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       คลิกที่แต่ละจังหวะเพื่อย้อนดูเทป โดยระบบจะกรอเวลาถอยหลัง 8 วินาที (-8s lead-in) อัตโนมัติ
                     </p>
                   </div>
 
                   {/* Filter Pills */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
+                  <div className="flex items-center gap-1.5 flex-wrap font-mono text-xs">
                     <button
                       onClick={() => setClipFilter("ALL")}
-                      className={`px-2.5 py-1 rounded text-xs font-mono transition cursor-pointer ${
-                        clipFilter === "ALL" ? "bg-slate-700 text-white font-bold" : "bg-slate-800/80 text-slate-400 hover:text-white"
+                      className={`px-3 py-1 rounded transition cursor-pointer font-bold ${
+                        clipFilter === "ALL"
+                          ? "bg-[#AF101A] text-white"
+                          : "bg-[#F8F9FC] text-slate-600 border border-slate-300 hover:text-slate-900"
                       }`}
                     >
                       ทั้งหมด ({events.length})
                     </button>
                     <button
                       onClick={() => setClipFilter("3PT")}
-                      className={`px-2.5 py-1 rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 ${
-                        clipFilter === "3PT" ? "bg-red-600 text-white font-bold" : "bg-slate-800/80 text-slate-400 hover:text-white"
+                      className={`px-3 py-1 rounded transition cursor-pointer flex items-center gap-1 font-bold ${
+                        clipFilter === "3PT"
+                          ? "bg-[#AF101A] text-white"
+                          : "bg-[#F8F9FC] text-slate-600 border border-slate-300 hover:text-slate-900"
                       }`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-red-400" />
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
                       <span>3-Pointers</span>
                     </button>
                     <button
                       onClick={() => setClipFilter("AST")}
-                      className={`px-2.5 py-1 rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 ${
-                        clipFilter === "AST" ? "bg-slate-600 text-white font-bold" : "bg-slate-800/80 text-slate-400 hover:text-white"
+                      className={`px-3 py-1 rounded transition cursor-pointer flex items-center gap-1 font-bold ${
+                        clipFilter === "AST"
+                          ? "bg-[#AF101A] text-white"
+                          : "bg-[#F8F9FC] text-slate-600 border border-slate-300 hover:text-slate-900"
                       }`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-slate-300" />
+                      <span className="w-2 h-2 rounded-full bg-slate-400" />
                       <span>Assists</span>
                     </button>
                     <button
                       onClick={() => setClipFilter("DEF")}
-                      className={`px-2.5 py-1 rounded text-xs font-mono transition cursor-pointer flex items-center gap-1 ${
-                        clipFilter === "DEF" ? "bg-emerald-600 text-white font-bold" : "bg-slate-800/80 text-slate-400 hover:text-white"
+                      className={`px-3 py-1 rounded transition cursor-pointer flex items-center gap-1 font-bold ${
+                        clipFilter === "DEF"
+                          ? "bg-[#AF101A] text-white"
+                          : "bg-[#F8F9FC] text-slate-600 border border-slate-300 hover:text-slate-900"
                       }`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-emerald-300" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
                       <span>Block / Steal</span>
                     </button>
                   </div>
@@ -436,24 +444,24 @@ export default function MatchFilmReviewPage({
                     return (
                       <div
                         key={ev.id}
-                        className="bg-slate-950/70 border border-slate-800 hover:border-slate-600 rounded-xl p-3.5 transition flex flex-col justify-between group"
+                        className="bg-[#F8F9FC] border border-slate-200 hover:border-slate-300 rounded-xl p-3.5 transition flex flex-col justify-between shadow-2xs group"
                       >
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <div className="flex items-center gap-2">
                             <span
-                              className={`w-6 h-6 rounded-md font-mono text-xs font-bold flex items-center justify-center ${
+                              className={`w-6 h-6 rounded font-mono text-xs font-bold flex items-center justify-center ${
                                 isBcc
-                                  ? "bg-purple-900/60 text-purple-300 border border-purple-700/60"
-                                  : "bg-emerald-900/60 text-emerald-300 border border-emerald-700/60"
+                                  ? "bg-purple-100 text-purple-900 border border-purple-200"
+                                  : "bg-emerald-100 text-emerald-900 border border-emerald-200"
                               }`}
                             >
                               #{ev.jerseyNumber ?? "-"}
                             </span>
                             <div>
-                              <div className="text-xs font-bold text-white group-hover:text-amber-400 transition truncate max-w-[160px]">
+                              <div className="text-xs font-bold text-slate-900 group-hover:text-[#DC2626] transition truncate max-w-[160px]">
                                 {ev.athleteName || "Unknown Athlete"}
                               </div>
-                              <div className="text-[10px] text-slate-400 font-mono">
+                              <div className="text-[10px] text-slate-500 font-mono">
                                 {isBcc ? "BCC Silom" : "Debsirin"}
                               </div>
                             </div>
@@ -462,23 +470,23 @@ export default function MatchFilmReviewPage({
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider ${
                               is3pt
-                                ? "bg-red-950/80 text-red-400 border border-red-800"
+                                ? "bg-red-100 text-red-800 border border-red-200"
                                 : isDef
-                                ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800"
-                                : "bg-slate-800 text-slate-300 border border-slate-700"
+                                ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                                : "bg-slate-200 text-slate-800 border border-slate-300"
                             }`}
                           >
                             {ev.eventType.replace(/_/g, " ")}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-slate-400 font-mono pt-2 border-t border-slate-800/80">
-                          <span className="flex items-center gap-1 text-slate-300">
-                            <Clock className="w-3.5 h-3.5 text-slate-500" />
+                        <div className="flex items-center justify-between text-xs text-slate-500 font-mono pt-2 border-t border-slate-200">
+                          <span className="flex items-center gap-1 text-slate-600">
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
                             <span>Q{ev.quarter} • {ev.gameClockDisplay}</span>
                           </span>
 
-                          <span className="text-amber-400 font-bold text-[11px]">
+                          <span className="text-[#DC2626] font-bold text-[11px]">
                             เทป: {ev.videoElapsedSec}s
                           </span>
                         </div>
@@ -494,12 +502,12 @@ export default function MatchFilmReviewPage({
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Notes List (2 Cols) */}
                 <div className="lg:col-span-2 space-y-4">
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-amber-400" />
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-amber-600" />
                       <span>บันทึกแท็กติกและการวิเคราะห์เทปโดยทีมงานโค้ช</span>
                     </h3>
-                    <span className="text-xs font-mono text-slate-400">
+                    <span className="text-xs font-mono text-slate-500">
                       รวม {coachNotes.length} บันทึก
                     </span>
                   </div>
@@ -508,37 +516,37 @@ export default function MatchFilmReviewPage({
                     {coachNotes.map((note) => (
                       <div
                         key={note.id}
-                        className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2 hover:border-slate-700 transition"
+                        className="bg-[#F8F9FC] border border-slate-200 rounded-xl p-4 space-y-2 hover:border-slate-300 transition"
                       >
                         <div className="flex items-center justify-between gap-2 flex-wrap">
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 border border-amber-200 text-amber-800">
                               {note.tag}
                             </span>
                             <span
                               className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                                 note.teamTag === "BCC"
-                                  ? "bg-purple-950/80 text-purple-300 border border-purple-800"
+                                  ? "bg-purple-100 text-purple-900 border border-purple-200"
                                   : note.teamTag === "DS"
-                                  ? "bg-emerald-950/80 text-emerald-300 border border-emerald-800"
-                                  : "bg-slate-800 text-slate-300 border border-slate-700"
+                                  ? "bg-emerald-100 text-emerald-900 border border-emerald-200"
+                                  : "bg-slate-200 text-slate-800 border border-slate-300"
                               }`}
                             >
                               {note.teamTag}
                             </span>
-                            <span className="text-xs font-bold text-white">
+                            <span className="text-xs font-bold text-slate-900">
                               {note.author}
                             </span>
                           </div>
 
-                          <div className="text-[11px] font-mono text-slate-400 flex items-center gap-2">
+                          <div className="text-[11px] font-mono text-slate-500 flex items-center gap-2">
                             <span>{note.timeDisplay}</span>
                             <span>•</span>
                             <span>{note.createdAt}</span>
                           </div>
                         </div>
 
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
                           {note.content}
                         </p>
                       </div>
@@ -547,17 +555,17 @@ export default function MatchFilmReviewPage({
                 </div>
 
                 {/* Add New Note Form (1 Col) */}
-                <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 sm:p-5 h-fit space-y-4">
-                  <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-                    <PlusCircle className="w-4 h-4 text-brand-primary" />
-                    <span className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="bg-[#F8F9FC] border border-slate-200 rounded-xl p-4 sm:p-5 h-fit space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
+                    <PlusCircle className="w-4 h-4 text-[#DC2626]" />
+                    <span className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
                       บันทึกข้อสังเกตแท็กติกใหม่
                     </span>
                   </div>
 
                   <form onSubmit={handleAddCoachNote} className="space-y-3 font-sans text-xs">
                     <div>
-                      <label className="text-slate-400 block mb-1 font-semibold">
+                      <label className="text-slate-600 block mb-1 font-semibold">
                         ทีมเป้าหมาย
                       </label>
                       <div className="grid grid-cols-3 gap-2">
@@ -568,8 +576,8 @@ export default function MatchFilmReviewPage({
                             onClick={() => setNewNoteTeam(t)}
                             className={`py-1.5 rounded-lg border text-xs font-mono font-bold transition cursor-pointer ${
                               newNoteTeam === t
-                                ? "bg-brand-primary border-red-500 text-white shadow"
-                                : "bg-slate-900 border-slate-800 text-slate-400 hover:text-white"
+                                ? "bg-[#AF101A] border-red-700 text-white shadow-xs"
+                                : "bg-white border-slate-300 text-slate-600 hover:text-slate-900"
                             }`}
                           >
                             {t}
@@ -580,13 +588,13 @@ export default function MatchFilmReviewPage({
 
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="text-slate-400 block mb-1 font-semibold">
+                        <label className="text-slate-600 block mb-1 font-semibold">
                           ช่วงควอเตอร์
                         </label>
                         <select
                           value={newNoteQuarter}
                           onChange={(e) => setNewNoteQuarter(Number(e.target.value))}
-                          className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-primary font-mono"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#DC2626] font-mono"
                         >
                           <option value={1}>Quarter 1</option>
                           <option value={2}>Quarter 2</option>
@@ -596,13 +604,13 @@ export default function MatchFilmReviewPage({
                       </div>
 
                       <div>
-                        <label className="text-slate-400 block mb-1 font-semibold">
+                        <label className="text-slate-600 block mb-1 font-semibold">
                           หมวดหมู่แท็กติก
                         </label>
                         <select
                           value={newNoteTag}
                           onChange={(e) => setNewNoteTag(e.target.value)}
-                          className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-primary font-mono"
+                          className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-[#DC2626] font-mono"
                         >
                           <option value="SPACING">SPACING</option>
                           <option value="PICK & ROLL">PICK & ROLL</option>
@@ -615,7 +623,7 @@ export default function MatchFilmReviewPage({
                     </div>
 
                     <div>
-                      <label className="text-slate-400 block mb-1 font-semibold">
+                      <label className="text-slate-600 block mb-1 font-semibold">
                         ข้อความวิเคราะห์เทป
                       </label>
                       <textarea
@@ -623,14 +631,14 @@ export default function MatchFilmReviewPage({
                         value={newNoteText}
                         onChange={(e) => setNewNoteText(e.target.value)}
                         placeholder="ระบุข้อสังเกตการเล่น ตำแหน่งการยืน หรือข้อผิดพลาดที่ต้องนำไปซ้อมปรับปรุง..."
-                        className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-primary resize-none"
+                        className="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#DC2626] resize-none"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={!newNoteText.trim()}
-                      className="w-full py-2 rounded-lg bg-brand-primary hover:bg-red-700 disabled:opacity-50 text-white font-bold flex items-center justify-center gap-1.5 transition cursor-pointer"
+                      className="w-full py-2 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-50 text-white font-mono font-bold text-xs uppercase flex items-center justify-center gap-1.5 transition cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>บันทึกโน้ตแมวมอง</span>
@@ -643,16 +651,16 @@ export default function MatchFilmReviewPage({
             {/* TAB 3: Advanced Scout Box Score */}
             {activeTab === "BOXSCORE" && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-emerald-600" />
                     <span>สถิติผู้เล่นเชิงลึกสำหรับการคัดเลือกตัว (Scouting Box Score)</span>
                   </h3>
                   <button
                     onClick={() => {
                       if (typeof window !== "undefined") window.print();
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold font-mono text-slate-300 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold font-mono text-slate-700 border border-slate-300 transition cursor-pointer"
                   >
                     <Printer className="w-3.5 h-3.5" />
                     <span>PRINT SCOUT REPORT</span>
@@ -662,14 +670,14 @@ export default function MatchFilmReviewPage({
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
                   {/* Home Team Box Score */}
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between bg-purple-950/60 border border-purple-800/80 px-4 py-2 rounded-xl text-white font-bold">
+                    <div className="flex items-center justify-between bg-purple-100 border border-purple-200 px-4 py-2 rounded-xl text-purple-900 font-bold">
                       <span>BANGKOK CHRISTIAN COLLEGE (BCC)</span>
-                      <span className="text-purple-300">75 PTS</span>
+                      <span className="text-purple-700">75 PTS</span>
                     </div>
 
-                    <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+                    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                       <table className="w-full text-left">
-                        <thead className="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                        <thead className="bg-[#F8F9FC] text-slate-600 text-[10px] uppercase border-b border-slate-200">
                           <tr>
                             <th className="py-2 px-3">#</th>
                             <th className="py-2 px-3">นักกีฬา</th>
@@ -680,7 +688,7 @@ export default function MatchFilmReviewPage({
                             <th className="py-2 px-2 text-center">PASS</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800/60 text-[11px]">
+                        <tbody className="divide-y divide-slate-100 text-[11px]">
                           {[
                             { id: "ath-1", no: 7, name: "Thanakorn Siriphan", pts: 18, reb: 3, ast: 8, fg: "54.5%" },
                             { id: "ath-4", no: 24, name: "Kittipong Rattana.", pts: 21, reb: 7, ast: 4, fg: "62.5%" },
@@ -688,27 +696,27 @@ export default function MatchFilmReviewPage({
                             { id: "ath-5", no: 15, name: "Bhuripat Kaewmanee", pts: 14, reb: 9, ast: 1, fg: "50.0%" },
                             { id: "ath-3", no: 42, name: "Supanut Charoenrat", pts: 10, reb: 11, ast: 2, fg: "48.0%" },
                           ].map((row) => (
-                            <tr key={row.no} className="hover:bg-slate-900/60 transition">
-                              <td className="py-2 px-3 font-bold text-slate-400">{row.no}</td>
-                              <td className="py-2 px-3 text-white font-sans font-bold">
+                            <tr key={row.no} className="hover:bg-slate-50 transition">
+                              <td className="py-2 px-3 font-bold text-slate-500">{row.no}</td>
+                              <td className="py-2 px-3 text-slate-900 font-sans font-bold">
                                 <Link
                                   href={`/athlete/${row.id}`}
-                                  className="hover:text-amber-400 transition"
+                                  className="hover:text-[#DC2626] transition"
                                 >
                                   {row.name}
                                 </Link>
                               </td>
-                              <td className="py-2 px-2 text-center text-red-400 font-bold">{row.pts}</td>
-                              <td className="py-2 px-2 text-center text-slate-300">{row.reb}</td>
-                              <td className="py-2 px-2 text-center text-slate-300">{row.ast}</td>
-                              <td className="py-2 px-2 text-center text-emerald-400">{row.fg}</td>
+                              <td className="py-2 px-2 text-center text-red-600 font-bold">{row.pts}</td>
+                              <td className="py-2 px-2 text-center text-slate-700">{row.reb}</td>
+                              <td className="py-2 px-2 text-center text-slate-700">{row.ast}</td>
+                              <td className="py-2 px-2 text-center text-emerald-700 font-bold">{row.fg}</td>
                               <td className="py-2 px-2 text-center">
                                 <button
                                   onClick={() => handleOpenPlayerPass(row.id, row.name, row.no, "Bangkok Christian College")}
-                                  className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition inline-flex items-center cursor-pointer"
+                                  className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition inline-flex items-center cursor-pointer border border-slate-200"
                                   title="ดู Digital Player Pass"
                                 >
-                                  <BadgeCheck className="w-3.5 h-3.5 text-brand-primary" />
+                                  <BadgeCheck className="w-3.5 h-3.5 text-[#DC2626]" />
                                 </button>
                               </td>
                             </tr>
@@ -720,14 +728,14 @@ export default function MatchFilmReviewPage({
 
                   {/* Away Team Box Score */}
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between bg-emerald-950/60 border border-emerald-800/80 px-4 py-2 rounded-xl text-white font-bold">
+                    <div className="flex items-center justify-between bg-emerald-100 border border-emerald-200 px-4 py-2 rounded-xl text-emerald-900 font-bold">
                       <span>DEBSIRIN SCHOOL (DS)</span>
-                      <span className="text-emerald-300">63 PTS</span>
+                      <span className="text-emerald-700">63 PTS</span>
                     </div>
 
-                    <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+                    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                       <table className="w-full text-left">
-                        <thead className="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                        <thead className="bg-[#F8F9FC] text-slate-600 text-[10px] uppercase border-b border-slate-200">
                           <tr>
                             <th className="py-2 px-3">#</th>
                             <th className="py-2 px-3">นักกีฬา</th>
@@ -738,7 +746,7 @@ export default function MatchFilmReviewPage({
                             <th className="py-2 px-2 text-center">PASS</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800/60 text-[11px]">
+                        <tbody className="divide-y divide-slate-100 text-[11px]">
                           {[
                             { id: "ath-8", no: 23, name: "Nattapat Sukprasert", pts: 22, reb: 9, ast: 2, fg: "52.9%" },
                             { id: "ath-6", no: 10, name: "Supacheep Rungrueang", pts: 15, reb: 4, ast: 6, fg: "46.2%" },
@@ -746,27 +754,27 @@ export default function MatchFilmReviewPage({
                             { id: "ath-9", no: 5, name: "Witchapon Chaiyaphat", pts: 9, reb: 3, ast: 4, fg: "37.5%" },
                             { id: "ath-10", no: 14, name: "Pattarapon Saetang", pts: 6, reb: 5, ast: 1, fg: "33.3%" },
                           ].map((row) => (
-                            <tr key={row.no} className="hover:bg-slate-900/60 transition">
-                              <td className="py-2 px-3 font-bold text-slate-400">{row.no}</td>
-                              <td className="py-2 px-3 text-white font-sans font-bold">
+                            <tr key={row.no} className="hover:bg-slate-50 transition">
+                              <td className="py-2 px-3 font-bold text-slate-500">{row.no}</td>
+                              <td className="py-2 px-3 text-slate-900 font-sans font-bold">
                                 <Link
                                   href={`/athlete/${row.id}`}
-                                  className="hover:text-amber-400 transition"
+                                  className="hover:text-[#DC2626] transition"
                                 >
                                   {row.name}
                                 </Link>
                               </td>
-                              <td className="py-2 px-2 text-center text-blue-400 font-bold">{row.pts}</td>
-                              <td className="py-2 px-2 text-center text-slate-300">{row.reb}</td>
-                              <td className="py-2 px-2 text-center text-slate-300">{row.ast}</td>
-                              <td className="py-2 px-2 text-center text-emerald-400">{row.fg}</td>
+                              <td className="py-2 px-2 text-center text-blue-600 font-bold">{row.pts}</td>
+                              <td className="py-2 px-2 text-center text-slate-700">{row.reb}</td>
+                              <td className="py-2 px-2 text-center text-slate-700">{row.ast}</td>
+                              <td className="py-2 px-2 text-center text-emerald-700 font-bold">{row.fg}</td>
                               <td className="py-2 px-2 text-center">
                                 <button
                                   onClick={() => handleOpenPlayerPass(row.id, row.name, row.no, "Debsirin School")}
-                                  className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition inline-flex items-center cursor-pointer"
+                                  className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition inline-flex items-center cursor-pointer border border-slate-200"
                                   title="ดู Digital Player Pass"
                                 >
-                                  <BadgeCheck className="w-3.5 h-3.5 text-brand-primary" />
+                                  <BadgeCheck className="w-3.5 h-3.5 text-[#DC2626]" />
                                 </button>
                               </td>
                             </tr>
@@ -782,95 +790,95 @@ export default function MatchFilmReviewPage({
             {/* TAB 4: Key Matchup Duel */}
             {activeTab === "MATCHUP" && (
               <div className="space-y-6">
-                <div className="pb-2 border-b border-slate-800">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Swords className="w-4 h-4 text-blue-400" />
+                <div className="pb-2 border-b border-slate-200">
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <Swords className="w-4 h-4 text-blue-600" />
                     <span>การประชันตัวต่อตัวตำแหน่งการ์ดจ่าย (Point Guard Spotlight Matchup)</span>
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-slate-500 mt-0.5">
                     เปรียบเทียบสถิติและประสิทธิภาพการสร้างสรรค์เกมตลอดทั้งเทปวิดีโอ
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
                   {/* Player A */}
-                  <div className="bg-slate-950 border border-purple-800/60 rounded-2xl p-5 space-y-4">
+                  <div className="bg-[#F8F9FC] border border-purple-200 rounded-2xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-purple-900/60 border border-purple-700 flex items-center justify-center font-mono text-lg font-black text-purple-300">
+                        <div className="w-12 h-12 rounded-xl bg-purple-100 border border-purple-300 flex items-center justify-center font-mono text-lg font-black text-purple-900">
                           #7
                         </div>
                         <div>
-                          <div className="text-base font-bold text-white">Thanakorn Siriphan</div>
-                          <div className="text-xs text-slate-400 font-mono">BCC Silom • Point Guard • 184 cm</div>
+                          <div className="text-base font-bold text-slate-900">Thanakorn Siriphan</div>
+                          <div className="text-xs text-slate-500 font-mono">BCC Silom • Point Guard • 184 cm</div>
                         </div>
                       </div>
-                      <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono text-xs font-bold">
+                      <span className="px-2 py-0.5 rounded bg-amber-100 border border-amber-300 text-amber-800 font-mono text-xs font-bold">
                         GAME MVP
                       </span>
                     </div>
 
                     <div className="grid grid-cols-4 gap-2 text-center font-mono">
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">PTS</div>
-                        <div className="text-lg font-bold text-red-400">18</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">PTS</div>
+                        <div className="text-lg font-bold text-red-600">18</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">AST</div>
-                        <div className="text-lg font-bold text-amber-400">8</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">AST</div>
+                        <div className="text-lg font-bold text-amber-600">8</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">FG%</div>
-                        <div className="text-lg font-bold text-emerald-400">54.5%</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">FG%</div>
+                        <div className="text-lg font-bold text-emerald-700">54.5%</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">+/-</div>
-                        <div className="text-lg font-bold text-purple-400">+14</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">+/-</div>
+                        <div className="text-lg font-bold text-purple-700">+14</div>
                       </div>
                     </div>
 
-                    <div className="text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800 leading-relaxed">
+                    <div className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200 leading-relaxed">
                       💡 <strong>จุดเด่นในเทป:</strong> มีวิสัยทัศน์ส่งบอลทะลุช่องยอดเยี่ยม การอ่านกับดัก Trap ของคู่แข่งทำได้สุขุม ไม่เสีย Turnover ง่าย
                     </div>
                   </div>
 
                   {/* Player B */}
-                  <div className="bg-slate-950 border border-emerald-800/60 rounded-2xl p-5 space-y-4">
+                  <div className="bg-[#F8F9FC] border border-emerald-200 rounded-2xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-900/60 border border-emerald-700 flex items-center justify-center font-mono text-lg font-black text-emerald-300">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center font-mono text-lg font-black text-emerald-900">
                           #10
                         </div>
                         <div>
-                          <div className="text-base font-bold text-white">Supacheep Rungrueang</div>
-                          <div className="text-xs text-slate-400 font-mono">Debsirin • Point Guard • 181 cm</div>
+                          <div className="text-base font-bold text-slate-900">Supacheep Rungrueang</div>
+                          <div className="text-xs text-slate-500 font-mono">Debsirin • Point Guard • 181 cm</div>
                         </div>
                       </div>
-                      <span className="px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/30 text-blue-400 font-mono text-xs font-bold">
+                      <span className="px-2 py-0.5 rounded bg-blue-100 border border-blue-300 text-blue-800 font-mono text-xs font-bold">
                         FASTEST PACE
                       </span>
                     </div>
 
                     <div className="grid grid-cols-4 gap-2 text-center font-mono">
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">PTS</div>
-                        <div className="text-lg font-bold text-blue-400">15</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">PTS</div>
+                        <div className="text-lg font-bold text-blue-600">15</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">AST</div>
-                        <div className="text-lg font-bold text-amber-400">6</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">AST</div>
+                        <div className="text-lg font-bold text-amber-600">6</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">FG%</div>
-                        <div className="text-lg font-bold text-emerald-400">46.2%</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">FG%</div>
+                        <div className="text-lg font-bold text-emerald-700">46.2%</div>
                       </div>
-                      <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
-                        <div className="text-xs text-slate-400">+/-</div>
-                        <div className="text-lg font-bold text-slate-400">-8</div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <div className="text-xs text-slate-500">+/-</div>
+                        <div className="text-lg font-bold text-slate-600">-8</div>
                       </div>
                     </div>
 
-                    <div className="text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800 leading-relaxed">
+                    <div className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200 leading-relaxed">
                       💡 <strong>จุดเด่นในเทป:</strong> สปีดการเล่นฟาสต์เบรกเร็วมาก การสร้างจังหวะไดรฟ์เข้าหาห่วงสร้างปัญหาให้เกมรับวงในได้ดี
                     </div>
                   </div>
