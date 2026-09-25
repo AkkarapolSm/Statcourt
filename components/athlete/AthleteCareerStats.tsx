@@ -31,7 +31,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             {/* Competition Selector */}
             <div className="w-full sm:w-auto">
               <label className="block text-[11px] font-label-caps text-secondary uppercase font-bold tracking-wider mb-1">
-                รายการแข่งขัน (COMPETITION)
+                รายการแข่งขันทางการ (OFFICIAL TOURNAMENT)
               </label>
               <div className="relative">
                 <select
@@ -39,11 +39,11 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                   onChange={(e) => setSelectedCompetition(e.target.value)}
                   className="w-full sm:w-64 bg-surface border border-outline-variant rounded px-3 py-1.5 pr-8 text-on-surface font-body-md text-body-md font-semibold focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer outline-none"
                 >
-                  <option value="ALL">ทุกรายการแข่งขันทางการ (All Tournaments)</option>
-                  <option value="TOA_U18">TOA Youth Basketball League U18</option>
-                  <option value="YOUTH_GAMES">กีฬาเยาวชนแห่งชาติ (National Youth Games)</option>
+                  <option value="ALL">ทัวร์นาเมนต์ทางการทั้งหมด (All Official Tournaments)</option>
+                  <option value="TOA_U18">TOA บาสเกตบอลชิงแชมป์ประเทศไทย U18 (BSAT)</option>
+                  <option value="YOUTH_GAMES">กีฬาเยาวชนแห่งชาติ (National Youth Games - SAT)</option>
                   <option value="OBEC_CUP">บาสเกตบอลนักเรียน สพฐ. ลีก (OBEC Cup)</option>
-                  <option value="DPE_CUP">กีฬากรมพลศึกษา (DPE Cup U16)</option>
+                  <option value="DPE_CUP">กีฬากรมพลศึกษา รุ่นอายุไม่เกิน 16 ปี (DPE Cup U16)</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-base">
                   expand_more
@@ -54,7 +54,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             {/* Statistic Format Selector */}
             <div className="w-full sm:w-auto">
               <label className="block text-[11px] font-label-caps text-secondary uppercase font-bold tracking-wider mb-1">
-                รูปแบบสถิติ (STATISTIC FORMAT)
+                รูปแบบการแสดงผลสถิติ (STATISTICAL DISPLAY)
               </label>
               <div className="relative">
                 <select
@@ -62,10 +62,10 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                   onChange={(e) => setStatFormat(e.target.value)}
                   className="w-full sm:w-56 bg-surface border border-outline-variant rounded px-3 py-1.5 pr-8 text-on-surface font-body-md text-body-md font-semibold focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer outline-none"
                 >
-                  <option value="PER_GAME">สถิติเฉลี่ยต่อนัด (Per Game)</option>
-                  <option value="TOTALS">สถิติรวมทั้งหมด (Totals)</option>
-                  <option value="PER_36">ต่อ 36 นาที (Per 36 Minutes)</option>
-                  <option value="PER_100">ร้อยละการครองบอล (Per 100 Possessions)</option>
+                  <option value="PER_GAME">ค่าเฉลี่ยต่อเกม (Per Game Average)</option>
+                  <option value="TOTALS">สถิติรวมสะสม (Cumulative Totals)</option>
+                  <option value="PER_36">ปรับฐานมาตรฐาน 36 นาที (Per 36 Min Basis)</option>
+                  <option value="PER_100">อัตราส่วนต่อ 100 การครองบอล (Per 100 Possessions)</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-base">
                   expand_more
@@ -76,7 +76,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             {/* Quick Metric Filter Chips */}
             <div className="hidden xl:flex items-end gap-1.5 self-end pb-0.5">
               <span className="font-label-caps text-[10px] uppercase text-secondary mr-1 self-center">
-                View:
+                มุมมอง:
               </span>
               <button
                 onClick={() => setViewMode("STANDARD")}
@@ -86,7 +86,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
                 }`}
               >
-                Standard Box
+                สถิติมาตรฐาน (Standard Box)
               </button>
               <button
                 onClick={() => setViewMode("SHOOTING")}
@@ -96,7 +96,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
                 }`}
               >
-                Shooting %
+                ประสิทธิภาพการยิง (Shooting %)
               </button>
               <button
                 onClick={() => setViewMode("ADVANCED")}
@@ -106,7 +106,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
                 }`}
               >
-                Advanced Impact
+                สถิติขั้นสูง (Advanced Metrics)
               </button>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
               className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant hover:border-primary rounded bg-surface hover:bg-surface-container-low text-on-surface font-label-caps text-label-caps uppercase tracking-wider transition-colors"
             >
               <span className="material-symbols-outlined text-sm text-primary">help_outline</span>
-              <span>GLOSSARY (คำอธิบายสถิติ)</span>
+              <span>คำนิยามสถิติทางการ (STATISTICAL GLOSSARY)</span>
             </button>
             <div className="flex items-center gap-1 text-secondary font-body-sm text-body-sm">
               <span>12 แถว • หน้า 1 จาก 1</span>
@@ -170,7 +170,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
               FIBA LIVESTATS
             </span>
             <h2 className="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide">
-              ประวัติสถิติการแข่งขันรายปีและทัวร์นาเมนต์ (CAREER & TOURNAMENT STATS)
+              บันทึกสถิติการแข่งขันสะสมระดับทัวร์นาเมนต์ (CAREER &amp; TOURNAMENT STATISTICAL RECORD)
             </h2>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-secondary font-body-sm">
@@ -180,7 +180,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             >
               check_circle
             </span>
-            <span>มาตรฐานสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT) & FIBA 3x3 / 5v5 Synchronized</span>
+            <span>รับรองมาตรฐานโดยสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT) และระบบ FIBA LiveStats</span>
           </div>
         </div>
 
@@ -694,25 +694,25 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           <div className="flex items-center gap-4 flex-wrap">
             <span className="flex items-center gap-1 font-label-caps">
               <span className="w-3 h-3 bg-primary-fixed/40 border border-primary/40 rounded inline-block"></span>
-              Primary Statistical Anchors (PTS / TR / EFF)
+              ค่าสถิติหลักทางการ (PTS / TR / EFF Primary Metrics)
             </span>
             <span className="flex items-center gap-1 font-label-caps">
               <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-              Current Academic Season (ม.6)
+              ฤดูกาลการแข่งขันปัจจุบัน (ปีการศึกษา 2568-69 / ม.6)
             </span>
             <span className="font-body-sm text-body-sm text-secondary">
-              * Official FIBA live log sync completed 23 September 2026
+              * ซิงค์ข้อมูลสถิติล่าสุดจากระบบบันทึก FIBA LiveStats เมื่อ 23 กันยายน 2569
             </span>
           </div>
           <div className="font-label-caps uppercase text-[11px]">
-            12 แถวที่แสดงผล | ระบบคำนวณอัตโนมัติ FIBA LIVE STATS 4.2
+            แสดงผล 12 รายการ | ประมวลผลและตรวจสอบโดยระบบ FIBA LiveStats Engine v4.2
           </div>
         </div>
       </div>
 
-      {/* HIGHLIGHT OF THE SEASON CALLOUT BOX: DOUBLE-DOUBLE MACHINE (Bento Architecture) */}
+      {/* HIGHLIGHT OF THE SEASON CALLOUT BOX (Bento Architecture) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-        {/* Primary Spotlight Card (Double-Double Machine) */}
+        {/* Primary Spotlight Card */}
         <div className="lg:col-span-8 bg-surface-container-lowest border-2 border-primary-container rounded p-5 relative overflow-hidden shadow-[0_8px_24px_-4px_rgba(211,47,47,0.15)]">
           {/* Live Watermark/Badge */}
           <div className="absolute -right-6 -bottom-6 text-outline-variant/20 select-none pointer-events-none font-headline-xl text-[140px] leading-none">
@@ -722,28 +722,28 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             <div className="flex items-center gap-2">
               <span className="bg-primary text-on-primary font-label-caps text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-widest flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-                SEASON RECAP • ม.6
+                สรุปผลงานสำคัญประจำฤดูกาล (SEASON PERFORMANCE SUMMARY)
               </span>
               <span className="font-headline-sm text-headline-sm uppercase text-on-surface">
-                HIGHLIGHT OF THE SEASON: DOUBLE-DOUBLE MACHINE
+                บันทึกผลงานดีเด่น: สถิติดับเบิล-ดับเบิลเฉลี่ยระดับทัวร์นาเมนต์
               </span>
             </div>
             <span className="text-tertiary font-bold font-label-caps text-xs uppercase bg-tertiary-fixed/30 px-2 py-0.5 rounded border border-tertiary/20">
-              TCAS QUOTA CANDIDATE #1
+              โควตานักกีฬา TCAS อันดับ 1
             </span>
           </div>
 
-          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-4">
-            ภูริภัทร พงษ์ศกร สถาปนาตนเองเป็นเซ็นเตอร์ระดับมัธยมปลายที่มีประสิทธิภาพสูงสุดในประเทศไทย (EFF 29.6) ทำสถิติ{" "}
-            <strong className="text-primary font-bold">ดับเบิล-ดับเบิล เฉลี่ยต่อเกม (19.1 แต้ม, 14.2 รีบาวด์)</strong>{" "}
-            ตลอดการแข่งขัน 14 นัดในระดับ ม.6 พร้อมสถิติ 3.4 บล็อกต่อเกม ครองอันดับ 1 ในการแข่งขันชิงแชมป์ประเทศไทย U18
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-4 leading-relaxed">
+            {athleteName || "ภูริภัทร พงษ์ศกร"} ทำผลงานเป็นผู้เล่นตำแหน่งเซ็นเตอร์ (Center) ที่มีค่าประสิทธิภาพเฉลี่ยสูงสุดในรุ่นระดับมัธยมศึกษาตอนปลาย (FIBA EFF 29.6) ด้วยสถิติค่าเฉลี่ยระดับ{" "}
+            <strong className="text-primary font-bold">ดับเบิล-ดับเบิล (Double-Double: 19.1 คะแนน, 14.2 รีบาวด์ต่อเกม)</strong>{" "}
+            ตลอด 14 นัดการแข่งขันทางการในฤดูกาล ม.6 พร้อมสถิติ 3.4 บล็อกต่อเกม ครองอันดับ 1 ในการแข่งขัน TOA บาสเกตบอลชิงแชมป์ประเทศไทย รุ่นอายุไม่เกิน 18 ปี
           </p>
 
           {/* Attribute Progress Meters & Radar Specs */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-3 border-t border-outline-variant">
             <div>
               <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
-                <span className="text-secondary font-bold">Paint Dominance</span>
+                <span className="text-secondary font-bold">ประสิทธิภาพใต้แป้น (Paint Scoring)</span>
                 <span className="text-primary font-bold">96%</span>
               </div>
               <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
@@ -752,7 +752,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             </div>
             <div>
               <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
-                <span className="text-secondary font-bold">Offensive Glass</span>
+                <span className="text-secondary font-bold">รีบาวด์เกมรุก (Offensive Rebounds)</span>
                 <span className="text-primary font-bold">91%</span>
               </div>
               <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
@@ -761,7 +761,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             </div>
             <div>
               <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
-                <span className="text-secondary font-bold">Rim Protection</span>
+                <span className="text-secondary font-bold">ป้องกันห่วง / บล็อก (Rim Protection)</span>
                 <span className="text-primary font-bold">98%</span>
               </div>
               <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
@@ -770,7 +770,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             </div>
             <div>
               <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
-                <span className="text-secondary font-bold">FT Stability</span>
+                <span className="text-secondary font-bold">ความแม่นยำลูกโทษ (Free Throw %)</span>
                 <span className="text-on-surface font-bold">62.5%</span>
               </div>
               <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
@@ -785,7 +785,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] font-label-caps uppercase text-secondary font-bold tracking-widest">
-                BSAT VERIFICATION RECORD
+                การรับรองมาตรฐานสถิติและโควตา (OFFICIAL VERIFICATION)
               </span>
               <span className="w-2 h-2 rounded-full bg-[#16a34a]"></span>
             </div>
@@ -796,10 +796,10 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                 </span>
                 <div>
                   <span className="block font-headline-sm text-sm uppercase text-on-surface leading-tight">
-                    FIBA LiveStats Tier-1 Sync
+                    FIBA LiveStats Tier-1 Verified
                   </span>
-                  <span className="text-[11px] text-secondary font-body-sm">
-                    บันทึกสดผ่านระบบดิจิทัลข้างสนามโดยกรรมการสถิติสมาคมฯ
+                  <span className="text-[11px] text-secondary font-body-sm leading-relaxed block">
+                    บันทึกข้อมูลสถิติดิจิทัลแบบเรียลไทม์โดยกรรมการสถิติที่ได้รับใบอนุญาตจากสมาคมฯ (BSAT)
                   </span>
                 </div>
               </div>
@@ -809,10 +809,10 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                 </span>
                 <div>
                   <span className="block font-headline-sm text-sm uppercase text-on-surface leading-tight">
-                    TCAS Port Ready
+                    เอกสารรับรองโควตากีฬา TCAS (สพฐ. / กกท.)
                   </span>
-                  <span className="text-[11px] text-secondary font-body-sm">
-                    ได้รับการรับรองเอกสารโควต้านักกีฬาทีมชาติตามระเบียบ สพฐ.
+                  <span className="text-[11px] text-secondary font-body-sm leading-relaxed block">
+                    ออกหนังสือรับรองผลการแข่งขันทางการสำหรับยื่นแฟ้มสะสมผลงานโควตานักเรียน-นักกีฬา
                   </span>
                 </div>
               </div>
@@ -822,13 +822,13 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           <div className="pt-4 border-t border-outline-variant mt-4">
             <button
               onClick={handleDownload}
-              className="w-full bg-inverse-surface hover:bg-slate-800 text-inverse-on-surface py-2 rounded font-label-caps text-label-caps uppercase tracking-wider font-bold transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-inverse-surface hover:bg-slate-800 text-inverse-on-surface py-2 rounded font-label-caps text-label-caps uppercase tracking-wider font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">download</span>
               <span>
                 {downloadSuccess
                   ? "ดาวน์โหลดเอกสารเรียบร้อย"
-                  : "Download Official Scouting Dossier (PDF)"}
+                  : "ดาวน์โหลดแฟ้มประวัติและสถิติทางการ (Official Dossier PDF)"}
               </span>
             </button>
           </div>
