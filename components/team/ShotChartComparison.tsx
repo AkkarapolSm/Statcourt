@@ -266,21 +266,21 @@ export default function ShotChartComparison() {
                     {z.zoneName}
                   </td>
                   <td className="py-3.5 px-4 text-center font-bold text-white">
-                    {z.homeFgPct.toFixed(1)}% ({z.homeMade}/{z.homeAttempts})
+                    {(z.homeFgPct ?? 0).toFixed(1)}% ({z.homeMade ?? 0}/{z.homeAttempts ?? 0})
                   </td>
                   <td className="py-3.5 px-4 text-center font-bold text-slate-300">
-                    {z.awayFgPct.toFixed(1)}% ({z.awayMade}/{z.awayAttempts})
+                    {(z.awayFgPct ?? 0).toFixed(1)}% ({z.awayMade ?? 0}/{z.awayAttempts ?? 0})
                   </td>
                   <td className="py-3.5 px-4 text-center">
                     {z.tacticalAdvantage === "HOME" ? (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/60">
                         <TrendingUp className="w-3 h-3 text-[#DC2626]" />
-                        <span>BCC +{(z.homeFgPct - z.awayFgPct).toFixed(1)}%</span>
+                        <span>BCC +{((z.homeFgPct ?? 0) - (z.awayFgPct ?? 0)).toFixed(1)}%</span>
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
                         <AlertTriangle className="w-3 h-3 text-slate-400" />
-                        <span>DS +{(z.awayFgPct - z.homeFgPct).toFixed(1)}%</span>
+                        <span>DS +{((z.awayFgPct ?? 0) - (z.homeFgPct ?? 0)).toFixed(1)}%</span>
                       </span>
                     )}
                   </td>

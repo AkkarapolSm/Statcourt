@@ -47,6 +47,7 @@ export async function GET(request: NextRequest) {
           position: att.athlete.primaryPosition,
           status: att.status,
           checkInTime: att.status === "PRESENT" ? "16:15" : undefined,
+          disciplineRating: 96.5,
           notes: att.notes || "",
         })),
       }));

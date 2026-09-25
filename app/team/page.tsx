@@ -74,7 +74,18 @@ export default function TeamOperationsHubPage() {
       .catch((err) => console.warn("Failed to fetch injury logs:", err));
   }, []);
 
-  const activeSession = sessions.find((s) => s.id === selectedSessionId) || sessions[0];
+  const activeSession =
+    sessions.find((s) => s.id === selectedSessionId) ||
+    sessions[0] || {
+      id: "prac-default",
+      title: "ซ้อมทีมประจำวัน",
+      date: "2026-09-26",
+      timeDisplay: "120 นาที",
+      sessionType: "TACTICAL" as const,
+      location: "โรงยิมเนเซียมบาสเกตบอล 1",
+      coachInCharge: "โค้ชทีม BCC",
+      roster: [],
+    };
 
   const handleUpdateStatus = async (
     athleteId: string,
@@ -85,7 +96,7 @@ export default function TeamOperationsHubPage() {
       if (sess.id !== activeSession.id) return sess;
       return {
         ...sess,
-        roster: sess.roster.map((player) =>
+        roster: (sess.roster || []).map((player) =>
           player.athleteId === athleteId ? { ...player, status: newStatus } : player
         ),
       };
@@ -109,9 +120,10 @@ export default function TeamOperationsHubPage() {
     }
   };
 
-  const presentCount = activeSession.roster.filter((p) => p.status === "PRESENT").length;
-  const totalRoster = activeSession.roster.length;
-  const attendancePct = ((presentCount / totalRoster) * 100).toFixed(1);
+  const activeRoster = activeSession?.roster ?? [];
+  const presentCount = activeRoster.filter((p) => p.status === "PRESENT").length;
+  const totalRoster = activeRoster.length;
+  const attendancePct = totalRoster > 0 ? ((presentCount / totalRoster) * 100).toFixed(1) : "0.0";
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] text-slate-900 flex flex-col font-sans">
@@ -484,7 +496,7 @@ export default function TeamOperationsHubPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {activeSession.roster.map((player) => (
+                      {activeRoster.map((player) => (
                         <tr key={player.athleteId} className="hover:bg-slate-50">
                           <td className="py-3.5 px-4 font-bold text-slate-900 flex items-center gap-2">
                             <span className="w-6 h-6 rounded bg-slate-900 text-white flex items-center justify-center text-xs font-mono">
@@ -496,11 +508,11 @@ export default function TeamOperationsHubPage() {
                             {player.position.replace("_", " ")}
                           </td>
                           <td className="py-3.5 px-4 text-center text-slate-500">
-                            {player.checkInTime}
+                            {player.checkInTime || "-"}
                           </td>
                           <td className="py-3.5 px-4 text-center">
                             <span className="font-bold text-slate-900">
-                              {player.disciplineRating.toFixed(1)}%
+                              {(player.disciplineRating ?? 95.0).toFixed(1)}%
                             </span>
                           </td>
                           <td className="py-3.5 px-4 text-center">

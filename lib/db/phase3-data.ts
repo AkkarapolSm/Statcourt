@@ -1,11 +1,11 @@
-import {
+import type {
   PlaybookPlay,
   PracticeSession,
   OppositionReport,
   PlayerWorkload,
   InjuryLogItem,
   Position,
-} from "@/lib/types";
+} from "../types";
 
 // ==========================================
 // 1. DIGITAL 2D ANIMATED PLAYBOOK MOCK DATA
