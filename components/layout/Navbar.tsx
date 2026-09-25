@@ -426,33 +426,6 @@ export default function Navbar() {
 
           {/* Right: Actions Cluster */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Free / Pro Switcher Badge */}
-            <button
-              onClick={toggleSubscriptionTier}
-              className="flex items-center bg-[#101622] text-white rounded-md p-0.5 text-[10px] font-mono border border-slate-700 hover:border-slate-500 transition shadow-xs cursor-pointer"
-              title="Click to toggle between FREE and PRO tier"
-            >
-              <span
-                className={`px-2 py-0.5 font-bold rounded-md ${
-                  !isPro ? "bg-slate-700 text-white" : "text-slate-400"
-                }`}
-              >
-                FREE
-              </span>
-              <span
-                className={`px-2 py-0.5 font-bold rounded-md flex items-center gap-1 transition ${
-                  isPro
-                    ? "bg-amber-400 text-slate-950 font-black shadow-xs"
-                    : "text-slate-400"
-                }`}
-              >
-                <Star className="w-2.5 h-2.5 fill-current text-amber-500" /> PRO
-              </span>
-              <span className="px-1 text-slate-400 text-[10px] font-bold hidden 2xl:inline">
-                Plan
-              </span>
-            </button>
-
             {/* User Profile, Role Badge & Interactive Role Switcher */}
             <UserRoleProfileMenu />
 

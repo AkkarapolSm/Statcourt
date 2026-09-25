@@ -24,14 +24,17 @@ import {
   Bell,
   ShoppingBag,
   Calendar,
+  Star,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import { ExtendedRole, getRoleBadgeInfo, ROLE_METADATA } from "@/lib/auth/rbac";
+import PricingModal from "@/components/premium/PricingModal";
 
 export default function UserRoleProfileMenu() {
   const { currentUser, loginAs, logout, toggleSubscriptionTier } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const [isRoleSwitcherOpen, setIsRoleSwitcherOpen] = useState(false);
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -216,16 +219,63 @@ export default function UserRoleProfileMenu() {
 
             {/* Subscription Tier Strip */}
             <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-400 text-[11px]">Subscription Plan:</span>
-              <button
-                type="button"
-                onClick={toggleSubscriptionTier}
-                className="inline-flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white px-2 py-0.5 rounded text-[11px] font-bold transition cursor-pointer"
-                title="คลิกเพื่อสลับระหว่าง FREE และ PRO"
-              >
-                <span>{isPro ? "⭐ PRO SUITE" : "FREE TIER"}</span>
-                <span className="text-slate-400 text-[10px] underline">(สลับ)</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-300 text-[11px] font-bold">Plan:</span>
+                <span
+                  className={`text-[10px] font-black px-1.5 py-0.5 rounded shadow-2xs ${
+                    isPro ? "bg-amber-400 text-slate-950" : "bg-slate-700 text-white"
+                  }`}
+                >
+                  {isPro ? "⭐ PRO" : "FREE"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {/* Segmented Switch: FREE | PRO */}
+                <div className="inline-flex items-center bg-slate-950 rounded-md p-0.5 border border-slate-700/80">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isPro) toggleSubscriptionTier();
+                    }}
+                    title="สลับเป็นโหมด FREE"
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
+                      !isPro
+                        ? "bg-slate-700 text-white shadow-xs"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    FREE
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isPro) toggleSubscriptionTier();
+                    }}
+                    title="สลับเป็นโหมด PRO"
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${
+                      isPro
+                        ? "bg-amber-400 text-slate-950 font-black shadow-xs"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <Star className="w-2.5 h-2.5 fill-current text-amber-500" />
+                    <span>PRO</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsPricingModalOpen(true);
+                  }}
+                  className="text-[10px] text-slate-400 hover:text-amber-300 transition underline underline-offset-2 ml-1 cursor-pointer"
+                  title="ดูรายละเอียดแพ็กเกจทั้งหมด"
+                >
+                  แพ็กเกจ
+                </button>
+              </div>
             </div>
           </div>
 
@@ -524,6 +574,13 @@ export default function UserRoleProfileMenu() {
           )}
         </div>
       )}
+
+      {/* Pricing Modal */}
+      <PricingModal
+        isOpen={isPricingModalOpen}
+        onClose={() => setIsPricingModalOpen(false)}
+        defaultPerspective={currentUser.role === "COACH" || currentUser.role === "OFFICIAL" ? "SCOUT" : "ATHLETE"}
+      />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2, Check, Star, ShieldCheck, School } from "lucide-react";
 import { AthleteProfile, AthleteSeasonStats } from "@/lib/types";
-import TierToggleBadge from "@/components/premium/TierToggleBadge";
 
 interface NbaAthleteHeroProps {
   athlete: AthleteProfile;
@@ -126,9 +125,6 @@ export default function NbaAthleteHero({
         </Link>
 
         <div className="flex items-center gap-2 flex-wrap">
-          {/* FREE / PRO segmented button */}
-          <TierToggleBadge />
-
           {/* EDIT PROFILE / UPDATE BIOMETRICS BUTTON */}
           {onOpenEditProfile && (
             <button
