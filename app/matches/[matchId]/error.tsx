@@ -29,7 +29,7 @@ export default function MatchError({
       <div className="flex gap-3">
         <button
           onClick={() => reset()}
-          className="px-4 py-2 rounded-lg bg-primary hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 transition"
+          className="px-4 py-2 rounded-lg bg-primary hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
           ลองใหม่อีกครั้ง (Retry)
