@@ -332,10 +332,10 @@ export default function EcosystemArchitectureSection({
                 COACHING &amp; SPORTS SCIENCE
               </div>
               <h3 className="font-headline-lg text-[#0B1C30] uppercase text-2xl sm:text-3xl font-bold">
-                2D Animated Playbook, Opposition Scouting &amp; ACWR Load
+                Opposition Scouting, Shot Chart &amp; ACWR Load
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                กระดานจำลองแผนการเล่น 2 มิติแบบแอนิเมชัน (Animated Playbook) รวบรวมชุดการเล่นระดับอาชีพ (Horns, Spain P&amp;R, Zone Trap) พร้อมระบบวิเคราะห์จุดแข็ง-จุดอ่อนทีมคู่แข่งขันเชิงลึก และระบบเวชศาสตร์การกีฬาติดตามภาระงานและความล้าสะสม (ACWR) เพื่อเพิ่มประสิทธิภาพการฝึกซ้อมและลดความเสี่ยงการบาดเจ็บของนักกีฬา
+                ระบบวิเคราะห์จุดแข็ง-จุดอ่อนทีมคู่แข่งขันเชิงลึก (Opposition Scouting &amp; Matchup Breakdown) พร้อมรายงานชาร์ตจุดยิงเปรียบเทียบ และระบบเวชศาสตร์การกีฬาติดตามภาระงานและความล้าสะสม (ACWR) เพื่อเพิ่มประสิทธิภาพการฝึกซ้อมและลดความเสี่ยงการบาดเจ็บของนักกีฬา
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs font-mono">
                 <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">

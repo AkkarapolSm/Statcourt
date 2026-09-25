@@ -27,10 +27,8 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import AnimatedPlaybookCanvas from "@/components/team/AnimatedPlaybookCanvas";
 import ShotChartComparison from "@/components/team/ShotChartComparison";
 import {
-  mockPlaybookPlays,
   mockPracticeSessions,
   mockOppositionReport,
   mockPlayerWorkloads,
@@ -45,8 +43,8 @@ export default function TeamOperationsHubPage() {
   const canManage = canManageTeamLineup(currentUser);
 
   const [activeTab, setActiveTab] = useState<
-    "PLAYBOOK" | "OPPOSITION" | "SHOT_CHART" | "ATTENDANCE" | "SPORTS_SCIENCE"
-  >("PLAYBOOK");
+    "OPPOSITION" | "SHOT_CHART" | "ATTENDANCE" | "SPORTS_SCIENCE"
+  >("OPPOSITION");
 
   // Practice Attendance State
   const [sessions, setSessions] = useState<PracticeSession[]>(mockPracticeSessions);
@@ -146,8 +144,8 @@ export default function TeamOperationsHubPage() {
                   <span className="text-[#DC2626]">Bangkok Christian College</span> (BCC U18)
                 </h1>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  ศูนย์กลางการปฏิบัติการประจำวันสำหรับสตาฟฟ์โค้ช: กระดานเขียนแผนการเล่นแบบเคลื่อนไหว,
-                  วิเคราะห์จุดบอดคู่แข่ง (Debsirin), รายงานเทียบจุดยิง และระบบมอนิเตอร์อาการล้าสะสม
+                  ศูนย์กลางการปฏิบัติการประจำวันสำหรับสตาฟฟ์โค้ช: วิเคราะห์จุดบอดคู่แข่ง (Debsirin),
+                  รายงานเทียบจุดยิง, ติดตามการฝึกซ้อม และระบบมอนิเตอร์อาการล้าสะสม
                 </p>
               </div>
 
@@ -174,19 +172,6 @@ export default function TeamOperationsHubPage() {
         <section className="bg-white border-b border-slate-200 sticky top-14 z-30 shadow-xs">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2">
             <div className="flex items-center gap-2 overflow-x-auto font-mono text-xs no-scrollbar">
-              <button
-                type="button"
-                onClick={() => setActiveTab("PLAYBOOK")}
-                className={`px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2 whitespace-nowrap ${
-                  activeTab === "PLAYBOOK"
-                    ? "bg-[#AF101A] text-white shadow-xs"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                <Zap className="w-4 h-4" />
-                <span>2D ANIMATED PLAYBOOK</span>
-              </button>
-
               <button
                 type="button"
                 onClick={() => setActiveTab("OPPOSITION")}
@@ -245,14 +230,7 @@ export default function TeamOperationsHubPage() {
         {/* Content Container */}
         <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           
-          {/* TAB 1: 2D ANIMATED PLAYBOOK */}
-          {activeTab === "PLAYBOOK" && (
-            <div className="space-y-6">
-              <AnimatedPlaybookCanvas />
-            </div>
-          )}
-
-          {/* TAB 2: OPPOSITION SCOUTING & TENDENCIES REPORT */}
+          {/* TAB 1: OPPOSITION SCOUTING & TENDENCIES REPORT */}
           {activeTab === "OPPOSITION" && (
             <div className="space-y-6">
               
