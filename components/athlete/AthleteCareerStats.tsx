@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { ChevronDown } from "lucide-react";
 import { AthleteProfile, AthleteSeasonStats } from "@/lib/types";
 
 interface AthleteCareerStatsProps {
@@ -37,17 +38,15 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                 <select
                   value={selectedCompetition}
                   onChange={(e) => setSelectedCompetition(e.target.value)}
-                  className="w-full sm:w-64 bg-surface border border-outline-variant rounded px-3 py-1.5 pr-8 text-on-surface font-body-md text-body-md font-semibold focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer outline-none"
+                  className="w-full sm:w-auto min-w-[280px] bg-white border border-outline-variant hover:border-slate-400 rounded-lg px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
                 >
-                  <option value="ALL">ทัวร์นาเมนต์ทางการทั้งหมด (All Official Tournaments)</option>
-                  <option value="TOA_U18">TOA บาสเกตบอลชิงแชมป์ประเทศไทย U18 (BSAT)</option>
-                  <option value="YOUTH_GAMES">กีฬาเยาวชนแห่งชาติ (National Youth Games - SAT)</option>
-                  <option value="OBEC_CUP">บาสเกตบอลนักเรียน สพฐ. ลีก (OBEC Cup)</option>
-                  <option value="DPE_CUP">กีฬากรมพลศึกษา รุ่นอายุไม่เกิน 16 ปี (DPE Cup U16)</option>
+                  <option value="ALL">ทัวร์นาเมนต์ทางการทั้งหมด (All Official)</option>
+                  <option value="TOA_U18">TOA ชิงแชมป์ประเทศไทย U18 (BSAT)</option>
+                  <option value="YOUTH_GAMES">กีฬาเยาวชนแห่งชาติ (SAT)</option>
+                  <option value="OBEC_CUP">บาสเกตบอล สพฐ. ลีก (OBEC Cup)</option>
+                  <option value="DPE_CUP">กีฬากรมพลศึกษา U16 (DPE Cup)</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-base">
-                  expand_more
-                </span>
+                <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
 
@@ -60,16 +59,14 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                 <select
                   value={statFormat}
                   onChange={(e) => setStatFormat(e.target.value)}
-                  className="w-full sm:w-56 bg-surface border border-outline-variant rounded px-3 py-1.5 pr-8 text-on-surface font-body-md text-body-md font-semibold focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer outline-none"
+                  className="w-full sm:w-auto min-w-[240px] bg-white border border-outline-variant hover:border-slate-400 rounded-lg px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
                 >
-                  <option value="PER_GAME">ค่าเฉลี่ยต่อเกม (Per Game Average)</option>
-                  <option value="TOTALS">สถิติรวมสะสม (Cumulative Totals)</option>
-                  <option value="PER_36">ปรับฐานมาตรฐาน 36 นาที (Per 36 Min Basis)</option>
-                  <option value="PER_100">อัตราส่วนต่อ 100 การครองบอล (Per 100 Possessions)</option>
+                  <option value="PER_GAME">ค่าเฉลี่ยต่อเกม (Per Game)</option>
+                  <option value="TOTALS">สถิติรวมสะสม (Totals)</option>
+                  <option value="PER_36">ปรับฐาน 36 นาที (Per 36 Min)</option>
+                  <option value="PER_100">ต่อ 100 การครองบอล (Per 100 Poss)</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-2 top-2 text-secondary pointer-events-none text-base">
-                  expand_more
-                </span>
+                <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
 
