@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  verifyOfficialToken,
-  generateAuditSignature,
-  verifyAuditSignature,
-} from "@/lib/auth/officialToken";
+import { generateAuditSignature, verifyAuditSignature } from "@/lib/auth/officialToken";
 import { requireOfficial } from "@/lib/auth/serverAuth";
 import prisma from "@/lib/db/prisma";
 
@@ -13,6 +9,8 @@ export async function GET(
 ) {
   try {
     const matchId = params.id;
+    const auth = await requireOfficial(req, matchId);
+    if (!auth.authorized) return auth.response!;
 
     // Fetch audit logs sorted by timestamp ascending
     const logs = await prisma.matchDisputeAuditLog.findMany({
@@ -87,7 +85,7 @@ export async function POST(
     const matchId = params.id;
 
     // 1. Verify Official Authorization Token
-    const auth = requireOfficial(req, matchId);
+    const auth = await requireOfficial(req, matchId);
     if (!auth.authorized || !auth.official) {
       return auth.response!;
     }
@@ -131,29 +129,13 @@ export async function POST(
       previousSignature: lastRecord?.digitalSignature,
     });
 
-    // Verify match exists in DB, or create stub if demo match
+    // Audit records must refer to a real assigned match.
     const existingMatch = await prisma.match.findUnique({
       where: { id: matchId },
       select: { id: true },
     });
 
-    if (!existingMatch) {
-      // Find tournament or fallback
-      const tourn = await prisma.tournament.findFirst({ select: { id: true } });
-      const teams = await prisma.team.findMany({ take: 2, select: { id: true } });
-
-      if (tourn && teams.length >= 2) {
-        await prisma.match.create({
-          data: {
-            id: matchId,
-            tournamentId: tourn.id,
-            homeTeamId: teams[0].id,
-            awayTeamId: teams[1].id,
-            status: "LIVE",
-          },
-        });
-      }
-    }
+    if (!existingMatch) return NextResponse.json({ error: "ไม่พบการแข่งขัน" }, { status: 404 });
 
     const newLog = await prisma.matchDisputeAuditLog.create({
       data: {

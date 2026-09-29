@@ -42,25 +42,25 @@ export default function RecruiterViewsModal({
       case "VIEWED_FILM":
         return {
           icon: Video,
-          text: "ดูวิดีโอคลิปการเล่น (Game Film)",
+          text: "เข้าชมวิดีโอบันทึกการแข่งขัน (Game Film)",
           color: "text-red-400 bg-red-950/60 border-red-900/60",
         };
       case "DOWNLOADED_DOSSIER":
         return {
           icon: FileDown,
-          text: "ดาวน์โหลดเอกสาร TCAS Dossier",
+          text: "ดาวน์โหลดเอกสารแฟ้มผลงาน TCAS Dossier",
           color: "text-red-300 bg-red-950/60 border-red-900/60",
         };
       case "ADDED_TO_SHORTLIST":
         return {
           icon: BookmarkPlus,
-          text: "บันทึกลงลิสต์นักกีฬาเป้าหมาย",
+          text: "บันทึกในรายชื่อนักกีฬาเป้าหมาย (Shortlist)",
           color: "text-slate-200 bg-slate-800 border-slate-700",
         };
       case "VIEWED_BIOMETRICS":
         return {
           icon: Compass,
-          text: "ตรวจสอบข้อมูลสรีระ (Combine Stats)",
+          text: "ตรวจสอบข้อมูลสรีระและการทดสอบสมรรถภาพ (Biometrics & Combine)",
           color: "text-slate-300 bg-slate-900 border-slate-800",
         };
     }
@@ -83,7 +83,7 @@ export default function RecruiterViewsModal({
                 </span>
               </h2>
               <p className="text-xs text-slate-400 font-mono">
-                {athleteName} • ตรวจสอบความสนใจจากแมวมองและโค้ชมหาวิทยาลัย
+                {athleteName} • ตรวจสอบสถิติการเข้าชมประวัติโดยผู้ฝึกสอนและผู้สรรหานักกีฬา (Scouts)
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function RecruiterViewsModal({
         <div className="grid grid-cols-3 gap-3 p-5 bg-slate-900/60 border-b border-slate-800">
           <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
             <span className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
-              ยอดเข้าชมทั้งหมด (30 วัน)
+              สถิติการเข้าชมสะสม (30 วัน)
             </span>
             <div className="text-2xl font-headline-xl text-white font-normal mt-1 flex items-baseline gap-1.5">
               <span>{totalViews}</span>
@@ -111,7 +111,7 @@ export default function RecruiterViewsModal({
 
           <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
             <span className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
-              สถาบันที่สนใจ
+              สถาบันที่ให้ความสนใจ
             </span>
             <div className="text-2xl font-headline-xl text-white font-normal mt-1">
               5 สถาบัน
@@ -120,7 +120,7 @@ export default function RecruiterViewsModal({
 
           <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
             <span className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
-              สถานะสเกาต์
+              ระดับความสนใจจากผู้สรรหา (Scout Interest)
             </span>
             <div className="text-xs font-mono font-bold text-red-400 mt-2 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" />
@@ -133,7 +133,7 @@ export default function RecruiterViewsModal({
         <div className="p-6 overflow-y-auto space-y-3 flex-1 text-slate-200">
           <div className="flex items-center justify-between text-xs font-mono pb-1 border-b border-slate-800">
             <span className="text-slate-400 uppercase font-bold">
-              LOG บันทึกความสนใจล่าสุด
+              บันทึกประวัติการเข้าชมล่าสุด (Activity Logs)
             </span>
             <span className="text-slate-500">เรียงตามเวลาล่าสุด</span>
           </div>
@@ -193,14 +193,14 @@ export default function RecruiterViewsModal({
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between">
           <span className="text-xs text-slate-400 font-mono">
-            ระบบจะแจ้งเตือนผ่าน SMS / Line ทันทีเมื่อมีโค้ชใหม่เปิดดูคลิปของคุณ
+            ระบบจะแจ้งเตือนทันทีเมื่อมีผู้ฝึกสอนหรือผู้สรรหานักกีฬาเข้าตรวจดูประวัติและวิดีโอของท่าน
           </span>
           <button
             type="button"
             onClick={onClose}
             className="px-5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs font-bold transition"
           >
-            ปิด
+            ปิดหน้าต่าง
           </button>
         </div>
       </div>

@@ -134,7 +134,10 @@ export default function AcademyPage() {
                 }`}
               >
                 <Users className="w-4 h-4" />
-                <span>ทำเนียบและว่าจ้างผู้ตัดสิน (OFFICIALS DIRECTORY)</span>
+                <span>ทำเนียบและว่าจ้างผู้ตัดสิน</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-700 border border-amber-500/30 uppercase font-mono">
+                  [DEMO SIMULATION]
+                </span>
               </button>
             </div>
           </div>
@@ -150,9 +153,9 @@ export default function AcademyPage() {
               <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-mono font-bold uppercase tracking-wider mb-2">
-                      <GraduationCap className="w-3.5 h-3.5" />
-                      <span>StatCourt Masterclass & Video Academy</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+                      <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>[ พร้อมใช้งาน (LIVE) ] กฎกติกา &amp; วิดีโอหลักสูตรมาตรฐาน FIBA 2026</span>
                     </div>
                     <h2 className="text-2xl font-bold font-headline tracking-wide uppercase text-white">
                       คอร์สอบรมออนไลน์และคลินิกวิดีโอ (Video Courses)
@@ -304,6 +307,10 @@ export default function AcademyPage() {
             <div className="space-y-6">
               <div className="bg-[#0F172A] text-white p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-xs">
                 <div>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold uppercase text-[10px] mb-2">
+                    <span>[ รุ่นทดลอง / DEMO SIMULATION ]</span>
+                    <span>ระบบว่าจ้างอยู่ในระหว่างทดสอบ (ยังไม่มีการเบิกจ่ายเงินจริง)</span>
+                  </div>
                   <span className="text-red-400 font-bold uppercase text-[10px] block">
                     TOURNAMENT ORGANIZER RECRUITMENT MARKETPLACE
                   </span>

@@ -33,10 +33,6 @@ export default function LiveMatchStreamPage() {
 
         <div className="flex items-center gap-3 font-mono text-[11px]">
           <span className="text-red-100 hidden sm:inline">Multi-Court Sync • Multi-Cam Active</span>
-          <Link href="/matches" className="text-white hover:underline flex items-center gap-1 font-bold">
-            <span>คลังเทปย้อนหลัง (Film Archive)</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
         </div>
       </div>
 
@@ -57,24 +53,6 @@ export default function LiveMatchStreamPage() {
                 รับชมการแข่งขันสดพร้อมกันหลายสนาม (Multi-Court Arena), คะแนนสด SSE Real-time,
                 แชตเชียร์สดร่วมกับแฟนบาสเกตบอล, และระบบชาเลนจ์คำตัดสิน FIBA IRS
               </p>
-            </div>
-
-            {/* Quick Action Navigation */}
-            <div className="shrink-0 flex flex-wrap items-center gap-2.5">
-              <Link
-                href="/matches"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono font-bold text-xs tracking-wider uppercase transition shadow-sm"
-              >
-                <Film className="w-4 h-4 text-amber-400" />
-                <span>คลังเทปย้อนหลัง (GAME FILM)</span>
-              </Link>
-              <Link
-                href="/official/console/match-bcc-ds-01"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono font-bold text-xs tracking-wider uppercase transition shadow-sm"
-              >
-                <Shield className="w-4 h-4 text-[#DC2626]" />
-                <span>โต๊ะกรรมการ (OFFICIAL)</span>
-              </Link>
             </div>
           </div>
         </div>

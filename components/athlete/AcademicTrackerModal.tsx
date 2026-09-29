@@ -106,7 +106,7 @@ export default function AcademicTrackerModal({
             </div>
             <div className="text-[11px] text-slate-300 font-mono flex items-center gap-1 mt-1">
               <CheckCircle2 className="w-3 h-3 text-[#DC2626]" />
-              <span>ผ่านเกณฑ์ขั้นต่ำโควตาทุกมหาวิทยาลัย (&ge; 2.50)</span>
+              <span>ผ่านเกณฑ์ขั้นต่ำการคัดเลือกโควตานักกีฬาทุกสถาบัน (&ge; 2.50)</span>
             </div>
           </div>
 
@@ -119,7 +119,7 @@ export default function AcademicTrackerModal({
               <span>ACADEMICALLY ELIGIBLE</span>
             </div>
             <div className="text-[11px] text-slate-400 font-mono mt-1">
-              ยืนยันเอกสารผลการเรียน 4 ภาคเรียนสมบูรณ์
+              ผ่านการตรวจสอบและรับรองผลการเรียนสะสม 4 ภาคเรียน
             </div>
           </div>
 
@@ -128,10 +128,10 @@ export default function AcademicTrackerModal({
               เป้าหมายสถาบันอุดมศึกษา
             </div>
             <div className="text-base font-bold text-white mt-1">
-              {targetUnivs.length} มหาวิทยาลัยในลิสต์
+              {targetUnivs.length} สถาบันอุดมศึกษาเป้าหมาย
             </div>
             <div className="text-[11px] text-red-400 font-mono mt-1">
-              มีสิทธิ์สมัครครบ 100% ของตัวเลือก
+              มีคุณสมบัติตรงตามเกณฑ์ครบทุกสถาบัน (100%)
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default function AcademicTrackerModal({
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
-            ประวัติผลการเรียนรายภาค (Academic History)
+            ประวัติผลการเรียนสะสมรายภาคเรียน (Academic History)
           </button>
           <button
             onClick={() => setActiveTab("UNIVERSITIES")}
@@ -156,7 +156,7 @@ export default function AcademicTrackerModal({
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
-            ตรวจสอบคุณสมบัติโควตามหาวิทยาลัย (University Matcher)
+            ตรวจสอบคุณสมบัติโควตาสถาบันอุดมศึกษา (University Matcher)
           </button>
         </div>
 
@@ -167,11 +167,11 @@ export default function AcademicTrackerModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-400">
-                  บันทึกเกรดเฉลี่ยรายภาคเรียนระดับชั้นมัธยมศึกษาตอนปลาย
+                  บันทึกผลการเรียนเฉลี่ยรายภาคเรียน ระดับชั้นมัธยมศึกษาตอนปลาย
                 </span>
                 <span className="text-emerald-400 flex items-center gap-1 font-bold">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>รับรองโดยฝ่ายทะเบียนโรงเรียน</span>
+                  <span>ได้รับการรับรองโดยฝ่ายทะเบียนและวัดผลสถานศึกษา</span>
                 </span>
               </div>
 
@@ -221,7 +221,7 @@ export default function AcademicTrackerModal({
                     <span>ใบระเบียนแสดงผลการเรียน (ปพ.1) ฉบับดิจิทัล</span>
                   </div>
                   <p className="text-[11px] text-slate-400 font-mono">
-                    ลงลายมือชื่อดิจิทัล (Digital Signature) รองรับการยื่นระบบ TCAS Portfolio ทันที
+                    กำกับลายมือชื่ออิเล็กทรอนิกส์ (Digital Signature) พร้อมใช้เป็นเอกสารประกอบการยื่น TCAS Portfolio
                   </p>
                 </div>
                 <button
@@ -267,16 +267,16 @@ export default function AcademicTrackerModal({
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono bg-slate-950/60 p-3 rounded-lg border border-slate-800/80">
                       <div>
-                        <span className="text-slate-400 block text-[10px] uppercase">เกรดขั้นต่ำกำหนด</span>
+                        <span className="text-slate-400 block text-[10px] uppercase">เกณฑ์ผลการเรียนขั้นต่ำ (Min GPAX)</span>
                         <span className="font-bold text-white">&ge; {univ.minGpaxRequired.toFixed(2)}</span>
-                        <span className="text-slate-300 ml-1.5">(คุณได้ {univ.currentGpax.toFixed(2)})</span>
+                        <span className="text-slate-300 ml-1.5">(ผลการเรียนสะสม {univ.currentGpax.toFixed(2)})</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px] uppercase">สิทธิประโยชน์ทุน</span>
+                        <span className="text-slate-400 block text-[10px] uppercase">สิทธิประโยชน์ทุนการศึกษา</span>
                         <span className="font-bold text-slate-200">{univ.scholarshipCoverage}</span>
                       </div>
                       <div>
-                        <span className="text-slate-400 block text-[10px] uppercase">วันสิ้นสุดการรับสมัคร</span>
+                        <span className="text-slate-400 block text-[10px] uppercase">กำหนดปิดรับสมัคร</span>
                         <span className="font-bold text-slate-300 flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-[#DC2626]" />
                           <span>{univ.deadlineDate}</span>
@@ -298,7 +298,7 @@ export default function AcademicTrackerModal({
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between">
           <span className="text-xs text-slate-400 font-mono">
-            ระบบเชื่อมต่อข้อมูลตรงกับฝ่ายทะเบียนโรงเรียนและ TCAS Portfolio
+            ระบบเชื่อมโยงข้อมูลโดยตรงกับงานทะเบียนสถานศึกษาและระบบคัดเลือกกลางบุคคลเข้าศึกษาในสถาบันอุดมศึกษา (TCAS)
           </span>
           <button
             type="button"

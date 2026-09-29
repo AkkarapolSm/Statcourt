@@ -99,6 +99,18 @@ export default function EdgeCameraSimulatorModal({
           </button>
         </div>
 
+        {/* Demo Simulation Notice */}
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs font-mono text-amber-300">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0">
+              รุ่นทดลอง / DEMO SIMULATION
+            </span>
+            <span>
+              Canvas 2D Simulator: จำลองอัลกอริทึม Computer Vision และการแพนกล้องอัตโนมัติบนเบราว์เซอร์ เพื่อทดสอบ UX ก่อนเชื่อมต่อกล้องฮาร์ดแวร์จริง
+            </span>
+          </div>
+        </div>
+
         {/* Viewport Simulation */}
         <div className="p-6 overflow-y-auto space-y-4 flex-1">
           

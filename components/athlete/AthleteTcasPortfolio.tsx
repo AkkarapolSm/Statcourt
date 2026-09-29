@@ -52,8 +52,8 @@ export default function AthleteTcasPortfolio({
   const plays: HighlightPlay[] = useMemo(() => [
     {
       id: "clip-1",
-      title: "ช็อตยิงตัดสินเกมช่วง 1.5 วินาทีสุดท้าย",
-      description: "จังหวะรีบาวด์เกมรุกแล้วยิงเอาชนะ เทพศิรินทร์ ด้วยคะแนน 78-76 ใน 1.5 วินาทีสุดท้าย นำทีมคว้าแชมป์สาย",
+      title: "การยิงทำคะแนนตัดสินเกมช่วง 1.5 วินาทีสุดท้าย (Buzzer Beater)",
+      description: "จังหวะรีบาวด์เกมรุกแล้วยิงทำคะแนนเฉือนชนะทีมโรงเรียนเทพศิรินทร์ ด้วยคะแนน 78-76 ใน 1.5 วินาทีสุดท้าย คว้าตำแหน่งชนะเลิศระดับประเทศ",
       quarterClock: "Q4 • 00:01",
       opponent: "เทพศิรินทร์ [Debsirin]",
       durationSec: 15,
@@ -66,8 +66,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-2",
-      title: "ดังก์จากการเล่นพิคแอนด์โรลกลางควอเตอร์สาม",
-      description: "ไดรฟ์ตัดเข้าไปดังก์สองมือทรงพลัง จังหวะบล็อกและสกรีนตัวประกบของ BCC เสียสมดุลหน้าแป้น",
+      title: "การดังก์ทำคะแนนจากจังหวะ Pick & Roll ในควอเตอร์ที่ 3",
+      description: "ขับเคลื่อนเข้าทำคะแนนด้วยการดังก์สองมืออย่างเฉียบคม จากจังหวะสกรีนเปิดช่องว่างใต้แป้น",
       quarterClock: "Q3 • 05:40",
       opponent: "กท.คริสเตียน [BCC]",
       durationSec: 10,
@@ -78,8 +78,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-3",
-      title: "ยิงสามแต้ม 3 แต้มสำคัญท้ายเกม",
-      description: "วิ่งตามมารับบอลรอบนอก ยิงสามแต้มปลดล็อกแต้มเสมอ สวนกุหลาบฯ แสดงทักษะสเปซซิ่งของ Center ยุคใหม่",
+      title: "การยิง 3 คะแนนช่วงท้ายเกม (Trail 3PT)",
+      description: "เติมเกมขึ้นมายิง 3 คะแนนจากแนวนอกหัวกะโหลก แสดงศักยภาพความแม่นยำระยะไกลของผู้เล่นตำแหน่งเซ็นเตอร์สมัยใหม่",
       quarterClock: "Q4 • 02:11",
       opponent: "สวนกุหลาบฯ [SK]",
       durationSec: 14,
@@ -90,8 +90,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-4",
-      title: "เกมซ้ำแต้มสองจังหวะท่ามกลางวงล้อม 3 คน",
-      description: "รีบาวด์เกมรุกได้ติดต่อกัน พร้อมกระโดดซ้ำจังหวะสองและได้ฟาวล์แถมลูกโทษสำคัญ",
+      title: "การเก็บบอลรีบาวด์เกมรุกและซ้ำคะแนนจังหวะสอง (Putback)",
+      description: "แย่งบอลรีบาวด์เกมรุกต่อเนื่อง พร้อมกระโดดซ้ำจังหวะสองและได้ฟาวล์ทำคะแนน (And-One)",
       quarterClock: "Q3 • 07:22",
       opponent: "กรุงเทพคริสเตียน [BCC]",
       durationSec: 17,
@@ -102,8 +102,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-5",
-      title: "สปรินต์ตามบล็อกจากด้านหลังจังหวะฟาสต์เบรก",
-      description: "การ์ดคู่แข่งหลุดเดี่ยว แต่ Bhuripat สปรินต์จากแดนหลังเข้าบล็อคลูกชนแป้นอย่างสวยงาม",
+      title: "การวิ่งไล่บล็อกลูกยิงจากด้านหลังในจังหวะโต้กลับเร็ว (Chasedown Block)",
+      description: "วิ่งสปรินต์จากแดนหลังเข้ากระโดดบล็อกลูกเลย์อัพชนแป้นในจังหวะโต้กลับเร็วของคู่แข่ง",
       quarterClock: "Q2 • 06:15",
       opponent: "กรุงเทพคริสเตียน [BCC]",
       durationSec: 11,
@@ -114,8 +114,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-6",
-      title: "ฟุตเวิร์กเบสไลน์ ดรอปสเต็ปพลิกหลบเข้าใต้แป้น",
-      description: "ทักษะการเล่นโพสต์ระดับคลาสสิก ดรอปสเต็ปพลิกตัวเข้าหาแป้นพร้อมจบแต้มด้วยมือขวาเหนือตัวประกบสองคน",
+      title: "ทักษะฟุตเวิร์กและการหมุนตัวทำคะแนนใต้แป้น (Post Drop Step)",
+      description: "ทักษะการเล่นโพสต์ระดับมาตรฐาน หมุนตัวเข้าหาแป้นพร้อมจบการทำคะแนนด้วยมือขวาเหนือผู้เล่นป้องกันสองคน",
       quarterClock: "Q1 • 03:50",
       opponent: "เทพศิรินทร์ [Debsirin]",
       durationSec: 13,
@@ -128,8 +128,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-7",
-      title: "รีบาวด์เกมรับป้องกันแต้มสำคัญช่วง 20 วินาทีสุดท้าย",
-      description: "อ่านจังหวะการบุกและกระโดดบล็อกพร้อมเก็บบอลในอากาศ ทำให้ฝ่ายตรงข้ามหมดโอกาสทำแต้มตีเสมอ",
+      title: "การเก็บบอลรีบาวด์เกมรับและป้องกันคะแนนสำคัญช่วง 20 วินาทีสุดท้าย",
+      description: "อ่านทิศทางลูกบอลและกระโดดป้องกันพร้อมครอบครองบอล ยับยั้งโอกาสทำคะแนนตีเสมอของฝ่ายตรงข้าม",
       quarterClock: "Q4 • 00:20",
       opponent: "สวนกุหลาบฯ [SK]",
       durationSec: 12,
@@ -142,8 +142,8 @@ export default function AthleteTcasPortfolio({
     },
     {
       id: "clip-8",
-      title: "จ่ายบอลเอาต์เลตข้ามคอร์ตสร้างจังหวะฟาสต์เบรก",
-      description: "รีบาวด์เกมรับแล้วเหวี่ยงบอลยาวถึงเส้นตรงข้ามให้พอยต์การ์ดเลย์อัปง่ายๆ โดยไม่เสียเทิร์นโอเวอร์",
+      title: "การจ่ายบอลเปิดเกมยาวข้ามแดน (Outlet Pass)",
+      description: "เก็บบอลรีบาวด์เกมรับแล้วจ่ายบอลยาวข้ามแดนให้เพื่อนร่วมทีมทำคะแนนเลย์อัปได้อย่างแม่นยำ",
       quarterClock: "Q2 • 08:30",
       opponent: "อัสสัมชัญ [Assumption]",
       durationSec: 9,
@@ -215,7 +215,7 @@ export default function AthleteTcasPortfolio({
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mt-1">
-              เอกสารรับรองมาตรฐานทางสถิติ สมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT) สำหรับการยื่นโควตานักกีฬา จุฬาฯ, ธรรมศาสตร์, เกษตรศาสตร์, มช.
+              เอกสารรับรองข้อมูลสถิติทางการ สมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT) สำหรับประกอบการยื่นคัดเลือกโควตานักกีฬาและทุนการศึกษา สถาบันอุดมศึกษา
             </p>
           </div>
 
@@ -225,7 +225,7 @@ export default function AthleteTcasPortfolio({
             className="w-full md:w-auto px-5 py-2.5 bg-primary hover:bg-surface-tint active:scale-95 text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider rounded flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
           >
             <span className="material-symbols-outlined text-xl">download</span>
-            <span>EXPORT TCAS DOSSIER (PDF)</span>
+            <span>ดาวน์โหลดแฟ้มเอกสาร TCAS DOSSIER (PDF)</span>
           </button>
         </div>
 
@@ -244,7 +244,7 @@ export default function AthleteTcasPortfolio({
               <div className="flex justify-between items-center">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">badge</span>
-                  1. ข้อมูลส่วนบุคคล & สรีระ
+                  1. ข้อมูลส่วนบุคคลและสรีระ (Biometrics)
                 </span>
                 <span className="font-label-badge text-label-badge px-1 bg-surface-container text-on-surface rounded font-bold">
                   U18 [2025]
@@ -277,7 +277,7 @@ export default function AthleteTcasPortfolio({
               <div className="flex justify-between items-center">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-tertiary">emoji_events</span>
-                  2. เกียรติประวัติการแข่งขัน
+                  2. เกียรติประวัติและผลงานการแข่งขัน
                 </span>
                 <span className="font-label-badge text-label-badge px-1 bg-tertiary-fixed text-on-tertiary-fixed rounded font-bold">
                   CHAMPION
@@ -286,15 +286,15 @@ export default function AthleteTcasPortfolio({
               <ul className="space-y-1.5 font-body-sm text-body-sm text-on-surface text-xs">
                 <li className="flex items-start gap-1">
                   <span className="material-symbols-outlined text-[15px] text-tertiary shrink-0 mt-0.5">trophy</span>
-                  <span>ชนะเลิศบาสเกตบอล TOA Youth Basketball League U18 (BSAT)</span>
+                  <span>ชนะเลิศการแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย U18 (BSAT)</span>
                 </li>
                 <li className="flex items-start gap-1">
                   <span className="material-symbols-outlined text-[15px] text-primary shrink-0 mt-0.5">star</span>
-                  <span>รางวัลผู้เล่น Center ยอดเยี่ยมแห่งปี 2024</span>
+                  <span>รางวัลผู้เล่นตำแหน่งเซ็นเตอร์ยอดเยี่ยมแห่งปี 2567</span>
                 </li>
                 <li className="flex items-start gap-1">
                   <span className="material-symbols-outlined text-[15px] text-secondary shrink-0 mt-0.5">check_circle</span>
-                  <span>รองชนะเลิศอันดับ 1 กีฬานักเรียน กรมพลศึกษา</span>
+                  <span>รองชนะเลิศอันดับ 1 การแข่งขันกีฬานักเรียน กรมพลศึกษา</span>
                 </li>
               </ul>
             </div>
@@ -309,7 +309,7 @@ export default function AthleteTcasPortfolio({
               <div className="flex justify-between items-center">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">monitoring</span>
-                  3. ดัชนีสถิติเฉลี่ย (FIBA)
+                  3. ดัชนีสถิติเฉลี่ยมาตรฐานสากล (FIBA Metrics)
                 </span>
                 <span className="font-label-badge text-label-badge px-1 bg-primary text-on-primary rounded font-bold">
                   TOP 1%
@@ -350,7 +350,7 @@ export default function AthleteTcasPortfolio({
               <div className="flex justify-between items-center">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">qr_code_2</span>
-                  4. QR ตรวจสอบคลิป
+                  4. รหัส QR ตรวจสอบวิดีโอทางการ
                 </span>
                 <span className="font-label-badge text-label-badge px-1 bg-surface text-on-surface border border-outline-variant rounded font-semibold">
                   VERIFIED
@@ -379,7 +379,7 @@ export default function AthleteTcasPortfolio({
                   </div>
                 </div>
                 <p className="font-body-sm text-[11px] leading-tight text-secondary">
-                  สแกน QR Code เพื่อชมคลิปการเล่นแบบ High-Def 4K ที่ผ่านการสแตมป์เวลาโดยกรรมการโต๊ะ
+                  สแกนรหัส QR เพื่อเข้าชมวิดีโอบันทึกการแข่งขันความละเอียดสูงที่ได้รับการประทับเวลารับรองโดยคณะกรรมการจัดการแข่งขัน
                 </p>
               </div>
             </div>
@@ -401,11 +401,11 @@ export default function AthleteTcasPortfolio({
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-2xl">videocam</span>
               <h2 className="font-headline-md text-headline-md uppercase text-on-surface tracking-wide">
-                1-MINUTE VERIFIED HIGHLIGHT REEL COMPILER (เครื่องมือตัดต่อคลิปไฮไลต์ 60 วินาที)
+                1-MINUTE VERIFIED HIGHLIGHT REEL COMPILER (ระบบรวบรวมวิดีโอไฮไลต์ทางการ 60 วินาที)
               </h2>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mt-1">
-              เลือกเพลย์สำคัญจากคลิปบันทึกการแข่งขันสมาคมฯ เพื่อรวมเป็นคลิปวิดีโอไฮไลต์ 60 วินาที พร้อมลายน้ำลายเซ็นต์กรรมการสำหรับส่ง TCAS
+              คัดสรรจังหวะการเล่นสำคัญจากการแข่งขันทางการเพื่อประมวลผลเป็นวิดีโอไฮไลต์ความยาวไม่เกิน 60 วินาที พร้อมลายน้ำรับรองความถูกต้องสำหรับยื่นแฟ้มสะสมผลงาน TCAS
             </p>
           </div>
 
@@ -419,7 +419,7 @@ export default function AthleteTcasPortfolio({
               className="px-3.5 py-2 border border-outline hover:border-primary text-on-surface rounded font-headline-sm text-headline-sm uppercase tracking-wide flex items-center justify-center gap-1.5 hover:bg-surface-container transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">play_circle</span>
-              <span>พรีวิวคลิป ({selectedClipIds.length} เพลย์)</span>
+              <span>ดูตัวอย่างวิดีโอ ({selectedClipIds.length} จังหวะการเล่น)</span>
             </button>
             <button
               onClick={handleCompile}
@@ -445,7 +445,7 @@ export default function AthleteTcasPortfolio({
               ) : (
                 <>
                   <span className="material-symbols-outlined text-lg">movie_edit</span>
-                  <span>COMPILE 60s REEL (เรนเดอร์คลิป 60 วิ พร้อมตราสัญลักษณ์สมาคมฯ)</span>
+                  <span>ประมวลผลวิดีโอไฮไลต์ 60 วินาที พร้อมตราสัญลักษณ์รับรอง</span>
                 </>
               )}
             </button>
@@ -471,7 +471,7 @@ export default function AthleteTcasPortfolio({
                 {totalDuration <= 60 ? "Ready to Compile (under 60s target)" : "Exceeds 60s target"}
               </span>
               <span className="font-body-sm text-body-sm text-secondary">
-                | เลือกแล้ว {selectedClipIds.length} จาก {plays.length} เพลย์ที่มีสิทธิ์
+                | เลือกแล้ว {selectedClipIds.length} จาก {plays.length} รายการที่ได้รับการรับรอง
               </span>
             </div>
           </div>
@@ -510,7 +510,7 @@ export default function AthleteTcasPortfolio({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="flex items-center gap-1 font-label-caps text-label-caps uppercase text-secondary font-bold whitespace-nowrap">
               <span className="material-symbols-outlined text-base text-primary">filter_alt</span>
-              1. เลือกรายการแข่งขันสำหรับดึงคลิป (SELECT TOURNAMENT):
+              1. รายการแข่งขันทางการ (SELECT TOURNAMENT):
             </div>
             <div className="relative flex-grow">
               <select
@@ -518,7 +518,7 @@ export default function AthleteTcasPortfolio({
                 onChange={(e) => setSelectedTournament(e.target.value)}
                 className="w-full pl-3 pr-8 py-1.5 bg-surface-container-lowest border border-outline rounded text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary appearance-none cursor-pointer"
               >
-                <option value="ALL">รวมทุกการแข่งขันระดับประเทศและเขตการแข่งขัน (All Tournaments • 7 แมตช์)</option>
+                <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์)</option>
                 <option value="TOA">TOA Youth Basketball League U18 Thailand Championship 2024 (5 แมตช์)</option>
                 <option value="DPE">การแข่งขันบาสเกตบอลนักเรียน กรมพลศึกษา ประจำปี 2567 (2 แมตช์)</option>
               </select>
@@ -536,7 +536,7 @@ export default function AthleteTcasPortfolio({
             <div className="flex justify-between items-center flex-wrap gap-1">
               <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
                 <span className="material-symbols-outlined text-sm">calendar_view_week</span>
-                2. เลือกแมตช์เพื่อดูเพลย์ของการแข่งขัน (MATCHES IN THIS TOURNAMENT):
+                2. แมตช์การแข่งขันในรายการ (MATCHES IN THIS TOURNAMENT):
               </span>
               <span className="font-label-badge text-label-badge text-primary uppercase font-bold">
                 • แสดงแมตช์ทั้งหมด (คลิกเพื่อเลื่อนดู)
@@ -555,8 +555,8 @@ export default function AthleteTcasPortfolio({
               >
                 <span className="material-symbols-outlined text-primary-fixed text-lg">view_list</span>
                 <div>
-                  <div className="font-headline-sm text-headline-sm leading-tight">รวมทุกแมตช์ที่ลงทำการ</div>
-                  <div className="font-label-badge text-label-badge text-primary-fixed">คลิปไฮไลต์ 8 เพลย์</div>
+                  <div className="font-headline-sm text-headline-sm leading-tight">รวมทุกแมตช์การแข่งขัน</div>
+                  <div className="font-label-badge text-label-badge text-primary-fixed">รวม 8 จังหวะการเล่น</div>
                 </div>
               </button>
 
@@ -576,7 +576,7 @@ export default function AthleteTcasPortfolio({
                   </span>
                 </div>
                 <div className="font-body-sm text-body-sm font-semibold">vs โรงเรียนเทพศิรินทร์ (Debsirin School)</div>
-                <div className="font-label-badge text-label-badge text-secondary">รอบรองชนะเลิศ [TOA U18] • 3 เพลย์</div>
+                <div className="font-label-badge text-label-badge text-secondary">รอบรองชนะเลิศ [TOA U18] • 3 จังหวะการเล่น</div>
               </button>
 
               {/* Pill: Match 2 */}
@@ -595,7 +595,7 @@ export default function AthleteTcasPortfolio({
                   </span>
                 </div>
                 <div className="font-body-sm text-body-sm font-semibold">vs โรงเรียนกรุงเทพคริสเตียนวิทยาลัย (BCC)</div>
-                <div className="font-label-badge text-label-badge text-secondary">รอบก่อนรองฯ [TOA U18] • 2 เพลย์</div>
+                <div className="font-label-badge text-label-badge text-secondary">รอบก่อนรองฯ [TOA U18] • 2 จังหวะการเล่น</div>
               </button>
 
               {/* Pill: Match 3 */}
@@ -614,7 +614,7 @@ export default function AthleteTcasPortfolio({
                   </span>
                 </div>
                 <div className="font-body-sm text-body-sm font-semibold">vs โรงเรียนสวนกุหลาบวิทยาลัย (Suankularb)</div>
-                <div className="font-label-badge text-label-badge text-secondary">รอบ 8 ทีม [TOA U18] • 2 เพลย์</div>
+                <div className="font-label-badge text-label-badge text-secondary">รอบ 8 ทีม [TOA U18] • 2 จังหวะการเล่น</div>
               </button>
 
               {/* Pill: Match 4 */}
@@ -633,14 +633,14 @@ export default function AthleteTcasPortfolio({
                   </span>
                 </div>
                 <div className="font-body-sm text-body-sm font-semibold">vs โรงเรียนอัสสัมชัญ (Assumption)</div>
-                <div className="font-label-badge text-label-badge text-secondary">รอบแรก [DPE Cup] • 1 เพลย์</div>
+                <div className="font-label-badge text-label-badge text-secondary">รอบแรก [DPE Cup] • 1 จังหวะการเล่น</div>
               </button>
             </div>
           </div>
 
           {/* Event Type Category Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-outline-variant">
-            <span className="font-label-caps text-label-caps uppercase text-secondary font-bold mr-1">หมวดเพลย์:</span>
+            <span className="font-label-caps text-label-caps uppercase text-secondary font-bold mr-1">จำแนกตามประเภทจังหวะการเล่น:</span>
             <button
               onClick={() => setActiveCategory("ALL")}
               className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase font-bold tracking-wider transition-colors cursor-pointer ${
@@ -658,7 +658,7 @@ export default function AthleteTcasPortfolio({
               }`}
             >
               <span className="material-symbols-outlined text-sm text-primary">local_fire_department</span>
-              เพลย์ตัดสินเกม (Clutch)
+              จังหวะชี้ขาดเกม (Clutch)
             </button>
             <button
               onClick={() => setActiveCategory("SCORE")}
@@ -669,7 +669,7 @@ export default function AthleteTcasPortfolio({
               }`}
             >
               <span className="material-symbols-outlined text-sm text-tertiary">sports_basketball</span>
-              ทำคะแนน & ดังก์
+              การทำคะแนนและดังก์ (Score & Dunk)
             </button>
             <button
               onClick={() => setActiveCategory("BLOCK")}
@@ -680,7 +680,7 @@ export default function AthleteTcasPortfolio({
               }`}
             >
               <span className="material-symbols-outlined text-sm text-secondary">shield</span>
-              บล็อก (Blocks)
+              การบล็อกลูกยิง (Blocks)
             </button>
             <button
               onClick={() => setActiveCategory("TRANSITION")}
@@ -691,7 +691,7 @@ export default function AthleteTcasPortfolio({
               }`}
             >
               <span className="material-symbols-outlined text-sm text-secondary">replay</span>
-              เกมรับสลับเป็นโต้กลับเร็ว
+              การเปลี่ยนจังหวะเกมรับสู่เกมรุก (Transition)
             </button>
           </div>
         </div>
@@ -781,20 +781,20 @@ export default function AthleteTcasPortfolio({
                 <span>CERTIFIED BSAT VIDEO ENGINES</span>
               </div>
               <p className="font-body-sm text-body-sm text-secondary leading-relaxed">
-                วิดีโอทุกคลิปถูกเชื่อมโยงกับระบบ Timecode ทางการของผู้ตัดสิน เมื่อทำการกด Compile ระบบจะใส่:
+                วิดีโอทุกรายการถูกเชื่อมโยงกับรหัสเวลา (Timecode) ทางการของผู้ตัดสิน เมื่อประมวลผลระบบจะผนึก:
               </p>
               <ul className="font-body-sm text-xs text-on-surface space-y-1 pl-1">
                 <li className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-                  <span>ลายน้ำรหัสนักกีฬา TCAS ID & ธงชาติไทย</span>
+                  <span>ลายน้ำรหัสนักกีฬา (TCAS Student ID) และธงชาติไทย</span>
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-                  <span>สัญลักษณ์ตราสมาคมฯ BSAT พร้อม QR ยืนยันผลแมตช์</span>
+                  <span>ตราสัญลักษณ์รับรองสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT) พร้อมรหัส QR ตรวจสอบ</span>
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
-                  <span>ตัวเลขนับถอยหลัง 60 วินาทีมาตรฐานมหาวิทยาลัย</span>
+                  <span>ตัวเลขนับเวลาถอยหลังมาตรฐานไม่เกิน 60 วินาทีตามเกณฑ์มหาวิทยาลัย</span>
                 </li>
               </ul>
             </div>

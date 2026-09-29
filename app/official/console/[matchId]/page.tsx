@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Play,
@@ -23,6 +23,7 @@ import {
   History,
 } from "lucide-react";
 import OfficialAuditLogModal from "@/components/official/OfficialAuditLogModal";
+import MatchResultControls from "@/components/official/MatchResultControls";
 import { useScorekeeperStore } from "@/lib/store/useScorekeeperStore";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import { EventType } from "@/lib/types";
@@ -32,16 +33,18 @@ export default function ScorekeeperConsolePage({
 }: {
   params: { matchId: string };
 }) {
-  const { currentUser, loginAs, verifyOfficialTablePin, logout } =
-    useAuthStore();
+  const { currentUser, refreshSession, logout } = useAuthStore();
 
   const {
     match,
+    loadMatch,
     isClockRunning,
     selectedPlayer,
     reversalRail,
     isOnline,
     pendingSyncCount,
+    isQueueWarning,
+    exportOfflineLedger,
     toggleClock,
     resetClock,
     setQuarter,
@@ -54,45 +57,40 @@ export default function ScorekeeperConsolePage({
 
   const [notification, setNotification] = useState<string | null>(null);
 
-  // Official Table Authorization Form State
-  const [pinInput, setPinInput] = useState("");
-  const [licenseInput, setLicenseInput] = useState("BSAT-TABLE-2026-088");
   const [authError, setAuthError] = useState<string | null>(null);
-  const [showPin, setShowPin] = useState(false);
   const [shotClock, setShotClock] = useState(14);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
-  const [officialToken, setOfficialToken] = useState<string | null>(null);
+  const [matchAccess, setMatchAccess] = useState(false);
+  const [accessChecked, setAccessChecked] = useState(false);
+  const [resultStatus, setResultStatus] = useState("LOADING");
+  const handleResultStatusChange = useCallback((status: string) => {
+    setResultStatus(status);
+    if (status !== "DRAFT") useScorekeeperStore.setState({ isClockRunning: false });
+  }, []);
 
   const isAuthorizedOfficial =
-    currentUser.role === "OFFICIAL" && currentUser.approvalStatus === "APPROVED";
+    matchAccess && currentUser.role === "OFFICIAL" && currentUser.approvalStatus === "APPROVED";
 
   // Check active server-side session on mount
   useEffect(() => {
     const checkActiveSession = async () => {
       try {
-        const storedToken =
-          typeof window !== "undefined"
-            ? localStorage.getItem("statcourt_official_token")
-            : null;
-
-        const res = await fetch("/api/official/verify", {
-          headers: storedToken ? { "x-official-token": storedToken } : {},
-        });
-
+        const res = await fetch(`/api/official/verify?matchId=${encodeURIComponent(params.matchId)}`, { cache: "no-store" });
         if (res.ok) {
-          const data = await res.json();
-          if (data.authenticated && data.official) {
-            loginAs("OFFICIAL");
-            if (storedToken) setOfficialToken(storedToken);
-          }
-        }
+          const loaded = await loadMatch(params.matchId);
+          setMatchAccess(loaded);
+          if (!loaded) setAuthError("โหลดข้อมูลแมตช์จากฐานข้อมูลไม่สำเร็จ");
+          await refreshSession();
+        } else setMatchAccess(false);
       } catch (err) {
         console.warn("Could not verify active table session:", err);
+        setMatchAccess(false);
+      } finally {
+        setAccessChecked(true);
       }
     };
     checkActiveSession();
-  }, [loginAs]);
+  }, [params.matchId, refreshSession, loadMatch]);
 
   // Online / offline listeners
   useEffect(() => {
@@ -109,7 +107,7 @@ export default function ScorekeeperConsolePage({
   // Game clock countdown interval with real-time SSE broadcast
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    if (isAuthorizedOfficial && isClockRunning) {
+    if (isAuthorizedOfficial && resultStatus === "DRAFT" && isClockRunning) {
       interval = setInterval(() => {
         const state = useScorekeeperStore.getState();
         if (state.match.gameClockSec > 0) {
@@ -150,9 +148,10 @@ export default function ScorekeeperConsolePage({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isAuthorizedOfficial, isClockRunning, params.matchId]);
+  }, [isAuthorizedOfficial, isClockRunning, params.matchId, resultStatus]);
 
   const handleToggleClock = () => {
+    if (resultStatus !== "DRAFT") return;
     toggleClock();
     const nextRunning = !isClockRunning;
     fetch(`/api/matches/${params.matchId}/live`, {
@@ -167,6 +166,7 @@ export default function ScorekeeperConsolePage({
   };
 
   const handleSetShotClock = (sec: number) => {
+    if (resultStatus !== "DRAFT") return;
     setShotClock(sec);
     fetch(`/api/matches/${params.matchId}/live`, {
       method: "POST",
@@ -188,18 +188,9 @@ export default function ScorekeeperConsolePage({
 
   const logAuditEvent = async (actionType: string, details: any) => {
     try {
-      const token =
-        officialToken ||
-        (typeof window !== "undefined"
-          ? localStorage.getItem("statcourt_official_token")
-          : null);
-
       await fetch(`/api/matches/${params.matchId}/audit`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { "x-official-token": token } : {}),
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           actionType,
           quarter: match.currentQuarter,
@@ -213,12 +204,14 @@ export default function ScorekeeperConsolePage({
   };
 
   const handleActionClick = async (action: EventType, label: string) => {
+    if (resultStatus !== "DRAFT") { setNotification("ผลแข่งขันถูกล็อกแล้ว"); return; }
     if (!selectedPlayer) {
       setNotification("Please select an on-court player first");
       setTimeout(() => setNotification(null), 3000);
       return;
     }
-    await recordAction(action);
+    const saved = await recordAction(action);
+    if (!saved) { setNotification("บันทึกรายการไม่สำเร็จ กรุณาตรวจสิทธิ์และสถานะแมตช์"); return; }
     setNotification(
       `Recorded: #${selectedPlayer.jerseyNumber} ${selectedPlayer.name} — ${label}`
     );
@@ -236,6 +229,7 @@ export default function ScorekeeperConsolePage({
   };
 
   const handleReverseClick = async (eventId: string) => {
+    if (resultStatus !== "DRAFT") { setNotification("ผลแข่งขันถูกล็อกแล้ว"); return; }
     const success = await reverseAction(eventId);
     if (success) {
       setNotification("Action reversed successfully within 60s window.");
@@ -250,360 +244,32 @@ export default function ScorekeeperConsolePage({
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const handlePinSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsAuthenticating(true);
-    setAuthError(null);
-
-    try {
-      const res = await fetch("/api/official/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          licenseNumber: licenseInput,
-          pin: pinInput,
-          matchId: params.matchId,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "รหัส PIN หรือเลขที่ใบอนุญาตไม่ถูกต้อง");
-      }
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("statcourt_official_token", data.token);
-      }
-      setOfficialToken(data.token);
-      loginAs("OFFICIAL");
-    } catch (err: any) {
-      setAuthError(err.message || "เกิดข้อผิดพลาดในการตรวจสอบสิทธิ์");
-    } finally {
-      setIsAuthenticating(false);
-    }
-  };
-
-  const handleQuickAuth = async (license: string = "BSAT-TABLE-2026-088", pin: string = "7788") => {
-    setLicenseInput(license);
-    setPinInput(pin);
-    setIsAuthenticating(true);
-    setAuthError(null);
-
-    try {
-      const res = await fetch("/api/official/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          licenseNumber: license,
-          pin,
-          matchId: params.matchId,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data.success) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("statcourt_official_token", data.token);
-        }
-        setOfficialToken(data.token);
-        loginAs("OFFICIAL");
-      } else {
-        setAuthError(data.error || "รหัส PIN หรือเลขที่ใบอนุญาตไม่ถูกต้อง");
-      }
-    } catch (err: any) {
-      setAuthError(err.message || "เกิดข้อผิดพลาดในการตรวจสอบสิทธิ์");
-    } finally {
-      setIsAuthenticating(false);
-    }
-  };
-
   const handleLogoutOfficial = async () => {
-    try {
-      const token =
-        officialToken ||
-        (typeof window !== "undefined"
-          ? localStorage.getItem("statcourt_official_token")
-          : null);
-
-      await fetch("/api/official/logout", {
-        method: "POST",
-        headers: token ? { "x-official-token": token } : {},
-      });
-    } catch (e) {
-      console.warn("Logout error:", e);
-    }
-
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("statcourt_official_token");
-    }
-    setOfficialToken(null);
+    await fetch("/api/official/logout", { method: "POST" });
+    setMatchAccess(false);
     logout();
   };
 
-  // If NOT authorized official table member, show strict RBAC security lock screen
   if (!isAuthorizedOfficial) {
     return (
-      <div className="bg-[#080c14] text-white min-h-screen flex flex-col font-body-md text-body-md antialiased selection:bg-primary selection:text-white relative overflow-x-hidden">
-        {/* Subtle Court Tactical Grid Background Atmosphere */}
-        <div className="fixed inset-0 court-grid-pattern pointer-events-none opacity-60" />
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/10 blur-[130px] rounded-full pointer-events-none" />
-
-        {/* Top Navigation Header (Focused Access Shell) */}
-        <header className="w-full relative z-20 border-b border-white/10 bg-[#090d16]/90 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-gutter-desktop py-space-md flex justify-between items-center">
-            {/* Back Link */}
-            <Link
-              href="/"
-              className="inline-flex items-center gap-space-xs text-secondary-fixed-dim hover:text-white transition-colors duration-150 group"
-            >
-              <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform duration-150">
-                arrow_back
-              </span>
-              <span className="font-label-caps text-label-caps tracking-widest uppercase">
-                RETURN TO PUBLIC MATCH CENTER
-              </span>
-            </Link>
-
-            {/* Brand & Table Access Label */}
-            <div className="flex items-center gap-3">
-              <div className="bg-primary px-2.5 py-0.5 rounded-[2px] shadow-sm">
-                <span className="font-headline-sm text-headline-sm uppercase tracking-wider text-white">
-                  STATCOURT.TH
-                </span>
-              </div>
-              <span className="font-label-caps text-label-caps tracking-wider uppercase text-secondary-fixed-dim border-l border-white/15 pl-3 hidden sm:inline-block">
-                TABLE ACCESS CONTROL
-              </span>
-            </div>
+      <div className="min-h-screen bg-[#0B1C30] text-white flex items-center justify-center p-4">
+        <div className="w-full max-w-md rounded-xl border border-white/15 bg-[#17283C] p-8">
+          <p className="text-sm font-bold uppercase tracking-widest text-red-300">StatCourtTH • Official Table</p>
+          <h1 className="mt-3 text-3xl font-bold">โต๊ะบันทึกคะแนน</h1>
+          <p className="mt-3 text-slate-300">
+            {accessChecked
+              ? "ต้องใช้บัญชีเจ้าหน้าที่ที่ได้รับอนุมัติและได้รับมอบหมายให้ดูแลแมตช์นี้"
+              : "กำลังตรวจสอบสิทธิ์การแข่งขัน..."}
+          </p>
+          {authError && <p role="alert" className="mt-4 text-red-300">{authError}</p>}
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/auth/login" className="rounded-lg bg-[#D32F2F] px-4 py-3 font-bold text-white">เข้าสู่ระบบ</Link>
+            <Link href="/matches" className="rounded-lg border border-white/30 px-4 py-3 font-bold">กลับไปหน้าแมตช์</Link>
           </div>
-        </header>
-
-        {/* Main Security Canvas */}
-        <main className="flex-1 flex items-center justify-center p-4 sm:p-gutter relative z-10 my-auto py-space-xl">
-          {/* Central Shield Security Card Container */}
-          <div className="w-full max-w-[480px] bg-[#101622] rounded-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-6 sm:p-8 relative backdrop-blur-md">
-            {/* Top Subtle Red Accent Line */}
-            <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-primary-container to-transparent" />
-
-            {/* Lock Shield Icon & Restricted Badge */}
-            <div className="flex flex-col items-center text-center mb-6">
-              {/* Glowing Red Lock Container */}
-              <div className="relative w-16 h-16 rounded-xl bg-primary-container/10 border border-primary-container/40 flex items-center justify-center mb-4 shadow-[0_0_24px_rgba(211,47,47,0.3)]">
-                <span
-                  className="material-symbols-outlined text-primary-container text-[32px]"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  lock
-                </span>
-                {/* Radar Pulse Ping Corner */}
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-primary" />
-                </span>
-              </div>
-
-              {/* Official Table Restricted Chip */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#2b1014] border border-primary-container/30 mb-3 shadow-inner">
-                <span className="material-symbols-outlined text-primary-fixed-dim text-[14px]">
-                  shield
-                </span>
-                <span className="font-label-caps text-label-caps uppercase text-primary-fixed-dim tracking-wider font-bold">
-                  RESTRICTED OFFICIAL TABLE
-                </span>
-              </div>
-
-              {/* Title */}
-              <h1 className="font-headline-lg text-headline-lg uppercase text-white tracking-wide mb-2">
-                Scorekeeper Table Access Guard
-              </h1>
-
-              {/* Subtitle Context Statement */}
-              <p className="font-body-md text-body-md text-secondary-fixed-dim leading-relaxed max-w-[390px]">
-                Under federation rules, the Official Table is the Single Source of Truth. Public spectators and unverified accounts cannot input official match scores.
-              </p>
-            </div>
-
-            {authError && (
-              <div className="mb-4 p-3 bg-red-950/80 border border-red-600 rounded-lg text-xs text-red-200 font-mono text-center">
-                {authError}
-              </div>
-            )}
-
-            {/* Form Inputs Section */}
-            <form onSubmit={handlePinSubmit} className="space-y-4">
-              {/* Input 1: Official Table License */}
-              <div>
-                <div className="flex justify-between items-center mb-1.5">
-                  <label className="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed">
-                    Official Table License Number
-                  </label>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 font-label-caps">
-                    <span
-                      className="material-symbols-outlined text-[13px]"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                    >
-                      verified
-                    </span>
-                    BSAT VERIFIED
-                  </span>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-fixed-dim">
-                    <span className="material-symbols-outlined text-[18px]">badge</span>
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    value={licenseInput}
-                    onChange={(e) => setLicenseInput(e.target.value)}
-                    className="w-full pl-10 pr-10 py-2.5 bg-[#090d15] border border-white/15 rounded-lg text-white font-mono text-[14px] tracking-wider focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-400">
-                    <span
-                      className="material-symbols-outlined text-[18px]"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                    >
-                      check_circle
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Input 2: Courtside Security PIN */}
-              <div>
-                <div className="flex justify-between items-center mb-1.5">
-                  <label className="font-label-caps text-label-caps uppercase tracking-wider text-secondary-fixed">
-                    Courtside Security PIN
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPinInput("7788");
-                      setAuthError(null);
-                    }}
-                    className="font-body-sm text-body-sm text-secondary-fixed-dim hover:text-white transition cursor-pointer"
-                  >
-                    Demo: <span className="text-white font-mono font-bold underline">7788</span>
-                  </button>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondary-fixed-dim">
-                    <span className="material-symbols-outlined text-[18px]">pin</span>
-                  </div>
-                  <input
-                    type={showPin ? "text" : "password"}
-                    required
-                    maxLength={4}
-                    value={pinInput}
-                    onChange={(e) => setPinInput(e.target.value)}
-                    placeholder="Enter 4-digit PIN (Demo: 7788)"
-                    className="w-full pl-10 pr-10 py-2.5 bg-[#090d15] border border-white/15 rounded-lg text-white placeholder-secondary focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container font-mono text-[14px] tracking-widest transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPin(!showPin)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-secondary hover:text-white transition-colors cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">
-                      {showPin ? "visibility_off" : "visibility"}
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Primary Action Button */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isAuthenticating}
-                  className="w-full bg-primary-container hover:bg-primary active:scale-[0.98] transition-all duration-150 py-3 rounded-lg text-white font-headline-md text-headline-md uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_6px_20px_-4px_rgba(211,47,47,0.5)] border-t border-white/20 cursor-pointer disabled:opacity-60"
-                >
-                  {isAuthenticating ? (
-                    <>
-                      <span className="material-symbols-outlined text-[20px] animate-spin">
-                        progress_activity
-                      </span>
-                      <span>VERIFYING CRYPTOGRAPHIC TOKEN...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span
-                        className="material-symbols-outlined text-[20px]"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        vpn_key
-                      </span>
-                      <span>UNLOCK SCOREKEEPER CONSOLE</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-
-            {/* Testing & Evaluation Bypass Section */}
-            <div className="mt-6 pt-5 border-t border-white/10">
-              <div className="text-center mb-3">
-                <span className="font-label-caps text-label-caps tracking-widest uppercase text-secondary-fixed-dim">
-                  TESTING &amp; EVALUATION BYPASS
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleQuickAuth("BSAT-TABLE-2026-088", "7788")}
-                disabled={isAuthenticating}
-                className="w-full bg-[#16202e] hover:bg-[#1d2a3d] border border-emerald-500/30 hover:border-emerald-500/60 rounded-lg p-2.5 flex items-center justify-center gap-2 transition-all group cursor-pointer disabled:opacity-60"
-              >
-                <span className="material-symbols-outlined text-emerald-400 text-[18px]">
-                  verified_user
-                </span>
-                <span className="font-body-md text-body-md text-emerald-100 group-hover:text-white font-medium">
-                  Quick Auth: Somchai Srivichai{" "}
-                  <span className="text-emerald-400/80 font-mono text-body-sm">(BSAT #2026-088)</span>
-                </span>
-              </button>
-            </div>
-
-            {/* Quick Session Indicator */}
-            <div className="mt-5 flex items-center justify-between text-secondary-fixed-dim text-[11px] font-label-caps border-t border-white/5 pt-3">
-              <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                STATION: ARENA-TABLE-COURT-A
-              </span>
-              <span className="text-secondary-fixed-dim uppercase tracking-wider">
-                SYNC CLOCK: 24s PRO
-              </span>
-            </div>
-          </div>
-        </main>
-
-        {/* Bottom System Status & Certifications */}
-        <footer className="w-full relative z-20 py-space-sm border-t border-white/10 bg-[#090d16]">
-          <div className="max-w-7xl mx-auto px-gutter-desktop flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
-            {/* Integrity Protocol Badge */}
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="font-label-caps text-label-caps tracking-widest uppercase text-emerald-400">
-                FIBA INTEGRITY PROTOCOL ACTIVE v4.2.8 // SEC-ENCRYPTED
-              </span>
-            </div>
-
-            {/* Verification Specs */}
-            <div className="flex items-center gap-4 text-secondary-fixed-dim font-label-caps text-label-caps">
-              <span>BSAT CERTIFIED #2026</span>
-              <span>•</span>
-              <span>SHA-256 TABLE SESSION</span>
-              <span>•</span>
-              <span>BANGKOK LOCAL 1000Hz SYNC</span>
-            </div>
-          </div>
-        </footer>
+        </div>
       </div>
     );
   }
-
   const homeOnCourt = match.homeTeam.roster.filter((p) => p.isOnCourt);
   const awayOnCourt = match.awayTeam.roster.filter((p) => p.isOnCourt);
 
@@ -615,6 +281,7 @@ export default function ScorekeeperConsolePage({
 
   return (
     <div className="bg-background text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased select-none">
+      <MatchResultControls matchId={params.matchId} pendingSyncCount={pendingSyncCount} onStatusChange={handleResultStatusChange} />
       {/* ================= TOP OPERATOR HUD BAR ================= */}
       <header className="w-full bg-primary text-on-primary py-space-xs px-gutter-desktop shadow-md flex items-center justify-between z-30">
         <div className="flex items-center gap-space-md">
@@ -686,6 +353,27 @@ export default function ScorekeeperConsolePage({
               </span>
             </div>
           )}
+
+          {/* Emergency Offline Ledger Export Button */}
+          <button
+            onClick={async () => {
+              const json = await exportOfflineLedger();
+              const blob = new Blob([json], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `offline_ledger_match_${params.matchId}_${Date.now()}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+              setNotification("ดาวน์โหลดบันทึก Offline Ledger (JSON) สำเร็จ");
+              setTimeout(() => setNotification(null), 3000);
+            }}
+            className="flex items-center gap-1.5 bg-amber-950/80 hover:bg-amber-900 border border-amber-500/60 text-amber-200 px-2.5 py-1 rounded-full text-xs font-bold tracking-wider transition-all cursor-pointer shadow-sm"
+            title="ดาวน์โหลดไฟล์สำรองเหตุการณ์ออฟไลน์ฉุกเฉิน (Emergency JSON Ledger Export)"
+          >
+            <span className="material-symbols-outlined text-[14px]">download</span>
+            <span className="font-mono text-[11px] uppercase">EXPORT LEDGER</span>
+          </button>
 
           {/* FIBA / BSAT Anti-Tamper Dispute Audit Trail Trigger */}
           <button
@@ -1375,4 +1063,3 @@ export default function ScorekeeperConsolePage({
     </div>
   );
 }
-

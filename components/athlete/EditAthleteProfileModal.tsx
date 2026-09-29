@@ -101,16 +101,16 @@ export default function EditAthleteProfileModal({
   const imperialReach = `${reachFeet}'${reachRemInches}"`;
 
   // Ape Index Qualitative Evaluation
-  let apeTierLabel = "สมดุลมาตรฐาน (Standard Athletic Ratio)";
+  let apeTierLabel = "สัดส่วนมาตรฐานทางกายภาพ (Standard Athletic Ratio)";
   let apeTierColor = "text-slate-300 bg-slate-900 border-slate-800";
   if (apeIndex >= 10) {
-    apeTierLabel = "ระดับ Elite Wingspan (ได้เปรียบสูงมากในการรีบาวด์และดักบล็อก)";
+    apeTierLabel = "ระดับยอดเยี่ยม (Elite Wingspan) ความได้เปรียบสูงด้านการรีบาวด์และการป้องกัน";
     apeTierColor = "text-red-300 bg-red-950/80 border-red-800";
   } else if (apeIndex >= 5) {
-    apeTierLabel = "ระดับ Positive Length (ช่วงแขนยาว ได้เปรียบวงในและวงนอก)";
+    apeTierLabel = "ระดับช่วงแขนยาวได้เปรียบ (Positive Length) รองรับการเล่นทั้งวงในและวงนอก";
     apeTierColor = "text-slate-200 bg-slate-800 border-slate-700";
   } else if (apeIndex < 0) {
-    apeTierLabel = "Compact Ratio (เน้นความคล่องตัวและการคอนโทรลบอล)";
+    apeTierLabel = "สัดส่วนกระทัดรัด (Compact Ratio) โดดเด่นด้านความคล่องตัวและการครอบครองบอล";
     apeTierColor = "text-slate-400 bg-slate-900/60 border-slate-800";
   }
 
@@ -570,7 +570,7 @@ export default function EditAthleteProfileModal({
           {/* SECTION 3: ประวัติและสไตล์การเล่น (Bio & Scouting Notes) */}
           <div className="space-y-1.5">
             <label className="text-xs text-slate-300 font-bold flex items-center justify-between">
-              <span>3. คำอธิบายประวัติส่วนตัว & สไตล์การเล่น (Scouting Bio)</span>
+              <span>3. ข้อมูลประวัติและรูปแบบการเล่น (Athlete & Scouting Bio)</span>
               <span className="text-[11px] text-slate-500">
                 {bio.length} ตัวอักษร
               </span>
@@ -579,7 +579,7 @@ export default function EditAthleteProfileModal({
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="ระบุจุดเด่น ทักษะเฉพาะตัว หรือเป้าหมายในการศึกษาต่อระดับมหาวิทยาลัย..."
+              placeholder="ระบุจุดเด่น ทักษะความเชี่ยวชาญ และเป้าหมายทางวิชาการและกีฬาในระดับอุดมศึกษา..."
               className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-sans focus:outline-none focus:border-red-500 resize-none"
             />
           </div>

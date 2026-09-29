@@ -24,10 +24,14 @@ import {
   TrendingUp,
   Sparkles,
   QrCode,
+  Lock,
+  Trophy,
+  FileSpreadsheet,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ShotChartComparison from "@/components/team/ShotChartComparison";
+import RosterImportModal from "@/components/import/RosterImportModal";
 import {
   mockPracticeSessions,
   mockOppositionReport,
@@ -52,6 +56,7 @@ export default function TeamOperationsHubPage() {
 
   // Injury Logs State from API
   const [injuries, setInjuries] = useState<InjuryLogItem[]>(mockInjuryLogs);
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   React.useEffect(() => {
     fetch("/api/team/practice?teamId=team-bcc")
@@ -64,7 +69,7 @@ export default function TeamOperationsHubPage() {
       })
       .catch((err) => console.warn("Failed to fetch practice sessions:", err));
 
-    fetch("/api/team/injuries")
+    fetch("/api/team/injuries?teamId=team-bcc")
       .then((res) => res.json())
       .then((json) => {
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
@@ -124,6 +129,64 @@ export default function TeamOperationsHubPage() {
   const presentCount = activeRoster.filter((p) => p.status === "PRESENT").length;
   const totalRoster = activeRoster.length;
   const attendancePct = totalRoster > 0 ? ((presentCount / totalRoster) * 100).toFixed(1) : "0.0";
+
+  // Non-coach Access Gate (Strict RBAC protection: Only Coaches & Admins can access Team Operations Hub)
+  if (!canManage) {
+    return (
+      <div className="min-h-screen bg-[#080c14] text-white flex flex-col font-sans relative overflow-x-hidden">
+        <Navbar />
+        {/* Subtle Background Ambience */}
+        <div className="fixed inset-0 court-grid-pattern pointer-events-none opacity-40" />
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-red-600/10 blur-[120px] rounded-full pointer-events-none" />
+
+        <main className="flex-1 flex items-center justify-center p-4 py-16 relative z-10">
+          <div className="w-full max-w-lg bg-[#101622] border border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-5 shadow-2xl relative">
+            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto shadow-[0_0_24px_rgba(245,158,11,0.2)]">
+              <Lock className="w-8 h-8 text-amber-400" />
+            </div>
+
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#2b1014] border border-red-500/30 text-red-300 text-[10px] font-mono font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#DC2626]" />
+                <span>RESTRICTED COACH OPERATIONS HUB</span>
+              </div>
+              <h1 className="font-headline-lg text-xl sm:text-2xl uppercase tracking-wider text-white">
+                พื้นที่สงวนสิทธิ์เฉพาะผู้ฝึกสอน (Coaches Only)
+              </h1>
+              <p className="text-xs text-slate-300 leading-relaxed font-sans max-w-md mx-auto">
+                ระบบ Team Hub (การวางแท็กติกการเล่น, วิเคราะห์คู่แข่ง, เช็กชื่อการฝึกซ้อม และ Sports Science) สงวนสิทธิ์การเข้าถึงเฉพาะผู้ฝึกสอนต้นสังกัดเท่านั้น (Coaches Only) บัญชีผู้ใช้อื่นไม่สามารถเข้าถึงหรือมองเห็นได้
+              </p>
+            </div>
+
+            <div className="space-y-2.5 pt-2 font-mono text-xs">
+              <button
+                type="button"
+                onClick={() => loginAs("COACH")}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 to-[#AF101A] hover:from-red-500 hover:to-red-600 text-white font-bold uppercase transition flex items-center justify-center gap-2 shadow-lg shadow-red-950/50 cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>เข้าสู่ระบบบัญชีผู้ฝึกสอน</span>
+              </button>
+              <Link
+                href="/tournaments"
+                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold uppercase transition border border-slate-700 flex items-center justify-center gap-2"
+              >
+                <Trophy className="w-4 h-4 text-amber-400" />
+                <span>ดูตารางการแข่งขันและสายแข่ง (Tournaments)</span>
+              </Link>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 py-2 text-slate-400 hover:text-white transition text-xs"
+              >
+                <span>&larr; กลับสู่หน้าแรก (Back to Home)</span>
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F8F9FF] text-slate-900 flex flex-col font-sans">
@@ -473,15 +536,28 @@ export default function TeamOperationsHubPage() {
 
               {/* Roster Attendance Table with 1-Tap Status Check */}
               <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
-                <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between font-mono text-xs">
-                  <span className="font-bold text-slate-900 uppercase">
-                    รายชื่อนักกีฬาในทีม BCC (1-TAP CHECK-IN)
-                  </span>
-                  <span className="text-slate-500 font-mono text-[11px]">
-                    {canManage
-                      ? "คลิกเปลี่ยนสถานะ: มาซ้อม / มาสาย / ลาป่วย / ขาด"
-                      : "สถานะการเข้าซ้อม (โหมดเข้าชมทั่วไป - สิทธิ์แก้ไขเฉพาะสตาฟฟ์โค้ช)"}
-                  </span>
+                <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
+                  <div>
+                    <span className="font-bold text-slate-900 uppercase">
+                      รายชื่อนักกีฬาในทีม BCC (1-TAP CHECK-IN)
+                    </span>
+                    <p className="text-slate-500 font-mono text-[11px] mt-0.5">
+                      {canManage
+                        ? "คลิกเปลี่ยนสถานะ: มาซ้อม / มาสาย / ลาป่วย / ขาด"
+                        : "สถานะการเข้าซ้อม (โหมดเข้าชมทั่วไป - สิทธิ์แก้ไขเฉพาะสตาฟฟ์โค้ช)"}
+                    </p>
+                  </div>
+                  {canManage && (
+                    <button
+                      type="button"
+                      onClick={() => setImportModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-mono text-xs font-bold transition shrink-0 cursor-pointer"
+                      title="นำเข้ารายชื่อนักกีฬาจาก CSV"
+                    >
+                      <FileSpreadsheet className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>นำเข้ารายชื่อจาก CSV</span>
+                    </button>
+                  )}
                 </div>
 
                 <div className="overflow-x-auto font-mono text-xs">
@@ -742,6 +818,13 @@ export default function TeamOperationsHubPage() {
       </main>
 
       <Footer />
+
+      {/* CSV Roster Import & Deduplication Modal */}
+      <RosterImportModal
+        isOpen={importModalOpen}
+        onClose={() => setImportModalOpen(false)}
+        initialTeamId="team-bcc"
+      />
     </div>
   );
 }

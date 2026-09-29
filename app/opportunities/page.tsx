@@ -27,14 +27,40 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { OpportunityPosting } from "@/lib/types";
 import { mockOpportunities } from "@/lib/db/phase2-data";
+import { useAuthStore } from "@/lib/auth/useAuthStore";
+import MyApplicationsModal from "@/components/recruitment/MyApplicationsModal";
+import CandidateReviewModal from "@/components/recruitment/CandidateReviewModal";
 
 export default function OpportunitiesPage() {
+  const { currentUser } = useAuthStore();
   const [opportunities, setOpportunities] = useState<OpportunityPosting[]>(mockOpportunities);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState<"ALL" | "HIGH_SCHOOL" | "UNIVERSITY" | "SEMI_PRO">("ALL");
   const [selectedFunding, setSelectedFunding] = useState<"ALL" | "FULL_100" | "PARTIAL_50" | "QUOTA_ONLY">("ALL");
   const [selectedRegion, setSelectedRegion] = useState<"ALL" | "BANGKOK" | "CENTRAL" | "NORTH" | "NORTHEAST" | "SOUTH">("ALL");
+
+  // Recruitment Workflow State
+  const [isMyApplicationsOpen, setIsMyApplicationsOpen] = useState(false);
+  const [isCandidatesModalOpen, setIsCandidatesModalOpen] = useState(false);
+  const [candidatesList, setCandidatesList] = useState<any[]>([]);
+  const [activeReviewCandidate, setActiveReviewCandidate] = useState<any | null>(null);
+  const [loadingCandidates, setLoadingCandidates] = useState(false);
+
+  const fetchCandidates = () => {
+    setLoadingCandidates(true);
+    fetch("/api/opportunities/applications")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setCandidatesList(data.data);
+          setIsCandidatesModalOpen(true);
+        }
+      })
+      .catch((err) => console.warn(err))
+      .finally(() => setLoadingCandidates(false));
+  };
 
   useEffect(() => {
     fetch("/api/opportunities")
@@ -107,15 +133,14 @@ export default function OpportunitiesPage() {
   const handleApplySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!applyingOpportunity) return;
-    setIsSubmitting(true);
-
+    setSubmitError(null);
     try {
-      await fetch("/api/opportunities", {
+      const res = await fetch("/api/opportunities", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           opportunityId: applyingOpportunity.id,
-          athleteId: "ath-1",
+          athleteId: currentUser.athleteId || "ath-1",
           applicantName,
           applicantTcasCode,
           applicantGpax,
@@ -124,17 +149,23 @@ export default function OpportunitiesPage() {
           applicantNotes,
         }),
       });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setSubmitError(data.error || "เกิดข้อผิดพลาดในการส่งใบสมัคร");
+        return;
+      }
+      setIsSubmitted(true);
     } catch (err) {
-      console.warn("Failed to submit opportunity application:", err);
+      setSubmitError(err instanceof Error ? err.message : "เกิดข้อผิดพลาด");
     } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
     }
   };
 
   const handleCloseModal = () => {
     setApplyingOpportunity(null);
     setIsSubmitted(false);
+    setSubmitError(null);
     setApplicantNotes("");
   };
 
@@ -163,8 +194,8 @@ export default function OpportunitiesPage() {
                 </p>
               </div>
 
-              {/* Stats Bar */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-center gap-6">
+              {/* Stats & Role-Aware Action Bar */}
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                 <div className="space-y-1">
                   <div className="text-[11px] font-mono text-slate-400 uppercase font-bold">
                     ทุนที่เปิดรับสมัครอยู่
@@ -176,6 +207,27 @@ export default function OpportunitiesPage() {
                     <Check className="w-3 h-3 text-[#DC2626]" />
                     <span>อัปเดตเกณฑ์ระเบียบการทางการ 2026/2570</span>
                   </div>
+                </div>
+
+                {/* Workflow Buttons */}
+                <div className="flex flex-col gap-2 w-full sm:w-auto font-mono text-xs">
+                  <button
+                    onClick={() => setIsMyApplicationsOpen(true)}
+                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-blue-950/80 hover:bg-blue-900 text-blue-200 border border-blue-700/60 font-bold transition shadow-xs cursor-pointer"
+                  >
+                    <Calendar className="w-4 h-4 text-blue-400" />
+                    <span>ติดตามใบสมัครของฉัน</span>
+                  </button>
+
+                  {(currentUser.role === "COACH" || currentUser.role === "ADMIN") && (
+                    <button
+                      onClick={fetchCandidates}
+                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-amber-950/80 hover:bg-amber-900 text-amber-200 border border-amber-700/60 font-bold transition shadow-xs cursor-pointer"
+                    >
+                      <UserCheck className="w-4 h-4 text-amber-400" />
+                      <span>ระบบคัดกรองผู้สมัคร (โค้ช)</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -505,6 +557,13 @@ export default function OpportunitiesPage() {
                       </div>
                     </div>
 
+                    {submitError && (
+                      <div className="p-3 bg-red-950 border border-red-800 text-red-200 rounded-xl flex items-center gap-2 text-xs font-mono">
+                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                        <span>{submitError}</span>
+                      </div>
+                    )}
+
                     <div className="p-3 bg-red-950/40 border border-red-900/50 rounded-xl flex items-start gap-2.5 text-[11px] text-red-200">
                       <ShieldCheck className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                       <span>
@@ -514,16 +573,106 @@ export default function OpportunitiesPage() {
 
                     <button
                       type="submit"
-                      className="w-full py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-red-950/50 flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-red-950/50 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                     >
                       <Send className="w-4 h-4" />
-                      <span>ยืนยันการส่งใบสมัครและพอร์ตโฟลิโอ</span>
+                      <span>{isSubmitting ? "กำลังตรวจสอบและส่งใบสมัคร..." : "ยืนยันการส่งใบสมัครและพอร์ตโฟลิโอ"}</span>
                     </button>
                   </form>
                 )}
               </div>
             </div>
           </div>
+        )}
+
+        {/* Modal: Athlete My Applications Tracking */}
+        {isMyApplicationsOpen && (
+          <MyApplicationsModal onClose={() => setIsMyApplicationsOpen(false)} />
+        )}
+
+        {/* Modal: Coach / Recruiter Candidates Review List */}
+        {isCandidatesModalOpen && (
+          <div
+            onClick={() => setIsCandidatesModalOpen(false)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto cursor-pointer"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#0B1C30] border border-slate-700 rounded-2xl max-w-3xl w-full p-6 text-white shadow-2xl space-y-4 cursor-default max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-start justify-between pb-3 border-b border-slate-800">
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-[#DC2626] uppercase">
+                    CANDIDATE RECRUITMENT WORKSPACE
+                  </span>
+                  <h3 className="text-lg font-bold text-white mt-0.5">
+                    รายชื่อนักกีฬาที่สมัครเข้ารับการคัดเลือก ({candidatesList.length} คน)
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    สำหรับผู้ฝึกสอนและฝ่ายสรรหา: คัดกรองพอร์ต, นัดหมายคัดตัว, และบันทึกผลการคัดเลือก
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsCandidatesModalOpen(false)}
+                  className="p-1 rounded text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {candidatesList.length === 0 ? (
+                <div className="p-8 text-center text-slate-400">ยังไม่มีผู้สมัครในโครงการ</div>
+              ) : (
+                <div className="space-y-2.5 max-h-[480px] overflow-y-auto">
+                  {candidatesList.map((cand) => (
+                    <div
+                      key={cand.id}
+                      className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between gap-4 text-xs font-mono"
+                    >
+                      <div className="space-y-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-white text-sm truncate">{cand.applicantName}</span>
+                          <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
+                            {cand.applicantPosition}
+                          </span>
+                          <span className="text-[10px] text-emerald-400 font-bold">
+                            GPAX {cand.applicantGpax}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 truncate">
+                          โครงการ: {cand.opportunity?.title || "ทุนนักกีฬา"} • โทร {cand.applicantPhone}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-amber-500/30">
+                          {cand.status}
+                        </span>
+                        <button
+                          onClick={() => setActiveReviewCandidate(cand)}
+                          className="px-3 py-1.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition cursor-pointer"
+                        >
+                          ประเมิน &amp; นัดหมาย
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Candidate Detailed Screening & Scheduling */}
+        {activeReviewCandidate && (
+          <CandidateReviewModal
+            application={activeReviewCandidate}
+            onClose={() => setActiveReviewCandidate(null)}
+            onSuccess={() => {
+              fetchCandidates();
+            }}
+          />
         )}
       </main>
 

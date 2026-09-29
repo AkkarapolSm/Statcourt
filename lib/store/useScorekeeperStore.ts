@@ -7,6 +7,9 @@ import {
   getPendingOfflineCount,
   getPendingOfflineEvents,
   updateQueuedEventRetry,
+  exportOfflineEventsJson,
+  isQueueApproachingCapacity,
+  markEventsSynced,
 } from "@/lib/offline/db";
 
 export interface ReversibleEvent {
@@ -16,6 +19,7 @@ export interface ReversibleEvent {
 
 interface ScorekeeperState {
   match: Match;
+  loadMatch: (matchId: string) => Promise<boolean>;
   isClockRunning: boolean;
   selectedPlayer: {
     teamId: string;
@@ -26,26 +30,66 @@ interface ScorekeeperState {
   reversalRail: ReversibleEvent[];
   isOnline: boolean;
   pendingSyncCount: number;
+  isQueueWarning: boolean;
 
   // Actions
   toggleClock: () => void;
   resetClock: (seconds?: number) => void;
   setQuarter: (quarter: number) => void;
   selectPlayer: (teamId: string, athleteId: string) => void;
-  recordAction: (actionType: EventType) => Promise<void>;
+  recordAction: (actionType: EventType) => Promise<boolean>;
   reverseAction: (eventId: string) => Promise<boolean>;
   setOnlineStatus: (online: boolean) => void;
   substitutePlayer: (teamId: string, outId: string, inId: string) => void;
   syncPendingOfflineEvents: () => Promise<void>;
-}
-
-function getOfficialToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("statcourt_official_token");
+  exportOfflineLedger: () => Promise<string>;
 }
 
 export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
   match: JSON.parse(JSON.stringify(mockMatch)),
+  loadMatch: async (matchId) => {
+    try {
+      const response = await fetch(`/api/matches/${encodeURIComponent(matchId)}`, { cache: "no-store" });
+      if (!response.ok) return false;
+      const payload = await response.json();
+      if (payload.source !== "PRISMA_SQLITE_PERSISTENT") return false;
+      const data = payload.data;
+      const activeEvents = data.events.filter((event: { reversedAt?: string | null }) => !event.reversedAt);
+      const toTeam = (team: typeof data.homeTeam): Team => ({
+        id: team.id, name: team.name, shortName: team.shortName || team.name,
+        institution: team.institution, logoUrl: team.logoUrl, primaryColor: team.primaryColor,
+        roster: team.roster.map((member: { athleteId: string; jerseyNumber: number; athlete: { firstName: string; lastName: string; primaryPosition: RosterPlayer["position"]; heightCm: number } }, index: number) => {
+          const events = activeEvents.filter((event: { athleteId: string }) => event.athleteId === member.athleteId);
+          return {
+            athleteId: member.athleteId, jerseyNumber: member.jerseyNumber,
+            firstName: member.athlete.firstName, lastName: member.athlete.lastName,
+            position: member.athlete.primaryPosition, heightCm: member.athlete.heightCm,
+            points: events.reduce((sum: number, event: { points: number }) => sum + event.points, 0),
+            fouls: events.filter((event: { eventType: string }) => ["PERSONAL_FOUL", "TECHNICAL_FOUL"].includes(event.eventType)).length,
+            isOnCourt: index < 5,
+          };
+        }),
+      });
+      const match: Match = {
+        id: data.id, tournamentId: data.tournamentId, tournamentName: data.tournament?.name,
+        homeTeamId: data.homeTeamId, awayTeamId: data.awayTeamId,
+        homeTeam: toTeam(data.homeTeam), awayTeam: toTeam(data.awayTeam),
+        homeScore: data.homeScore, awayScore: data.awayScore,
+        currentQuarter: data.currentQuarter, gameClockSec: data.gameClockSec,
+        status: data.status, rawVideoUrl: data.rawVideoUrl,
+        scoresheetPhotoUrl: data.scoresheetPhotoUrl,
+        events: activeEvents, createdAt: data.createdAt,
+      };
+      const firstPlayer = match.homeTeam.roster[0];
+      const pendingSyncCount = await getPendingOfflineCount();
+      set({ match, pendingSyncCount, selectedPlayer: firstPlayer ? {
+        teamId: match.homeTeamId, athleteId: firstPlayer.athleteId,
+        jerseyNumber: firstPlayer.jerseyNumber,
+        name: `${firstPlayer.firstName} ${firstPlayer.lastName}`,
+      } : null, reversalRail: [], isClockRunning: false });
+      return true;
+    } catch { return false; }
+  },
   isClockRunning: false,
   selectedPlayer: {
     teamId: mockMatch.homeTeamId,
@@ -59,6 +103,7 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
   })),
   isOnline: typeof navigator !== "undefined" ? navigator.onLine : true,
   pendingSyncCount: 0,
+  isQueueWarning: false,
 
   toggleClock: () => set((state) => ({ isClockRunning: !state.isClockRunning })),
 
@@ -83,12 +128,10 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
     }));
 
     if (typeof window !== "undefined") {
-      const token = getOfficialToken();
       fetch(`/api/matches/${match.id}/live`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { "x-official-token": token } : {}),
         },
         body: JSON.stringify({
           action: "SET_QUARTER",
@@ -117,7 +160,7 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
 
   recordAction: async (actionType: EventType) => {
     const { match, selectedPlayer, reversalRail } = get();
-    if (!selectedPlayer) return;
+    if (!selectedPlayer) return false;
 
     let points = 0;
     if (actionType === "TWO_POINT_MADE") points = 2;
@@ -175,12 +218,10 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
     // If online, immediately sync to backend SQLite via API
     if (get().isOnline && typeof window !== "undefined") {
       try {
-        const token = getOfficialToken();
         const res = await fetch(`/api/matches/${match.id}/events`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...(token ? { "x-official-token": token } : {}),
           },
           body: JSON.stringify({
             clientEventId: newEvent.id,
@@ -196,30 +237,23 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
           }),
         });
 
+        if (res.status === 401 || res.status === 403 || res.status === 409) {
+          await dequeueScorekeeperEvent(newEvent.id);
+          set({ pendingSyncCount: await getPendingOfflineCount() });
+          return false;
+        }
         if (res.ok) {
           // If server successfully saved event, remove from offline queue
           await dequeueScorekeeperEvent(newEvent.id);
         }
 
-        // Live broadcast sync to SSE clients
-        fetch(`/api/matches/${match.id}/live`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { "x-official-token": token } : {}),
-          },
-          body: JSON.stringify({
-            action: "RECORD_EVENT",
-            athleteId: selectedPlayer.athleteId,
-            athleteName: selectedPlayer.name,
-            jerseyNumber: selectedPlayer.jerseyNumber,
-            teamId: selectedPlayer.teamId,
-            eventType: actionType,
-            points,
-            quarter: match.currentQuarter,
-            quarterClock: clockDisplay,
-          }),
-        }).catch((err) => console.warn("Live broadcast event sync warning:", err));
+        if (res.ok) {
+          fetch(`/api/matches/${match.id}/live`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "RECORD_EVENT", eventId: newEvent.id }),
+          }).catch((err) => console.warn("Live broadcast event sync warning:", err));
+        }
       } catch (err) {
         console.warn("Direct API event sync failed, preserved in offline queue:", err);
       }
@@ -237,6 +271,7 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
       reversalRail: [newReversalEntry, ...reversalRail.slice(0, 4)],
       pendingSyncCount: pendingCount,
     });
+    return true;
   },
 
   reverseAction: async (eventId: string) => {
@@ -284,31 +319,14 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
     };
 
     if (typeof window !== "undefined") {
-      const token = getOfficialToken();
-      // 1. Sync live broker state
-      fetch(`/api/matches/${match.id}/live`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { "x-official-token": token } : {}),
-        },
-        body: JSON.stringify({
-          action: "REVERSE_EVENT",
-          eventId,
-          points: event.points,
-          teamId: event.teamId,
-          athleteId: event.athleteId,
-          isFoul,
-        }),
-      }).catch((err) => console.warn("Live broadcast reverse sync warning:", err));
-
-      // 2. Delete event from persistent DB
-      fetch(`/api/matches/${match.id}/events?eventId=${eventId}`, {
+      const result = await fetch(`/api/matches/${match.id}/events?eventId=${encodeURIComponent(eventId)}`, {
         method: "DELETE",
-        headers: {
-          ...(token ? { "x-official-token": token } : {}),
-        },
-      }).catch((err) => console.warn("DB reverse event sync warning:", err));
+      });
+      if (!result.ok) return false;
+      fetch(`/api/matches/${match.id}/live`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "REVERSE_EVENT", eventId }),
+      }).catch((err) => console.warn("Live broadcast reverse sync warning:", err));
     }
 
     await dequeueScorekeeperEvent(eventId);
@@ -330,15 +348,45 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
     }
   },
 
+  exportOfflineLedger: async () => {
+    const { match } = get();
+    return await exportOfflineEventsJson(match.id);
+  },
+
   syncPendingOfflineEvents: async () => {
     const { match } = get();
     if (typeof window === "undefined" || !navigator.onLine) return;
 
     try {
       const pendingEvents = await getPendingOfflineEvents();
-      if (pendingEvents.length === 0) return;
+      if (pendingEvents.length === 0) {
+        set({ pendingSyncCount: 0, isQueueWarning: false });
+        return;
+      }
 
-      const token = getOfficialToken();
+      // Try bulk import first if multiple events exist
+      if (pendingEvents.length >= 2) {
+        try {
+          const res = await fetch(`/api/matches/${match.id}/events/import`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              events: pendingEvents.map((p) => ({
+                ...p.event,
+                clientEventId: p.id,
+              })),
+            }),
+          });
+          if (res.ok) {
+            await markEventsSynced(pendingEvents.map((p) => p.id));
+            const count = await getPendingOfflineCount();
+            set({ pendingSyncCount: count, isQueueWarning: false });
+            return;
+          }
+        } catch {
+          // Fall through to individual sync
+        }
+      }
 
       for (const item of pendingEvents) {
         const ev = item.event;
@@ -347,7 +395,6 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              ...(token ? { "x-official-token": token } : {}),
             },
             body: JSON.stringify({
               clientEventId: item.id,
@@ -378,7 +425,8 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
       }
 
       const count = await getPendingOfflineCount();
-      set({ pendingSyncCount: count });
+      const isWarning = await isQueueApproachingCapacity();
+      set({ pendingSyncCount: count, isQueueWarning: isWarning });
     } catch (err) {
       console.error("Failed to sync offline scorekeeper queue:", err);
     }

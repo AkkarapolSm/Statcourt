@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 model User {
@@ -12,6 +13,10 @@ model User {
   email            String           @unique
   phoneNumber      String?          @unique
   role             String           @default("ATHLETE") // ATHLETE, COACH, OFFICIAL, ADMIN
+  passwordHash     String?
+  displayName      String?
+  accountStatus    String           @default("ACTIVE") // ACTIVE, PENDING, SUSPENDED
+  emailVerifiedAt  DateTime?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
 
@@ -19,6 +24,84 @@ model User {
   coachProfile     CoachProfile?
   officialProfile  OfficialProfile?
   auditLogs        AuditLog[]
+  sessions         UserSession[]
+  teamMemberships  TeamMembership[]
+  matchAssignments MatchOfficialAssignment[]
+  resultApprovals  MatchResultApproval[]
+  privacyConsents  DataPrivacyConsent[]
+  notifications    Notification[]
+  authTokens       AuthToken[]
+}
+
+model UserSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash   String   @unique
+  ipAddress   String?
+  userAgent   String?
+  lastActiveAt DateTime @default(now())
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model AuthToken {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       String    // EMAIL_VERIFY, PASSWORD_RESET, ADMIN_STEP_UP
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, type])
+  @@index([tokenHash])
+}
+
+model TeamMembership {
+  id        String   @id @default(cuid())
+  userId    String
+  teamId    String
+  role      String   // COACH, MANAGER
+  status    String   @default("PENDING") // PENDING, ACTIVE, REVOKED
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, teamId])
+  @@index([teamId, status])
+}
+
+model MatchOfficialAssignment {
+  id        String   @id @default(cuid())
+  userId    String
+  matchId   String
+  status    String   @default("ACTIVE") // ACTIVE, REVOKED
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, matchId])
+  @@index([matchId, status])
+}
+
+model MatchResultApproval {
+  id          String   @id @default(cuid())
+  matchId     String
+  approverId  String
+  action      String   // SUBMIT, APPROVE, REOPEN
+  reason      String?
+  homeScore   Int
+  awayScore   Int
+  match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  approver    User     @relation(fields: [approverId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([matchId, createdAt])
 }
 
 model AthleteProfile {
@@ -41,7 +124,7 @@ model AthleteProfile {
   avatarUrl         String?
   tcasReferenceCode String?
 
-  seasonStats       AthleteSeasonStats?
+  seasonStats       AthleteSeasonStats[]
   events            MatchEvent[]
   gearItems         MarketplaceItem[]
   teamRosters       RosterMember[]
@@ -53,12 +136,16 @@ model AthleteProfile {
   digitalPlayerPass   DigitalPlayerPass?
   attendances         PlayerAttendance[]
   injuryLogs          InjuryLog[]
+  opportunityApplications OpportunityApplication[]
 }
 
 model AthleteSeasonStats {
   id                String         @id @default(cuid())
-  athleteId         String         @unique
+  athleteId         String
   athlete           AthleteProfile @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  season            String         @default("2026")
+  tournamentId      String?
+  tournament        Tournament?    @relation(fields: [tournamentId], references: [id])
   ageCategory       String         @default("U18") // U14, U16, U18, Open
   gamesPlayed       Int            @default(0)
   points            Int            @default(0)
@@ -100,6 +187,9 @@ model AthleteSeasonStats {
 
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
+
+  @@unique([athleteId, season, ageCategory])
+  @@index([athleteId, season])
 }
 
 model CoachProfile {
@@ -142,8 +232,11 @@ model Team {
   awayMatches       Match[]           @relation("AwayTeam")
 
   // Extended Persistence Relations
-  practiceSessions  PracticeSession[]
-  playbookItems     PlaybookItem[]
+  practiceSessions        PracticeSession[]
+  playbookItems           PlaybookItem[]
+  memberships             TeamMembership[]
+  tournamentRegistrations TournamentRegistration[]
+  tournamentStandings     TournamentStanding[]
 }
 
 model RosterMember {
@@ -178,6 +271,9 @@ model Tournament {
   contactPhone       String?
   bannerColor        String?
   matches            Match[]
+  registrations      TournamentRegistration[]
+  standings          TournamentStanding[]
+  athleteSeasonStats AthleteSeasonStats[]
   createdAt          DateTime          @default(now())
 }
 
@@ -193,13 +289,21 @@ model Match {
   awayScore          Int               @default(0)
   currentQuarter     Int               @default(1)
   gameClockSec       Int               @default(600)
-  status             String            @default("SCHEDULED") // SCHEDULED, LIVE, HALF_TIME, COMPLETED, DISPUTED
+  status             String            @default("SCHEDULED") // SCHEDULED, LIVE, HALF_TIME, COMPLETED, DISPUTED, POSTPONED, CANCELLED
+  resultStatus       String            @default("DRAFT") // DRAFT, PENDING_APPROVAL, FINAL
+  scheduledAt        DateTime?
+  venue              String?
+  courtName          String?
+  round              String?           // e.g. "รอบแบ่งกลุ่ม", "รอบก่อนรองชนะเลิศ", "รอบชิงชนะเลิศ"
+  postponedReason    String?
   rawVideoUrl        String?
   scoresheetPhotoUrl String?
   
   events             MatchEvent[]
   participants       MatchParticipant[]
   disputeAuditLogs   MatchDisputeAuditLog[]
+  officialAssignments MatchOfficialAssignment[]
+  resultApprovals    MatchResultApproval[]
   createdAt          DateTime          @default(now())
 }
 
@@ -219,6 +323,8 @@ model MatchEvent {
   gameClockDisplay  String
   videoElapsedSec   Int?
   isVerified        Boolean           @default(true)
+  reversedAt        DateTime?
+  reversedById      String?
   
   telestrationNotes VideoTelestrationNote[]
   createdAt         DateTime          @default(now())
@@ -403,18 +509,27 @@ model Opportunity {
 }
 
 model OpportunityApplication {
-  id                String      @id @default(cuid())
+  id                String          @id @default(cuid())
   opportunityId     String
-  opportunity       Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  opportunity       Opportunity     @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
   athleteId         String?
+  athlete           AthleteProfile? @relation(fields: [athleteId], references: [id], onDelete: SetNull)
   applicantName     String
   applicantTcasCode String?
   applicantGpax     String
   applicantPosition String
   applicantPhone    String
   applicantNotes    String?
-  status            String      @default("PENDING") // PENDING, REVIEWING, ACCEPTED, REJECTED
-  createdAt         DateTime    @default(now())
+  status            String          @default("PENDING") // PENDING, SHORTLISTED, INTERVIEW_SCHEDULED, ACCEPTED, REJECTED, WITHDRAWN
+  interviewDate     DateTime?
+  interviewVenue    String?
+  interviewNotes    String?
+  decisionNotes     String?
+  updatedAt         DateTime        @default(now()) @updatedAt
+  createdAt         DateTime        @default(now())
+
+  @@index([opportunityId])
+  @@index([athleteId])
 }
 
 // ==========================================
@@ -437,3 +552,81 @@ model MatchDisputeAuditLog {
   @@index([matchId, timestamp])
 }
 
+// ==========================================
+// 6. TOURNAMENT MANAGEMENT & BRACKET INTEGRITY
+// ==========================================
+model TournamentRegistration {
+  id               String      @id @default(cuid())
+  tournamentId     String
+  teamId           String
+  status           String      @default("PENDING") // PENDING, APPROVED, REJECTED
+  rosterJson       String      @default("[]") // Array of athlete IDs selected for tournament
+  isRosterLocked   Boolean     @default(false)
+  notes            String?
+  submittedAt      DateTime    @default(now())
+  reviewedAt       DateTime?
+  reviewerNotes    String?
+  tournament       Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team             Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, teamId])
+  @@index([tournamentId, status])
+}
+
+model TournamentStanding {
+  id               String      @id @default(cuid())
+  tournamentId     String
+  teamId           String
+  groupName        String      @default("A") // Group A, B, etc.
+  rank             Int         @default(1)
+  played           Int         @default(0)
+  won              Int         @default(0)
+  lost             Int         @default(0)
+  pointsFor        Int         @default(0)
+  pointsAgainst    Int         @default(0)
+  pointDiff        Int         @default(0)
+  points           Int         @default(0) // FIBA standard: 2 pts for win, 1 pt for loss, 0 for forfeit
+  streak           String      @default("-")
+  tournament       Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team             Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, teamId])
+  @@index([tournamentId, groupName])
+}
+
+// ==========================================
+// 7. DATA PRIVACY & CONSENT MANAGEMENT (PDPA)
+// ==========================================
+model DataPrivacyConsent {
+  id               String      @id @default(cuid())
+  userId           String
+  consentType      String      // SCOUTING_DATABASE, LIVE_STREAM_STATS, PARENTAL_MINOR_CONSENT, MARKETING_COMMUNICATIONS
+  isAccepted       Boolean     @default(true)
+  guardianName     String?     // For minor athletes under 18
+  guardianPhone    String?
+  ipAddress        String?
+  acceptedAt       DateTime    @default(now())
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, consentType])
+}
+
+// ==========================================
+// 8. IN-APP NOTIFICATION CENTER
+// ==========================================
+model Notification {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         String    // SCHEDULE_CHANGE, OFFICIAL_ASSIGNMENT, MATCH_CERTIFIED, REGISTRATION_STATUS, SYSTEM
+  title        String
+  message      String
+  link         String?
+  metadataJson String?
+  isRead       Boolean   @default(false)
+  readAt       DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([userId, isRead, createdAt])
+  @@index([userId, createdAt])
+}

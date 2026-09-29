@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       count: athletes.length,
-      data: athletes,
+      data: athletes.map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
       source: "PRISMA_SQLITE_PERSISTENT",
     });
   } catch (error) {
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         count: fallbackList.length,
-        data: fallbackList,
+        data: fallbackList.map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
         source: "FALLBACK_MOCK",
       });
     } catch (fallbackError) {

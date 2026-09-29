@@ -79,7 +79,7 @@ export default function AdvancedScoutEnginePage() {
   const [comparedIds, setComparedIds] = useState<string[]>([]);
   const [isCompareDrawerOpen, setIsCompareDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"ALL_PROSPECTS" | "SHORTLIST">("ALL_PROSPECTS");
-  const { currentUser, loginAs, toggleSubscriptionTier } = useAuthStore();
+  const { currentUser, loginAs } = useAuthStore();
   const hasScoutAccess = canAccessScoutHub(currentUser);
 
   // Modals
@@ -344,7 +344,7 @@ export default function AdvancedScoutEnginePage() {
                 className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold uppercase transition border border-slate-700 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>ทดสอบระบบในบทบาทโค้ช (Demo Coach)</span>
+                <span>เข้าสู่ระบบบัญชีโค้ช</span>
               </button>
               <button
                 type="button"
@@ -352,7 +352,7 @@ export default function AdvancedScoutEnginePage() {
                 className="w-full py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold uppercase transition border border-amber-500/30 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <LogIn className="w-4 h-4 text-amber-400" />
-                <span>จำลองเข้าสู่ระบบทันที (Demo As Fan)</span>
+                <span>เข้าสู่ระบบสมาชิก</span>
               </button>
               <Link
                 href="/"
@@ -606,15 +606,9 @@ export default function AdvancedScoutEnginePage() {
                   className="bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-xs font-bold px-3 py-2 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4" />
-                  <span>สลับเป็นโค้ช (Demo Coach)</span>
+                  <span>เข้าสู่ระบบบัญชีโค้ช</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={toggleSubscriptionTier}
-                  className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-mono text-xs font-bold px-3 py-2 rounded-lg transition shadow-xs cursor-pointer"
-                >
-                  <span>อัปเกรดเป็น PRO ⭐</span>
-                </button>
+                <span className="bg-amber-500/10 text-amber-900 font-mono text-xs font-bold px-3 py-2 rounded-lg">PRO ยังไม่เปิดให้สมัคร</span>
               </div>
             </div>
           </div>
@@ -814,15 +808,9 @@ export default function AdvancedScoutEnginePage() {
                       className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-xs font-bold py-2 px-3 rounded-lg transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <ShieldCheck className="w-4 h-4" />
-                      <span>สลับเป็นโค้ช (Demo)</span>
+                      <span>เข้าสู่ระบบบัญชีโค้ช</span>
                     </button>
-                    <button
-                      type="button"
-                      onClick={toggleSubscriptionTier}
-                      className="w-full bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold py-2 px-3 rounded-lg transition cursor-pointer"
-                    >
-                      <span>อัปเกรด PRO</span>
-                    </button>
+                    <span className="w-full bg-slate-100 text-slate-600 font-mono text-xs font-bold py-2 px-3 rounded-lg text-center">PRO ยังไม่เปิดให้สมัคร</span>
                   </div>
                 </div>
               )}

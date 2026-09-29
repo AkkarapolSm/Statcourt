@@ -129,6 +129,18 @@ export function canEditAthleteProfile(
 }
 
 /**
+ * Check if the user is the owner of this athlete profile or system admin.
+ * Private athlete sections (TCAS Portfolio, Academic Eligibility GPAX) are strictly limited to the athlete owner.
+ */
+export function isAthleteProfileOwner(
+  user: AuthUser | null | undefined,
+  athleteId: string,
+  athleteUserId?: string
+): boolean {
+  return canEditAthleteProfile(user, athleteId, athleteUserId);
+}
+
+/**
  * Check if user can view private athlete analytics (Who Viewed My Profile, Academic GPAX Details)
  */
 export function canViewAthletePrivateData(
@@ -144,16 +156,14 @@ export function canViewAthletePrivateData(
 
 /**
  * Check if user can manage a team's lineup and roster
- * Allowed for COACH and ADMIN
+ * Restricted strictly to COACH alone (Team Hub is Coach only)
  */
 export function canManageTeamLineup(
   user: AuthUser | null | undefined,
   teamId?: string
 ): boolean {
   if (!user) return false;
-  if (user.role === "ADMIN") return true;
-  if (user.role === "COACH") return true;
-  return false;
+  return user.role === "COACH";
 }
 
 /**
@@ -184,13 +194,13 @@ export function getRoleDefaultRoute(role: ExtendedRole): string {
     case "ATHLETE":
       return "/athlete/ath-1";
     case "COACH":
-      return "/scout";
+      return "/team";
     case "OFFICIAL":
       return "/official/console/match-bcc-ds-01";
     case "ADMIN":
       return "/solutions";
     case "FAN":
-      return "/team";
+      return "/tournaments";
     default:
       return "/";
   }
@@ -201,6 +211,8 @@ export function getRoleDefaultRoute(role: ExtendedRole): string {
  * Used to conditionally hide or render links in navigation menus based on RBAC & subscription tier.
  */
 export function canAccessNavItem(user: AuthUser | null | undefined, href: string): boolean {
+  // Team Hub is strictly restricted to COACH alone - no other role can see or access it
+  if (href === "/team" || href.startsWith("/team/")) return user?.role === "COACH";
   if (user?.role === "ADMIN") return true;
   if (href.startsWith("/official/console")) return canAccessOfficialConsole(user);
   if (href === "/scout" || href.startsWith("/scout/")) return canAccessScoutHub(user);

@@ -45,7 +45,7 @@ export default function ShotChart({
               </span>
             </div>
             <p className="text-body-sm font-body-sm text-secondary mt-0.5">
-              {athleteName} (#15) • เลือกดูตำแหน่งจุดยิงแต่ละโซนระยะคอร์ทจริง และประสิทธิภาพการเข้าทำรายแมตช์
+              {athleteName} (#15) • วิเคราะห์พิกัดตำแหน่งการทำคะแนนจำแนกตามโซนสนามจริง และประสิทธิภาพการเข้าทำรายแมตช์
             </p>
           </div>
           <div className="flex items-center gap-4 shrink-0">
@@ -69,9 +69,9 @@ export default function ShotChart({
           <label className="font-label-caps text-label-caps text-on-surface font-bold uppercase flex items-center justify-between">
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-tertiary-container text-sm">emoji_events</span>
-              1. เลือกรายการแข่งขัน (Tournament / Competition)
+              1. รายการแข่งขันทางการ (Tournament / Competition)
             </span>
-            <span className="text-secondary font-normal">7 แมตช์ในรายการนี้</span>
+            <span className="text-secondary font-normal">จำนวน 7 แมตช์ในรายการนี้</span>
           </label>
           <div className="relative">
             <select
@@ -79,8 +79,8 @@ export default function ShotChart({
               onChange={(e) => setSelectedTournament(e.target.value)}
               className="w-full bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md rounded px-3 py-2 pr-8 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
             >
-              <option value="ALL">รวมทุกการแข่งขันทางการสะสม (All Tournaments - 7 แมตช์, 75 ช็อต)</option>
-              <option value="STUDENT_LEAGUE">2026 Thailand National Student League U18 Finals (4 แมตช์)</option>
+              <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์, 75 ครั้ง)</option>
+              <option value="STUDENT_LEAGUE">การแข่งขันบาสเกตบอลนักเรียนชิงชนะเลิศแห่งประเทศไทย U18 รอบชิงชนะเลิศ (4 แมตช์)</option>
               <option value="ASIA_YOUTH">FIBA Asia Youth Invitational Qualifiers (3 แมตช์)</option>
             </select>
           </div>
@@ -91,10 +91,10 @@ export default function ShotChart({
           <div className="flex justify-between items-center text-label-caps font-label-caps flex-wrap gap-1">
             <span className="text-on-surface font-bold uppercase flex items-center gap-1">
               <span className="material-symbols-outlined text-primary text-sm">calendar_month</span>
-              2. เลือกแมตช์แข่งขันของรายการนี้ (Matches in this tournament)
+              2. แมตช์การแข่งขันในรายการ (Matches in this tournament)
             </span>
             <span className="text-primary font-bold">
-              ● กำลังแสดง: {selectedMatch === "ALL" ? "รวมทุกแมตช์ในรายการนี้ (7 แมตช์)" : "แมตช์ที่เลือก"}
+              ● กำลังแสดง: {selectedMatch === "ALL" ? "รวมข้อมูลทุกแมตช์ในรายการ (7 แมตช์)" : "เฉพาะแมตช์ที่ระบุ"}
             </span>
           </div>
 
@@ -121,7 +121,7 @@ export default function ShotChart({
                   รวมทุกแมตช์
                 </span>
                 <span className="bg-primary px-1.5 py-0.2 rounded font-label-badge text-label-badge text-white">
-                  7 นัด
+                  7 แมตช์
                 </span>
               </div>
               <div className={`font-headline-sm text-headline-sm tracking-tight leading-tight ${
@@ -132,7 +132,7 @@ export default function ShotChart({
               <div className={`text-body-sm font-body-sm mt-1 ${
                 selectedMatch === "ALL" ? "text-surface-dim" : "text-secondary"
               }`}>
-                75 ช็อต • FG 44/75 (58%)
+                ยิงรวม 75 ครั้ง • FG 44/75 (58.7%)
               </div>
             </div>
 
@@ -155,7 +155,7 @@ export default function ShotChart({
                 vs เทพศิรินทร์ (Debsirin)
               </div>
               <div className="text-body-sm font-body-sm text-secondary mt-1">
-                19 แต้ม (31 นาที) • FG 6/11 (55%)
+                19 คะแนน (31 นาที) • FG 6/11 (55%)
               </div>
             </div>
 
@@ -178,7 +178,7 @@ export default function ShotChart({
                 vs กรุงเทพคริสเตียน (BCC)
               </div>
               <div className="text-body-sm font-body-sm text-secondary mt-1">
-                22 แต้ม (35 นาที) • FG 9/15 (60%)
+                22 คะแนน (35 นาที) • FG 9/15 (60%)
               </div>
             </div>
 
@@ -201,7 +201,7 @@ export default function ShotChart({
                 vs สวนกุหลาบ (Suankularb)
               </div>
               <div className="text-body-sm font-body-sm text-secondary mt-1">
-                16 แต้ม (29 นาที) • FG 6/9 (67%)
+                16 คะแนน (29 นาที) • FG 6/9 (67%)
               </div>
             </div>
 
@@ -224,7 +224,7 @@ export default function ShotChart({
                 vs อัสสัมชัญ (Assumption)
               </div>
               <div className="text-body-sm font-body-sm text-secondary mt-1">
-                18 แต้ม (27 นาที) • FG 7/12 (58%)
+                18 คะแนน (27 นาที) • FG 7/12 (58%)
               </div>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function ShotChart({
           {/* Display Mode Toggle */}
           <div className="flex items-center gap-2">
             <span className="text-label-caps font-label-caps uppercase text-secondary font-bold">
-              โหมดแสดงผล:
+              รูปแบบการแสดงผล:
             </span>
             <div className="inline-flex rounded border border-outline-variant overflow-hidden bg-surface-container-lowest p-0.5">
               <button
@@ -246,7 +246,7 @@ export default function ShotChart({
                     : "text-secondary hover:text-on-surface"
                 }`}
               >
-                <span className="material-symbols-outlined text-xs">visibility</span> จุดยิงรายลูก (75)
+                <span className="material-symbols-outlined text-xs">visibility</span> พิกัดการยิงรายครั้ง (75 ครั้ง)
               </button>
               <button
                 onClick={() => setDisplayMode("HEATMAP")}
@@ -256,7 +256,7 @@ export default function ShotChart({
                     : "text-secondary hover:text-on-surface"
                 }`}
               >
-                <span className="material-symbols-outlined text-xs">local_fire_department</span> Zone Heatmap (ความแม่นยำ)
+                <span className="material-symbols-outlined text-xs">local_fire_department</span> แผนที่ความร้อนตามโซน (Zone Heatmap)
               </button>
             </div>
           </div>
@@ -264,7 +264,7 @@ export default function ShotChart({
           {/* Quarter Filters */}
           <div className="flex items-center gap-2">
             <span className="text-label-caps font-label-caps uppercase text-secondary font-bold">
-              ควอเตอร์:
+              จำแนกตามควอเตอร์:
             </span>
             <div className="flex items-center gap-1">
               <button
@@ -275,7 +275,7 @@ export default function ShotChart({
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
                 }`}
               >
-                ทั้งหมด (75)
+                ทุกควอเตอร์ (75)
               </button>
               <button
                 onClick={() => setQuarterFilter("Q1")}
@@ -325,14 +325,14 @@ export default function ShotChart({
         <div className="flex justify-between items-center px-1 text-body-sm font-body-sm flex-wrap gap-2">
           <span className="text-on-surface font-semibold flex items-center gap-1.5">
             <span className="material-symbols-outlined text-tertiary-container text-sm">military_tech</span>
-            รวมทุกฤดูกาลสะสมตลอดฤดูกาลแข่งขัน (All Official Matches)
+            สถิติสะสมตลอดฤดูกาลแข่งขันทางการ (All Official Matches)
           </span>
           <div className="flex items-center gap-3">
             <span className="text-secondary">
-              ลงยิง: <strong className="text-primary font-headline-sm text-headline-sm">75</strong> จาก 75 ช็อต
+              โอกาสยิงรวม: <strong className="text-primary font-headline-sm text-headline-sm">75</strong> ครั้ง
             </span>
             <span className="bg-surface-container px-2 py-0.5 rounded text-on-surface-variant font-bold border border-outline-variant">
-              แม่นยำ: <strong className="text-primary">58.7%</strong> (44/75)
+              อัตราความแม่นยำ: <strong className="text-primary">58.7%</strong> (ลง 44/75)
             </span>
           </div>
         </div>
@@ -540,7 +540,7 @@ export default function ShotChart({
         <div className="space-y-2 pt-2">
           <h3 className="font-headline-sm text-headline-sm text-on-surface uppercase tracking-wide flex items-center gap-1.5">
             <span className="material-symbols-outlined text-primary text-base">pie_chart</span>
-            5-Zone Precision Breakdown (ประสิทธิภาพแยก 5 โซนในแมตช์ที่เลือก)
+            5-Zone Precision Breakdown (วิเคราะห์ประสิทธิภาพการทำคะแนนจำแนก 5 โซน)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {/* Zone 1: Paint / Restricted */}
@@ -559,7 +559,7 @@ export default function ShotChart({
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-[#AF101A] h-full rounded-full" style={{ width: "71.9%" }}></div>
               </div>
-              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ใต้แป้น / หัวกะโหลก</span>
+              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ระยะประชิดห่วงและใต้แป้น</span>
             </div>
 
             {/* Zone 2: Mid-Range Paint & Key */}
@@ -578,7 +578,7 @@ export default function ShotChart({
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-[#AF101A] h-full rounded-full" style={{ width: "56.5%" }}></div>
               </div>
-              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ระยะกลางและขอบเขต</span>
+              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ระยะกลางและขอบเขตหัวกะโหลก</span>
             </div>
 
             {/* Zone 3: Left Corner 3 */}
@@ -597,7 +597,7 @@ export default function ShotChart({
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-700 h-full rounded-full" style={{ width: "50%" }}></div>
               </div>
-              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">สามแต้มมุมซ้าย</span>
+              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ยิง 3 คะแนนมุมซ้าย (Left Corner 3PT)</span>
             </div>
 
             {/* Zone 4: Right Corner 3 */}
@@ -616,7 +616,7 @@ export default function ShotChart({
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-400 h-full rounded-full" style={{ width: "33.3%" }}></div>
               </div>
-              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">สามแต้มมุมขวา</span>
+              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ยิง 3 คะแนนมุมขวา (Right Corner 3PT)</span>
             </div>
 
             {/* Zone 5: Above The Break 3 */}
@@ -635,7 +635,7 @@ export default function ShotChart({
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-700 h-full rounded-full" style={{ width: "45.5%" }}></div>
               </div>
-              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">สามแต้มหน้าหัวกะโหลก</span>
+              <span className="block text-body-sm font-body-sm text-secondary mt-1.5">ยิง 3 คะแนนแนวนอกหัวกะโหลก (Above The Break)</span>
             </div>
           </div>
         </div>
@@ -662,7 +662,7 @@ export default function ShotChart({
             onClick={handleDownloadPdf}
             className="bg-on-surface text-inverse-on-surface hover:bg-inverse-surface px-4 py-1.5 rounded font-headline-sm text-headline-sm uppercase tracking-wider shrink-0 transition-colors cursor-pointer"
           >
-            {pdfDownloaded ? "Downloaded" : "Download PDF Report"}
+            {pdfDownloaded ? "ดาวน์โหลดเรียบร้อย" : "ดาวน์โหลดรายงานสถิติ (PDF)"}
           </button>
         </div>
       </div>

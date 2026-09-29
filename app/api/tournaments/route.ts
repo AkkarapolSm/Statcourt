@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Require Coach, Official, or Admin authentication to create tournament
-    const auth = requireRole(request, ["COACH", "OFFICIAL", "ADMIN"]);
+    const auth = await requireRole(request, ["ADMIN"]);
     if (!auth.authorized) {
       return auth.response!;
     }

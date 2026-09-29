@@ -801,7 +801,7 @@ export default function RegisterPortalPage() {
                     <div className="flex items-center gap-2 text-secondary font-body-md text-body-md">
                       <span>Already registered on StatCourt?</span>
                       <Link
-                        href="/"
+                        href="/auth/login"
                         className="text-primary hover:underline font-bold uppercase tracking-wider"
                       >
                         Log in here

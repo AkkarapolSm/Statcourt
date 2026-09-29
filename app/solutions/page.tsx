@@ -356,9 +356,14 @@ export default function SolutionsLandingPage() {
             {/* Free / Community Plan */}
             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 space-y-5 flex flex-col justify-between shadow-sm">
               <div className="space-y-4">
-                <span className="text-xs font-mono text-slate-500 uppercase font-bold tracking-wider">
-                  COMMUNITY LEAGUE
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-slate-500 uppercase font-bold tracking-wider">
+                    COMMUNITY LEAGUE
+                  </span>
+                  <span className="inline-flex items-center text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
+                    [ พร้อมใช้งาน (LIVE) ]
+                  </span>
+                </div>
                 <div className="font-mono">
                   <span className="text-3xl font-black text-[#0B1C30]">ฟรี</span>
                   <span className="text-xs text-slate-500"> / ทัวร์นาเมนต์</span>
@@ -398,9 +403,14 @@ export default function SolutionsLandingPage() {
               </div>
 
               <div className="space-y-4">
-                <span className="text-xs font-mono text-[#AF101A] uppercase font-bold tracking-wider">
-                  PRO LEAGUE TOURNAMENT
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-[#AF101A] uppercase font-bold tracking-wider">
+                    PRO LEAGUE TOURNAMENT
+                  </span>
+                  <span className="inline-flex items-center text-[10px] font-mono text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded font-bold uppercase">
+                    [ แพ็กเกจพร้อมบริการ ]
+                  </span>
+                </div>
                 <div className="font-mono">
                   <span className="text-3xl font-black text-[#0B1C30]">8,900</span>
                   <span className="text-xs text-slate-500"> THB / ทัวร์นาเมนต์</span>

@@ -1,46 +1,116 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { sanitizeStatsForTier } from "@/lib/permissions";
+import { getServerSubscriptionTier } from "@/lib/auth/entitlements";
 import { SubscriptionTier, AthleteSeasonStats } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+// Short-lived in-memory cache for top public leaderboard queries (30s TTL)
+interface LeaderboardCacheEntry {
+  data: any;
+  cachedAt: number;
+}
+const leaderboardCache = new Map<string, LeaderboardCacheEntry>();
+const CACHE_TTL_MS = 30 * 1000;
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
+    const season = searchParams.get("season") || searchParams.get("seasonId");
     const position = searchParams.get("position");
     const ageCategory = searchParams.get("ageCategory");
     const province = searchParams.get("province");
     const search = searchParams.get("search")?.toLowerCase();
+    const page = Math.max(1, Number(searchParams.get("page") || 1));
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam ? Math.min(100, Math.max(1, Number(limitParam))) : 100;
+    const skip = (page - 1) * limit;
 
-    // Read tier from header or query param
-    const tierParam = searchParams.get("tier");
-    const headerTier = request.headers.get("x-user-tier");
-    const userTier: SubscriptionTier =
-      tierParam === "PRO" || headerTier === "PRO" ? "PRO" : "FREE";
+    // Server-enforced subscription entitlement (client tier param or header ignored)
+    const userTier: SubscriptionTier = await getServerSubscriptionTier(request);
 
-    const now = new Date().getTime();
+    // Cache key for common queries
+    const cacheKey = `${userTier}:${season || "ALL"}:${position || "ALL"}:${ageCategory || "ALL"}:${province || "ALL"}:${search || ""}:${page}:${limit}`;
+    const now = Date.now();
+    const cached = leaderboardCache.get(cacheKey);
+    if (cached && now - cached.cachedAt < CACHE_TTL_MS) {
+      return NextResponse.json(
+        {
+          ...cached.data,
+          cached: true,
+        },
+        {
+          headers: {
+            "Cache-Control": "private, no-cache, no-store, must-revalidate",
+            "X-Cache": "HIT",
+          },
+        }
+      );
+    }
+
     const oneMonthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
     const sixMonthsAgo = new Date(now - 180 * 24 * 60 * 60 * 1000);
     const oneYearAgo = new Date(now - 365 * 24 * 60 * 60 * 1000);
 
-    // Query all athlete season stats joined with athlete profile and match participations
-    const stats = await prisma.athleteSeasonStats.findMany({
-      include: {
-        athlete: {
-          include: {
-            matchParticipations: {
-              select: {
-                createdAt: true,
+    // Build database WHERE clause (push filtering into SQLite / PostgreSQL engine)
+    const dbWhere: any = {};
+    if (season && season !== "ALL") {
+      dbWhere.season = season;
+    }
+    if (ageCategory && ageCategory !== "ALL") {
+      dbWhere.ageCategory = ageCategory;
+    }
+    if (position && position !== "ALL") {
+      dbWhere.athlete = { ...(dbWhere.athlete || {}), primaryPosition: position };
+    }
+    if (province && province !== "ALL") {
+      dbWhere.athlete = { ...(dbWhere.athlete || {}), province };
+    }
+    if (search) {
+      dbWhere.OR = [
+        { athlete: { firstName: { contains: search } } },
+        { athlete: { lastName: { contains: search } } },
+        { athlete: { schoolOrClub: { contains: search } } },
+      ];
+    }
+
+    // Exclude athletes who have explicitly opted out or revoked SCOUTING_DATABASE consent
+    dbWhere.athlete = {
+      ...(dbWhere.athlete || {}),
+      user: {
+        privacyConsents: {
+          none: {
+            consentType: "SCOUTING_DATABASE",
+            isAccepted: false,
+          },
+        },
+      },
+    };
+
+    // Execute paginated queries directly against database
+    const [totalCount, stats] = await Promise.all([
+      prisma.athleteSeasonStats.count({ where: dbWhere }),
+      prisma.athleteSeasonStats.findMany({
+        where: dbWhere,
+        include: {
+          athlete: {
+            include: {
+              matchParticipations: {
+                select: {
+                  createdAt: true,
+                },
               },
             },
           },
         },
-      },
-      orderBy: {
-        effPerGame: "desc",
-      },
-    });
+        orderBy: {
+          effPerGame: "desc",
+        },
+        take: limit,
+        skip,
+      }),
+    ]);
 
     let formattedAthletes: AthleteSeasonStats[] = [];
 
@@ -101,41 +171,40 @@ export async function GET(request: NextRequest) {
           matchesAllTime,
         };
       });
-    } else {
-      // Seed data if DB is empty
+    } else if (totalCount === 0 && Object.keys(dbWhere).length === 0) {
+      // Seed fallback if DB has 0 athletes recorded
       const { mockLeaderboardAthletes } = await import("@/lib/db/seed-data");
-      formattedAthletes = [...mockLeaderboardAthletes];
+      formattedAthletes = [...mockLeaderboardAthletes].slice(skip, skip + limit);
     }
 
-    // Apply filtering
-    if (position && position !== "ALL") {
-      formattedAthletes = formattedAthletes.filter((a) => a.position === position);
-    }
-    if (ageCategory && ageCategory !== "ALL") {
-      formattedAthletes = formattedAthletes.filter((a) => a.ageCategory === ageCategory);
-    }
-    if (province && province !== "ALL") {
-      formattedAthletes = formattedAthletes.filter((a) => a.province === province);
-    }
-    if (search) {
-      formattedAthletes = formattedAthletes.filter(
-        (a) =>
-          a.firstName.toLowerCase().includes(search) ||
-          a.lastName.toLowerCase().includes(search) ||
-          a.schoolOrClub.toLowerCase().includes(search) ||
-          String(a.jerseyNumber).includes(search)
-      );
-    }
-
-    // Sanitize stats based on caller subscription tier
+    // Sanitize stats based on server subscription tier
     const sanitizedData = formattedAthletes.map((a) => sanitizeStatsForTier(a, userTier));
 
-    return NextResponse.json({
+    const responsePayload = {
       success: true,
       tier: userTier,
       count: sanitizedData.length,
+      totalCount: totalCount > 0 ? totalCount : sanitizedData.length,
+      pagination: {
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil((totalCount > 0 ? totalCount : sanitizedData.length) / limit)),
+      },
       data: sanitizedData,
       source: stats.length > 0 ? "PRISMA_SQLITE_PERSISTENT" : "FALLBACK_MOCK",
+    };
+
+    // Cache top queries
+    leaderboardCache.set(cacheKey, {
+      data: responsePayload,
+      cachedAt: now,
+    });
+
+    return NextResponse.json(responsePayload, {
+      headers: {
+        "Cache-Control": "private, no-cache, no-store, must-revalidate",
+        "X-Cache": "MISS",
+      },
     });
   } catch (error) {
     console.error("[API LEADERBOARD] Database query error:", error);

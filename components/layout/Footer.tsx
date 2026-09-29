@@ -37,7 +37,7 @@ export default function Footer() {
             STATCOURT.TH
           </div>
           <p className="font-body-sm text-xs text-surface-dim leading-relaxed">
-            Thailand's premier grassroots basketball analytics, tournament scorekeeping, and recruitment infrastructure. Certified by BSAT.
+            Thailand's premier grassroots basketball analytics, tournament scorekeeping, and recruitment infrastructure. Designed in alignment with FIBA Official Rules &amp; BSAT Guidelines.
           </p>
           <div className="flex items-center gap-2 text-surface-dim text-[11px] pt-1 font-mono">
             <span className={`w-2 h-2 rounded-full ${dbStatus?.isLive ? "bg-emerald-400" : "bg-amber-400"} animate-pulse`} />
@@ -62,7 +62,7 @@ export default function Footer() {
             </li>
             <li>
               <Link href="/academy" className="hover:text-white transition-colors uppercase tracking-wider block">
-                BSAT Official Endorsement
+                BSAT &amp; FIBA Standards Alignment
               </Link>
             </li>
             <li>
@@ -152,7 +152,7 @@ export default function Footer() {
       <div className="border-t border-white/10 py-4 text-surface-dim font-body-sm text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <span>
-            © 2026 STATCOURT.TH Basketball Intelligence &amp; Analytics. FIBA LiveStats &amp; BSAT Certified. All rights reserved. System v4.2.0-PRO.
+            © 2026 STATCOURT.TH Basketball Intelligence &amp; Analytics. Standardized to FIBA Official Basketball Rules &amp; BSAT Guidelines. All rights reserved. System v4.2.0-PRO.
           </span>
           <div className="flex gap-4 uppercase font-label-badge">
             <span className="hover:text-white cursor-pointer transition">Security Disclosures</span>

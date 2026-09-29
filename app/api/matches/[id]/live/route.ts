@@ -7,6 +7,12 @@ import {
 } from "@/lib/live/liveMatchBroker";
 import { prisma } from "@/lib/db/prisma";
 import { requireOfficial } from "@/lib/auth/serverAuth";
+import { requestOriginAllowed, getSessionUser } from "@/lib/auth/session";
+import {
+  recordMatchEventCommand,
+  reverseMatchEventCommand,
+  reconcileMatchScore,
+} from "@/lib/live/matchCommandHandler";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +34,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to fetch live match state",
+        error: "เกิดข้อผิดพลาดในการดึงข้อมูลสด (Failed to fetch live match state)",
       },
       { status: 500 }
     );
@@ -39,9 +45,17 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  if (!requestOriginAllowed(request)) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+
+  let body: any;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "JSON ไม่ถูกต้อง (Malformed JSON)" }, { status: 400 });
+  }
+
   try {
     const matchId = params.id;
-    const body = await request.json();
     const { action } = body;
 
     if (!action) {
@@ -52,10 +66,15 @@ export async function POST(
     }
 
     // Protect all state modifications with official table authorization
+    let officialAuth: any = null;
     if (action !== "SEND_CHAT") {
-      const auth = requireOfficial(request, matchId);
-      if (!auth.authorized) {
-        return auth.response!;
+      officialAuth = await requireOfficial(request, matchId);
+      if (!officialAuth.authorized || !officialAuth.official || !officialAuth.userId) {
+        return officialAuth.response!;
+      }
+      const match = await prisma.match.findUnique({ where: { id: matchId }, select: { resultStatus: true } });
+      if (!match || match.resultStatus !== "DRAFT") {
+        return NextResponse.json({ error: "ผลแข่งขันถูกล็อกหรือไม่พบแมตช์" }, { status: 409 });
       }
     }
 
@@ -100,145 +119,139 @@ export async function POST(
 
       // 4. Official records an event (+1, +2, +3, Foul, Turnover, Steal, etc.)
       case "RECORD_EVENT": {
-        const {
-          athleteId,
-          athleteName,
-          jerseyNumber,
-          teamId,
-          eventType,
-          points = 0,
-          title,
-          description,
-          quarter,
-          quarterClock,
-        } = body;
+        const eventId = String(body.eventId || body.clientEventId || "");
+        if (body.eventType && body.athleteId && body.teamId) {
+          // Direct execution through unified command handler
+          const cmdResult = await recordMatchEventCommand({
+            matchId,
+            clientEventId: eventId,
+            officialId: officialAuth.official!.officialId,
+            userId: officialAuth.userId!,
+            teamId: String(body.teamId),
+            athleteId: String(body.athleteId),
+            eventType: String(body.eventType),
+            points: Number(body.points || 0),
+            quarter: Number(body.quarter || 1),
+            gameClockDisplay: String(body.gameClockDisplay || "10:00"),
+            videoElapsedSec: body.videoElapsedSec == null ? null : Number(body.videoElapsedSec),
+          });
+          if (!cmdResult.success) {
+            return NextResponse.json({ success: false, error: cmdResult.error }, { status: cmdResult.statusCode });
+          }
+          updatedState = await getLiveState(matchId);
+          break;
+        }
 
-        const pts = Number(points) || 0;
-        const isFoul = eventType === "PERSONAL_FOUL" || eventType === "TECHNICAL_FOUL";
-
-        const newEvent: LivePlayEvent = {
-          id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-          quarterClock: quarterClock || "Q4 05:00",
-          videoTimeSec: 300,
-          playerName: athleteName || "Player",
-          jerseyNumber: Number(jerseyNumber) || 0,
-          team: teamId === "team-bcc" || teamId === "BCC" ? "BCC" : "DS",
-          eventType,
-          points: pts,
-          title: title || `${eventType.replace(/_/g, " ")} (${pts > 0 ? `+${pts}` : ""})`,
-          description: description || `เพลย์โดย ${athleteName} (#${jerseyNumber})`,
-          createdAt: new Date().toISOString(),
+        // Linking existing event
+        const event = await prisma.matchEvent.findUnique({
+          where: { id: eventId },
+          include: { athlete: { select: { firstName: true, lastName: true, jerseyNumber: true } } },
+        });
+        if (!event || event.matchId !== matchId || event.reversedAt) {
+          return NextResponse.json({ error: "บันทึกเหตุการณ์ก่อนส่งผลสด" }, { status: 409 });
+        }
+        const savedMatch = await prisma.match.findUniqueOrThrow({ where: { id: matchId } });
+        const play: LivePlayEvent = {
+          id: event.id,
+          quarterClock: event.gameClockDisplay,
+          videoTimeSec: event.videoElapsedSec || 0,
+          playerName: event.athlete ? `${event.athlete.firstName} ${event.athlete.lastName}` : "Player",
+          jerseyNumber: event.athlete?.jerseyNumber || 0,
+          team: event.teamId === savedMatch.homeTeamId ? "HOME" : "AWAY",
+          eventType: event.eventType,
+          points: event.points,
+          title: event.eventType.replace(/_/g, " "),
+          description: "",
+          createdAt: event.createdAt.toISOString(),
         };
-
-        updatedState = await updateLiveState(matchId, (prev) => {
-          const isHome = teamId === prev.homeTeam.id || teamId === "team-bcc" || teamId === "BCC";
-
-          const newHomeScore = isHome ? prev.homeTeam.score + pts : prev.homeTeam.score;
-          const newAwayScore = !isHome ? prev.awayTeam.score + pts : prev.awayTeam.score;
-
-          const updatedPlayerStats = prev.playerStats.map((p) => {
-            if (p.athleteId === athleteId || (p.number === Number(jerseyNumber) && p.teamId === teamId)) {
-              return {
-                ...p,
-                pts: p.pts + pts,
-                fouls: isFoul ? p.fouls + 1 : p.fouls,
-              };
-            }
-            return p;
-          });
-
-          return {
-            homeTeam: {
-              ...prev.homeTeam,
-              score: newHomeScore,
-              fouls: isHome && isFoul ? prev.homeTeam.fouls + 1 : prev.homeTeam.fouls,
-            },
-            awayTeam: {
-              ...prev.awayTeam,
-              score: newAwayScore,
-              fouls: !isHome && isFoul ? prev.awayTeam.fouls + 1 : prev.awayTeam.fouls,
-            },
-            lastEvent: newEvent,
-            recentEvents: [newEvent, ...prev.recentEvents].slice(0, 30),
-            playerStats: updatedPlayerStats,
-          };
-        });
-
-        // Persist to DB asynchronously
-        if (pts > 0) {
-          const isHome = teamId === "team-bcc" || teamId === "BCC";
-          prisma.match.update({
-            where: { id: matchId },
-            data: {
-              homeScore: updatedState.homeTeam.score,
-              awayScore: updatedState.awayTeam.score,
-            },
-          }).catch((err) => console.warn("[DB UPDATE SCORE WARN]", err));
-        }
+        updatedState = await updateLiveState(matchId, (prev) => ({
+          homeTeam: { ...prev.homeTeam, score: savedMatch.homeScore },
+          awayTeam: { ...prev.awayTeam, score: savedMatch.awayScore },
+          lastEvent: play,
+          recentEvents: [play, ...prev.recentEvents.filter((item) => item.id !== play.id)].slice(0, 30),
+        }));
         break;
       }
 
-      // 5. Reversal / Undo event
       case "REVERSE_EVENT": {
-        const { eventId, points = 0, teamId, athleteId, isFoul } = body;
-        const pts = Number(points) || 0;
-
-        updatedState = await updateLiveState(matchId, (prev) => {
-          const isHome = teamId === prev.homeTeam.id || teamId === "team-bcc" || teamId === "BCC";
-          const newEvents = prev.recentEvents.filter((e) => e.id !== eventId);
-
-          const updatedPlayerStats = prev.playerStats.map((p) => {
-            if (p.athleteId === athleteId) {
-              return {
-                ...p,
-                pts: Math.max(0, p.pts - pts),
-                fouls: isFoul ? Math.max(0, p.fouls - 1) : p.fouls,
-              };
-            }
-            return p;
-          });
-
-          return {
-            homeTeam: {
-              ...prev.homeTeam,
-              score: isHome ? Math.max(0, prev.homeTeam.score - pts) : prev.homeTeam.score,
-              fouls: isHome && isFoul ? Math.max(0, prev.homeTeam.fouls - 1) : prev.homeTeam.fouls,
-            },
-            awayTeam: {
-              ...prev.awayTeam,
-              score: !isHome ? Math.max(0, prev.awayTeam.score - pts) : prev.awayTeam.score,
-              fouls: !isHome && isFoul ? Math.max(0, prev.awayTeam.fouls - 1) : prev.awayTeam.fouls,
-            },
-            recentEvents: newEvents,
-            lastEvent: newEvents[0],
-            playerStats: updatedPlayerStats,
-          };
+        const eventId = String(body.eventId || "");
+        const revResult = await reverseMatchEventCommand({
+          matchId,
+          eventId,
+          officialId: officialAuth.official!.officialId,
+          userId: officialAuth.userId!,
         });
-
-        if (pts > 0) {
-          prisma.match.update({
-            where: { id: matchId },
-            data: {
-              homeScore: updatedState.homeTeam.score,
-              awayScore: updatedState.awayTeam.score,
-            },
-          }).catch((err) => console.warn("[DB REVERSE SCORE WARN]", err));
+        if (!revResult.success) {
+          return NextResponse.json({ success: false, error: revResult.error }, { status: revResult.statusCode });
         }
+        updatedState = await getLiveState(matchId);
         break;
       }
 
+      case "RECONCILE_SCORE": {
+        const reconResult = await reconcileMatchScore(matchId);
+        updatedState = await getLiveState(matchId);
+        return NextResponse.json({
+          success: true,
+          data: reconResult,
+          message: "Scores reconciled against database ledger",
+        });
+      }
       // 6. Real-time Live Chat
       case "SEND_CHAT": {
         const { sender, badge, badgeType, text } = body;
-        if (!text) {
-          return NextResponse.json({ success: false, error: "Text is required" }, { status: 400 });
+        const rawText = typeof text === "string" ? text.trim() : "";
+        if (!rawText || rawText.length === 0) {
+          return NextResponse.json(
+            { success: false, error: "ข้อความไม่สามารถว่างเปล่าได้ (Chat message cannot be empty)" },
+            { status: 400 }
+          );
+        }
+        if (rawText.length > 150) {
+          return NextResponse.json(
+            { success: false, error: "ข้อความแชทยาวเกินไป (สูงสุด 150 ตัวอักษร)" },
+            { status: 400 }
+          );
+        }
+
+        const sessionUser = await getSessionUser(request);
+        const privilegedBadges = ["OFFICIAL", "STAFF", "REFEREE", "ADMIN", "COMMISSIONER"];
+        const requestedBadge = String(badge || badgeType || "FAN").toUpperCase();
+
+        let verifiedBadge = "FAN";
+        let verifiedBadgeType = badgeType || "FAN";
+        let verifiedSender = sender ? String(sender).slice(0, 40) : "ผู้ชมทั่วไป (Fan)";
+
+        if (sessionUser) {
+          if (sessionUser.role === "ADMIN") {
+            verifiedBadge = requestedBadge === "OFFICIAL" ? "OFFICIAL" : "ADMIN";
+            verifiedBadgeType = "ADMIN";
+            verifiedSender = sessionUser.displayName || sessionUser.email || "Admin";
+          } else if (sessionUser.role === "OFFICIAL") {
+            verifiedBadge = "OFFICIAL";
+            verifiedBadgeType = "OFFICIAL";
+            verifiedSender = sessionUser.displayName || "Official";
+          } else if (sessionUser.role === "COACH") {
+            verifiedBadge = "COACH";
+            verifiedBadgeType = "COACH";
+            verifiedSender = sessionUser.displayName || "Coach";
+          } else {
+            verifiedBadge = privilegedBadges.includes(requestedBadge) ? "FAN" : requestedBadge.slice(0, 16);
+            verifiedSender = sessionUser.displayName || sender || "Member";
+          }
+        } else {
+          // Unauthenticated guest: never allow spoofed official/referee/admin badges
+          verifiedBadge = "FAN";
+          if (/official|referee|admin|staff|ผู้ดูแลระบบ|กรรมการ/i.test(verifiedSender)) {
+            verifiedSender = "ผู้ชมทั่วไป (Fan)";
+          }
         }
 
         const newMsg = await addLiveChatMessage(matchId, {
-          sender: sender || "Anonymous Fan",
-          badge: badge || badgeType || "FAN",
-          badgeType: badgeType || "BCC",
-          text,
+          sender: verifiedSender,
+          badge: verifiedBadge,
+          badgeType: verifiedBadgeType,
+          text: rawText,
         });
 
         return NextResponse.json({
@@ -290,7 +303,7 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to broadcast live update",
+        error: "เกิดข้อผิดพลาดในการประมวลผลคำขอ (Internal Server Error)",
       },
       { status: 500 }
     );

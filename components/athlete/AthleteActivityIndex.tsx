@@ -42,7 +42,7 @@ export default function AthleteActivityIndex({
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mt-0.5">
-              ดัชนีชี้วัดความพร้อมทางกายภาพและเสถียรภาพการแข่งขันจริง • คำนวณจากข้อสอบแข่งขันทางการและทัวร์นาเมนต์มาตรฐาน กกท.
+              ดัชนีชี้วัดประสบการณ์การลงสนามและเสถียรภาพการแข่งขันจริง • บันทึกและประมวลผลจากข้อมูลการแข่งขันทางการและทัวร์นาเมนต์มาตรฐานการกีฬาแห่งประเทศไทย (กกท.)
             </p>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
@@ -67,14 +67,14 @@ export default function AthleteActivityIndex({
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
-                  STARTER RATIO (ตัวจริง)
+                  สัดส่วนการลงเล่น 5 คนแรก (STARTING 5 RATIO)
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="font-headline-xl text-headline-xl text-primary leading-none">
                     95.2%
                   </span>
                   <span className="font-body-sm text-body-sm text-secondary font-semibold">
-                    40/42 เกม
+                    40 จาก 42 นัด
                   </span>
                 </div>
               </div>
@@ -88,7 +88,7 @@ export default function AthleteActivityIndex({
               </div>
             </div>
             <p className="mt-2 font-body-sm text-body-sm text-secondary">
-              ออกสตาร์ท 5 คนแรกต่อเนื่องสม่ำเสมอในทุกทัวร์นาเมนต์หลัก
+              ได้รับความไว้วางใจลงสนามเป็น 5 คนแรกอย่างสม่ำเสมอในทุกรายการแข่งขันหลัก
             </p>
             <div className="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "95.2%" }}></div>
@@ -100,14 +100,14 @@ export default function AthleteActivityIndex({
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
-                  TOP-TIER COMPETITION
+                  การแข่งขันระดับชาติ (TIER-1 COMPETITION)
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="font-headline-xl text-headline-xl text-on-surface leading-none">
                     84.2%
                   </span>
                   <span className="font-body-sm text-body-sm text-secondary font-semibold">
-                    ระดับประเทศ / เขต
+                    ระดับชาติ / ตัวแทนภาค
                   </span>
                 </div>
               </div>
@@ -116,7 +116,7 @@ export default function AthleteActivityIndex({
               </div>
             </div>
             <p className="mt-2 font-body-sm text-body-sm text-secondary">
-              อัตราแมตช์ความเข้มข้นระดับสูง พบทีมระดับท็อป 8 ของประเทศ
+              สัดส่วนการลงแข่งขันในรายการมาตรฐานระดับสูง พบทีมชั้นนำระดับประเทศ
             </p>
             <div className="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
               <div className="bg-tertiary-container h-full rounded-full" style={{ width: "84.2%" }}></div>
@@ -128,14 +128,14 @@ export default function AthleteActivityIndex({
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
-                  TOTAL COURT TIME
+                  เวลาลงสนามรวมสะสม (TOTAL COURT TIME)
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="font-headline-xl text-headline-xl text-on-surface leading-none">
                     921
                   </span>
                   <span className="font-body-sm text-body-sm text-secondary font-semibold">
-                    นาทีแข่งขัน
+                    นาทีในการแข่งขัน
                   </span>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function AthleteActivityIndex({
               </div>
             </div>
             <p className="mt-2 font-body-sm text-body-sm text-secondary">
-              เฉลี่ย 21.9 นาที/นัด (FIBA Official 40 Min Regulations)
+              เฉลี่ย 21.9 นาทีต่อเกม (ตามกติกาสากล FIBA 40 นาที)
             </p>
             <div className="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
               <div className="bg-secondary h-full rounded-full" style={{ width: "78%" }}></div>
@@ -156,7 +156,7 @@ export default function AthleteActivityIndex({
             <div className="flex items-start justify-between">
               <div className="space-y-1">
                 <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
-                  WIN RATE (อัตราชนะรวม)
+                  อัตราชนะการแข่งขันสะสม (OVERALL WIN RATE)
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="font-headline-xl text-headline-xl text-primary leading-none">
@@ -172,7 +172,7 @@ export default function AthleteActivityIndex({
               </div>
             </div>
             <p className="mt-2 font-body-sm text-body-sm text-secondary">
-              4 แชมป์เปี้ยนชิพ • 2 รองชนะเลิศอันดับหนึ่ง
+              ชนะเลิศ 4 รายการ • รองชนะเลิศ 2 รายการ
             </p>
             <div className="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "76.2%" }}></div>
@@ -183,32 +183,32 @@ export default function AthleteActivityIndex({
         {/* Sub-record Inset Breakdown Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 pt-4 border-t border-outline-variant text-center">
           <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">แชมเปี้ยนชิพส์</span>
+            <span className="font-label-badge text-label-badge uppercase text-secondary">รางวัลชนะเลิศ</span>
             <div className="font-title-stat text-title-stat text-primary">
-              4 <span className="font-body-sm text-body-sm text-secondary">รายการแข่งขัน</span>
+              4 <span className="font-body-sm text-body-sm text-secondary">รายการ</span>
             </div>
-            <span className="font-body-sm text-body-sm text-secondary">ระดับภาคเหนือ / ชิงแชมป์ประเทศ</span>
+            <span className="font-body-sm text-body-sm text-secondary">ระดับตัวแทนภาค / ชิงชนะเลิศแห่งประเทศไทย</span>
           </div>
           <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">รองชนะเลิศ</span>
+            <span className="font-label-badge text-label-badge uppercase text-secondary">รางวัลรองชนะเลิศ</span>
             <div className="font-title-stat text-title-stat text-on-surface">
-              2 <span className="font-body-sm text-body-sm text-secondary">รายการแข่งขัน</span>
+              2 <span className="font-body-sm text-body-sm text-secondary">รายการ</span>
             </div>
-            <span className="font-body-sm text-body-sm text-secondary">OBEC Cup & National Games</span>
+            <span className="font-body-sm text-body-sm text-secondary">สพฐ. ลีก &amp; กีฬาเยาวชนแห่งชาติ</span>
           </div>
           <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">แมตช์ที่ชนะ (Wins)</span>
+            <span className="font-label-badge text-label-badge uppercase text-secondary">ผลการแข่งขันที่ชนะ (Wins)</span>
             <div className="font-title-stat text-title-stat text-emerald-700">
-              32 <span className="font-body-sm text-body-sm text-secondary">แมตช์เป็นทางการ</span>
+              32 <span className="font-body-sm text-body-sm text-secondary">นัดทางการ</span>
             </div>
-            <span className="font-body-sm text-body-sm text-secondary">คะแนนแต้มนำเฉลี่ย +14.2 PTS</span>
+            <span className="font-body-sm text-body-sm text-secondary">ผลต่างคะแนนเฉลี่ย +14.2 คะแนน</span>
           </div>
           <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">ลงแข่งรวมทั้งหมด</span>
+            <span className="font-label-badge text-label-badge uppercase text-secondary">จำนวนการลงสนามรวม</span>
             <div className="font-title-stat text-title-stat text-on-surface">
-              42 <span className="font-body-sm text-body-sm text-secondary">แมตช์การันตี</span>
+              42 <span className="font-body-sm text-body-sm text-secondary">นัดที่ได้รับการรับรอง</span>
             </div>
-            <span className="font-body-sm text-body-sm text-secondary">บันทึกสถิติ FIBA LiveStats ครบถ้วน</span>
+            <span className="font-body-sm text-body-sm text-secondary">บันทึกสถิติอย่างเป็นทางการตามมาตรฐาน FIBA LiveStats</span>
           </div>
         </div>
       </section>
@@ -241,7 +241,7 @@ export default function AthleteActivityIndex({
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
               }`}
             >
-              ทั้งหมด (4)
+              ทุกรายการ (4)
             </button>
             <button
               onClick={() => setTournamentFilter("RECENT")}
@@ -251,7 +251,7 @@ export default function AthleteActivityIndex({
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
               }`}
             >
-              ปีล่าสุด (2026)
+              ฤดูกาล 2026
             </button>
             <button
               onClick={() => setTournamentFilter("NATIONAL")}
@@ -261,7 +261,7 @@ export default function AthleteActivityIndex({
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
               }`}
             >
-              ระดับประเทศ
+              ระดับชาติ (National)
             </button>
           </div>
         </div>
@@ -287,7 +287,7 @@ export default function AthleteActivityIndex({
                     TOA Youth Basketball League Thailand 2026
                   </h3>
                   <p className="font-body-sm text-body-sm text-secondary">
-                    สถานะ: <strong className="text-on-surface">Starting Center (ตัวจริงสม่ำเสมอ)</strong> • แข่งขัน <strong>10 แมตช์</strong> (สถิติ 10 ชนะ-0 แพ้)
+                    สถานะ: <strong className="text-on-surface">เซ็นเตอร์ตัวจริง (Starting Center)</strong> • ลงแข่งขัน <strong>10 นัด</strong> (สถิติ ชนะ 10 - แพ้ 0)
                   </p>
                 </div>
                 <div className="flex items-center gap-2 self-start lg:self-center">
@@ -298,7 +298,7 @@ export default function AthleteActivityIndex({
                     >
                       rewarded_ads
                     </span>
-                    ชนะเลิศอันดับ 1 (แชมเปี้ยนชิพ) + BEST CENTER
+                    รางวัลชนะเลิศอันดับ 1 + ผู้เล่นเซ็นเตอร์ยอดเยี่ยม (Best Center)
                   </span>
                 </div>
               </div>
@@ -355,13 +355,13 @@ export default function AthleteActivityIndex({
                     การแข่งขันบาสเกตบอลนักเรียน สพฐ. ลีก ชิงชนะเลิศแห่งประเทศไทย (OBEC Cup)
                   </h3>
                   <p className="font-body-sm text-body-sm text-secondary">
-                    สถานะ: <strong className="text-on-surface">Starting Center</strong> • แข่งขัน <strong>12 แมตช์</strong> (สถิติ 10 ชนะ-2 แพ้)
+                    สถานะ: <strong className="text-on-surface">เซ็นเตอร์ตัวจริง (Starting Center)</strong> • ลงแข่งขัน <strong>12 นัด</strong> (สถิติ ชนะ 10 - แพ้ 2)
                   </p>
                 </div>
                 <div className="flex items-center gap-2 self-start lg:self-center">
                   <span className="inline-flex items-center px-3 py-1.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps font-bold border border-outline">
                     <span className="material-symbols-outlined text-base mr-1">military_tech</span>
-                    รองชนะเลิศอันดับ 1 ระดับประเทศ
+                    รางวัลรองชนะเลิศอันดับ 1 ระดับประเทศ
                   </span>
                 </div>
               </div>
@@ -416,7 +416,7 @@ export default function AthleteActivityIndex({
                     กีฬาเยาวชนแห่งชาติ ครั้งที่ 40 (รอบคัดเลือกตัวแทนภาค 5)
                   </h3>
                   <p className="font-body-sm text-body-sm text-secondary">
-                    สถานะ: <strong className="text-on-surface">Starting Center (ตัวแทนจังหวัด)</strong> • แข่งขัน <strong>8 แมตช์</strong> (สถิติ 7 ชนะ-1 แพ้)
+                    สถานะ: <strong className="text-on-surface">เซ็นเตอร์ตัวจริง (ตัวแทนจังหวัด)</strong> • ลงแข่งขัน <strong>8 นัด</strong> (สถิติ ชนะ 7 - แพ้ 1)
                   </p>
                 </div>
                 <div className="flex items-center gap-2 self-start lg:self-center">
@@ -482,7 +482,7 @@ export default function AthleteActivityIndex({
                     TCAS Elite High School Basketball Invitational
                   </h3>
                   <p className="font-body-sm text-body-sm text-secondary">
-                    สถานะ: <strong className="text-on-surface">Starting Five (กัปตันสายป้องกันประจำทีม)</strong> • แข่งขัน <strong>6 แมตช์</strong> (สถิติ 5 ชนะ-1 แพ้)
+                    สถานะ: <strong className="text-on-surface">ผู้เล่น 5 คนแรก (กัปตันทีมเกมรับ)</strong> • ลงแข่งขัน <strong>6 นัด</strong> (สถิติ ชนะ 5 - แพ้ 1)
                   </p>
                 </div>
                 <div className="flex items-center gap-2 self-start lg:self-center">
@@ -532,7 +532,7 @@ export default function AthleteActivityIndex({
             <span className="material-symbols-outlined text-primary text-2xl">timeline</span>
             <div>
               <h2 className="font-headline-md text-headline-md uppercase tracking-wide text-on-surface">
-                ไทม์ไลน์ผลงานการลงเล่นล่าสุด (Recent Match Performance Logs)
+                บันทึกผลงานการแข่งขันรายนัดล่าสุด (Recent Match Performance Logs)
               </h2>
               <p className="font-body-sm text-body-sm text-secondary">
                 บันทึกสถิติแบบเรียลไทม์รายนัดพร้อมการประเมินจากระบบ FIBA LiveStats
@@ -543,7 +543,7 @@ export default function AthleteActivityIndex({
             onClick={onNavigateLogs}
             className="font-label-caps text-label-caps uppercase text-primary font-bold flex items-center gap-1 hover:underline cursor-pointer"
           >
-            ดูบันทึก 2025-2026 ทั้งหมด (42 แมตช์) →
+            ดูบันทึกการแข่งขันทั้งหมด 42 นัด →
           </button>
         </div>
 
@@ -564,7 +564,7 @@ export default function AthleteActivityIndex({
                   <span className="text-secondary font-body-sm text-body-sm">• 28 ก.พ. 2026</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-secondary">
-                  vs <strong className="text-on-surface">Debsirin School</strong> (ศึกลูกเด้งเยาวชนชิงแชมป์ประเทศไทย)
+                  vs <strong className="text-on-surface">Debsirin School</strong> (การแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย)
                 </p>
               </div>
             </div>
@@ -609,7 +609,7 @@ export default function AthleteActivityIndex({
                   <span className="text-secondary font-body-sm text-body-sm">• 25 ก.พ. 2026</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-secondary">
-                  vs <strong className="text-on-surface">Bangkok Christian College</strong> (บาสเกตบอลเยาวชนชิงแชมป์ประเทศไทย)
+                  vs <strong className="text-on-surface">Bangkok Christian College</strong> (การแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย)
                 </p>
               </div>
             </div>
@@ -648,7 +648,7 @@ export default function AthleteActivityIndex({
                   <span className="text-secondary font-body-sm text-body-sm">• 21 ก.พ. 2026</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-secondary">
-                  vs <strong className="text-on-surface">Suankularb Wittayalai</strong> (ศึกลูกเด้งเยาวชนชิงแชมป์ประเทศไทย)
+                  vs <strong className="text-on-surface">Suankularb Wittayalai</strong> (การแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย)
                 </p>
               </div>
             </div>
@@ -687,7 +687,7 @@ export default function AthleteActivityIndex({
                   <span className="text-secondary font-body-sm text-body-sm">• 17 ก.พ. 2026</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-secondary">
-                  vs <strong className="text-on-surface">Assumption College</strong> (บาสเกตบอลเยาวชนชิงแชมป์ประเทศไทย)
+                  vs <strong className="text-on-surface">Assumption College</strong> (การแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย)
                 </p>
               </div>
             </div>
@@ -726,7 +726,7 @@ export default function AthleteActivityIndex({
                   <span className="text-secondary font-body-sm text-body-sm">• 11 ม.ค. 2026</span>
                 </div>
                 <p className="font-body-sm text-body-sm text-secondary">
-                  vs <strong className="text-on-surface">Traim Udom Suksa</strong> (ศึกชิงชนะเลิศระดับมัธยมศึกษา สพฐ.)
+                  vs <strong className="text-on-surface">Traim Udom Suksa</strong> (การแข่งขันบาสเกตบอลระดับมัธยมศึกษา สพฐ.)
                 </p>
               </div>
             </div>
@@ -785,7 +785,7 @@ export default function AthleteActivityIndex({
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 1</span>
               <span className="font-headline-sm text-headline-sm text-primary">8.2 MIN</span>
             </div>
-            <p className="font-body-sm text-body-sm text-secondary mb-3">ออกสตาร์ทเพื่อเซ็ตเกมรับและรีบาวด์</p>
+            <p className="font-body-sm text-body-sm text-secondary mb-3">ลงเล่นเพื่อจัดระเบียบเกมรับและควบคุมการรีบาวด์</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "82%" }}></div>
             </div>
@@ -801,7 +801,7 @@ export default function AthleteActivityIndex({
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 2</span>
               <span className="font-headline-sm text-headline-sm text-primary">7.8 MIN</span>
             </div>
-            <p className="font-body-sm text-body-sm text-secondary mb-3">สลับพัก 2 นาทีเพื่อคุมฟาวล์สะสม</p>
+            <p className="font-body-sm text-body-sm text-secondary mb-3">ปรับเปลี่ยนผู้เล่นเพื่อควบคุมจำนวนฟาวล์สะสมและรักษาความสด</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "78%" }}></div>
             </div>
@@ -817,7 +817,7 @@ export default function AthleteActivityIndex({
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 3</span>
               <span className="font-headline-sm text-headline-sm text-primary">8.5 MIN</span>
             </div>
-            <p className="font-body-sm text-body-sm text-secondary mb-3">ช่วงชิงความได้เปรียบใต้แป้นหลังพักครึ่ง</p>
+            <p className="font-body-sm text-body-sm text-secondary mb-3">เพิ่มประสิทธิภาพเกมรุกและเกมรับใต้แป้นช่วงเปิดครึ่งหลัง</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "85%" }}></div>
             </div>
@@ -833,7 +833,7 @@ export default function AthleteActivityIndex({
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 4</span>
               <span className="font-headline-sm text-headline-sm text-primary">8.0 MIN</span>
             </div>
-            <p className="font-body-sm text-body-sm text-secondary mb-3">คุมจังหวะปิดเกม ป้องกันแต้มสำคัญ</p>
+            <p className="font-body-sm text-body-sm text-secondary mb-3">ควบคุมจังหวะการเล่นช่วงท้ายเกมและป้องกันคะแนนชี้ขาด</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
               <div className="bg-primary h-full rounded-full" style={{ width: "80%" }}></div>
             </div>
@@ -848,7 +848,7 @@ export default function AthleteActivityIndex({
         <div className="mt-4 p-3 bg-surface-container-low rounded border border-outline-variant flex items-start gap-3">
           <span className="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">clinical_notes</span>
           <div className="text-body-sm font-body-sm text-secondary leading-relaxed">
-            <strong className="text-on-surface">Scout Physical Assessment:</strong> นักกีฬามีความทนทานต่อแรงปะทะสูง สามารถลงเล่นเฉลี่ย 32.5 นาทีในแมตช์ที่สูสีโดยระดับประสิทธิภาพ (EFF) ไม่ดรอปในควอเตอร์สุดท้าย อัตราการฟาวล์เฉลี่ย 2.1 ครั้ง/เกม สะท้อนระเบียบวินัยเกมรับระดับสูง พร้อมสำหรับระบบบาสเกตบอลมหาวิทยาลัยและลีกอาชีพ TBL/BTU.
+            <strong className="text-on-surface">รายงานการประเมินสมรรถภาพทางกาย (Scout Physical Assessment):</strong> นักกีฬามีความแข็งแกร่งและทนทานต่อแรงปะทะสูง สามารถลงสนามเฉลี่ย 32.5 นาทีในนัดที่มีความกดดันสูง โดยค่าประสิทธิภาพ (EFF) ยังคงที่สม่ำเสมอในควอเตอร์สุดท้าย อัตราการทำฟาวล์เฉลี่ย 2.1 ครั้งต่อนัด สะท้อนถึงระเบียบวินัยในการเล่นเกมรับระดับสูง พร้อมสำหรับการแข่งขันระดับอุดมศึกษา (ช้างเผือก/TCAS) และลีกอาชีพ (TBL)
           </div>
         </div>
       </section>

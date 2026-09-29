@@ -32,7 +32,7 @@ export default function AthleteEffTrend({
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="font-headline-sm text-headline-sm uppercase text-on-surface">
-                1. เลือกรายการแข่งขัน (TOURNAMENT / COMPETITION)
+                รายการแข่งขันทางการ (TOURNAMENT / COMPETITION)
               </h2>
               <span className="bg-surface-container text-primary font-label-badge text-label-badge px-1.5 py-0.5 rounded font-bold">
                 7 MATCHES IN SAMPLE
@@ -52,7 +52,7 @@ export default function AthleteEffTrend({
               onChange={(e) => setSelectedTournament(e.target.value)}
               className="w-full bg-surface-container-low border border-outline-variant font-body-sm py-1.5 pl-3 pr-8 rounded text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
             >
-              <option value="ALL">รวมทุกรายการแข่งขันตลอดฤดูกาล (All Tournaments • 7 Games Verified)</option>
+              <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์รับรองสถิติ)</option>
               <option value="TOA">TOA National High School Championship (U18)</option>
               <option value="TBL">Thailand Basketball League Youth Cup 2024</option>
               <option value="BSAT">BSAT Inter-School Division 1 Invitational</option>
@@ -60,7 +60,7 @@ export default function AthleteEffTrend({
           </div>
           <button className="bg-surface-container-high hover:bg-surface-dim text-on-surface px-3 py-1.5 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 border border-outline-variant shrink-0 transition-colors">
             <span className="material-symbols-outlined text-sm">filter_list</span>
-            <span>FILTER</span>
+            <span>กรองข้อมูล</span>
           </button>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function AthleteEffTrend({
           <div className="mt-2 flex items-baseline gap-2">
             <span className="font-headline-xl text-headline-xl text-on-surface leading-none">92.4%</span>
             <span className="font-label-caps text-label-caps bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold">
-              สูงมาก (ELITE)
+              ระดับยอดเยี่ยม (ELITE TIER)
             </span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
@@ -99,7 +99,7 @@ export default function AthleteEffTrend({
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="font-headline-xl text-headline-xl text-on-surface leading-none">22</span>
-            <span className="font-body-sm text-secondary text-xs uppercase font-semibold">EFF ต่ำสุด</span>
+            <span className="font-body-sm text-secondary text-xs uppercase font-semibold">EFF ต่ำสุด (Minimum Floor)</span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
             vs Triam Udom (G3) - Baseline double-double guaranteed.
@@ -119,7 +119,7 @@ export default function AthleteEffTrend({
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="font-headline-xl text-headline-xl text-primary leading-none">34</span>
-            <span className="font-body-sm text-primary text-xs uppercase font-semibold">EFF สูงสุด</span>
+            <span className="font-body-sm text-primary text-xs uppercase font-semibold">EFF สูงสุด (Maximum Ceiling)</span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
             vs BCC Bangkok Christian College (Semi-Final Showdown).
@@ -140,7 +140,7 @@ export default function AthleteEffTrend({
           <div className="mt-2 flex items-baseline gap-2">
             <span className="font-headline-xl text-headline-xl text-primary leading-none">+133%</span>
             <span className="font-label-caps text-label-caps bg-primary text-white px-1.5 py-0.5 rounded font-bold">
-              Q4 SURGE
+              ยกระดับช่วงควอเตอร์ 4 (Q4 SURGE)
             </span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
@@ -164,7 +164,7 @@ export default function AthleteEffTrend({
               </h3>
             </div>
             <p className="font-body-sm text-secondary text-xs mt-0.5">
-              กราฟวิเคราะห์แนวโน้มระดับประสิทธิภาพการเล่นจริงในแต่ละเกม เทียบกับเกณฑ์มาตรฐานเฉลี่ยเซ็นเตอร์ระดับประเทศ
+              กราฟวิเคราะห์แนวโน้มระดับประสิทธิภาพการเล่นรายแมตช์ เปรียบเทียบกับค่าเฉลี่ยมาตรฐานตำแหน่งเซ็นเตอร์ระดับประเทศ
             </p>
           </div>
 
@@ -248,13 +248,13 @@ export default function AthleteEffTrend({
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-full bg-primary inline-block"></span>
               <span className="font-body-sm text-on-surface font-semibold">
-                คะแนนประสิทธิภาพจริง (Bhuripat EFF)
+                คะแนนประสิทธิภาพจริง (Athlete EFF)
               </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-4 h-0.5 border-t-2 border-dashed border-secondary inline-block"></span>
               <span className="font-body-sm text-secondary">
-                มาตรฐานเซ็นเตอร์ระดับประเทศ (League Center Avg: 12 EFF)
+                ค่าเฉลี่ยตำแหน่งเซ็นเตอร์ระดับประเทศ (Center Benchmark: 12 EFF)
               </span>
             </div>
           </div>
@@ -443,7 +443,7 @@ export default function AthleteEffTrend({
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="bg-primary text-white font-label-caps text-label-caps px-2 py-0.5 rounded font-bold uppercase">
-              นัดชิงชนะเลิศ (GRAND FINAL)
+              รอบชิงชนะเลิศ (GRAND FINAL)
             </span>
             <span className="text-surface-dim font-headline-sm text-headline-sm uppercase">
               vs เทพศิรินทร์ (Debsirin School)
@@ -453,12 +453,12 @@ export default function AthleteEffTrend({
             </span>
           </div>
           <p className="font-body-sm text-surface-dim">
-            TOA บาสเกตบอลชิงแชมป์ประเทศไทย U18 (BSAT) • 28 ก.ย. 2024 • เวลาที่มีปัญหา: ชนะเลิศระดับประเทศ • ผลการแข่งขัน:{" "}
+            การแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย U18 (BSAT) • 28 ก.ย. 2024 • เกียรติประวัติ: ชนะเลิศแห่งประเทศไทย • ผลการแข่งขัน:{" "}
             <span className="text-green-400 font-bold">WIN 78 - 76</span>
           </p>
           <div className="flex items-center gap-2 pt-1 text-xs text-tertiary-fixed">
             <span className="material-symbols-outlined text-sm">offline_bolt</span>
-            <span>จังหวะสำคัญ (Clutch Play): บล็อกช็อตเด็ดขาด 14 วินาทีสุดท้าย และเก็บ 7 ลูกรีบาวด์ในควอเตอร์ที่ 4</span>
+            <span>จังหวะสำคัญชี้ขาดเกม (Clutch Play): กระโดดบล็อกการทำคะแนน 14 วินาทีสุดท้าย และเก็บบอลรีบาวด์ 7 ครั้งในควอเตอร์ที่ 4</span>
           </div>
         </div>
 
@@ -489,10 +489,10 @@ export default function AthleteEffTrend({
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-xl">table_chart</span>
             <h3 className="font-headline-sm text-headline-sm uppercase text-on-surface">
-              MATCH BY MATCH DETAILED PERFORMANCE LOGS
+              บันทึกสถิติการแข่งขันรายแมตช์ (MATCH BY MATCH PERFORMANCE LOGS)
             </h3>
           </div>
-          <span className="font-body-sm text-secondary text-xs">7 แมตช์ในทัวร์นาเมนต์นี้</span>
+          <span className="font-body-sm text-secondary text-xs">จำนวน 7 แมตช์ในรายการแข่งขันนี้</span>
         </div>
 
         {/* 7 Cards Responsive Grid */}
@@ -697,13 +697,13 @@ export default function AthleteEffTrend({
           <div className="bg-surface-container-low p-4 rounded-lg border border-dashed border-outline-variant flex flex-col justify-between space-y-2">
             <div>
               <span className="font-label-caps text-label-caps text-secondary uppercase font-bold">
-                ทัวร์นาเมนต์นี้โดยสรุป
+                สรุปผลการแข่งขันภาพรวมทัวร์นาเมนต์
               </span>
               <div className="font-headline-sm text-headline-sm uppercase text-on-surface mt-1">
                 7 MATCHES • 7 VICTORIES
               </div>
               <p className="font-body-sm text-secondary text-xs mt-1 leading-relaxed">
-                สถิติไร้พ่าย 100% Win Rate ยึดตำแหน่งแชมป์ประเทศไทยรุ่นเยาวชน TOA 2024
+                สถิติชนะ 100% (ไร้พ่าย) ครองตำแหน่งชนะเลิศการแข่งขันบาสเกตบอลเยาวชนชิงชนะเลิศแห่งประเทศไทย ประจำปี 2567
               </p>
             </div>
             <div className="pt-2 border-t border-outline-variant">
@@ -729,10 +729,10 @@ export default function AthleteEffTrend({
           </div>
           <div className="space-y-1">
             <h4 className="font-headline-sm text-headline-sm uppercase text-on-surface">
-              Playoff Surge & Peaking (ยกระดับฟอร์มในเกมชี้ชะตา)
+              Playoff Surge & Peaking (การยกระดับขีดความสามารถในรอบชิงชนะเลิศ)
             </h4>
             <p className="font-body-sm text-secondary leading-relaxed">
-              มีสถิติที่น่าสนใจ: ผลงานดีที่สุดอยู่ในรอบตัดเชือกและรอบชิงชนะเลิศ Semi-Final (34 EFF) และ Grand Final (32 EFF) ชี้ชัดว่าเมื่อเจอกับทีมระดับชั้นนำของประเทศ (Tier 1) นักกีฬากลับสามารถรีดศักยภาพออกมาได้เต็มขีดความสามารถและเล่นภายใต้ความกดดันสูงได้อย่างไร้ข้อผิดพลาด (Clutch Factor)
+              ข้อมูลเชิงสถิติชี้ชัด: ประสิทธิภาพการเล่นสูงสุดอยู่ในรอบรองชนะเลิศ (34 EFF) และรอบชิงชนะเลิศ (32 EFF) สะท้อนความสามารถในการแข่งขันระดับสูง (Tier-1 Competition) โดยสามารถรักษามาตรฐานและทำผลงานได้อย่างยอดเยี่ยมภายใต้สถานการณ์กดดันสูง (Clutch Factor)
             </p>
           </div>
         </div>
@@ -744,10 +744,10 @@ export default function AthleteEffTrend({
           </div>
           <div className="space-y-1">
             <h4 className="font-headline-sm text-headline-sm uppercase text-on-surface">
-              High-Floor Assurance (รับประกันมาตรฐานฐานราก)
+              High-Floor Assurance (เสถียรภาพและมาตรฐานผลงานขั้นพื้นฐาน)
             </h4>
             <p className="font-body-sm text-secondary leading-relaxed">
-              ค่ามาตรฐานต่ำสุดของการเล่น (Floor: 22.0 - 24.0 EFF) สูงกว่าค่าเฉลี่ยเซ็นเตอร์ลีกทั่วไป (12.0) เกือบ 2 เท่าตัวตลอดทั้ง 7 แมตช์ ไม่มีเกมไหนที่หลุดฟอร์ม ผลิตดับเบิล-ดับเบิลได้ทุกนัด เป็นทางเลือกอันดับ 1 สำหรับโควตานักกีฬาระดับมหาวิทยาลัยชั้นนำและทุนการศึกษา TCAS
+              ระดับผลงานขั้นต่ำ (Floor: 22.0 - 24.0 EFF) สูงกว่าเกณฑ์เฉลี่ยตำแหน่งเซ็นเตอร์ระดับประเทศ (12.0 EFF) เกือบสองเท่าตลอดทั้ง 7 แมตช์ สามารถทำดับเบิล-ดับเบิล (Double-Double) ได้ครบทุกนัด มีความพร้อมสูงสุดสำหรับการพิจารณาคัดเลือกโควตานักกีฬาและทุนการศึกษาระดับอุดมศึกษา (TCAS Portfolio)
             </p>
           </div>
         </div>

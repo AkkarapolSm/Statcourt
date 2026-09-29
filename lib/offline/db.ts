@@ -64,18 +64,80 @@ export async function enqueueScorekeeperEvent(event: MatchEvent): Promise<void> 
     console.warn("IndexedDB unavailable, falling back to localStorage", err);
   }
 
-  // Fallback to capped localStorage
+  // Fallback to capped localStorage with overflow emergency preservation
   if (typeof window !== "undefined") {
     try {
       const existing: QueuedEvent[] = JSON.parse(
         localStorage.getItem("statcourt_offline_queue") || "[]"
       );
-      // Enforce cap to prevent QuotaExceededError
+      if (existing.length >= MAX_LOCAL_QUEUE_ITEMS) {
+        console.warn("[OFFLINE QUEUE] Queue reached maximum capacity. Preserving overflow in emergency backup.");
+        // Back up before trimming so no events are lost silently
+        const overflow = JSON.parse(localStorage.getItem("statcourt_offline_overflow_backup") || "[]");
+        overflow.push(...existing.slice(0, 50));
+        localStorage.setItem("statcourt_offline_overflow_backup", JSON.stringify(overflow.slice(-2000)));
+      }
       const trimmed = existing.slice(-MAX_LOCAL_QUEUE_ITEMS + 1);
       trimmed.push(item);
       localStorage.setItem("statcourt_offline_queue", JSON.stringify(trimmed));
     } catch (e) {
       console.error("Local storage error:", e);
+    }
+  }
+}
+
+/**
+ * Checks if offline queue is approaching capacity limit (> 400 items).
+ */
+export async function isQueueApproachingCapacity(): Promise<boolean> {
+  const count = await getPendingOfflineCount();
+  return count >= 400;
+}
+
+/**
+ * Exports all pending offline events as formatted JSON for manual recovery.
+ */
+export async function exportOfflineEventsJson(matchId?: string): Promise<string> {
+  const events = await getPendingOfflineEvents();
+  const filtered = matchId ? events.filter((e) => e.event.matchId === matchId) : events;
+  return JSON.stringify(
+    {
+      exportedAt: new Date().toISOString(),
+      matchId: matchId || "ALL_MATCHES",
+      totalEvents: filtered.length,
+      events: filtered.map((q) => q.event),
+    },
+    null,
+    2
+  );
+}
+
+/**
+ * Removes successfully synced events from the offline queue.
+ */
+export async function markEventsSynced(eventIds: string[]): Promise<void> {
+  const idSet = new Set(eventIds);
+  try {
+    const db = await getDb();
+    if (db) {
+      for (const id of eventIds) {
+        await db.delete(STORE_NAME, id);
+      }
+      return;
+    }
+  } catch (err) {
+    console.warn("IndexedDB sync cleanup failed", err);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const existing: QueuedEvent[] = JSON.parse(
+        localStorage.getItem("statcourt_offline_queue") || "[]"
+      );
+      const remaining = existing.filter((item) => !idSet.has(item.id));
+      localStorage.setItem("statcourt_offline_queue", JSON.stringify(remaining));
+    } catch (e) {
+      console.error("Failed to clean up localStorage synced events:", e);
     }
   }
 }

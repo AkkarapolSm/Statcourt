@@ -234,6 +234,23 @@ export default function MarketplacePage() {
         </div>
       </section>
 
+      {/* Demo Simulation Status Banner */}
+      <div className="bg-amber-500/10 border-b border-amber-500/30 px-4 py-2.5">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-amber-900">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-amber-200 text-amber-900 font-bold uppercase text-[10px] shrink-0 border border-amber-300">
+              รุ่นทดลอง / DEMO SIMULATION
+            </span>
+            <span>
+              StatCourt Marketplace อยู่ในสถานะทดลองจำลองระบบ (Simulation Mode) — การลงประกาศ การสอบถามสินค้า และระบบ Escrow เป็นข้อมูลตัวอย่างเพื่อทดสอบ User Flow ยังไม่มีระบบชำระเงินจริง
+            </span>
+          </div>
+          <span className="text-[11px] font-bold text-amber-800 shrink-0">
+            [ SANDBOX WORKSPACE ]
+          </span>
+        </div>
+      </div>
+
       {/* Verification & Escrow Credential Ribbon */}
       <aside className="bg-surface-container-high border-b border-outline-variant py-space-xs">
         <div className="max-w-7xl mx-auto px-gutter-desktop flex flex-wrap items-center justify-between text-body-sm font-body-sm text-on-surface gap-2">

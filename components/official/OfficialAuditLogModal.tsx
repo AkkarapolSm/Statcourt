@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   X,
   ShieldCheck,
@@ -50,7 +50,7 @@ export default function OfficialAuditLogModal({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedReport, setCopiedReport] = useState<boolean>(false);
 
-  const fetchAuditLogs = async () => {
+  const fetchAuditLogs = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await fetch(`/api/matches/${matchId}/audit`);
@@ -64,13 +64,13 @@ export default function OfficialAuditLogModal({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [matchId]);
 
   useEffect(() => {
     if (isOpen) {
       fetchAuditLogs();
     }
-  }, [isOpen, matchId]);
+  }, [isOpen, fetchAuditLogs]);
 
   if (!isOpen) return null;
 

@@ -148,7 +148,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
             </div>
             <div>
               <span className="font-bold text-slate-900 font-headline-sm block">eFG% (Effective FG%)</span>
-              <p className="text-secondary">(FGM + 0.5 * 3PM) / FGA ถ่วงน้ำหนักความคุ้มค่าลูกยิง 3 แต้ม</p>
+              <p className="text-secondary">(FGM + 0.5 * 3PM) / FGA ถ่วงน้ำหนักความคุ้มค่าการยิง 3 คะแนน</p>
             </div>
             <div>
               <span className="font-bold text-slate-900 font-headline-sm block">TS% (True Shooting)</span>

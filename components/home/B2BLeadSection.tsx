@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { CheckCircle2, Send } from "lucide-react";
-import { useAuthStore } from "@/lib/auth/useAuthStore";
 
 export default function B2BLeadSection() {
-  const { currentUser, loginAs, toggleSubscriptionTier } = useAuthStore();
-  const [mounted, setMounted] = useState(false);
 
   // Contact / Lead form state
   const [contactName, setContactName] = useState("");
@@ -17,10 +14,6 @@ export default function B2BLeadSection() {
   const [teamCount, setTeamCount] = useState("16");
   const [message, setMessage] = useState("");
   const [isLeadSubmitted, setIsLeadSubmitted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleLeadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,77 +196,6 @@ export default function B2BLeadSection() {
             </div>
           </div>
 
-        </div>
-
-        {/* Fast Role Simulation Bar */}
-        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-3 font-mono">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="font-bold uppercase text-white">
-              SESSION ROLE:
-            </span>
-            <span className="bg-slate-800 text-white px-2 py-0.5 rounded uppercase font-bold text-[11px]">
-              {currentUser.role} ({currentUser.name})
-            </span>
-            <button
-              type="button"
-              onClick={toggleSubscriptionTier}
-              className="flex items-center bg-black/60 rounded px-2.5 py-1 border border-white/15 hover:border-amber-400/50 transition cursor-pointer"
-              title="Click to toggle tier"
-            >
-              <span className="text-[10px] text-white mr-1.5 font-bold">
-                TIER:
-              </span>
-              <span
-                className={`text-[11px] font-bold ${
-                  mounted && currentUser.tier === "PRO" ? "text-amber-400" : "text-slate-400"
-                }`}
-              >
-                {mounted ? currentUser.tier : "FREE"}
-              </span>
-            </button>
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-slate-400 text-[11px] uppercase">
-              SIMULATION:
-            </span>
-            <button
-              type="button"
-              onClick={() => loginAs("PUBLIC")}
-              className={`px-2.5 py-1 rounded text-xs font-bold transition cursor-pointer ${
-                currentUser.role === "PUBLIC" ? "bg-white text-slate-950 shadow" : "bg-slate-800 text-white"
-              }`}
-            >
-              Public Guest
-            </button>
-            <button
-              type="button"
-              onClick={() => loginAs("ATHLETE")}
-              className={`px-2.5 py-1 rounded text-xs font-bold transition cursor-pointer ${
-                currentUser.role === "ATHLETE" ? "bg-white text-slate-950 shadow" : "bg-slate-800 text-white"
-              }`}
-            >
-              Athlete
-            </button>
-            <button
-              type="button"
-              onClick={() => loginAs("COACH")}
-              className={`px-2.5 py-1 rounded text-xs font-bold transition cursor-pointer ${
-                currentUser.role === "COACH" ? "bg-white text-slate-950 shadow" : "bg-slate-800 text-white"
-              }`}
-            >
-              Coach
-            </button>
-            <button
-              type="button"
-              onClick={() => loginAs("OFFICIAL")}
-              className={`px-2.5 py-1 rounded text-xs font-bold transition cursor-pointer ${
-                currentUser.role === "OFFICIAL" ? "bg-[#DC2626] text-white shadow" : "bg-red-950 text-red-200"
-              }`}
-            >
-              Table Official
-            </button>
-          </div>
         </div>
 
       </div>

@@ -33,6 +33,8 @@ import {
 } from "@/lib/auth/rbac";
 import PricingModal from "@/components/premium/PricingModal";
 import UserRoleProfileMenu from "./UserRoleProfileMenu";
+import NavbarRoleSwitcher from "./NavbarRoleSwitcher";
+import NotificationCenter from "@/components/notifications/NotificationCenter";
 
 interface SubNavItem {
   href: string;
@@ -62,12 +64,13 @@ export default function Navbar() {
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const navContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { currentUser, toggleSubscriptionTier, loginAs } = useAuthStore();
+  const { currentUser } = useAuthStore();
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/leaderboard?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setMobileMenuOpen(false);
     }
   };
 
@@ -123,6 +126,49 @@ export default function Navbar() {
     }, 180);
   };
 
+  // Dynamic role-specific Hub item replacing "Athlete Hub" in Navbar
+  const roleHubItem: SubNavItem | null = (() => {
+    switch (currentUser.role) {
+      case "ATHLETE":
+        return {
+          href: "/athlete/ath-1",
+          label: "Athlete Hub",
+          desc: "โปรไฟล์นักกีฬา ประวัติ และประเมินศักยภาพ",
+          icon: UserCheck,
+          badge: "Verified",
+        };
+      case "COACH":
+        return {
+          href: "/scout",
+          label: "Coach Hub",
+          desc: "ศูนย์ผู้ฝึกสอน ค้นหาดาวรุ่ง และวิเคราะห์ศักยภาพ",
+          icon: Compass,
+          badge: "Coach",
+        };
+      case "OFFICIAL":
+        return {
+          href: "/official/console/match-bcc-ds-01",
+          label: "Official Hub",
+          desc: "ศูนย์กรรมการ โต๊ะเทคนิค และบันทึกคะแนน FIBA",
+          icon: ShieldCheck,
+          badge: "Official",
+        };
+      case "ADMIN":
+        return {
+          href: "/solutions",
+          label: "Admin Hub",
+          desc: "ศูนย์บริหารจัดการทัวร์นาเมนต์ และระบบองค์กรกีฬา",
+          icon: Sparkles,
+          badge: "Admin",
+        };
+      case "PUBLIC":
+      case "FAN":
+      default:
+        // Public and Fan users must NOT have an Athlete Hub that they can click into
+        return null;
+    }
+  })();
+
   // Categorized Navigation Groups
   const navGroups: NavGroupItem[] = [
     {
@@ -172,26 +218,56 @@ export default function Navbar() {
       label: "Talent & Teams",
       subLabel: "นักกีฬา & สโมสร",
       items: [
-        {
-          href: "/athlete/ath-1",
-          label: "Athlete Hub",
-          desc: "โปรไฟล์นักกีฬา ประวัติ และประเมินศักยภาพ",
-          icon: UserCheck,
-          badge: "Verified",
-        },
-        {
-          href: "/team",
-          label: "Team Hub",
-          desc: "ข้อมูลสโมสร รายชื่อผู้เล่น และสถิติทีม",
-          icon: Users,
-        },
-        {
-          href: "/scout",
-          label: "Scout Hub",
-          desc: "ระบบค้นหาดาวรุ่ง คลังคลิป และรายงานเชิงลึก",
-          icon: Compass,
-          badge: "PRO",
-        },
+        ...(roleHubItem ? [roleHubItem] : []),
+        ...(currentUser.role === "COACH"
+          ? [
+              {
+                href: "/team",
+                label: "Team Hub",
+                desc: "ข้อมูลสโมสร แผนการเล่น และการฝึกซ้อม",
+                icon: Users,
+                badge: "Coach",
+              },
+            ]
+          : []),
+        ...(currentUser.role === "PUBLIC" || currentUser.role === "FAN"
+          ? [
+              {
+                href: "/teams",
+                label: "Clubs & Teams",
+                desc: "ทำเนียบสโมสรและทีมที่เข้าร่วมการแข่งขัน",
+                icon: Trophy,
+              },
+              {
+                href: "/leaderboard",
+                label: "Player Directory",
+                desc: "ทำเนียบนักกีฬา สถิติ และอันดับผลงานการแข่งขัน",
+                icon: Award,
+                badge: "Top 50",
+              },
+            ]
+          : []),
+        ...(currentUser.role === "ATHLETE" || currentUser.role === "OFFICIAL" || currentUser.role === "ADMIN"
+          ? [
+              {
+                href: "/teams",
+                label: "Clubs & Teams",
+                desc: "ทำเนียบสโมสร รายชื่อผู้เล่น และตารางแข่งขัน",
+                icon: Trophy,
+              },
+            ]
+          : []),
+        ...(currentUser.role !== "COACH" && currentUser.role !== "PUBLIC" && currentUser.role !== "FAN"
+          ? [
+              {
+                href: "/scout",
+                label: "Scout Hub",
+                desc: "ระบบค้นหาดาวรุ่ง คลังคลิป และรายงานเชิงลึก",
+                icon: Compass,
+                badge: "PRO",
+              },
+            ]
+          : []),
       ],
     },
     {
@@ -426,20 +502,17 @@ export default function Navbar() {
 
           {/* Right: Actions Cluster */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* User Profile, Role Badge & Interactive Role Switcher */}
+            {/* Interactive Developer Role Switcher (Switch role on 1 click) */}
+            <NavbarRoleSwitcher />
+
+            {/* User Profile, Role Badge & Auth */}
             <UserRoleProfileMenu />
 
-            {/* Utility Icons: Bell & Globe */}
-            <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-outline-variant text-slate-500">
+            {/* Utility Icons: Notification Center & Globe */}
+            <div className="flex items-center gap-1 pl-2 border-l border-outline-variant text-slate-500">
+              <NotificationCenter />
               <button
-                className="hover:text-primary hover:bg-slate-100 p-1.5 rounded-lg transition"
-                title="Notifications"
-                onClick={() => alert("ระบบแจ้งเตือนสถิติสดและผลการแข่งขันทางการ")}
-              >
-                <Bell className="w-4 h-4" />
-              </button>
-              <button
-                className="hover:text-primary hover:bg-slate-100 p-1.5 rounded-lg transition"
+                className="hidden sm:inline-flex hover:text-primary hover:bg-slate-100 p-1.5 rounded-lg transition"
                 title="Language & Region"
                 onClick={() => alert("Language: Thai / English (FIBA Livestats Standard)")}
               >
@@ -462,60 +535,40 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-outline-variant px-4 py-3 space-y-3 animate-in fade-in max-h-[85vh] overflow-y-auto">
             {/* Mobile User Profile Card & Role Switcher */}
-            <div className="p-3 bg-slate-900 text-white rounded-xl shadow-xs">
+            <div className="p-3 bg-slate-900 text-white rounded-xl shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs shrink-0 border border-white/20">
-                    {currentUser.name.charAt(0)}
+                    {currentUser.name ? currentUser.name.charAt(0) : "G"}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-bold truncate">{currentUser.name}</p>
+                    <p className="text-xs font-bold truncate">{currentUser.name || "Guest Spectator"}</p>
                     <span className="text-[9px] font-mono font-bold bg-white/20 px-1.5 py-0.2 rounded">
                       {currentUser.role}
                     </span>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={toggleSubscriptionTier}
-                  className="text-[10px] font-mono font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded shrink-0 cursor-pointer"
-                >
-                  {isPro ? "PRO ⭐" : "FREE"}
-                </button>
+                <span className="text-xs text-slate-300">{currentUser.role}</span>
               </div>
 
-              {/* Mobile Quick Role Switcher */}
-              <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center gap-1 overflow-x-auto text-[10px] font-mono font-bold">
-                <span className="text-slate-400 shrink-0">Role:</span>
-                {(["PUBLIC", "FAN", "ATHLETE", "COACH", "OFFICIAL", "ADMIN"] as const).map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => {
-                      loginAs(r);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`px-1.5 py-0.5 rounded shrink-0 transition cursor-pointer ${
-                      currentUser.role === r
-                        ? "bg-white text-slate-950 font-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    {r}
-                  </button>
-                ))}
+              {/* Mobile Role Switcher Trigger */}
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+                <span className="text-[11px] font-mono text-slate-400">สลับสิทธิ์ทดสอบ:</span>
+                <NavbarRoleSwitcher />
               </div>
             </div>
 
             {/* Search Input for Mobile/Tablet */}
-            <div className="flex items-center bg-[#f8f9fc] border border-outline-variant rounded-lg px-2.5 py-1.5 w-full">
+            <form onSubmit={handleSearchSubmit} className="flex items-center bg-[#f8f9fc] border border-outline-variant rounded-lg px-2.5 py-1.5 w-full">
               <Search className="w-3.5 h-3.5 text-slate-400 mr-2 shrink-0" />
               <input
                 className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-400 w-full outline-none"
-                placeholder="Search athletes, teams, leagues..."
+                placeholder="ค้นหานักกีฬา, ทีม, ทัวร์นาเมนต์..."
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+            </form>
 
             {/* Direct Links Top */}
             <div className="space-y-1 pt-1">
@@ -688,7 +741,7 @@ export default function Navbar() {
                   className="font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1.5"
                 >
                   <Compass className="w-4 h-4 text-emerald-600" />
-                  <span>Scout Engine Hub</span>
+                  <span>Coach Hub</span>
                 </Link>
               ) : (
                 <Link
@@ -700,15 +753,6 @@ export default function Navbar() {
                   <span>Tournaments & Brackets</span>
                 </Link>
               )}
-              <button
-                onClick={() => {
-                  toggleSubscriptionTier();
-                  setMobileMenuOpen(false);
-                }}
-                className="font-mono font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-200"
-              >
-                Tier: {isPro ? "PRO ⭐" : "FREE"}
-              </button>
             </div>
           </div>
         )}

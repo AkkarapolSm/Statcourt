@@ -6,6 +6,7 @@ import {
   hasRole,
   canAccessScoutHub,
   canEditAthleteProfile,
+  isAthleteProfileOwner,
   canViewAthletePrivateData,
   canManageTeamLineup,
   canAccessOfficialConsole,
@@ -83,6 +84,31 @@ test("canEditAthleteProfile allows only profile owner and federation admins", ()
   assert.equal(canEditAthleteProfile(coachUser, "ath-1"), false, "Coach cannot edit athlete stats directly");
 });
 
+test("isAthleteProfileOwner restricts TCAS & Academic eligibility access to profile owner and admin", () => {
+  const ownerAthlete = { id: "ath-1", role: "ATHLETE", tier: "FREE", approvalStatus: "APPROVED" };
+  const otherAthlete = { id: "ath-2", role: "ATHLETE", tier: "FREE", approvalStatus: "APPROVED" };
+  const coachUser = { id: "coach-1", role: "COACH", tier: "PRO", approvalStatus: "APPROVED" };
+  const fanUser = { id: "fan-1", role: "FAN", tier: "FREE", approvalStatus: "APPROVED" };
+  const publicUser = { id: "guest", role: "PUBLIC", tier: "FREE", approvalStatus: "PENDING" };
+  const adminUser = { id: "admin-1", role: "ADMIN", tier: "PRO", approvalStatus: "APPROVED" };
+
+  // Profile owner can access their own TCAS & Academic tabs
+  assert.equal(isAthleteProfileOwner(ownerAthlete, "ath-1"), true, "Owner athlete has full access to their own TCAS & Academic tabs");
+
+  // Other athlete cannot access someone else's TCAS & Academic tabs
+  assert.equal(isAthleteProfileOwner(otherAthlete, "ath-1"), false, "Other athlete is blocked from viewing another athlete's TCAS & Academic tabs");
+
+  // Coach cannot access athlete's private TCAS & Academic tabs directly on athlete profile
+  assert.equal(isAthleteProfileOwner(coachUser, "ath-1"), false, "Coach is blocked from viewing athlete private TCAS & Academic tabs");
+
+  // Fan and Public cannot access
+  assert.equal(isAthleteProfileOwner(fanUser, "ath-1"), false, "Fan is blocked from viewing TCAS & Academic tabs");
+  assert.equal(isAthleteProfileOwner(publicUser, "ath-1"), false, "Public guest is blocked from viewing TCAS & Academic tabs");
+
+  // Admin can access
+  assert.equal(isAthleteProfileOwner(adminUser, "ath-1"), true, "Admin can view any athlete profile");
+});
+
 test("canViewAthletePrivateData protects recruit analytics while allowing coach evaluation", () => {
   const ownerAthlete = { id: "ath-1", role: "ATHLETE", tier: "FREE", approvalStatus: "APPROVED" };
   const otherAthlete = { id: "ath-2", role: "ATHLETE", tier: "FREE", approvalStatus: "APPROVED" };
@@ -102,14 +128,14 @@ test("canViewAthletePrivateData protects recruit analytics while allowing coach 
   assert.equal(canViewAthletePrivateData(publicUser, "ath-1"), false);
 });
 
-test("canManageTeamLineup allows coaches and admins to edit attendance and rosters", () => {
+test("canManageTeamLineup allows only coaches to edit attendance and rosters", () => {
   const coachUser = { id: "coach-1", role: "COACH", tier: "PRO", approvalStatus: "APPROVED" };
   const adminUser = { id: "admin-1", role: "ADMIN", tier: "PRO", approvalStatus: "APPROVED" };
   const athleteUser = { id: "ath-1", role: "ATHLETE", tier: "FREE", approvalStatus: "APPROVED" };
   const officialUser = { id: "off-1", role: "OFFICIAL", tier: "PRO", approvalStatus: "APPROVED" };
 
   assert.equal(canManageTeamLineup(coachUser), true, "Coach can manage lineup");
-  assert.equal(canManageTeamLineup(adminUser), true, "Admin can manage lineup");
+  assert.equal(canManageTeamLineup(adminUser), false, "Admin cannot manage lineup (Coach only)");
   assert.equal(canManageTeamLineup(athleteUser), false, "Athlete cannot manage lineup");
   assert.equal(canManageTeamLineup(officialUser), false, "Table official cannot manage lineup");
 });
@@ -138,10 +164,10 @@ test("canCreateTournament and getRoleDefaultRoute map to appropriate landing pag
   assert.equal(canCreateTournament(publicUser), false);
 
   assert.equal(getRoleDefaultRoute("ATHLETE"), "/athlete/ath-1");
-  assert.equal(getRoleDefaultRoute("COACH"), "/scout");
+  assert.equal(getRoleDefaultRoute("COACH"), "/team");
   assert.equal(getRoleDefaultRoute("OFFICIAL"), "/official/console/match-bcc-ds-01");
   assert.equal(getRoleDefaultRoute("ADMIN"), "/solutions");
-  assert.equal(getRoleDefaultRoute("FAN"), "/team");
+  assert.equal(getRoleDefaultRoute("FAN"), "/tournaments");
   assert.equal(getRoleDefaultRoute("PUBLIC"), "/");
 });
 
@@ -164,7 +190,6 @@ test("canAccessNavItem correctly filters navigation links based on user role and
     "/leaderboard",
     "/matches/match-bcc-ds-01/film",
     "/athlete/ath-1",
-    "/team",
     "/opportunities",
     "/academy",
     "/marketplace",
@@ -180,6 +205,16 @@ test("canAccessNavItem correctly filters navigation links based on user role and
     assert.equal(canAccessNavItem(officialApproved, route), true, `Official should access ${route}`);
     assert.equal(canAccessNavItem(adminUser, route), true, `Admin should access ${route}`);
   }
+
+  // Team Hub: ONLY Coach (Others including Admin cannot view or access it)
+  assert.equal(canAccessNavItem(guestUser, "/team"), false);
+  assert.equal(canAccessNavItem(publicUser, "/team"), false);
+  assert.equal(canAccessNavItem(fanFree, "/team"), false);
+  assert.equal(canAccessNavItem(athleteFree, "/team"), false);
+  assert.equal(canAccessNavItem(athletePro, "/team"), false);
+  assert.equal(canAccessNavItem(officialApproved, "/team"), false);
+  assert.equal(canAccessNavItem(coachFree, "/team"), true);
+  assert.equal(canAccessNavItem(adminUser, "/team"), false, "Admin cannot access Team Hub (Coach only)");
 
   // Official Table Console: ONLY approved official and admin
   assert.equal(canAccessNavItem(guestUser, "/official/console/match-bcc-ds-01"), false);
@@ -217,6 +252,7 @@ test("Public non-members are strictly restricted from member-only hubs", () => {
 
   assert.equal(canAccessScoutHub(publicUser), false, "Public cannot access Scout Hub");
   assert.equal(canAccessOfficialConsole(publicUser), false, "Public cannot access Official Table Console");
+  assert.equal(canManageTeamLineup(publicUser), false, "Public cannot access Team Hub / Lineup Operations");
   assert.equal(canCreateTournament(publicUser), false, "Public cannot create tournaments");
 });
 

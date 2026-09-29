@@ -85,6 +85,18 @@ export default function PricingModal({
           </button>
         </div>
 
+        {/* Demo Simulation Notice */}
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs font-mono text-amber-300">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0">
+              รุ่นทดลอง / DEMO SIMULATION
+            </span>
+            <span>
+              Sandbox Mode: การสลับแพ็กเกจ PRO ในเวอร์ชันนี้เป็นการจำลองสิทธิ์ (Instant Feature Unlock) เพื่อให้ทดสอบฟีเจอร์ระดับ Pro ได้โดยไม่มีการตัดบัตรเครดิตจริง
+            </span>
+          </div>
+        </div>
+
         {/* Perspective Switcher Tabs */}
         <div className="px-6 pt-5 bg-slate-900/60 border-b border-slate-800 flex items-center gap-3">
           <button

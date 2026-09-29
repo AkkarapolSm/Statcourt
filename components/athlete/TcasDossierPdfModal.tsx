@@ -555,11 +555,11 @@ export default function TcasDossierPdfModal({
               <div className="border border-slate-200 rounded-lg p-3 bg-white mb-4">
                 <div className="font-bold text-[10px] text-slate-800 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-red-600" />
-                  <span>4. สรุปรายงานสเกาต์ & บทวิเคราะห์สไตล์การเล่น (SCOUTING NOTES)</span>
+                  <span>4. บทสรุปรายงานการประเมินและวิเคราะห์รูปแบบการเล่น (SCOUTING REPORT)</span>
                 </div>
                 <p className="text-[10px] text-slate-600 leading-relaxed">
                   {athlete.bio ||
-                    "ผู้เล่นตำแหน่งวงใน/การ์ดระดับแนวหน้าของรุ่น U18 มีความโดดเด่นด้าน Physical Length ด้วยค่า Ape Index ที่เหนือกว่าค่าเฉลี่ยสากล มีทักษะการตัดสินใจในเกมเร็ว การสร้างสเปซซิ่ง และการคุมเกมรับวงในระดับ Tier 1 ของประเทศ เหมาะสมสำหรับการพัฒนาต่อยอดสู่ระดับลีกมหาวิทยาลัยชั้นนำ"}
+                    "ผู้เล่นตำแหน่งวงในระดับแนวหน้าของรุ่น U18 มีความโดดเด่นด้านสรีระและความยาวช่วงแขน (Ape Index) สูงกว่าเกณฑ์เฉลี่ยสากล มีทักษะการตัดสินใจในเกมเร็ว การเปิดพื้นที่สนาม (Spacing) และการป้องกันวงในระดับแนวหน้าของประเทศ มีความพร้อมสูงสุดสำหรับการพัฒนาต่อยอดสู่การแข่งขันระดับอุดมศึกษา"}
                 </p>
               </div>
             </div>
@@ -578,7 +578,7 @@ export default function TcasDossierPdfModal({
                   </div>
                   <div className="space-y-0.5 font-mono text-[8.5px] text-slate-500">
                     <div className="font-bold text-slate-800 text-[9.5px]">
-                      สแกน QR เพื่อดูคลิปวิดีโอ &amp; สถิติสด 4K
+                      สแกนรหัส QR เพื่อเข้าชมวิดีโอการเล่นและรายงานสถิติทางการ
                     </div>
                     <div>ระบบตรวจสอบดิจิทัล StatCourt TCAS Database</div>
                     <div className="text-slate-400 truncate max-w-[200px]">{profileUrl}</div>

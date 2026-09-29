@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/auth/serverAuth";
+import { canManageTeam } from "@/lib/auth/resources";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const teamId = searchParams.get("teamId") || "team-bcc";
+    if (!(await canManageTeam(request, teamId))) return NextResponse.json({ error: "ไม่มีสิทธิ์ดูแผนทีม" }, { status: 403 });
 
     const plays = await prisma.playbookItem.findMany({
       where: { teamId },
@@ -27,22 +29,26 @@ export async function GET(request: NextRequest) {
         }
       });
 
-      return NextResponse.json({
-        success: true,
-        count: parsed.length,
-        data: parsed,
-        source: "PRISMA_SQLITE_PERSISTENT",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          count: parsed.length,
+          data: parsed,
+          source: "PRISMA_SQLITE_PERSISTENT",
+        },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
     }
 
-    // Check seed plays for the specified team
-    const { mockPlaybookPlays } = await import("@/lib/db/phase3-data");
-    return NextResponse.json({
-      success: true,
-      count: mockPlaybookPlays.length,
-      data: mockPlaybookPlays,
-      source: "FALLBACK_MOCK",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: 0,
+        data: [],
+        source: "EMPTY_RECORD",
+      },
+      { headers: { "Cache-Control": "private, no-store" } }
+    );
   } catch (error) {
     console.error("[API PLAYBOOK GET] DB error:", error);
     return NextResponse.json(
@@ -58,13 +64,14 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Require Coach or Admin to save tactical plays
-    const auth = requireRole(request, ["COACH", "ADMIN"]);
+    const auth = await requireRole(request, ["COACH", "ADMIN"]);
     if (!auth.authorized) {
       return auth.response!;
     }
 
     const body = await request.json();
     const { teamId = "team-bcc", title, category = "OFFENSE", playJson } = body;
+    if (!(await canManageTeam(request, teamId))) return NextResponse.json({ error: "ไม่มีสิทธิ์แก้แผนทีม" }, { status: 403 });
 
     if (!title) {
       return NextResponse.json(

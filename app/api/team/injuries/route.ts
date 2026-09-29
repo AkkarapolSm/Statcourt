@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/auth/serverAuth";
+import { canAccessAthlete, canManageTeam } from "@/lib/auth/resources";
+import { getSessionUser } from "@/lib/auth/session";
 
 export const dynamic = "force-dynamic";
 
@@ -8,9 +10,30 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const athleteId = searchParams.get("athleteId");
+    const teamId = searchParams.get("teamId");
+    const user = await getSessionUser(request);
+    if (!user || user.accountStatus !== "ACTIVE") {
+      return NextResponse.json(
+        { success: false, error: "กรุณาเข้าสู่ระบบก่อนเข้าถึงข้อมูลการแพทย์" },
+        { status: 401, headers: { "Cache-Control": "private, no-store" } }
+      );
+    }
+
+    const isAdmin = user.role === "ADMIN";
+    const isSelfAthlete = user.role === "ATHLETE" && athleteId && user.athleteProfile?.id === athleteId;
+    const isCoachOfTeam = user.role === "COACH" && teamId && (await canManageTeam(request, teamId));
+    const isCoachOfAthlete = user.role === "COACH" && athleteId && (await canAccessAthlete(request, athleteId, "read"));
+
+    if (!isAdmin && !isSelfAthlete && !isCoachOfTeam && !isCoachOfAthlete) {
+      return NextResponse.json(
+        { success: false, error: "ไม่มีสิทธิ์ดูข้อมูลประวัติการบาดเจ็บ (Medical PII Restricted)" },
+        { status: 403, headers: { "Cache-Control": "private, no-store" } }
+      );
+    }
 
     const where: any = {};
     if (athleteId) where.athleteId = athleteId;
+    if (teamId) where.athlete = { teamRosters: { some: { teamId } } };
 
     const injuries = await prisma.injuryLog.findMany({
       where,
@@ -44,26 +67,26 @@ export async function GET(request: NextRequest) {
         treatmentProtocol: inj.notes || "",
       }));
 
-      return NextResponse.json({
-        success: true,
-        count: formatted.length,
-        data: formatted,
-        source: "PRISMA_SQLITE_PERSISTENT",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          count: formatted.length,
+          data: formatted,
+          source: "PRISMA_SQLITE_PERSISTENT",
+        },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
     }
 
-    // Check seed data if DB is empty
-    const { mockInjuryLogs } = await import("@/lib/db/phase3-data");
-    const filtered = athleteId
-      ? mockInjuryLogs.filter((m) => m.athleteId === athleteId)
-      : mockInjuryLogs;
-
-    return NextResponse.json({
-      success: true,
-      count: filtered.length,
-      data: filtered,
-      source: "FALLBACK_MOCK",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: 0,
+        data: [],
+        source: "EMPTY_RECORD",
+      },
+      { headers: { "Cache-Control": "private, no-store" } }
+    );
   } catch (error) {
     console.error("[API INJURIES GET] DB error:", error);
     return NextResponse.json(
@@ -79,7 +102,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Medical PII protection: Require Coach, Official, or Admin authentication
-    const auth = requireRole(request, ["COACH", "OFFICIAL", "ADMIN"]);
+    const auth = await requireRole(request, ["COACH", "ADMIN"]);
     if (!auth.authorized) {
       return auth.response!;
     }
@@ -100,6 +123,9 @@ export async function POST(request: NextRequest) {
         { success: false, error: "กรุณาระบุนักกีฬาและประเภทอาการบาดเจ็บ" },
         { status: 400 }
       );
+    }
+    if (!(await canAccessAthlete(request, athleteId, "write"))) {
+      return NextResponse.json({ error: "ไม่มีสิทธิ์บันทึกอาการบาดเจ็บของนักกีฬาคนนี้" }, { status: 403 });
     }
 
     const injury = await prisma.injuryLog.create({

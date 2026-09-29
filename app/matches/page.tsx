@@ -102,7 +102,7 @@ export default function MatchesArchivePage() {
       <div className="bg-[#991B1B] text-white py-2 px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 text-xs select-none">
         <div className="flex items-center gap-2 flex-wrap font-mono">
           <span className="bg-white text-[#991B1B] font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-sans">
-            FIBA VERIFIED ARCHIVE
+            STATCOURT MATCH ARCHIVE
           </span>
           <span className="font-bold tracking-wide text-[11px]">
             ศูนย์รวมเทปบันทึกการแข่งขันและระบบวิเคราะห์แท็กติก (Game Film & Telestration)
@@ -254,8 +254,8 @@ export default function MatchesArchivePage() {
                       <span className="px-2.5 py-0.5 rounded bg-red-100 text-red-800 font-mono text-[10px] font-bold tracking-wider uppercase">
                         QUARTERFINAL MARQUEE
                       </span>
-                      <span className="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold tracking-wider uppercase">
-                        VERIFIED FILM
+                      <span className={`px-2.5 py-0.5 rounded font-mono text-[10px] font-bold tracking-wider uppercase ${featuredMatch.resultStatus === "FINAL" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-900"}`}>
+                        {featuredMatch.resultStatus === "FINAL" ? "ผลรับรองแล้ว" : "ผลยังไม่รับรอง"}
                       </span>
                       <span className="text-xs text-slate-500 font-mono">
                         {featuredMatch.tournamentName}
@@ -405,7 +405,7 @@ export default function MatchesArchivePage() {
                             </span>
                           ) : (
                             <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[10px] font-bold shrink-0">
-                              FINAL
+                              {match.resultStatus === "FINAL" ? "รับรองแล้ว" : match.resultStatus === "PENDING_APPROVAL" ? "รอรับรอง" : match.status === "SCHEDULED" ? "เร็ว ๆ นี้" : "ผลชั่วคราว"}
                             </span>
                           )}
                         </div>

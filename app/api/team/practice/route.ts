@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/auth/serverAuth";
+import { canManageTeam } from "@/lib/auth/resources";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const teamId = searchParams.get("teamId") || "team-bcc";
+    if (!(await canManageTeam(request, teamId))) return NextResponse.json({ error: "ไม่มีสิทธิ์ดูการฝึกซ้อม" }, { status: 403 });
 
     const sessions = await prisma.practiceSession.findMany({
       where: { teamId },
@@ -52,22 +54,26 @@ export async function GET(request: NextRequest) {
         })),
       }));
 
-      return NextResponse.json({
-        success: true,
-        count: formatted.length,
-        data: formatted,
-        source: "PRISMA_SQLITE_PERSISTENT",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          count: formatted.length,
+          data: formatted,
+          source: "PRISMA_SQLITE_PERSISTENT",
+        },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
     }
 
-    // Check seed data if DB is empty
-    const { mockPracticeSessions } = await import("@/lib/db/phase3-data");
-    return NextResponse.json({
-      success: true,
-      count: mockPracticeSessions.length,
-      data: mockPracticeSessions,
-      source: "FALLBACK_MOCK",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: 0,
+        data: [],
+        source: "EMPTY_RECORD",
+      },
+      { headers: { "Cache-Control": "private, no-store" } }
+    );
   } catch (error) {
     console.error("[API PRACTICE GET] DB error:", error);
     return NextResponse.json(
@@ -83,7 +89,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Require Coach or Admin authentication
-    const auth = requireRole(request, ["COACH", "ADMIN"]);
+    const auth = await requireRole(request, ["COACH", "ADMIN"]);
     if (!auth.authorized) {
       return auth.response!;
     }
@@ -99,6 +105,10 @@ export async function POST(request: NextRequest) {
           { success: false, error: "sessionId, athleteId, status are required" },
           { status: 400 }
         );
+      }
+      const existingSession = await prisma.practiceSession.findUnique({ where: { id: sessionId }, select: { teamId: true } });
+      if (!existingSession || !(await canManageTeam(request, existingSession.teamId))) {
+        return NextResponse.json({ error: "ไม่มีสิทธิ์แก้ไขการฝึกซ้อม" }, { status: 403 });
       }
 
       const attendance = await prisma.playerAttendance.upsert({
@@ -130,6 +140,7 @@ export async function POST(request: NextRequest) {
 
     // Action 2: Create a new practice session
     const { teamId = "team-bcc", title, sessionDate, durationMin = 120, location } = body;
+    if (!(await canManageTeam(request, teamId))) return NextResponse.json({ error: "ไม่มีสิทธิ์แก้ไขการฝึกซ้อม" }, { status: 403 });
     if (!title || !sessionDate) {
       return NextResponse.json(
         { success: false, error: "กรุณาระบุหัวข้อการฝึกซ้อมและวันที่" },

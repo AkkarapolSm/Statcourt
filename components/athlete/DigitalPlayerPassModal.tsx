@@ -129,7 +129,7 @@ export default function DigitalPlayerPassModal({
                 TOURNAMENT INTEGRITY GUARD
               </span>
               <h3 className="font-headline-md text-white font-bold text-lg uppercase">
-                Digital Player Pass (บัตรนักกีฬา)
+                บัตรประจำตัวนักกีฬาดิจิทัล (Digital Player Pass)
               </h3>
             </div>
           </div>
@@ -206,7 +206,7 @@ export default function DigitalPlayerPassModal({
 
           {/* Pass Footer */}
           <div className="text-[9px] text-slate-400 text-center pt-1 border-t border-slate-800">
-            ออกโดย: {data.issuedBy} • สแกนหน้าสนามก่อนลงแข่งทุกแมตช์
+            หน่วยงานผู้ออกบัตร: {data.issuedBy} • ใช้สำหรับตรวจสอบคุณสมบัติก่อนลงทำการแข่งขันทุกแมตช์
           </div>
         </div>
 
@@ -214,7 +214,7 @@ export default function DigitalPlayerPassModal({
         <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-4 space-y-3 text-xs font-mono">
           <div className="flex items-center justify-between">
             <span className="text-slate-300 font-bold uppercase text-[11px]">
-              เครื่องจำลองการสแกนหน้าสนาม (GATE SCANNER):
+              ระบบจำลองการตรวจสอบสิทธิ์หน้าสนามแข่งขัน (Gate Scanner):
             </span>
             <button
               onClick={handleSimulateScan}
@@ -222,7 +222,7 @@ export default function DigitalPlayerPassModal({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition disabled:opacity-50"
             >
               <Scan className="w-3.5 h-3.5" />
-              <span>{isScanning ? "กำลังสแกน..." : "สแกนตรวจสอบบัตร"}</span>
+              <span>{isScanning ? "กำลังสแกน..." : "ตรวจสอบความถูกต้องของบัตร"}</span>
             </button>
           </div>
 
@@ -230,13 +230,13 @@ export default function DigitalPlayerPassModal({
             <div className="p-3 bg-slate-900 border border-slate-700 rounded text-white space-y-1 animate-in fade-in duration-200">
               <div className="flex items-center gap-1.5 font-bold text-white">
                 <CheckCircle2 className="w-4 h-4 text-[#DC2626]" />
-                <span>ยืนยันคุณสมบัตินักกีฬาถูกต้อง — อนุญาตให้ลงสนาม</span>
+                <span>รับรองคุณสมบัตินักกีฬาถูกต้องตามระเบียบการแข่งขัน — อนุมัติลงสนาม</span>
               </div>
               <p className="text-[11px] text-slate-300">
-                เวลาที่สแกน: {scanResult.verifiedAt} | กรรมการ: {scanResult.gatekeeper}
+                เวลาที่ตรวจสอบ: {scanResult.verifiedAt} | เจ้าหน้าที่เทคนิค: {scanResult.gatekeeper}
               </p>
               <p className="text-[10px] text-slate-400">
-                สนาม: {scanResult.court} • ป้องกันการสวมสิทธิ์สำเร็จ (Audit Log #LOG-889)
+                สถานที่แข่งขัน: {scanResult.court} • ผ่านการยืนยันตัวตนบุคคลเรียบร้อย (Audit Log #LOG-889)
               </p>
             </div>
           )}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/auth/serverAuth";
+import { canAccessAthlete } from "@/lib/auth/resources";
 
 export const dynamic = "force-dynamic";
 
@@ -11,9 +12,17 @@ export async function GET(
   try {
     const athleteId = params.id;
 
+    if (!(await canAccessAthlete(request, athleteId, "read"))) {
+      return NextResponse.json(
+        { success: false, error: "ไม่มีสิทธิ์ดูบัตรประจำตัวนักกีฬาดิจิทัลของผู้อื่น (Private Credential)" },
+        { status: 403, headers: { "Cache-Control": "private, no-store" } }
+      );
+    }
+
     const pass = await prisma.digitalPlayerPass.findUnique({
       where: { athleteId },
-      include: {
+      select: {
+        athleteId: true, qrPassCode: true, status: true, verifiedAge: true,
         athlete: {
           select: {
             id: true,
@@ -32,11 +41,14 @@ export async function GET(
     });
 
     if (pass) {
-      return NextResponse.json({
-        success: true,
-        data: pass,
-        source: "PRISMA_SQLITE_PERSISTENT",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          data: pass,
+          source: "PRISMA_SQLITE_PERSISTENT",
+        },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
     }
 
     return NextResponse.json(
@@ -66,29 +78,32 @@ export async function POST(
     const athleteId = params.id;
 
     // Require Official or Federation Admin to issue or verify Digital Player Pass
-    const auth = requireRole(request, ["OFFICIAL", "ADMIN"]);
+    const auth = await requireRole(request, ["ADMIN"]);
     if (!auth.authorized) {
       return auth.response!;
     }
 
     const body = await request.json();
     const { idCardNumberHash, dateOfBirth, verifiedAge = 18, status = "ACTIVE" } = body;
+    if (!/^[a-f0-9]{64}$/i.test(String(idCardNumberHash || "")) || !dateOfBirth || !Number.isInteger(Number(verifiedAge)) || !["ACTIVE", "SUSPENDED", "BANNED"].includes(status)) {
+      return NextResponse.json({ error: "ข้อมูลยืนยันตัวตนไม่ครบหรือไม่ถูกต้อง" }, { status: 400 });
+    }
 
     const qrPassCode = `STC-PASS-${athleteId.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
 
     const pass = await prisma.digitalPlayerPass.upsert({
       where: { athleteId },
       update: {
-        idCardNumberHash: idCardNumberHash || `SHA256-${athleteId}-PASS`,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date("2008-05-14T00:00:00Z"),
-        verifiedAge: Number(verifiedAge) || 18,
+        idCardNumberHash,
+        dateOfBirth: new Date(dateOfBirth),
+        verifiedAge: Number(verifiedAge),
         status,
       },
       create: {
         athleteId,
-        idCardNumberHash: idCardNumberHash || `SHA256-${athleteId}-PASS`,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date("2008-05-14T00:00:00Z"),
-        verifiedAge: Number(verifiedAge) || 18,
+        idCardNumberHash,
+        dateOfBirth: new Date(dateOfBirth),
+        verifiedAge: Number(verifiedAge),
         qrPassCode,
         status,
       },
@@ -96,7 +111,7 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      data: pass,
+      data: { athleteId: pass.athleteId, qrPassCode: pass.qrPassCode, status: pass.status, verifiedAge: pass.verifiedAge },
       message: "ออกบัตรประจำตัวนักกีฬาดิจิทัล (Digital Player Pass) สำเร็จ",
       source: "PRISMA_SQLITE_PERSISTENT",
     });

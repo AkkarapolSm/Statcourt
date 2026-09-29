@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/db/prisma";
-import { mockMatch } from "@/lib/db/seed-data";
+import { prisma } from "../db/prisma.ts";
+import { mockMatch } from "../db/seed-data.ts";
 
 export interface LiveTeamState {
   id: string;
@@ -28,7 +28,7 @@ export interface LiveChatMessage {
   id: string;
   sender: string;
   badge: string;
-  badgeType: "BCC" | "DS" | "STAFF" | "OFFICIAL";
+  badgeType: "BCC" | "DS" | "STAFF" | "OFFICIAL" | "FAN" | "ADMIN" | "COACH" | string;
   text: string;
   time: string;
 }
@@ -67,16 +67,36 @@ export interface LiveMatchBroadcastState {
   officialName: string;
   licenseNumber: string;
   updatedAt: number;
+  sequence: number;
+}
+
+export interface LiveMatchDelta {
+  sequence: number;
+  matchId: string;
+  type: string;
+  timestamp: number;
+  [key: string]: any;
 }
 
 type Listener = (state: LiveMatchBroadcastState) => void;
+type DeltaListener = (delta: LiveMatchDelta) => void;
 
-interface BrokerStore {
-  states: Map<string, LiveMatchBroadcastState>;
-  listeners: Map<string, Set<Listener>>;
+interface StateEntry {
+  state: LiveMatchBroadcastState;
+  lastAccessedAt: number;
+  sequence: number;
 }
 
-// Global singleton across Next.js dev server reloads
+interface BrokerStore {
+  states: Map<string, StateEntry>;
+  listeners: Map<string, Set<Listener>>;
+  deltaListeners: Map<string, Set<DeltaListener>>;
+}
+
+const MAX_CACHED_MATCHES = 100;
+const MATCH_TTL_MS = 2 * 60 * 60 * 1000; // 2 hours of inactivity before eviction
+
+// Global singleton across Next.js server reloads
 const globalBroker = globalThis as unknown as {
   __statcourt_live_broker__?: BrokerStore;
 };
@@ -85,7 +105,18 @@ if (!globalBroker.__statcourt_live_broker__) {
   globalBroker.__statcourt_live_broker__ = {
     states: new Map(),
     listeners: new Map(),
+    deltaListeners: new Map(),
   };
+} else {
+  if (!globalBroker.__statcourt_live_broker__.states) {
+    globalBroker.__statcourt_live_broker__.states = new Map();
+  }
+  if (!globalBroker.__statcourt_live_broker__.listeners) {
+    globalBroker.__statcourt_live_broker__.listeners = new Map();
+  }
+  if (!globalBroker.__statcourt_live_broker__.deltaListeners) {
+    globalBroker.__statcourt_live_broker__.deltaListeners = new Map();
+  }
 }
 
 const brokerStore = globalBroker.__statcourt_live_broker__;
@@ -101,11 +132,64 @@ function getQuarterDisplay(q: number): string {
   return `OT${q - 4}`;
 }
 
+/**
+ * LRU / TTL eviction routine to keep in-memory broker state bounded
+ */
+function evictStaleMatches(): void {
+  const now = Date.now();
+  brokerStore.states.forEach((val, matchId) => {
+    const listeners = brokerStore.listeners?.get(matchId);
+    const hasListeners = listeners && listeners.size > 0;
+    const lastAccessed = (val as any)?.lastAccessedAt || now;
+    if (!hasListeners && now - lastAccessed > MATCH_TTL_MS) {
+      brokerStore.states.delete(matchId);
+      brokerStore.listeners?.delete(matchId);
+      brokerStore.deltaListeners?.delete(matchId);
+    }
+  });
+
+  if (brokerStore.states.size > MAX_CACHED_MATCHES) {
+    let oldestKey: string | null = null;
+    let oldestTime = Infinity;
+    brokerStore.states.forEach((val, key) => {
+      const listeners = brokerStore.listeners?.get(key);
+      const lastAccessed = (val as any)?.lastAccessedAt || now;
+      if ((!listeners || listeners.size === 0) && lastAccessed < oldestTime) {
+        oldestTime = lastAccessed;
+        oldestKey = key;
+      }
+    });
+    if (oldestKey) {
+      brokerStore.states.delete(oldestKey);
+      brokerStore.listeners?.delete(oldestKey);
+      brokerStore.deltaListeners?.delete(oldestKey);
+    }
+  }
+}
+
+/**
+ * Explicitly evicts a match state from memory (e.g. for testing database hydration)
+ */
+export function evictLiveMatchState(matchId: string): void {
+  brokerStore.states.delete(matchId);
+}
+
+/**
+ * Retrieves the live broadcast state.
+ * If not present in memory (due to server restart or cold cache),
+ * automatically and authoritatively hydrates from SQLite / PostgreSQL database.
+ */
 export async function getLiveState(matchId: string): Promise<LiveMatchBroadcastState> {
   const existing = brokerStore.states.get(matchId);
-  if (existing) return existing;
+  if (existing) {
+    if ((existing as any).state) {
+      existing.lastAccessedAt = Date.now();
+      return (existing as any).state;
+    }
+    return existing as unknown as LiveMatchBroadcastState;
+  }
 
-  // Initialize state from SQLite DB if available
+  // 1. Authoritative Hydration from Database
   let dbMatch: any = null;
   try {
     dbMatch = await prisma.match.findUnique({
@@ -127,9 +211,10 @@ export async function getLiveState(matchId: string): Promise<LiveMatchBroadcastS
           },
         },
         events: {
+          where: { reversedAt: null },
           include: { athlete: true },
           orderBy: { createdAt: "desc" },
-          take: 10,
+          take: 30,
         },
       },
     });
@@ -142,47 +227,52 @@ export async function getLiveState(matchId: string): Promise<LiveMatchBroadcastS
   const awayTeamName = dbMatch?.awayTeam?.name || "Debsirin School";
   const awayShort = dbMatch?.awayTeam?.shortName || "DS";
 
-  const defaultEvents: LivePlayEvent[] = [
-    {
-      id: "ev-init-1",
-      quarterClock: "Q4 05:20",
-      videoTimeSec: 320,
-      playerName: "Kittipong Rattana.",
-      jerseyNumber: 24,
-      team: "BCC",
-      eventType: "THREE_POINT_MADE",
-      points: 3,
-      title: "ช็อต 3 แต้มมุมปีกขวา",
-      description: "Kittipong รับบอลส่งจาก Thanakorn แล้วยิง 3 คะแนนลงอย่างแม่นยำ",
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "ev-init-2",
-      quarterClock: "Q4 06:05",
-      videoTimeSec: 280,
-      playerName: "Chayanon Wattana",
-      jerseyNumber: 11,
-      team: "BCC",
-      eventType: "STEAL",
-      points: 0,
-      title: "สกัดบอลกลางสนาม (Fastbreak Steal)",
-      description: "Chayanon อ่านจังหวะจ่ายบอลของ DS ตัดบอลแล้วส่งต่อเร็ว",
-      createdAt: new Date(Date.now() - 45000).toISOString(),
-    },
-    {
-      id: "ev-init-3",
-      quarterClock: "Q4 06:40",
-      videoTimeSec: 250,
-      playerName: "Nattapat Sukprasert",
-      jerseyNumber: 23,
-      team: "DS",
-      eventType: "TWO_POINT_MADE",
-      points: 2,
-      title: "ไดรฟ์ลุยใต้แป้นวางบอลความเร็วสูง",
-      description: "Nattapat เลี้ยงฝ่าวงล้อม 2 คนขึ้นวางบอลฝั่งซ้าย",
-      createdAt: new Date(Date.now() - 90000).toISOString(),
-    },
-  ];
+  // Reconstruct live events from DB if available
+  let hydratedEvents: LivePlayEvent[] = [];
+  if (dbMatch?.events && dbMatch.events.length > 0) {
+    hydratedEvents = dbMatch.events.map((e: any) => ({
+      id: e.id,
+      quarterClock: e.gameClockDisplay,
+      videoTimeSec: e.videoElapsedSec || 0,
+      playerName: e.athlete ? `${e.athlete.firstName} ${e.athlete.lastName}` : "Player",
+      jerseyNumber: e.athlete?.jerseyNumber || 0,
+      team: e.teamId === dbMatch.homeTeamId ? "HOME" : "AWAY",
+      eventType: e.eventType,
+      points: e.points,
+      title: e.eventType.replace(/_/g, " "),
+      description: "",
+      createdAt: e.createdAt.toISOString(),
+    }));
+  } else {
+    hydratedEvents = [
+      {
+        id: "ev-init-1",
+        quarterClock: "Q4 05:20",
+        videoTimeSec: 320,
+        playerName: "Kittipong Rattana.",
+        jerseyNumber: 24,
+        team: "BCC",
+        eventType: "THREE_POINT_MADE",
+        points: 3,
+        title: "ช็อต 3 แต้มมุมปีกขวา",
+        description: "Kittipong รับบอลส่งจาก Thanakorn แล้วยิง 3 คะแนนลงอย่างแม่นยำ",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: "ev-init-2",
+        quarterClock: "Q4 06:05",
+        videoTimeSec: 280,
+        playerName: "Chayanon Wattana",
+        jerseyNumber: 11,
+        team: "BCC",
+        eventType: "STEAL",
+        points: 0,
+        title: "สกัดบอลกลางสนาม (Fastbreak Steal)",
+        description: "Chayanon อ่านจังหวะจ่ายบอลของ DS ตัดบอลแล้วส่งต่อเร็ว",
+        createdAt: new Date(Date.now() - 45000).toISOString(),
+      },
+    ];
+  }
 
   const defaultChat: LiveChatMessage[] = [
     {
@@ -198,30 +288,15 @@ export async function getLiveState(matchId: string): Promise<LiveMatchBroadcastS
       sender: "DebsirinFanClub",
       badge: "DS",
       badgeType: "DS",
-      text: "Nattapat #23 จัดสามแต้มไล่มาหน่อยครับ อย่าเพิ่งยอมแพ้ สู้เต็มที่ลูกแม่รำเพย!",
+      text: "Nattapat #23 จัดสามแต้มไล่มาหน่อยครับ สู้เต็มที่ลูกแม่รำเพย!",
       time: "17:22",
-    },
-    {
-      id: "chat-3",
-      sender: "CoachKorn",
-      badge: "STAFF",
-      badgeType: "STAFF",
-      text: "เวลาที่เหลือทั้งสองทีมเริ่มเล่นช้าลงคุมเพลย์ เน้นป้องกันเข้มข้น",
-      time: "17:23",
     },
   ];
 
   const defaultPlayerStats: LivePlayerStat[] = [
     { athleteId: "ath-1", number: 7, name: "Thanakorn Siriphan", pos: "PG", pts: 18, ast: 8, reb: 3, fouls: 2, teamId: "team-bcc" },
     { athleteId: "ath-2", number: 11, name: "Chayanon Wattana", pos: "SG", pts: 12, ast: 3, reb: 2, fouls: 1, teamId: "team-bcc" },
-    { athleteId: "ath-3", number: 24, name: "Kittipong Rattana.", pos: "SF", pts: 21, ast: 4, reb: 7, fouls: 3, teamId: "team-bcc" },
-    { athleteId: "ath-4", number: 15, name: "Bhuripat Kaewmanee", pos: "PF", pts: 14, ast: 1, reb: 9, fouls: 4, teamId: "team-bcc" },
-    { athleteId: "ath-5", number: 42, name: "Supanut Charoenrat", pos: "C", pts: 10, ast: 2, reb: 11, fouls: 2, teamId: "team-bcc" },
     { athleteId: "ath-6", number: 23, name: "Nattapat Sukprasert", pos: "SG", pts: 21, ast: 1, reb: 4, fouls: 2, teamId: "team-debsirin" },
-    { athleteId: "ath-7", number: 34, name: "Teerawat Prasertkul", pos: "PF", pts: 15, ast: 2, reb: 8, fouls: 3, teamId: "team-debsirin" },
-    { athleteId: "ath-8", number: 5, name: "Kittithat Wongsuwan", pos: "PG", pts: 11, ast: 6, reb: 3, fouls: 1, teamId: "team-debsirin" },
-    { athleteId: "ath-9", number: 18, name: "Thanatorn Meesuk", pos: "SF", pts: 9, ast: 1, reb: 5, fouls: 2, teamId: "team-debsirin" },
-    { athleteId: "ath-10", number: 9, name: "Sarawut Bunlert", pos: "C", pts: 7, ast: 0, reb: 10, fouls: 4, teamId: "team-debsirin" },
   ];
 
   const gameClockSec = dbMatch?.gameClockSec !== undefined ? dbMatch.gameClockSec : 320;
@@ -255,20 +330,30 @@ export async function getLiveState(matchId: string): Promise<LiveMatchBroadcastS
     shotClockSec: 14,
     status: (dbMatch?.status as any) || "LIVE",
     possession: "HOME",
-    lastEvent: defaultEvents[0],
-    recentEvents: defaultEvents,
+    lastEvent: hydratedEvents[0],
+    recentEvents: hydratedEvents,
     chatMessages: defaultChat,
     playerStats: defaultPlayerStats,
     viewerCount: 2840,
     officialName: "BSAT Certified Table Official",
     licenseNumber: "BSAT-TABLE-2026-088",
     updatedAt: Date.now(),
+    sequence: 1,
   };
 
-  brokerStore.states.set(matchId, initialState);
+  brokerStore.states.set(matchId, {
+    state: initialState,
+    lastAccessedAt: Date.now(),
+    sequence: 1,
+  });
+
+  evictStaleMatches();
   return initialState;
 }
 
+/**
+ * Updates match broadcast state with sequence numbering and notifies listeners
+ */
 export async function updateLiveState(
   matchId: string,
   partialOrUpdater:
@@ -276,6 +361,8 @@ export async function updateLiveState(
     | ((prev: LiveMatchBroadcastState) => Partial<LiveMatchBroadcastState>)
 ): Promise<LiveMatchBroadcastState> {
   const current = await getLiveState(matchId);
+  const entry = brokerStore.states.get(matchId);
+  const nextSeq = (entry ? entry.sequence : current.sequence) + 1;
 
   const updates =
     typeof partialOrUpdater === "function"
@@ -299,14 +386,58 @@ export async function updateLiveState(
         ? formatClock(updates.gameClockSec)
         : current.gameClockDisplay,
     updatedAt: Date.now(),
+    sequence: nextSeq,
   };
 
-  brokerStore.states.set(matchId, nextState);
-  notifyListeners(matchId, nextState);
+  brokerStore.states.set(matchId, {
+    state: nextState,
+    lastAccessedAt: Date.now(),
+    sequence: nextSeq,
+  });
 
+  notifyListeners(matchId, nextState);
   return nextState;
 }
 
+/**
+ * Dispatches a lightweight delta event to all connected SSE clients
+ */
+export function broadcastMatchDelta(matchId: string, payload: Record<string, any>): LiveMatchDelta {
+  const entry = brokerStore.states.get(matchId);
+  const nextSeq = entry ? (entry.sequence + 1) : 1;
+  if (entry) {
+    entry.sequence = nextSeq;
+    entry.lastAccessedAt = Date.now();
+  }
+
+  const delta: LiveMatchDelta = {
+    sequence: nextSeq,
+    matchId,
+    timestamp: Date.now(),
+    type: payload.type || "STATE_UPDATE",
+    ...payload,
+  };
+
+  if (!brokerStore.deltaListeners) {
+    brokerStore.deltaListeners = new Map();
+  }
+  const deltaListeners = brokerStore.deltaListeners.get(matchId);
+  if (deltaListeners) {
+    deltaListeners.forEach((listener) => {
+      try {
+        listener(delta);
+      } catch (err) {
+        console.error("[DELTA LISTENER ERROR]:", err);
+      }
+    });
+  }
+
+  return delta;
+}
+
+/**
+ * Subscribe to full state broadcasts
+ */
 export function subscribeToLiveMatch(
   matchId: string,
   listener: Listener
@@ -324,6 +455,34 @@ export function subscribeToLiveMatch(
       list.delete(listener);
       if (list.size === 0) {
         brokerStore.listeners.delete(matchId);
+      }
+    }
+  };
+}
+
+/**
+ * Subscribe to lightweight incremental delta broadcasts
+ */
+export function subscribeToMatchDeltas(
+  matchId: string,
+  listener: DeltaListener
+): () => void {
+  if (!brokerStore.deltaListeners) {
+    brokerStore.deltaListeners = new Map();
+  }
+  let listeners = brokerStore.deltaListeners.get(matchId);
+  if (!listeners) {
+    listeners = new Set<DeltaListener>();
+    brokerStore.deltaListeners.set(matchId, listeners);
+  }
+  listeners.add(listener);
+
+  return () => {
+    const list = brokerStore.deltaListeners?.get(matchId);
+    if (list) {
+      list.delete(listener);
+      if (list.size === 0) {
+        brokerStore.deltaListeners?.delete(matchId);
       }
     }
   };
@@ -360,6 +519,11 @@ export async function addLiveChatMessage(
   await updateLiveState(matchId, (prev) => ({
     chatMessages: [...prev.chatMessages, newMsg].slice(-100),
   }));
+
+  broadcastMatchDelta(matchId, {
+    type: "CHAT_MESSAGE",
+    message: newMsg,
+  });
 
   return newMsg;
 }

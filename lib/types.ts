@@ -14,7 +14,9 @@ export type MatchStatus =
   | "LIVE"
   | "HALF_TIME"
   | "COMPLETED"
-  | "DISPUTED";
+  | "DISPUTED"
+  | "POSTPONED"
+  | "CANCELLED";
 
 export type EventType =
   | "TWO_POINT_MADE"
@@ -133,6 +135,7 @@ export interface MatchEvent {
 
 export interface Match {
   id: string;
+  resultStatus?: "DRAFT" | "PENDING_APPROVAL" | "FINAL";
   tournamentId: string;
   tournamentName?: string;
   homeTeamId: string;
@@ -144,6 +147,11 @@ export interface Match {
   currentQuarter: number;
   gameClockSec: number;
   status: MatchStatus;
+  scheduledAt?: string | null;
+  venue?: string | null;
+  courtName?: string | null;
+  round?: string | null;
+  postponedReason?: string | null;
   rawVideoUrl?: string | null;
   scoresheetPhotoUrl?: string | null;
   events: MatchEvent[];
@@ -186,6 +194,8 @@ export interface AthleteSeasonStats {
   province: string;
   position: Position;
   ageCategory: "U14" | "U16" | "U18" | "Open";
+  season?: string;
+  tournamentId?: string | null;
   heightCm?: number;
   weightKg?: number;
   lastAttended?: string;
@@ -700,5 +710,50 @@ export interface AcademyVideoCourse {
   createdAt: string;
 }
 
+export interface TournamentRegistration {
+  id: string;
+  tournamentId: string;
+  teamId: string;
+  teamName?: string;
+  teamShortName?: string;
+  teamLogo?: string | null;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  rosterJson: string;
+  isRosterLocked: boolean;
+  notes?: string | null;
+  submittedAt: string;
+  reviewedAt?: string | null;
+  reviewerNotes?: string | null;
+}
+
+export interface TournamentStanding {
+  id: string;
+  tournamentId: string;
+  teamId: string;
+  teamName: string;
+  teamShortName?: string;
+  teamLogo?: string | null;
+  groupName: string;
+  rank: number;
+  played: number;
+  won: number;
+  lost: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  pointDiff: number;
+  points: number;
+  streak: string;
+}
+
+export interface DataPrivacyConsent {
+  id: string;
+  userId: string;
+  consentType: string;
+  isAccepted: boolean;
+  guardianName?: string | null;
+  guardianPhone?: string | null;
+  ipAddress?: string | null;
+  acceptedAt: string;
+}
 
 

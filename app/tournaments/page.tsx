@@ -21,9 +21,13 @@ import {
   Building,
   Plus,
   X,
+  GitBranch,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import TournamentRegisterModal from "@/components/tournament/TournamentRegisterModal";
+import TournamentStandingsModal from "@/components/tournament/TournamentStandingsModal";
+import TournamentBracketManager from "@/components/tournaments/TournamentBracketManager";
 
 interface TournamentItem {
   id: string;
@@ -180,8 +184,11 @@ export default function TournamentsDirectoryPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDownloadModal, setActiveDownloadModal] = useState<TournamentItem | null>(null);
+  const [activeRegisterModal, setActiveRegisterModal] = useState<TournamentItem | null>(null);
+  const [activeStandingsModal, setActiveStandingsModal] = useState<TournamentItem | null>(null);
+  const [activeBracketModal, setActiveBracketModal] = useState<TournamentItem | null>(null);
 
-  useEffect(() => {
+  const fetchTournaments = () => {
     fetch("/api/tournaments")
       .then((res) => res.json())
       .then((json) => {
@@ -212,6 +219,10 @@ export default function TournamentsDirectoryPage() {
         }
       })
       .catch((err) => console.warn("Failed to fetch tournaments:", err));
+  };
+
+  useEffect(() => {
+    fetchTournaments();
   }, []);
 
   const filteredTournaments = useMemo(() => {
@@ -513,6 +524,24 @@ export default function TournamentsDirectoryPage() {
                     </button>
 
                     <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setActiveStandingsModal(tourn)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-300 font-bold transition cursor-pointer"
+                        title="ดูตารางคะแนนและอันดับ FIBA"
+                      >
+                        <Trophy className="w-3.5 h-3.5 text-amber-600" />
+                        <span>ตารางคะแนน</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveBracketModal(tourn)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-indigo-50 text-indigo-800 hover:bg-indigo-100 border border-indigo-300 font-bold transition cursor-pointer"
+                        title="ดูสายการแข่งขันและตารางสนาม (Brackets & Court Schedule)"
+                      >
+                        <GitBranch className="w-3.5 h-3.5 text-indigo-600" />
+                        <span>สายแข่ง &amp; ตารางสนาม</span>
+                      </button>
+
                       {tourn.liveMatchId && (
                         <Link
                           href={`/matches/${tourn.liveMatchId}/film`}
@@ -525,8 +554,8 @@ export default function TournamentsDirectoryPage() {
 
                       {tourn.status === "OPEN" || tourn.status === "CLOSING_SOON" ? (
                         <button
-                          onClick={() => alert(`ระบบลงทะเบียนทีมออนไลน์สำหรับ ${tourn.name}\nติดต่อผู้จัด: ${tourn.contactPerson} (${tourn.contactPhone})`)}
-                          className="inline-flex items-center gap-1 px-4 py-2 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition shadow-xs"
+                          onClick={() => setActiveRegisterModal(tourn)}
+                          className="inline-flex items-center gap-1 px-4 py-2 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition shadow-xs cursor-pointer"
                         >
                           <span>ลงทะเบียนทีม</span>
                           <ChevronRight className="w-3.5 h-3.5" />
@@ -640,6 +669,35 @@ export default function TournamentsDirectoryPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Modal: Team Registration */}
+        {activeRegisterModal && (
+          <TournamentRegisterModal
+            tournament={activeRegisterModal}
+            onClose={() => setActiveRegisterModal(null)}
+            onSuccess={() => {
+              fetchTournaments();
+            }}
+          />
+        )}
+
+        {/* Modal: Standings & Leaderboard */}
+        {activeStandingsModal && (
+          <TournamentStandingsModal
+            tournament={activeStandingsModal}
+            onClose={() => setActiveStandingsModal(null)}
+          />
+        )}
+
+        {/* Modal: Tournament Brackets & Schedule Engine */}
+        {activeBracketModal && (
+          <TournamentBracketManager
+            tournamentId={activeBracketModal.id}
+            isOpen={!!activeBracketModal}
+            onClose={() => setActiveBracketModal(null)}
+            canManage={false}
+          />
         )}
 
       </main>

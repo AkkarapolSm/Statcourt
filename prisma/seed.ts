@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/prisma";
 import {
   mockTournaments,
   mockTeams,
@@ -14,6 +14,13 @@ import { mockPracticeSessions, mockPlaybookPlays, mockInjuryLogs } from "../lib/
 const prisma = new PrismaClient();
 
 async function main() {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("Demo seed is disabled in production");
+  }
+  const nonDemoUsers = await prisma.user.count({ where: { passwordHash: { not: null } } });
+  if (nonDemoUsers > 0) {
+    throw new Error("Demo seed would overwrite registered accounts; use a separate empty development database");
+  }
   console.log("[STATCOURT DB SEED] Initializing real database persistence...");
 
   // 1. Clean existing records in referential order
@@ -27,6 +34,10 @@ async function main() {
   await prisma.scoutProfileView.deleteMany();
   await prisma.academicRecord.deleteMany();
   await prisma.videoTelestrationNote.deleteMany();
+  await prisma.matchResultApproval.deleteMany();
+  await prisma.matchOfficialAssignment.deleteMany();
+  await prisma.teamMembership.deleteMany();
+  await prisma.userSession.deleteMany();
   await prisma.auditLog.deleteMany();
   await prisma.marketplaceItem.deleteMany();
   await prisma.matchEvent.deleteMany();

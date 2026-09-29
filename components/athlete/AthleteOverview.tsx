@@ -8,13 +8,17 @@ import { AthleteProfile, AthleteSeasonStats } from "@/lib/types";
 interface AthleteOverviewProps {
   athlete: AthleteProfile;
   stats: AthleteSeasonStats;
-  onNavigateTab: (tab: "CAREER_STATS" | "ACTIVITY" | "SHOT_CHART" | "EFF_TREND" | "LOGS" | "TCAS") => void;
+  onNavigateTab: (tab: "CAREER_STATS" | "ACTIVITY" | "SHOT_CHART" | "EFF_TREND" | "LOGS" | "TCAS" | "LINEAGE") => void;
+  onOpenLineage?: () => void;
+  isOwner?: boolean;
 }
 
 export default function AthleteOverview({
   athlete,
   stats,
   onNavigateTab,
+  onOpenLineage,
+  isOwner = false,
 }: AthleteOverviewProps) {
   // Dynamic biometrics and shooting calculations
   const height = athlete.heightCm || 185;
@@ -56,14 +60,27 @@ export default function AthleteOverview({
               OFFICIAL SEASON STATISTICS (AVERAGES & TOTALS)
             </span>
           </div>
-          <div className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded font-label-caps text-label-caps font-bold">
-            <span
-              className="material-symbols-outlined text-sm"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              verified
-            </span>
-            <span>100% VERIFIED BY BSAT</span>
+          <div className="flex items-center gap-2">
+            {onOpenLineage && (
+              <button
+                type="button"
+                onClick={onOpenLineage}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-mono text-xs font-bold transition cursor-pointer"
+                title="ตรวจสอบประวัติและที่มาของสถิติ (Stats Lineage & Certification)"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+                <span>ตรวจสอบที่มาสถิติ (Lineage)</span>
+              </button>
+            )}
+            <div className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded font-label-caps text-label-caps font-bold">
+              <span
+                className="material-symbols-outlined text-sm"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                verified
+              </span>
+              <span>100% VERIFIED BY BSAT</span>
+            </div>
           </div>
         </div>
 
@@ -357,74 +374,76 @@ export default function AthleteOverview({
               className="mt-5 flex items-center justify-center gap-2 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-mono text-xs font-bold tracking-wider uppercase transition shadow-sm cursor-pointer"
             >
               <Crosshair className="w-4 h-4 text-slate-300" />
-              <span>ดู 5-ZONE SHOT CHART พิกัดการยิง</span>
+              <span>ตรวจสอบแผนภาพการยิง 5-Zone Shot Chart</span>
               <ChevronRight className="w-4 h-4 text-slate-400" />
             </button>
           </div>
 
-          {/* TCAS PORTFOLIO QUOTA BOX */}
-          <div className="bg-inverse-surface text-surface-bright rounded-xl p-5 border border-outline shadow-md relative overflow-hidden">
-            <div className="absolute -right-8 -bottom-8 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <span className="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-0.5 rounded font-bold uppercase">
-                  TCAS PORTFOLIO
+          {/* TCAS PORTFOLIO QUOTA BOX (Owner / Admin Only) */}
+          {isOwner && (
+            <div className="bg-inverse-surface text-surface-bright rounded-xl p-5 border border-outline shadow-md relative overflow-hidden">
+              <div className="absolute -right-8 -bottom-8 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-0.5 rounded font-bold uppercase">
+                    TCAS PORTFOLIO
+                  </span>
+                  <span className="text-tertiary-fixed-dim font-label-caps text-label-caps font-bold tracking-wider">
+                    VERIFIED QUOTA
+                  </span>
+                </div>
+                <span className="material-symbols-outlined text-tertiary-fixed-dim text-xl">
+                  verified_user
                 </span>
-                <span className="text-tertiary-fixed-dim font-label-caps text-label-caps font-bold tracking-wider">
-                  VERIFIED QUOTA
-                </span>
               </div>
-              <span className="material-symbols-outlined text-tertiary-fixed-dim text-xl">
-                verified_user
-              </span>
-            </div>
 
-            <div className="bg-black/30 border border-outline/70 p-3 rounded mb-3">
-              <div className="font-label-caps text-label-caps text-surface-dim uppercase">
-                OFFICIAL VERIFICATION CODE
-              </div>
-              <div className="font-headline-md text-headline-md text-primary-fixed tracking-widest">
-                {tcasCode}
-              </div>
-              <div className="text-xs text-surface-dim mt-1 leading-snug">
-                สถิติบันทึกผ่านระบบโต๊ะกลาง StatCourt พร้อมส่งยื่นรับรองโควตากีฬา รอบ 1 TCAS มหาวิทยาลัยชั้นนำ (จุฬาฯ, ธรรมศาสตร์, มช., มก.)
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-16 h-16 bg-surface-bright p-1 rounded border border-outline flex items-center justify-center shrink-0">
-                {/* Visual QR representation */}
-                <div className="grid grid-cols-4 gap-0.5 w-full h-full bg-slate-900 p-1">
-                  <div className="bg-white"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-slate-900"></div>
-                  <div className="bg-white"></div>
+              <div className="bg-black/30 border border-outline/70 p-3 rounded mb-3">
+                <div className="font-label-caps text-label-caps text-surface-dim uppercase">
+                  OFFICIAL VERIFICATION CODE
+                </div>
+                <div className="font-headline-md text-headline-md text-primary-fixed tracking-widest">
+                  {tcasCode}
+                </div>
+                <div className="text-xs text-surface-dim mt-1 leading-snug">
+                  สถิติรับรองผ่านระบบบันทึกข้อมูลกลางมาตรฐานสากล พร้อมใช้เป็นเอกสารประกอบการคัดเลือกโควตานักกีฬา TCAS รอบที่ 1 แฟ้มสะสมผลงาน (Portfolio) สถาบันอุดมศึกษา
                 </div>
               </div>
-              <div className="flex-grow">
-                <button
-                  onClick={() => onNavigateTab("TCAS")}
-                  className="w-full py-2.5 px-3 bg-primary hover:bg-primary-container text-on-primary rounded font-label-caps text-label-caps uppercase tracking-wider font-bold flex items-center justify-center gap-1.5 transition-colors shadow"
-                >
-                  <span className="material-symbols-outlined text-sm">bolt</span>
-                  <span>เปิดดูพอร์ต TCAS & คลิปไฮไลต์</span>
-                  <span className="material-symbols-outlined text-sm">open_in_new</span>
-                </button>
+
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 bg-surface-bright p-1 rounded border border-outline flex items-center justify-center shrink-0">
+                  {/* Visual QR representation */}
+                  <div className="grid grid-cols-4 gap-0.5 w-full h-full bg-slate-900 p-1">
+                    <div className="bg-white"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-white"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-slate-900"></div>
+                    <div className="bg-white"></div>
+                  </div>
+                </div>
+                <div className="flex-grow">
+                  <button
+                    onClick={() => onNavigateTab("TCAS")}
+                    className="w-full py-2.5 px-3 bg-primary hover:bg-primary-container text-on-primary rounded font-label-caps text-label-caps uppercase tracking-wider font-bold flex items-center justify-center gap-1.5 transition-colors shadow"
+                  >
+                    <span className="material-symbols-outlined text-sm">bolt</span>
+                    <span>เปิดแฟ้มผลงาน TCAS Portfolio & วิดีโอไฮไลต์</span>
+                    <span className="material-symbols-outlined text-sm">open_in_new</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Official Match Footwear & Gear Reference */}
           <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex items-center justify-between gap-4">
@@ -440,7 +459,7 @@ export default function AthleteOverview({
                   Nike Kobe 6 Protro
                 </div>
                 <div className="text-xs text-secondary">
-                  สวมใส่ในแมตช์ทางการ: Grinch / Reverse Grinch
+                  อุปกรณ์ที่ใช้ในการแข่งขันทางการ: Colorway Grinch / Reverse Grinch
                 </div>
               </div>
             </div>

@@ -18,7 +18,7 @@ export async function GET(
           include: {
             roster: {
               include: {
-                athlete: true,
+                athlete: { select: { id: true, firstName: true, lastName: true, jerseyNumber: true, primaryPosition: true, avatarUrl: true } },
               },
             },
           },
@@ -27,15 +27,15 @@ export async function GET(
           include: {
             roster: {
               include: {
-                athlete: true,
+                athlete: { select: { id: true, firstName: true, lastName: true, jerseyNumber: true, primaryPosition: true, avatarUrl: true } },
               },
             },
           },
         },
         events: {
           include: {
-            athlete: true,
-            official: true,
+            athlete: { select: { id: true, firstName: true, lastName: true, jerseyNumber: true } },
+            official: { select: { id: true, fullName: true, licenseNumber: true } },
           },
           orderBy: {
             createdAt: "asc",

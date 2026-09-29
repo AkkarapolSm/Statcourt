@@ -7,6 +7,7 @@ import { AthleteProfile, AthleteSeasonStats } from "@/lib/types";
 interface AthleteGameLogsProps {
   athlete: AthleteProfile;
   stats: AthleteSeasonStats;
+  onOpenLineage?: () => void;
 }
 
 export interface GameEventRow {
@@ -29,7 +30,7 @@ export interface GameEventRow {
   category: "PTS" | "REB" | "AST" | "DEF";
 }
 
-export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps) {
+export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: AthleteGameLogsProps) {
   const [selectedTournament, setSelectedTournament] = useState("BSAT_U18");
   const [selectedMatch, setSelectedMatch] = useState("match-1");
   const [activeCategory, setActiveCategory] = useState<"ALL" | "PTS" | "REB" | "AST" | "DEF">("ALL");
@@ -49,7 +50,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       isClutch: true,
       clutchLabel: "CLUTCH",
       championshipPoint: true,
-      actionDescription: "ดรอปสเต็ป 2 ลูกบอลใต้แป้นข้ามบล็อก ปิดเกมสกอร์ 78-74 คว้าแชมป์ระดับประเทศ",
+      actionDescription: "หมุนตัวทำคะแนนใต้แป้น (Drop Step) หลบการบล็อก ปิดเกมด้วยคะแนน 78-74 คว้าตำแหน่งชนะเลิศระดับประเทศ",
       points: "+2 PTS",
       pointsClass: "text-slate-900 bg-slate-100 font-mono font-bold border border-slate-200",
       periodClock: "Q4 • 00:08",
@@ -67,7 +68,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       actionBadgeColor: "bg-slate-900 text-white",
       isClutch: true,
       clutchLabel: "CLUTCH DEF",
-      actionDescription: "บล็อกลูกเลย์อัพเดี่ยวของเทพศิรินทร์ในระยะ 15 วินาทีสุดท้าย หยุดการตีเสมอ 74-74 ปัดบอลออกข้าง",
+      actionDescription: "กระโดดบล็อกลูกเลย์อัพเดี่ยวในระยะ 15 วินาทีสุดท้าย ยับยั้งการทำคะแนนตีเสมอ 74-74 ปัดบอลออกนอกเส้นสนาม",
       points: "0 PTS",
       pointsClass: "text-slate-500 font-mono",
       periodClock: "Q4 • 00:25",
@@ -83,7 +84,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "National Championship Q4",
       actionBadge: "DEF REBOUND",
       actionBadgeColor: "bg-slate-100 text-slate-800 border border-slate-300",
-      actionDescription: "รีบาวด์เกมรับใต้แป้นพร้อมครองบอลอย่างมั่นคงจากลูกชูต 3 คะแนนที่พลาดของคู่แข่ง",
+      actionDescription: "เก็บบอลรีบาวด์เกมรับใต้แป้นพร้อมครอบครองบอลอย่างสมบูรณ์จากจังหวะยิง 3 คะแนนของฝ่ายตรงข้าม",
       points: "0 PTS",
       pointsClass: "text-slate-500 font-mono",
       periodClock: "Q4 • 01:20",
@@ -99,7 +100,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "National Championship Q4",
       actionBadge: "2-POINT FIELD GOAL",
       actionBadgeColor: "bg-[#AF101A] text-white",
-      actionDescription: "ปั้นเกมจากโพสต์เพลย์ วนหลบเซ็นเตอร์ตรงกลางวงในทำ 2 แต้ม",
+      actionDescription: "เข้าทำคะแนนจากตำแหน่งโพสต์ (Post Play) หมุนตัวหลบผู้เล่นป้องกันวงใน สำเร็จ 2 คะแนน",
       points: "+2 PTS",
       pointsClass: "text-slate-900 bg-slate-100 font-mono font-bold border border-slate-200",
       periodClock: "Q4 • 04:12",
@@ -115,7 +116,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "National Championship Q3",
       actionBadge: "STEAL (สตีลบอล)",
       actionBadgeColor: "bg-slate-900 text-white",
-      actionDescription: "อ่านจังหวะการจ่ายบอลตัดหน้าพอยต์การ์ดฝ่ายตรงข้าม ณ บริเวณหัวกะโหลก",
+      actionDescription: "อ่านทางบอลและตัดบอล (Steal) จากการส่งของพอยต์การ์ดฝ่ายตรงข้าม บริเวณหัวกะโหลก",
       points: "0 PTS",
       pointsClass: "text-slate-500 font-mono",
       periodClock: "Q3 • 02:40",
@@ -131,7 +132,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "National Championship Q3",
       actionBadge: "FREE THROW (FT 1/1)",
       actionBadgeColor: "bg-[#AF101A] text-white",
-      actionDescription: "ยิงลูกโทษจังหวะฟาวล์ แอนด์วัน (And-One) ลงอย่างสมบูรณ์",
+      actionDescription: "ยิงลูกโทษจากการได้ฟาวล์จังหวะทำคะแนน (And-One) สำเร็จ",
       points: "+1 FT",
       pointsClass: "text-slate-900 bg-slate-100 font-mono font-bold border border-slate-200",
       periodClock: "Q3 • 05:14",
@@ -149,7 +150,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       actionBadgeColor: "bg-[#AF101A] text-white",
       isClutch: true,
       clutchLabel: "CLUTCH",
-      actionDescription: "ทิปอินลูกบอลจังหวะสองก่อนหมดเวลา 40 วินาที ปลุกสกอร์ห่าง 70-74",
+      actionDescription: "กระโดดปัดบอลซ้ำเข้าห่วง (Tip-In) จังหวะสองก่อนหมดเวลา 40 วินาที ขยายคะแนนนำเป็น 74-70",
       points: "+2 PTS",
       pointsClass: "text-slate-900 bg-slate-100 font-mono font-bold border border-slate-200",
       periodClock: "Q4 • 00:40",
@@ -165,7 +166,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "Chiang Mai Arena Stadium",
       actionBadge: "BLOCK (บล็อกลูกยิง)",
       actionBadgeColor: "bg-slate-900 text-white",
-      actionDescription: "ปัดลูกยิงกระดานเบอร์ 12 กรุงเทพคริสเตียนตกขอบเส้นสนาม",
+      actionDescription: "กระโดดบล็อกลูกยิงกระทบแป้นของผู้เล่นหมายเลข 12 ปัดบอลออกนอกเส้นสนาม",
       points: "0 PTS",
       pointsClass: "text-slate-500 font-mono",
       periodClock: "Q4 • 04:19",
@@ -179,9 +180,9 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       eventId: "#EV-70-14",
       matchStage: "Semi-Final vs. BCC",
       scoreContext: "Chiang Mai Arena Stadium",
-      actionBadge: "ASSIST (ส่งทำแต้ม)",
+      actionBadge: "ASSIST (ส่งทำคะแนน)",
       actionBadgeColor: "bg-slate-700 text-white",
-      actionDescription: "จ่ายบอลดึงตัวประกบคู่ส่งให้เพื่อนยิง 3 คะแนนลงจากมุมปีกซ้าย",
+      actionDescription: "จ่ายบอลส่งให้เพื่อนร่วมทีม (Assist) ดึงตัวประกบสองคนและส่งทำคะแนน 3 คะแนนจากมุมปีกซ้าย",
       points: "0 PTS",
       pointsClass: "text-slate-500 font-mono",
       periodClock: "Q3 • 06:18",
@@ -197,7 +198,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
       scoreContext: "National Youth Games Q1",
       actionBadge: "2-POINT HOOK SHOT",
       actionBadgeColor: "bg-[#AF101A] text-white",
-      actionDescription: "กระโดดยิงฮุกมือขวาข้ามตัวผู้เล่นสวนกุหลาบ ระยะ 10 ฟุต",
+      actionDescription: "ยิงฮุกช็อตมือขวา (Hook Shot) ข้ามผู้เล่นป้องกัน ระยะ 10 ฟุต",
       points: "+2 PTS",
       pointsClass: "text-slate-900 bg-slate-100 font-mono font-bold border border-slate-200",
       periodClock: "Q1 • 07:20",
@@ -247,7 +248,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
                 COURTSIDE TABLE EVENT AUDIT LOGS
               </h2>
               <span className="text-body-md font-bold text-on-surface-variant">
-                (บันทึกสถิติส่งตรงจากโต๊ะกรรมการ FIBA Digital Score)
+                (บันทึกสถิติทางการส่งตรงจากโต๊ะกรรมการเทคนิค FIBA Digital Score)
               </span>
               <span className="bg-[#AF101A] text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center uppercase tracking-wider">
                 <span className="material-symbols-outlined mr-1 text-xs">verified_user</span>
@@ -278,14 +279,14 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
               className="bg-surface border border-outline-variant hover:border-primary text-on-surface hover:text-primary px-3 py-1.5 rounded text-body-sm font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">print</span>
-              <span>Scorekeeper Sheet</span>
+              <span>พิมพ์ใบบันทึกคะแนน (Scoresheet)</span>
             </button>
             <button
               onClick={handleExportPdf}
               className="bg-primary hover:bg-primary-container text-on-primary px-4 py-1.5 rounded text-body-sm font-bold uppercase tracking-wider flex items-center gap-1.5 shadow transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">picture_as_pdf</span>
-              <span>Export Audit PDF</span>
+              <span>ส่งออกรายงานสถิติ (PDF)</span>
             </button>
           </div>
         </div>
@@ -303,7 +304,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
         {/* Tournament Dropdown Filter */}
         <div className="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-4">
           <label className="block text-label-caps uppercase text-secondary font-bold mb-1 flex items-center justify-between">
-            <span>1. เลือกรายการแข่งขัน (TOURNAMENT / COMPETITION)</span>
+            <span>1. รายการแข่งขันทางการ (TOURNAMENT / COMPETITION)</span>
             <span className="text-primary font-bold text-[10px]">7 Matches Recorded</span>
           </label>
           <div className="relative">
@@ -331,12 +332,24 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
         <div className="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-1 flex-wrap gap-1">
             <span className="text-label-caps uppercase text-secondary font-bold">
-              2. เลือกแมตช์แข่งขันของรายการนี้ (MATCHES IN THIS TOURNAMENT)
+              2. แมตช์การแข่งขันในรายการ (MATCHES IN THIS TOURNAMENT)
             </span>
-            <span className="text-[11px] text-primary-container font-bold flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary mr-1"></span>
-              กำลังแสดง: {selectedMatch === "match-1" ? "Grand Final vs Debsirin" : "แมตช์ที่เลือก"} (22 Event Logs)
-            </span>
+            <div className="flex items-center gap-2">
+              {onOpenLineage && (
+                <button
+                  type="button"
+                  onClick={onOpenLineage}
+                  className="inline-flex items-center gap-1 text-[11px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded font-mono font-bold hover:bg-indigo-100 transition cursor-pointer"
+                  title="ตรวจสอบประวัติและใบรับรองผลสถิติอย่างเป็นทางการ"
+                >
+                  <span>ตรวจที่มาสถิติ (Provenance)</span>
+                </button>
+              )}
+              <span className="text-[11px] text-primary-container font-bold flex items-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary mr-1"></span>
+                กำลังแสดง: {selectedMatch === "match-1" ? "รอบชิงชนะเลิศ vs Debsirin" : "แมตช์ที่ระบุ"} (22 รายการบันทึก)
+              </span>
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-1">
             {/* Match Pill 1 (Active) */}
@@ -438,10 +451,10 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
           <span className="material-symbols-outlined text-[#AF101A] text-2xl shrink-0">gavel</span>
           <div>
             <h4 className="font-headline-sm text-headline-sm text-white uppercase leading-none">
-              บันทึกวงจรการเล่นและทุกเหตุการณ์แข่งขันทางการ (Official Cumulative Logs)
+              บันทึกเหตุการณ์การแข่งขันทางการอย่างเป็นทางการ (Official Cumulative Logs)
             </h4>
             <p className="text-body-sm text-slate-300 mt-0.5">
-              รวบรวมทุกจังหวะลงเล่นที่ได้รับการอนุมัติจากกรรมการบันทึกคะแนน FIBA LiveStats • อัพเดตแบบเรียลไทม์ผ่านระบบไร้สายสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย
+              รวบรวมทุกจังหวะการเล่นที่ได้รับการรับรองจากกรรมการบันทึกสถิติ FIBA LiveStats • ปรับปรุงข้อมูลตามเวลาจริงผ่านระบบสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย
             </p>
           </div>
         </div>
@@ -500,7 +513,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
               activeCategory === "DEF" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
-            บล็อก & สตีล
+            การป้องกัน (BLK & STL)
           </button>
 
           <div className="h-4 w-px bg-outline-variant mx-1 hidden sm:block"></div>
@@ -513,7 +526,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
               activeQuarter === "ALL" ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
-            ทุก Q
+            ทุกควอเตอร์
           </button>
           <button
             onClick={() => setActiveQuarter(1)}
@@ -580,7 +593,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
               <tr className="bg-surface-container-low border-b border-outline-variant text-[11px] font-bold text-secondary uppercase tracking-wider font-label-caps">
                 <th className="py-2.5 px-3 text-center w-24">EVENT ID</th>
                 <th className="py-2.5 px-3 w-48">MATCH & STAGE</th>
-                <th className="py-2.5 px-4 min-w-[320px]">ACTION PERFORMED (การกระทำในสนาม)</th>
+                <th className="py-2.5 px-4 min-w-[320px]">ACTION PERFORMED (รูปแบบการเล่นในสนาม)</th>
                 <th className="py-2.5 px-3 text-center w-24">POINTS</th>
                 <th className="py-2.5 px-3 text-center w-28">PERIOD & CLOCK</th>
                 <th className="py-2.5 px-3 text-center w-28">VIDEO CLIP</th>
@@ -648,7 +661,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
           <div className="flex items-center gap-2">
             <span>แสดง {filteredEvents.length} จาก 22 รายการบันทึก</span>
             <span>•</span>
-            <span className="text-primary font-bold">บันทึกสถิติครบถ้วนไม่มีการคัดลอกทับ</span>
+            <span className="text-primary font-bold">บันทึกข้อมูลสถิติสมบูรณ์ตามเกณฑ์มาตรฐาน FIBA</span>
           </div>
           <div className="flex items-center gap-1">
             <button className="px-2.5 py-1 border border-outline-variant rounded bg-surface-container-lowest text-secondary font-bold text-xs opacity-50 cursor-not-allowed">
@@ -753,7 +766,7 @@ export default function AthleteGameLogs({ athlete, stats }: AthleteGameLogsProps
               </span>
             </div>
             <p className="text-xs text-secondary">
-              วิดีโอคลิปบันทึกจากกล้องมุมข้างสนามโต๊ะกลาง (Official Broadcast Cam 1) บันทึกและรับรองความถูกต้องของสถิตินักกีฬา
+              วิดีโอบันทึกภาพจากกล้องถ่ายทอดสดหลักข้างสนาม (Official Broadcast Cam 1) รับรองความถูกต้องของสถิตินักกีฬา
             </p>
           </div>
         </div>

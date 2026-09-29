@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   Trophy,
@@ -47,7 +47,19 @@ type SortField =
   | "heightCm"
   | "weightKg";
 
+// Province translation dictionary
+const provinceMap: Record<string, string> = {
+  Bangkok: "กรุงเทพมหานคร",
+  "Chiang Mai": "เชียงใหม่",
+  Chonburi: "ชลบุรี",
+  Nonthaburi: "นนทบุรี",
+  Phuket: "ภูเก็ต",
+  Songkhla: "สงขลา",
+  "Nakhon Ratchasima": "นครราชสีมา",
+};
+
 export default function LeaderboardPage() {
+  const [seasonFilter, setSeasonFilter] = useState<string>("2026");
   const [positionFilter, setPositionFilter] = useState<Position | "ALL">("ALL");
   const [ageFilter, setAgeFilter] = useState<string>("ALL");
   const [provinceFilter, setProvinceFilter] = useState<string>("ALL");
@@ -69,7 +81,8 @@ export default function LeaderboardPage() {
   useEffect(() => {
     async function loadAthletes() {
       try {
-        const res = await fetch("/api/leaderboard");
+        const query = seasonFilter !== "ALL" ? `?season=${seasonFilter}` : "";
+        const res = await fetch(`/api/leaderboard${query}`);
         if (res.ok) {
           const json = await res.json();
           if (json.success && Array.isArray(json.data) && json.data.length > 0) {
@@ -81,20 +94,9 @@ export default function LeaderboardPage() {
       }
     }
     loadAthletes();
-  }, []);
+  }, [seasonFilter]);
 
-  // Province translation dictionary
-  const provinceMap: Record<string, string> = {
-    Bangkok: "กรุงเทพมหานคร",
-    "Chiang Mai": "เชียงใหม่",
-    Chonburi: "ชลบุรี",
-    Nonthaburi: "นนทบุรี",
-    Phuket: "ภูเก็ต",
-    Songkhla: "สงขลา",
-    "Nakhon Ratchasima": "นครราชสีมา",
-  };
-
-  const getProvinceThai = (prov: string) => provinceMap[prov] || prov;
+  const getProvinceThai = useCallback((prov: string) => provinceMap[prov] || prov, []);
 
   // Dynamic Provinces with count
   const availableProvinces = useMemo(() => {
@@ -107,7 +109,7 @@ export default function LeaderboardPage() {
       value: prov,
       label: `${getProvinceThai(prov)} (${count})`,
     }));
-  }, [athletesData]);
+  }, [athletesData, getProvinceThai]);
 
   // Position label dictionary
   const positionMap: Record<Position, { th: string; short: string }> = {
@@ -636,6 +638,23 @@ export default function LeaderboardPage() {
                 placeholder="ค้นหาชื่อนักกีฬา หรือโรงเรียน..."
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition font-sans"
               />
+            </div>
+
+            {/* Season Dropdown */}
+            <div className="relative">
+              <select
+                value={seasonFilter}
+                onChange={(e) => {
+                  setSeasonFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="appearance-none bg-white border border-slate-200 hover:border-slate-400 text-xs font-bold rounded-xl px-3 py-2 pr-8 text-slate-700 cursor-pointer focus:outline-none transition"
+              >
+                <option value="2026">ฤดูกาล: 2026 (ปัจจุบัน)</option>
+                <option value="2025">ฤดูกาล: 2025</option>
+                <option value="ALL">ฤดูกาล: ทั้งหมด</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
 
             {/* Age Dropdown */}

@@ -102,6 +102,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 1. Verify opportunity status
+    if (opp.status !== "OPEN") {
+      return NextResponse.json(
+        { success: false, error: `โครงการนี้ปิดรับสมัครแล้ว (สถานะ: ${opp.status})` },
+        { status: 400 }
+      );
+    }
+
+    // 2. Verify application deadline
+    const deadlineTime = new Date(opp.deadline).getTime();
+    if (deadlineTime < Date.now()) {
+      return NextResponse.json(
+        { success: false, error: "โครงการนี้หมดเขตรับสมัครแล้ว (Application Deadline Passed)" },
+        { status: 400 }
+      );
+    }
+
+    // 3. Prevent duplicate applications
+    const duplicateWhere: any[] = [{ applicantPhone }];
+    if (athleteId) duplicateWhere.push({ athleteId });
+    if (applicantTcasCode && applicantTcasCode !== "STC-QUOTA-PENDING") {
+      duplicateWhere.push({ applicantTcasCode });
+    }
+
+    const existingApp = await prisma.opportunityApplication.findFirst({
+      where: {
+        opportunityId,
+        OR: duplicateWhere,
+      },
+    });
+
+    if (existingApp) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "คุณได้ส่งใบสมัครในโครงการนี้ไปแล้ว ไม่สามารถส่งซ้ำได้ (Duplicate Application Detected)",
+          existingApplicationId: existingApp.id,
+          currentStatus: existingApp.status,
+        },
+        { status: 409 }
+      );
+    }
+
     const application = await prisma.opportunityApplication.create({
       data: {
         opportunityId,

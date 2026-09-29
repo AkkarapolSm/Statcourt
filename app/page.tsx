@@ -7,15 +7,13 @@ import Footer from "@/components/layout/Footer";
 import { Lock, UserPlus, LogIn, X } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 
-// Home sub-components
+// Clean Sports Audience Homepage Sections (as specified in PROJECT_REVIEW_2026-09-27.md)
 import LiveMatchTicker from "@/components/home/LiveMatchTicker";
 import HomeHeroSection from "@/components/home/HomeHeroSection";
-import CredibilityStatsSection from "@/components/home/CredibilityStatsSection";
-import EcosystemArchitectureSection from "@/components/home/EcosystemArchitectureSection";
-import TcasScholarshipsSection from "@/components/home/TcasScholarshipsSection";
-import SolutionsByRoleSection from "@/components/home/SolutionsByRoleSection";
-import LeaderboardShowcaseSection from "@/components/home/LeaderboardShowcaseSection";
-import B2BLeadSection from "@/components/home/B2BLeadSection";
+import TodaysGamesSection from "@/components/home/TodaysGamesSection";
+import StandingsAndLeadersSection from "@/components/home/StandingsAndLeadersSection";
+import NewsAndOpportunitiesSection from "@/components/home/NewsAndOpportunitiesSection";
+import OrganizerSolutionsBanner from "@/components/home/OrganizerSolutionsBanner";
 
 // Modals
 import PricingModal from "@/components/premium/PricingModal";
@@ -25,7 +23,7 @@ import DigitalPlayerPassModal from "@/components/athlete/DigitalPlayerPassModal"
 import SocialGraphicsGeneratorModal from "@/components/video/SocialGraphicsGeneratorModal";
 
 export default function UnifiedHomePage() {
-  const { currentUser, loginAs } = useAuthStore();
+  const { currentUser } = useAuthStore();
   const isMember = currentUser.role !== "PUBLIC";
 
   // Modal states
@@ -50,53 +48,36 @@ export default function UnifiedHomePage() {
     action();
   };
 
-  // 4-Phase Architecture interactive tab
-  const [activeEcosystemPhase, setActiveEcosystemPhase] = useState<1 | 2 | 3 | 4>(1);
-
-  // Solutions tab state
-  const [activeSolutionTab, setActiveSolutionTab] = useState<"ORGANIZER" | "SCHOOL" | "SCOUT">("ORGANIZER");
-
   return (
-    <div className="bg-[#F8F9FF] text-[#0B1C30] font-body-md text-body-md antialiased min-h-screen flex flex-col select-none selection:bg-[#DC2626] selection:text-white">
+    <div className="bg-[#F8FAFC] text-[#0B1C30] font-body-md text-base antialiased min-h-screen flex flex-col selection:bg-[#AF101A] selection:text-white">
       {/* Universal Navigation Bar */}
       <Navbar />
 
-      {/* Top Live Match Center Ticker */}
+      {/* 1. Top Live Match Center Ticker */}
       <LiveMatchTicker />
 
       <main className="flex-grow">
-        {/* SECTION 1: HERO SECTION */}
+        {/* 2. Hero Section: Featured Match Scoreboard & Value Proposition */}
         <HomeHeroSection
-          onOpenSocialGraphics={() => guardMemberFeature(() => setIsSocialGraphicsModalOpen(true), "สร้างภาพกราฟิกสรุปผลโซเชียล")}
-          onOpenPlayerPass={() => guardMemberFeature(() => setIsPlayerPassModalOpen(true), "ตรวจสอบ Digital Player Pass")}
+          onOpenSocialGraphics={() =>
+            guardMemberFeature(() => setIsSocialGraphicsModalOpen(true), "สร้างภาพกราฟิกสรุปผลโซเชียล")
+          }
+          onOpenPlayerPass={() =>
+            guardMemberFeature(() => setIsPlayerPassModalOpen(true), "ตรวจสอบ Digital Player Pass")
+          }
         />
 
-        {/* SECTION 2: NUMBERS & CREDIBILITY */}
-        <CredibilityStatsSection />
+        {/* 3. Today's Schedule & Recent Results */}
+        <TodaysGamesSection />
 
-        {/* SECTION 3: 4-PHASE COMPLETE ECOSYSTEM ARCHITECTURE */}
-        <EcosystemArchitectureSection
-          activePhase={activeEcosystemPhase}
-          onSelectPhase={setActiveEcosystemPhase}
-          onOpenPlayerPass={() => guardMemberFeature(() => setIsPlayerPassModalOpen(true), "ตรวจสอบ Digital Player Pass")}
-          onOpenHighlightModal={() => guardMemberFeature(() => setIsHighlightModalOpen(true), "สร้างคลิปไฮไลต์ Reel Generator")}
-          onOpenEdgeCameraModal={() => guardMemberFeature(() => setIsEdgeCameraModalOpen(true), "ทดสอบระบบกล้อง Edge AI Tracking")}
-        />
+        {/* 4. Standings & Stat Leaders */}
+        <StandingsAndLeadersSection />
 
-        {/* SECTION 4: ACTIVE TCAS SCHOLARSHIPS TICKER */}
-        <TcasScholarshipsSection />
+        {/* 5. Basketball News & TCAS Scholarships */}
+        <NewsAndOpportunitiesSection />
 
-        {/* SECTION 5: INTERACTIVE SOLUTIONS BY ROLE */}
-        <SolutionsByRoleSection
-          activeTab={activeSolutionTab}
-          onSelectTab={setActiveSolutionTab}
-        />
-
-        {/* SECTION 6: LIVE PROOF - TOP 100 LEADERBOARD SHOWCASE */}
-        <LeaderboardShowcaseSection />
-
-        {/* SECTION 7: BOTTOM B2B LEAD FORM & FAST ROLE SIMULATION */}
-        <B2BLeadSection />
+        {/* 6. Organizer & Federation Solutions Banner */}
+        <OrganizerSolutionsBanner />
       </main>
 
       {/* Universal Footer */}
@@ -135,7 +116,7 @@ export default function UnifiedHomePage() {
 
       {/* Member Gate Prompt Modal for Public Guests */}
       {memberPrompt.isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
           <div className="bg-[#101622] border border-amber-500/40 rounded-2xl p-6 sm:p-7 max-w-md w-full shadow-2xl relative text-center space-y-4">
             <button
               type="button"
@@ -148,36 +129,30 @@ export default function UnifiedHomePage() {
               <Lock className="w-7 h-7 text-amber-400" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white uppercase tracking-wide">
-                ฟังก์ชันนี้สงวนสิทธิ์สำหรับสมาชิก
-              </h3>
-              <p className="text-xs text-amber-300 font-mono mt-1">
-                [{memberPrompt.featureName}]
-              </p>
-              <p className="text-xs text-slate-300 leading-relaxed mt-2 font-sans">
-                คุณยังไม่ได้เป็นสมาชิกของระบบ กรุณาสมัครสมาชิกทั่วไป (ฟรี) เพื่อเปิดใช้งานฟังก์ชันนี้ หรือเข้าสู่ระบบเพื่อใช้งาน
+              <span className="text-[10px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+                MEMBER FEATURE ACCESS
+              </span>
+              <h3 className="text-xl font-bold text-white mt-1">ต้องเข้าสู่ระบบสมาชิก</h3>
+              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed font-sans">
+                ฟีเจอร์ <span className="text-amber-300 font-bold">"{memberPrompt.featureName}"</span>{" "}
+                สงวนไว้สำหรับนักกีฬาที่ยืนยันตัวตน, โค้ช หรือเจ้าหน้าที่โต๊ะเทคนิค
               </p>
             </div>
-            <div className="space-y-2 pt-2 font-mono text-xs">
+            <div className="space-y-2 pt-2">
               <Link
                 href="/auth/register"
-                onClick={() => setMemberPrompt({ isOpen: false, featureName: "" })}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold uppercase transition flex items-center justify-center gap-2 shadow-lg"
+                className="w-full py-3 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-red-950/50"
               >
                 <UserPlus className="w-4 h-4" />
-                <span>สมัครสมาชิกทั่วไปฟรี (Register)</span>
+                <span>สมัครสมาชิกนักกีฬา / โค้ช</span>
               </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  loginAs("FAN");
-                  setMemberPrompt({ isOpen: false, featureName: "" });
-                }}
-                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold uppercase transition border border-slate-700 flex items-center justify-center gap-2 cursor-pointer"
+              <Link
+                href="/auth/login"
+                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 border border-slate-700 transition"
               >
-                <LogIn className="w-4 h-4 text-amber-400" />
-                <span>จำลองเข้าสู่ระบบทันที (DEMO AS FAN)</span>
-              </button>
+                <LogIn className="w-4 h-4" />
+                <span>เข้าสู่ระบบด้วยบัญชีเดิม</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -185,4 +160,3 @@ export default function UnifiedHomePage() {
     </div>
   );
 }
-

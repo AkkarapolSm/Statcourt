@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -47,6 +47,7 @@ import HighlightReelGeneratorModal from "@/components/scout/HighlightReelGenerat
 import AcademicTrackerModal from "@/components/athlete/AcademicTrackerModal";
 import RecruiterViewsModal from "@/components/athlete/RecruiterViewsModal";
 import DigitalPlayerPassModal from "@/components/athlete/DigitalPlayerPassModal";
+import StatsLineageModal from "@/components/athlete/StatsLineageModal";
 import { mockAcademicRecords, mockTargetUniversities } from "@/lib/db/phase2-data";
 
 export default function AthleteProfilePage({
@@ -71,8 +72,17 @@ export default function AthleteProfilePage({
   const isPro = currentUser.tier === "PRO";
   const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
+  const [athlete, setAthlete] = useState<AthleteProfile>(initialProfile);
+  const [stats, setStats] = useState<AthleteSeasonStats>(initialStats);
+  const [events, setEvents] = useState<MatchEvent[]>(mockMatchEvents);
+  const [isDbLoaded, setIsDbLoaded] = useState(false);
+  const [allSeasons, setAllSeasons] = useState<string[]>(["2026", "2025"]);
+  const [selectedSeason, setSelectedSeason] = useState<string>("2026");
+  const [rawSeasonStatsList, setRawSeasonStatsList] = useState<any[]>([]);
+
   // RBAC Permission checks for athlete profile
-  const canEdit = canEditAthleteProfile(currentUser, athleteId);
+  const isOwner = canEditAthleteProfile(currentUser, athleteId, athlete?.userId);
+  const canEdit = isOwner;
   const canViewPrivate = canViewAthletePrivateData(currentUser, athleteId);
   const isCoach = currentUser.role === "COACH";
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -83,26 +93,23 @@ export default function AthleteProfilePage({
   const [isRecruiterViewsModalOpen, setIsRecruiterViewsModalOpen] = useState(false);
   const [isPassModalOpen, setIsPassModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLineageModalOpen, setIsLineageModalOpen] = useState(false);
 
-  const [athlete, setAthlete] = useState<AthleteProfile>(initialProfile);
-  const [stats, setStats] = useState<AthleteSeasonStats>(initialStats);
-  const [events, setEvents] = useState<MatchEvent[]>(mockMatchEvents);
-  const [isDbLoaded, setIsDbLoaded] = useState(false);
-
-  const getTabFromParam = (t?: string) => {
+  const getTabFromParam = useCallback((t?: string) => {
     const upper = t?.toUpperCase();
     if (upper === "CAREER" || upper === "CAREER_STATS") return "CAREER_STATS";
     if (upper === "ACTIVITY" || upper === "EXPERIENCE") return "ACTIVITY";
     if (upper === "SHOT_CHART" || upper === "SHOT") return "SHOT_CHART";
     if (upper === "EFF_TREND" || upper === "TREND") return "EFF_TREND";
     if (upper === "LOGS") return "LOGS";
-    if (upper === "TCAS") return "TCAS";
-    if (upper === "ACADEMIC" || upper === "ACADEMICS" || upper === "GPA") return "ACADEMICS";
+    if (upper === "LINEAGE" || upper === "PROVENANCE") return "LINEAGE";
+    if (isOwner && upper === "TCAS") return "TCAS";
+    if (isOwner && (upper === "ACADEMIC" || upper === "ACADEMICS" || upper === "GPA")) return "ACADEMICS";
     return "OVERVIEW";
-  };
+  }, [isOwner]);
 
   const [activeTab, setActiveTab] = useState<
-    "OVERVIEW" | "CAREER_STATS" | "ACTIVITY" | "SHOT_CHART" | "EFF_TREND" | "LOGS" | "TCAS" | "ACADEMICS"
+    "OVERVIEW" | "CAREER_STATS" | "ACTIVITY" | "SHOT_CHART" | "EFF_TREND" | "LOGS" | "TCAS" | "ACADEMICS" | "LINEAGE"
   >(() => getTabFromParam(searchParams?.tab));
 
   useEffect(() => {
@@ -113,7 +120,13 @@ export default function AthleteProfilePage({
         setActiveTab(getTabFromParam(tab));
       }
     }
-  }, []);
+  }, [isOwner, getTabFromParam]);
+
+  useEffect(() => {
+    if (!isOwner && (activeTab === "TCAS" || activeTab === "ACADEMICS")) {
+      setActiveTab("OVERVIEW");
+    }
+  }, [isOwner, activeTab]);
 
   useEffect(() => {
     async function loadAthleteData() {
@@ -143,50 +156,61 @@ export default function AthleteProfilePage({
               tcasReferenceCode: d.tcasReferenceCode,
             });
 
+            const mapStatsRecord = (d: any, s: any): AthleteSeasonStats => ({
+              athleteId: d.id,
+              firstName: d.firstName,
+              lastName: d.lastName,
+              jerseyNumber: d.jerseyNumber || 0,
+              schoolOrClub: d.schoolOrClub,
+              province: d.province,
+              position: d.primaryPosition,
+              ageCategory: s.ageCategory || "U18",
+              avatarUrl: d.avatarUrl,
+              gamesPlayed: s.gamesPlayed || 0,
+              points: s.points || 0,
+              rebounds: s.rebounds || 0,
+              assists: s.assists || 0,
+              steals: s.steals || 0,
+              blocks: s.blocks || 0,
+              turnovers: s.turnovers || 0,
+              fouls: s.fouls || 0,
+              fgMade: s.fgMade || 0,
+              fgMissed: s.fgMissed || 0,
+              ftMade: s.ftMade || 0,
+              ftMissed: s.ftMissed || 0,
+              fg3Made: s.fg3Made || 0,
+              fg3Missed: s.fg3Missed || 0,
+              eff: s.eff || 0,
+              effPerGame: s.effPerGame || 0,
+              efgPct: s.efgPct || 0,
+              tsPct: s.tsPct || 0,
+              astToRatio: s.astToRatio || 0,
+              per: s.per || 0,
+              ppg: s.ppg || 0,
+              rpg: s.rpg || 0,
+              apg: s.apg || 0,
+              spg: s.spg || 0,
+              bpg: s.bpg || 0,
+              fgPct: s.fgPct || 0,
+              ftPct: s.ftPct || 0,
+              scoringRating: s.scoringRating,
+              playmakingRating: s.playmakingRating,
+              defenseRating: s.defenseRating,
+              athleticismRating: s.athleticismRating,
+              season: s.season || "2026",
+              tournamentId: s.tournamentId,
+            });
+
             if (d.seasonStats) {
-              const s = d.seasonStats;
-              setStats({
-                athleteId: d.id,
-                firstName: d.firstName,
-                lastName: d.lastName,
-                jerseyNumber: d.jerseyNumber || 0,
-                schoolOrClub: d.schoolOrClub,
-                province: d.province,
-                position: d.primaryPosition,
-                ageCategory: s.ageCategory,
-                avatarUrl: d.avatarUrl,
-                gamesPlayed: s.gamesPlayed,
-                points: s.points,
-                rebounds: s.rebounds,
-                assists: s.assists,
-                steals: s.steals,
-                blocks: s.blocks,
-                turnovers: s.turnovers,
-                fouls: s.fouls,
-                fgMade: s.fgMade,
-                fgMissed: s.fgMissed,
-                ftMade: s.ftMade,
-                ftMissed: s.ftMissed,
-                fg3Made: s.fg3Made,
-                fg3Missed: s.fg3Missed,
-                eff: s.eff,
-                effPerGame: s.effPerGame,
-                efgPct: s.efgPct,
-                tsPct: s.tsPct,
-                astToRatio: s.astToRatio,
-                per: s.per,
-                ppg: s.ppg,
-                rpg: s.rpg,
-                apg: s.apg,
-                spg: s.spg,
-                bpg: s.bpg,
-                fgPct: s.fgPct,
-                ftPct: s.ftPct,
-                scoringRating: s.scoringRating,
-                playmakingRating: s.playmakingRating,
-                defenseRating: s.defenseRating,
-                athleticismRating: s.athleticismRating,
-              });
+              const list = Array.isArray(d.seasonStats) ? d.seasonStats : [d.seasonStats];
+              setRawSeasonStatsList(list);
+              if (d.allSeasons && Array.isArray(d.allSeasons) && d.allSeasons.length > 0) {
+                setAllSeasons(d.allSeasons);
+              }
+              const currentSeasonMatch = list.find((st: any) => st.season === selectedSeason) || list[0];
+              if (currentSeasonMatch) {
+                setStats(mapStatsRecord(d, currentSeasonMatch));
+              }
             }
 
             if (Array.isArray(d.events) && d.events.length > 0) {
@@ -219,7 +243,60 @@ export default function AthleteProfilePage({
     }
 
     loadAthleteData();
-  }, [athleteId]);
+  }, [athleteId, selectedSeason]);
+
+  // Sync active stats when user changes selected season
+  useEffect(() => {
+    if (rawSeasonStatsList.length > 0) {
+      const match = rawSeasonStatsList.find((st: any) => st.season === selectedSeason) || rawSeasonStatsList[0];
+      if (match) {
+        setStats({
+          athleteId: athlete.id,
+          firstName: athlete.firstName,
+          lastName: athlete.lastName,
+          jerseyNumber: athlete.jerseyNumber || 0,
+          schoolOrClub: athlete.schoolOrClub,
+          province: athlete.province,
+          position: athlete.primaryPosition,
+          ageCategory: match.ageCategory || "U18",
+          avatarUrl: athlete.avatarUrl,
+          gamesPlayed: match.gamesPlayed || 0,
+          points: match.points || 0,
+          rebounds: match.rebounds || 0,
+          assists: match.assists || 0,
+          steals: match.steals || 0,
+          blocks: match.blocks || 0,
+          turnovers: match.turnovers || 0,
+          fouls: match.fouls || 0,
+          fgMade: match.fgMade || 0,
+          fgMissed: match.fgMissed || 0,
+          ftMade: match.ftMade || 0,
+          ftMissed: match.ftMissed || 0,
+          fg3Made: match.fg3Made || 0,
+          fg3Missed: match.fg3Missed || 0,
+          eff: match.eff || 0,
+          effPerGame: match.effPerGame || 0,
+          efgPct: match.efgPct || 0,
+          tsPct: match.tsPct || 0,
+          astToRatio: match.astToRatio || 0,
+          per: match.per || 0,
+          ppg: match.ppg || 0,
+          rpg: match.rpg || 0,
+          apg: match.apg || 0,
+          spg: match.spg || 0,
+          bpg: match.bpg || 0,
+          fgPct: match.fgPct || 0,
+          ftPct: match.ftPct || 0,
+          scoringRating: match.scoringRating,
+          playmakingRating: match.playmakingRating,
+          defenseRating: match.defenseRating,
+          athleticismRating: match.athleticismRating,
+          season: match.season || selectedSeason,
+          tournamentId: match.tournamentId,
+        });
+      }
+    }
+  }, [selectedSeason, rawSeasonStatsList, athlete]);
 
   return (
     <div className="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary selection:text-on-primary">
@@ -258,17 +335,37 @@ export default function AthleteProfilePage({
                 className="px-2.5 py-1.5 rounded-lg bg-blue-950/80 hover:bg-blue-900 text-blue-200 border border-blue-700/60 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
               >
                 <Ruler className="w-3.5 h-3.5 text-blue-400" />
-                <span>แก้ไขสรีระ (Ape Index)</span>
+                <span>แก้ไขข้อมูลสรีระ (Biometrics)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setIsRecruiterViewsModalOpen(true)}
-                title="Who Viewed My Profile - ตรวจสอบความสนใจจาก 5 แมวมอง"
+                title="สถิติการเข้าชมประวัติโดยผู้ฝึกสอนและฝ่ายสรรหา 5 สถาบัน"
                 className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
               >
                 <Eye className="w-3.5 h-3.5 text-slate-400" />
-                <span>แมวมองเข้าชม (5)</span>
+                <span>สถิติผู้เข้าชมประวัติ (5)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsAcademicModalOpen(true)}
+                title="ตรวจสอบผลการเรียนเฉลี่ยสะสมและคุณสมบัติ TCAS (GPAX 3.68)"
+                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
+              >
+                <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
+                <span>ผลการเรียน GPAX 3.68 (TCAS)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsReelModalOpen(true)}
+                title="สร้างและส่งออกวิดีโอไฮไลต์ทางการ (Highlight Reel)"
+                className="px-3 py-1.5 rounded-lg bg-[#AF101A] hover:bg-[#8F0D15] text-white font-bold uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm cursor-pointer shrink-0"
+              >
+                <Film className="w-3.5 h-3.5 text-white" />
+                <span>วิดีโอไฮไลต์ทางการ</span>
               </button>
             </>
           )}
@@ -284,25 +381,24 @@ export default function AthleteProfilePage({
                     ? "bg-amber-400 text-slate-950 shadow-xs"
                     : "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700"
                 }`}
-                title="เพิ่มนักกีฬาคนนี้เข้าในลิสต์เป้าหมายของทีม"
+                title="บันทึกนักกีฬาในรายชื่อเป้าหมายการสรรหา"
               >
                 <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? "fill-current" : ""}`} />
-                <span>{isBookmarked ? "บันทึกใน Shortlist แล้ว" : "บันทึกใน Shortlist"}</span>
+                <span>{isBookmarked ? "บันทึกในรายชื่อติดตามแล้ว" : "บันทึกในรายชื่อติดตาม (Shortlist)"}</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => alert("ติดต่อโค้ชต้นสังกัด Bangkok Christian College: coach.somkid@bcc.ac.th")}
+                onClick={() => alert("ติดต่อผู้ฝึกสอนต้นสังกัด Bangkok Christian College: coach.somkid@bcc.ac.th")}
                 className="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 text-emerald-200 border border-emerald-700/60 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
-                title="ส่งข้อความหาโค้ชโรงเรียนเพื่อสอบถามข้อมูลการย้ายหรือคัดตัว"
+                title="ส่งข้อความติดต่อผู้ฝึกสอนสถานศึกษาต้นสังกัดเพื่อสอบถามข้อมูล"
               >
                 <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                <span>ติดต่อโค้ช รร.</span>
+                <span>ติดต่อผู้ฝึกสอนต้นสังกัด</span>
               </button>
             </>
           )}
 
-          {/* 3. COMMON ACTIONS */}
           <button
             type="button"
             onClick={() => setIsPassModalOpen(true)}
@@ -310,30 +406,54 @@ export default function AthleteProfilePage({
             className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
           >
             <QrCode className="w-3.5 h-3.5 text-slate-400" />
-            <span>Player Pass</span>
+            <span>บัตรประจำตัวนักกีฬา (Digital Pass)</span>
           </button>
+        </div>
 
-          {canViewPrivate && (
-            <button
-              type="button"
-              onClick={() => setIsAcademicModalOpen(true)}
-              title="Academic Eligibility & GPAX Tracker (เกรดสะสม 3.68)"
-              className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 transition cursor-pointer shrink-0"
-            >
-              <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
-              <span>GPAX 3.68 (TCAS)</span>
-            </button>
-          )}
+        {/* SEASON & AGE CATEGORY CONTROLS (Multi-season stats preservation) */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-white shadow-md">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-[#DC2626]" />
+              ฤดูกาล / SEASON:
+            </span>
+            <div className="flex items-center gap-1.5">
+              {allSeasons.map((yr) => (
+                <button
+                  key={yr}
+                  onClick={() => setSelectedSeason(yr)}
+                  className={`px-3 py-1 text-xs font-mono font-bold rounded-md transition cursor-pointer ${
+                    selectedSeason === yr
+                      ? "bg-[#DC2626] text-white shadow-xs"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700"
+                  }`}
+                >
+                  SEASON {yr}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <button
-            type="button"
-            onClick={() => setIsReelModalOpen(true)}
-            title="สร้างวิดีโอ 1-Minute Highlight Reel"
-            className="px-3 py-1.5 rounded-lg bg-[#AF101A] hover:bg-[#8F0D15] text-white font-bold uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm cursor-pointer shrink-0"
-          >
-            <Film className="w-3.5 h-3.5 text-white" />
-            <span>Highlight Reel</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400">รุ่นอายุ:</span>
+              <span className="px-2 py-0.5 rounded bg-slate-800 text-amber-400 border border-amber-500/30 font-bold">
+                {stats.ageCategory || "U18"}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400">เกมที่ลงเล่น:</span>
+              <span className="font-bold text-white">{stats.gamesPlayed} เกม</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400">EFF รวม:</span>
+              <span className="font-bold text-emerald-400">{stats.eff}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400">PPG:</span>
+              <span className="font-bold text-white">{stats.ppg?.toFixed(1) || "0.0"}</span>
+            </div>
+          </div>
         </div>
 
         {/* HORIZONTAL SUB-NAVIGATION TABS (Tactical Sports Navigation) */}
@@ -442,39 +562,54 @@ export default function AthleteProfilePage({
             <span>VERIFIED GAME LOGS</span>
           </button>
 
-          <button
-            onClick={() => setActiveTab("TCAS")}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-t font-label-caps text-label-caps tracking-wider uppercase whitespace-nowrap transition-colors ${
-              activeTab === "TCAS"
-                ? "bg-primary text-on-primary font-bold shadow-sm"
-                : "bg-surface-container-lowest border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container"
-            }`}
-          >
-            <span
-              className="material-symbols-outlined text-base"
-              style={activeTab === "TCAS" ? { fontVariationSettings: "'FILL' 1" } : undefined}
-            >
-              video_library
-            </span>
-            <span>TCAS & HIGHLIGHT REEL</span>
-            {!isPro && <Lock className="w-3 h-3 text-slate-400 ml-0.5" />}
-          </button>
+          {/* Only shown if user is the athlete owner of this profile or admin */}
+          {isOwner && (
+            <>
+              <button
+                onClick={() => setActiveTab("TCAS")}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-t font-label-caps text-label-caps tracking-wider uppercase whitespace-nowrap transition-colors ${
+                  activeTab === "TCAS"
+                    ? "bg-primary text-on-primary font-bold shadow-sm"
+                    : "bg-surface-container-lowest border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container"
+                }`}
+              >
+                <span
+                  className="material-symbols-outlined text-base"
+                  style={activeTab === "TCAS" ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                >
+                  video_library
+                </span>
+                <span>TCAS & HIGHLIGHT REEL</span>
+                {!isPro && <Lock className="w-3 h-3 text-slate-400 ml-0.5" />}
+              </button>
 
+              <button
+                onClick={() => setActiveTab("ACADEMICS")}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-t font-label-caps text-label-caps tracking-wider uppercase whitespace-nowrap transition-colors ${
+                  activeTab === "ACADEMICS"
+                    ? "bg-primary text-on-primary font-bold shadow-sm"
+                    : "bg-surface-container-lowest border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container"
+                }`}
+              >
+                <span
+                  className="material-symbols-outlined text-base"
+                  style={activeTab === "ACADEMICS" ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                >
+                  school
+                </span>
+                <span>ACADEMIC & TCAS ELIGIBILITY</span>
+              </button>
+            </>
+          )}
+          {/* Tab 3.6: Stats Lineage & Provenance Modal Trigger */}
           <button
-            onClick={() => setActiveTab("ACADEMICS")}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-t font-label-caps text-label-caps tracking-wider uppercase whitespace-nowrap transition-colors ${
-              activeTab === "ACADEMICS"
-                ? "bg-primary text-on-primary font-bold shadow-sm"
-                : "bg-surface-container-lowest border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container"
-            }`}
+            type="button"
+            onClick={() => setIsLineageModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-t font-label-caps text-label-caps tracking-wider uppercase whitespace-nowrap transition-colors bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 font-bold cursor-pointer"
+            title="ตรวจสอบประวัติและที่มาของสถิติ (Stats Lineage & Certification)"
           >
-            <span
-              className="material-symbols-outlined text-base"
-              style={activeTab === "ACADEMICS" ? { fontVariationSettings: "'FILL' 1" } : undefined}
-            >
-              school
-            </span>
-            <span>ACADEMIC & TCAS ELIGIBILITY</span>
+            <ShieldCheck className="w-4 h-4 text-indigo-600" />
+            <span>STATS LINEAGE (3.6)</span>
           </button>
         </div>
 
@@ -483,7 +618,9 @@ export default function AthleteProfilePage({
           <AthleteOverview
             athlete={athlete}
             stats={stats}
+            isOwner={isOwner}
             onNavigateTab={(tab) => setActiveTab(tab)}
+            onOpenLineage={() => setIsLineageModalOpen(true)}
           />
         )}
 
@@ -506,7 +643,11 @@ export default function AthleteProfilePage({
 
         {/* Tab: Verified Game Logs */}
         {activeTab === "LOGS" && (
-          <AthleteGameLogs athlete={athlete} stats={stats} />
+          <AthleteGameLogs
+            athlete={athlete}
+            stats={stats}
+            onOpenLineage={() => setIsLineageModalOpen(true)}
+          />
         )}
 
         {/* Tab 2: FIBA 5-Zone Shot Chart */}
@@ -528,8 +669,8 @@ export default function AthleteProfilePage({
           />
         )}
 
-        {/* Tab 4: TCAS University Export & Highlight Reel Compiler */}
-        {activeTab === "TCAS" && (
+        {/* Tab 4: TCAS University Export & Highlight Reel Compiler (Owner Only) */}
+        {isOwner && activeTab === "TCAS" && (
           <AthleteTcasPortfolio
             athlete={athlete}
             stats={stats}
@@ -538,8 +679,8 @@ export default function AthleteProfilePage({
           />
         )}
 
-        {/* Tab 5: Academic & TCAS Quota Eligibility View */}
-        {activeTab === "ACADEMICS" && (
+        {/* Tab 5: Academic & TCAS Quota Eligibility View (Owner Only) */}
+        {isOwner && activeTab === "ACADEMICS" && (
           <div className="space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
@@ -552,7 +693,7 @@ export default function AthleteProfilePage({
                     รายงานผลการเรียนสะสม (GPAX) &amp; คุณสมบัติโควตามหาวิทยาลัย
                   </h3>
                   <p className="text-xs text-slate-500 font-mono">
-                    เชื่อมโยงฐานข้อมูลผลการเรียน 4 ภาคเรียน ยืนยันสิทธิ์รอบ Portfolio สำหรับโค้ชมหาวิทยาลัย
+                    เชื่อมโยงฐานข้อมูลผลการเรียน 4 ภาคการศึกษา เพื่อประกอบการพิจารณาคัดเลือกโควตานักกีฬา TCAS รอบที่ 1 แฟ้มสะสมผลงาน (Portfolio)
                   </p>
                 </div>
 
@@ -560,10 +701,10 @@ export default function AthleteProfilePage({
                   <button
                     type="button"
                     onClick={() => setIsAcademicModalOpen(true)}
-                    className="px-4 py-2 rounded bg-[#AF101A] hover:bg-[#8F0D15] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition"
+                    className="px-4 py-2 rounded bg-[#AF101A] hover:bg-[#8F0D15] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <GraduationCap className="w-4 h-4" />
-                    <span>เปิดระบบจัดการเกรด</span>
+                    <span>เปิดระบบตรวจสอบผลการเรียน (Academic Tracker)</span>
                   </button>
                 </div>
               </div>
@@ -580,31 +721,31 @@ export default function AthleteProfilePage({
                   </div>
                   <div className="text-[11px] text-emerald-700 font-bold mt-1 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3" />
-                    <span>ผ่านเกณฑ์ขั้นต่ำทุกมหาวิทยาลัย (&ge; 2.50)</span>
+                    <span>ผ่านเกณฑ์คุณสมบัติขั้นต่ำของทุกมหาวิทยาลัย (&ge; 2.50)</span>
                   </div>
                 </div>
 
                 <div className="bg-[#F8F9FC] p-4 rounded-xl border border-slate-100">
                   <span className="text-xs text-slate-400 uppercase font-bold block">
-                    หน่วยกิตสะสมที่ผ่าน
+                    หน่วยกิตสะสมที่ผ่านการรับรอง
                   </span>
                   <div className="text-3xl font-headline-xl text-slate-900 font-normal mt-1">
                     67.0 หน่วยกิต
                   </div>
                   <div className="text-[11px] text-slate-500 mt-1">
-                    ม.4 ภาค 1-2 • ม.5 ภาค 1-2 (ครบถ้วน)
+                    ระดับชั้น ม.4 (ภาคเรียนที่ 1-2) และ ม.5 (ภาคเรียนที่ 1-2)
                   </div>
                 </div>
 
                 <div className="bg-[#F8F9FC] p-4 rounded-xl border border-slate-100">
                   <span className="text-xs text-slate-400 uppercase font-bold block">
-                    โควตากีฬา TCAS ที่มีสิทธิ์ยื่น
+                    โควตากีฬา TCAS ที่มีคุณสมบัติยื่น
                   </span>
                   <div className="text-3xl font-headline-xl text-[#DC2626] font-normal mt-1">
                     4 สถาบัน
                   </div>
                   <div className="text-[11px] text-slate-500 mt-1">
-                    จุฬาฯ • มธ. • ม.กรุงเทพ • มก.
+                    จุฬาฯ • มธ. • มก. • มช.
                   </div>
                 </div>
               </div>
@@ -612,7 +753,7 @@ export default function AthleteProfilePage({
               {/* Term By Term Breakdown */}
               <div className="space-y-3 font-mono text-xs">
                 <span className="font-bold text-slate-900 uppercase block">
-                  ประวัติผลการเรียน 4 ภาคเรียนล่าสุด (M.4 - M.5)
+                  ประวัติผลการเรียนสะสม 4 ภาคการศึกษา (ชั้นมัธยมศึกษาปีที่ 4 - 5)
                 </span>
                 <div className="border border-slate-200 rounded-xl overflow-hidden">
                   <table className="w-full text-left">
@@ -620,9 +761,9 @@ export default function AthleteProfilePage({
                       <tr>
                         <th className="py-2.5 px-4">ระดับชั้น / ภาคเรียน</th>
                         <th className="py-2.5 px-4">ปีการศึกษา</th>
-                        <th className="py-2.5 px-4 text-center">หน่วยกิต</th>
-                        <th className="py-2.5 px-4 text-center">GPA</th>
-                        <th className="py-2.5 px-4 text-right">สถานะรับรอง</th>
+                        <th className="py-2.5 px-4 text-center">หน่วยกิตสะสม</th>
+                        <th className="py-2.5 px-4 text-center">GPA ประจำภาค</th>
+                        <th className="py-2.5 px-4 text-right">สถานะการรับรอง</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -666,17 +807,17 @@ export default function AthleteProfilePage({
                     EXPLORE RECRUITMENT OPPORTUNITIES
                   </span>
                   <div className="font-bold text-white text-sm mt-0.5">
-                    กำลังมองหาทุนการศึกษาบาสเกตบอล หรือโควตาเข้ามหาวิทยาลัยชั้นนำ?
+                    ข้อมูลการเปิดรับสมัครโควตานักกีฬาและความสามารถพิเศษทางกีฬา สถาบันอุดมศึกษา
                   </div>
                   <p className="text-slate-400 text-[11px] mt-0.5">
-                    ตรวจสอบกระดานรับสมัครคัดตัวนักกีฬาช้างเผือกทั่วประเทศได้ที่หน้า Opportunities
+                    ตรวจสอบประกาศรับสมัครและเกณฑ์การคัดเลือกโควตานักกีฬาช้างเผือกทั่วประเทศได้ที่ศูนย์ข้อมูลโอกาสทางการศึกษา (Opportunities)
                   </p>
                 </div>
                 <Link
                   href="/opportunities"
                   className="px-4 py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold uppercase tracking-wider flex items-center gap-1.5 transition shrink-0"
                 >
-                  <span>ดูกระดานทุนการศึกษา</span>
+                  <span>ตรวจสอบประกาศรับสมัคร</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -744,6 +885,14 @@ export default function AthleteProfilePage({
         isOpen={isPricingModalOpen}
         onClose={() => setIsPricingModalOpen(false)}
         defaultPerspective="ATHLETE"
+      />
+
+      {/* Feature 3.6: Stats Lineage & Provenance Modal */}
+      <StatsLineageModal
+        isOpen={isLineageModalOpen}
+        onClose={() => setIsLineageModalOpen(false)}
+        athleteId={athlete.id}
+        season={selectedSeason}
       />
 
       {/* FOOTER */}
