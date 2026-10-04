@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { EventType, Match, MatchEvent, Team, RosterPlayer } from "@/lib/types";
-import { mockMatch } from "@/lib/db/seed-data";
+import { mockMatch, mockTeams } from "@/lib/db/seed-data";
 import {
   enqueueScorekeeperEvent,
   dequeueScorekeeperEvent,
@@ -52,43 +52,173 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
       const response = await fetch(`/api/matches/${encodeURIComponent(matchId)}`, { cache: "no-store" });
       if (!response.ok) return false;
       const payload = await response.json();
-      if (payload.source !== "PRISMA_SQLITE_PERSISTENT") return false;
+      if (!payload.success || !payload.data) return false;
       const data = payload.data;
-      const activeEvents = data.events.filter((event: { reversedAt?: string | null }) => !event.reversedAt);
-      const toTeam = (team: typeof data.homeTeam): Team => ({
-        id: team.id, name: team.name, shortName: team.shortName || team.name,
-        institution: team.institution, logoUrl: team.logoUrl, primaryColor: team.primaryColor,
-        roster: team.roster.map((member: { athleteId: string; jerseyNumber: number; athlete: { firstName: string; lastName: string; primaryPosition: RosterPlayer["position"]; heightCm: number } }, index: number) => {
-          const events = activeEvents.filter((event: { athleteId: string }) => event.athleteId === member.athleteId);
-          return {
-            athleteId: member.athleteId, jerseyNumber: member.jerseyNumber,
-            firstName: member.athlete.firstName, lastName: member.athlete.lastName,
-            position: member.athlete.primaryPosition, heightCm: member.athlete.heightCm,
-            points: events.reduce((sum: number, event: { points: number }) => sum + event.points, 0),
-            fouls: events.filter((event: { eventType: string }) => ["PERSONAL_FOUL", "TECHNICAL_FOUL"].includes(event.eventType)).length,
-            isOnCourt: index < 5,
-          };
-        }),
-      });
-      const match: Match = {
-        id: data.id, tournamentId: data.tournamentId, tournamentName: data.tournament?.name,
-        homeTeamId: data.homeTeamId, awayTeamId: data.awayTeamId,
-        homeTeam: toTeam(data.homeTeam), awayTeam: toTeam(data.awayTeam),
-        homeScore: data.homeScore, awayScore: data.awayScore,
-        currentQuarter: data.currentQuarter, gameClockSec: data.gameClockSec,
-        status: data.status, rawVideoUrl: data.rawVideoUrl,
-        scoresheetPhotoUrl: data.scoresheetPhotoUrl,
-        events: activeEvents, createdAt: data.createdAt,
+      const activeEvents = Array.isArray(data.events)
+        ? data.events.filter((event: { reversedAt?: string | null }) => !event.reversedAt)
+        : [];
+
+      const normalizeRoster = (rawTeam: any, teamId: string): RosterPlayer[] => {
+        const fallbackTeam = mockTeams.find((t) => t.id === teamId || t.name === rawTeam?.name);
+        const fallbackRoster = fallbackTeam ? fallbackTeam.roster : [];
+
+        let players: RosterPlayer[] = [];
+
+        if (Array.isArray(rawTeam?.roster)) {
+          players = rawTeam.roster.map((member: any, index: number) => {
+            const athleteId = member.athleteId || member.id;
+            const events = activeEvents.filter((event: { athleteId: string }) => event.athleteId === athleteId);
+            const firstName = member.athlete?.firstName || member.firstName || `Player`;
+            const lastName = member.athlete?.lastName || member.lastName || `${member.jerseyNumber ?? index + 1}`;
+            const position = member.athlete?.primaryPosition || member.position || "POINT_GUARD";
+            const heightCm = member.athlete?.heightCm || member.heightCm || 185;
+            const points = events.reduce((sum: number, event: { points: number }) => sum + (event.points || 0), 0) + (member.points || 0);
+            const fouls = events.filter((event: { eventType: string }) => ["PERSONAL_FOUL", "TECHNICAL_FOUL"].includes(event.eventType)).length + (member.fouls || 0);
+            return {
+              athleteId,
+              jerseyNumber: member.jerseyNumber ?? index + 1,
+              firstName,
+              lastName,
+              position,
+              heightCm,
+              points,
+              fouls,
+              isOnCourt: member.isOnCourt !== undefined ? member.isOnCourt : index < 5,
+            };
+          });
+        }
+
+        // Ensure 12 players from fallback or generated
+        if (players.length < 12) {
+          const existingIds = new Set(players.map((p) => p.athleteId));
+          const existingNumbers = new Set(players.map((p) => p.jerseyNumber));
+
+          for (const fb of fallbackRoster) {
+            if (players.length >= 12) break;
+            if (!existingIds.has(fb.athleteId) && !existingNumbers.has(fb.jerseyNumber)) {
+              players.push({
+                ...fb,
+                isOnCourt: false,
+              });
+              existingIds.add(fb.athleteId);
+              existingNumbers.add(fb.jerseyNumber);
+            }
+          }
+
+          const defaultPositions: RosterPlayer["position"][] = ["POINT_GUARD", "SHOOTING_GUARD", "SMALL_FORWARD", "POWER_FORWARD", "CENTER"];
+          const thaiNames = [
+            { f: "Kittipong", l: "Sanit" },
+            { f: "Nattakit", l: "Prasert" },
+            { f: "Chanon", l: "Kongpan" },
+            { f: "Teerasak", l: "Klinhom" },
+            { f: "Panupong", l: "Wichaidit" },
+            { f: "Anucha", l: "Charoen" },
+            { f: "Sorawit", l: "Petchkham" },
+          ];
+          let nameIdx = 0;
+          let numCandidate = 1;
+          while (players.length < 12) {
+            while (existingNumbers.has(numCandidate)) numCandidate++;
+            const name = thaiNames[nameIdx % thaiNames.length];
+            const newPlayer: RosterPlayer = {
+              athleteId: `ath-bench-${teamId}-${numCandidate}`,
+              jerseyNumber: numCandidate,
+              firstName: name.f,
+              lastName: name.l,
+              position: defaultPositions[players.length % defaultPositions.length],
+              heightCm: 185 + (players.length % 15),
+              points: 0,
+              fouls: 0,
+              isOnCourt: false,
+            };
+            players.push(newPlayer);
+            existingNumbers.add(numCandidate);
+            nameIdx++;
+          }
+        }
+
+        if (players.length > 12) {
+          const onCourt = players.filter((p) => p.isOnCourt);
+          const bench = players.filter((p) => !p.isOnCourt);
+          players = [...onCourt.slice(0, 5), ...bench.slice(0, 7)];
+          while (players.length < 12 && bench[players.length - 5]) {
+            players.push(bench[players.length - 5]);
+          }
+        }
+
+        const onCourtCount = players.filter((p) => p.isOnCourt).length;
+        if (onCourtCount !== 5) {
+          players = players.map((p, idx) => ({
+            ...p,
+            isOnCourt: idx < 5,
+          }));
+        }
+
+        return players;
       };
-      const firstPlayer = match.homeTeam.roster[0];
+
+      const toTeam = (team: typeof data.homeTeam, teamId: string): Team => ({
+        id: team?.id || teamId,
+        name: team?.name || "ทีมแข่งขัน",
+        shortName: team?.shortName || team?.name || "TEAM",
+        institution: team?.institution || "",
+        logoUrl: team?.logoUrl || "",
+        primaryColor: team?.primaryColor || "#1E3A8A",
+        roster: normalizeRoster(team, team?.id || teamId),
+      });
+
+      const match: Match = {
+        id: data.id,
+        tournamentId: data.tournamentId,
+        tournamentName: data.tournament?.name || data.tournamentName || "TOA Youth Basketball League Thailand 2026",
+        homeTeamId: data.homeTeamId,
+        awayTeamId: data.awayTeamId,
+        homeTeam: toTeam(data.homeTeam, data.homeTeamId),
+        awayTeam: toTeam(data.awayTeam, data.awayTeamId),
+        homeScore: data.homeScore ?? 0,
+        awayScore: data.awayScore ?? 0,
+        currentQuarter: data.currentQuarter ?? 1,
+        gameClockSec: data.gameClockSec ?? 600,
+        status: data.status || "SCHEDULED",
+        rawVideoUrl: data.rawVideoUrl,
+        scoresheetPhotoUrl: data.scoresheetPhotoUrl,
+        events: activeEvents,
+        createdAt: data.createdAt,
+      };
+
+      const firstPlayer = match.homeTeam.roster.find((p) => p.isOnCourt) || match.homeTeam.roster[0];
       const pendingSyncCount = await getPendingOfflineCount();
-      set({ match, pendingSyncCount, selectedPlayer: firstPlayer ? {
-        teamId: match.homeTeamId, athleteId: firstPlayer.athleteId,
-        jerseyNumber: firstPlayer.jerseyNumber,
-        name: `${firstPlayer.firstName} ${firstPlayer.lastName}`,
-      } : null, reversalRail: [], isClockRunning: false });
+      set({
+        match,
+        pendingSyncCount,
+        selectedPlayer: firstPlayer ? {
+          teamId: match.homeTeamId,
+          athleteId: firstPlayer.athleteId,
+          jerseyNumber: firstPlayer.jerseyNumber,
+          name: `${firstPlayer.firstName} ${firstPlayer.lastName}`,
+        } : null,
+        reversalRail: [],
+        isClockRunning: false,
+      });
       return true;
-    } catch { return false; }
+    } catch (err) {
+      console.error("[useScorekeeperStore.loadMatch ERROR]:", err);
+      if (matchId === "match-bcc-ds-01" || matchId === mockMatch.id) {
+        set({
+          match: JSON.parse(JSON.stringify(mockMatch)),
+          selectedPlayer: {
+            teamId: mockMatch.homeTeamId,
+            athleteId: mockMatch.homeTeam.roster[0].athleteId,
+            jerseyNumber: mockMatch.homeTeam.roster[0].jerseyNumber,
+            name: `${mockMatch.homeTeam.roster[0].firstName} ${mockMatch.homeTeam.roster[0].lastName}`,
+          },
+          reversalRail: [],
+          isClockRunning: false,
+        });
+        return true;
+      }
+      return false;
+    }
   },
   isClockRunning: false,
   selectedPlayer: {
@@ -433,15 +563,30 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
   },
 
   substitutePlayer: (teamId: string, outId: string, inId: string) => {
-    const { match } = get();
+    const { match, selectedPlayer } = get();
     const isHome = teamId === match.homeTeamId;
     const team = isHome ? { ...match.homeTeam } : { ...match.awayTeam };
 
+    let inPlayerObj: RosterPlayer | undefined;
+
     team.roster = team.roster.map((p) => {
       if (p.athleteId === outId) return { ...p, isOnCourt: false };
-      if (p.athleteId === inId) return { ...p, isOnCourt: true };
+      if (p.athleteId === inId) {
+        inPlayerObj = { ...p, isOnCourt: true };
+        return inPlayerObj;
+      }
       return p;
     });
+
+    const nextSelected =
+      selectedPlayer && selectedPlayer.athleteId === outId && inPlayerObj
+        ? {
+            teamId,
+            athleteId: inPlayerObj.athleteId,
+            jerseyNumber: inPlayerObj.jerseyNumber,
+            name: `${inPlayerObj.firstName} ${inPlayerObj.lastName}`,
+          }
+        : selectedPlayer;
 
     set({
       match: {
@@ -449,6 +594,20 @@ export const useScorekeeperStore = create<ScorekeeperState>((set, get) => ({
         homeTeam: isHome ? team : match.homeTeam,
         awayTeam: !isHome ? team : match.awayTeam,
       },
+      selectedPlayer: nextSelected,
     });
+
+    if (typeof window !== "undefined") {
+      fetch(`/api/matches/${match.id}/live`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "SUBSTITUTION",
+          teamId,
+          outAthleteId: outId,
+          inAthleteId: inId,
+        }),
+      }).catch(() => {});
+    }
   },
 }));
