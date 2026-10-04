@@ -6,60 +6,52 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import UnifiedLiveMatchHub from "@/components/live/UnifiedLiveMatchHub";
 import {
-  Radio,
   Film,
   Shield,
   ChevronRight,
-  Eye,
-  Calendar,
-  Sparkles,
 } from "lucide-react";
 
 export default function LiveMatchStreamPage() {
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased selection:bg-[#DC2626] selection:text-white">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased selection:bg-[#AF101A] selection:text-white">
       <Navbar />
 
-      {/* 1. Top Crimson Sub-Banner (Standard StatCourtTH header) */}
-      <div className="bg-[#991B1B] text-white py-2 px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 text-xs select-none">
-        <div className="flex items-center gap-2 flex-wrap font-mono">
-          <span className="bg-white text-[#991B1B] font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-sans">
-            FIBA LIVE BROADCAST
-          </span>
-          <span className="font-bold tracking-wide text-[11px]">
-            การถ่ายทอดสดสัญญาณตรงมาตรฐานสากล ซิงก์คะแนนโต๊ะกลางแบบ Real-time (&lt; 30ms)
-          </span>
-        </div>
+      {/* Sleek Compact Broadcast Bar (Courtside Editorial) */}
+      <section className="bg-[#0B1C30] text-white border-b border-[#1E3A5F] py-2 px-4 sm:px-6 lg:px-8 relative select-none">
+        <div className="max-w-[1536px] mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-200 font-bold text-[11px] tracking-wide font-mono">
+              <span className="w-2 h-2 rounded-full bg-[#AF101A] animate-pulse" />
+              FIBA LIVE ARENA
+            </span>
+            <span className="text-slate-300 font-medium text-xs hidden sm:inline">
+              สัญญาณตรงมาตรฐานสากล ซิงก์คะแนนโต๊ะกลางแบบ Real-time
+            </span>
+          </div>
 
-        <div className="flex items-center gap-3 font-mono text-[11px]">
-          <span className="text-red-100 hidden sm:inline">Multi-Court Sync • Multi-Cam Active</span>
-        </div>
-      </div>
-
-      {/* 2. Hero Header Section (Consistent with /tournaments, /team, and /matches) */}
-      <section className="bg-[#0F172A] text-white py-8 sm:py-10 border-b border-slate-800 relative overflow-hidden">
-        <div className="absolute inset-0 court-grid-pattern opacity-15 pointer-events-none" />
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/20 border border-[#AF101A]/40 text-[#FFDAD6] text-xs font-mono font-bold tracking-widest uppercase">
-                <Radio className="w-3.5 h-3.5 text-[#DC2626] animate-pulse" />
-                <span>LIVE BROADCAST &amp; COURTSIDE ARENA</span>
-              </div>
-              <h1 className="font-headline-xl text-white uppercase tracking-wider text-2xl sm:text-3xl lg:text-4xl font-normal leading-tight">
-                ศูนย์ถ่ายทอดสดและผลการแข่งขันสด
-              </h1>
-              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                รับชมการแข่งขันสดพร้อมกันหลายสนาม (Multi-Court Arena), คะแนนสด SSE Real-time,
-                แชตเชียร์สดร่วมกับแฟนบาสเกตบอล, และระบบชาเลนจ์คำตัดสิน FIBA IRS
-              </p>
-            </div>
+          <div className="flex items-center gap-3 text-xs">
+            <Link
+              href="/matches"
+              className="text-slate-300 hover:text-white flex items-center gap-1 font-medium transition"
+            >
+              <Film className="w-3.5 h-3.5 text-amber-400" />
+              <span>คลังเทปย้อนหลัง (Film Archive)</span>
+            </Link>
+            <span className="text-slate-600">•</span>
+            <Link
+              href="/official/console/match-bcc-ds-01"
+              className="text-slate-300 hover:text-white flex items-center gap-1 font-medium transition"
+            >
+              <Shield className="w-3.5 h-3.5 text-[#AF101A]" />
+              <span>โต๊ะกรรมการ (Official)</span>
+              <ChevronRight className="w-3 h-3 text-slate-500" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 3. Main Live Stream Hub Component */}
-      <main className="flex-1 pb-16 max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6">
+      {/* Main Live Broadcast Theater Canvas */}
+      <main className="flex-1 pb-16 max-w-[1536px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4">
         <UnifiedLiveMatchHub matchId="match-bcc-ds-01" />
       </main>
 

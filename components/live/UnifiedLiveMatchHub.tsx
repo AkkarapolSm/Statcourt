@@ -3,24 +3,17 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Calendar,
-  Trophy,
   MapPin,
   Play,
   Pause,
   Volume2,
   VolumeX,
-  Settings,
   Maximize2,
   Send,
-  History,
-  RefreshCw,
   ShieldCheck,
-  FileText,
   Radio,
   Eye,
   Flame,
-  Zap,
   CheckCircle2,
   Clock,
   Dribbble,
@@ -29,11 +22,7 @@ import {
   SkipForward,
   SkipBack,
   X,
-  MousePointerClick,
   Sparkles,
-  Camera,
-  Users,
-  ChevronRight,
   Printer,
   BadgeCheck,
   Lock,
@@ -46,7 +35,7 @@ import DigitalPlayerPassModal from "@/components/athlete/DigitalPlayerPassModal"
 import InstantReplayDisputeModal from "@/components/live/InstantReplayDisputeModal";
 import { mockDisputeRequests } from "@/lib/db/phase4-data";
 import { DisputeRequest } from "@/lib/types";
-import { LiveMatchBroadcastState, LivePlayEvent } from "@/lib/live/liveMatchBroker";
+import { LiveMatchBroadcastState } from "@/lib/live/liveMatchBroker";
 
 interface ChatMessage {
   id: string;
@@ -101,7 +90,7 @@ export default function UnifiedLiveMatchHub({
       title: `ฟังก์ชัน ${featureName} สำหรับสมาชิกเท่านั้น`,
       description:
         description ||
-        `ในฐานะผู้เข้าชมทั่วไป คุณสามารถรับชมการถ่ายทอดสดแบบ Real-time ได้ฟรี กรุณาสมัครสมาชิกทั่วไป (ฟรีไม่มีค่าธรรมเนียม) เพื่อเปิดสิทธิ์ใช้งาน ${featureName} และมีส่วนร่วมกับคอมมูนิตี้`,
+        `ในฐานะผู้เข้าชมทั่วไป คุณสามารถรับชมการถ่ายทอดสดความละเอียดสูงได้ฟรี กรุณาสมัครสมาชิกทั่วไป (ฟรีไม่มีค่าธรรมเนียม) เพื่อเปิดสิทธิ์ใช้งาน ${featureName} และมีส่วนร่วมในการเชียร์สด`,
     });
   };
 
@@ -159,7 +148,7 @@ export default function UnifiedLiveMatchHub({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
 
-  // Right sidebar tab (PROGRAM, LINEUP, CHAT)
+  // Right sidebar tab (CHAT, PROGRAM, LINEUP)
   const [activeTab, setActiveTab] = useState<"CHAT" | "PROGRAM" | "LINEUP">("CHAT");
   const [selectedTeamCheer, setSelectedTeamCheer] = useState<"ALL" | "BCC" | "DS">("ALL");
   const [chatInput, setChatInput] = useState("");
@@ -375,7 +364,6 @@ export default function UnifiedLiveMatchHub({
     }
   };
 
-
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -427,7 +415,7 @@ export default function UnifiedLiveMatchHub({
 
     const newMsgObj: ChatMessage = {
       id: Date.now().toString(),
-      sender: "Fan_LiveUser",
+      sender: currentUser.name || "Fan_LiveUser",
       badge: selectedTeamCheer === "DS" ? "DS" : "BCC",
       badgeType: selectedTeamCheer === "DS" ? "DS" : "BCC",
       text: textToSend,
@@ -442,7 +430,7 @@ export default function UnifiedLiveMatchHub({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "SEND_CHAT",
-          sender: "Fan_LiveUser",
+          sender: currentUser.name || "Fan_LiveUser",
           badge: selectedTeamCheer === "DS" ? "DS" : "BCC",
           badgeType: selectedTeamCheer === "DS" ? "DS" : "BCC",
           text: textToSend,
@@ -482,32 +470,23 @@ export default function UnifiedLiveMatchHub({
   const currentClip = activeClipQueue ? activeClipQueue[currentClipIndex] : null;
 
   return (
-    <div className="space-y-6 animate-fadeIn">
-      {/* GUEST ACCESS RESTRICTION BANNER (ถ้าไม่ได้เป็นสมาชิก ดู LIVE สดได้อย่างเดียว) */}
+    <div className="space-y-4">
+      {/* 1. GUEST MODE COMPACT STRIP */}
       {!isMember && (
-        <div className="bg-gradient-to-r from-amber-950/70 via-slate-900 to-amber-950/50 border border-amber-500/40 rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center shrink-0">
-              <Lock className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-sm">
-                  โหมดผู้เข้าชมทั่วไป (Guest Visitor Mode)
-                </span>
-                <span className="bg-amber-500/20 text-amber-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded border border-amber-500/30">
-                  ดู LIVE สดฟรี
-                </span>
-              </div>
-              <p className="text-xs text-slate-300 mt-0.5 font-sans">
-                คุณสามารถรับชมการถ่ายทอดสดฟรีได้ทันที • สมัครสมาชิกทั่วไป (ฟรี) เพื่อเปิดสิทธิ์ร่วมส่งข้อความแชตสด, รีเพลย์คลิปเพลย์ย้อนหลัง และตรวจสอบสถิติเชิงลึก
-              </p>
+        <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="p-1 rounded-sm bg-amber-400/15 text-amber-400 shrink-0 border border-amber-400/30">
+              <Lock className="w-3.5 h-3.5" />
+            </span>
+            <div className="font-sans text-slate-300">
+              <span className="font-bold text-white mr-1.5">โหมดผู้เข้าชมทั่วไป:</span>
+              รับชมสดความละเอียดสูงฟรี • สมัครสมาชิกฟรีเพื่อพิมพ์แชตเชียร์, ดูคลิปรีเพลย์ และตรวจบัตรนักกีฬา
             </div>
           </div>
-          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto font-mono">
+          <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/auth/register"
-              className="flex-1 sm:flex-none text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              className="bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs px-3.5 py-1.5 rounded-sm transition flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>สมัครสมาชิกฟรี</span>
@@ -515,73 +494,70 @@ export default function UnifiedLiveMatchHub({
             <button
               type="button"
               onClick={() => loginAs("FAN")}
-              className="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-3.5 py-2 rounded-xl border border-slate-700 transition cursor-pointer whitespace-nowrap"
-              title="คลิกเพื่อจำลองเข้าสู่ระบบเป็น FAN ทันที"
+              className="bg-[#142338] hover:bg-[#1E3452] text-slate-200 font-semibold text-xs px-3 py-1.5 rounded-sm border border-[#1E3A5F] transition cursor-pointer"
             >
-              เข้าสู่ระบบ (FAN)
+              เข้าสู่ระบบด่วน (FAN)
             </button>
           </div>
         </div>
       )}
-      {/* ============================================================== */}
-      {/* 1. TOP MULTI-COURT ARENA BAR (STREAMING SYNC 3 COURTS)        */}
-      {/* ============================================================== */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl backdrop-blur-md">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800 font-mono text-xs">
-          <div className="flex items-center gap-2 text-slate-300">
-            <Radio className="w-4 h-4 text-red-500 animate-pulse" />
-            <span className="font-bold text-white uppercase tracking-wider">
-              AVAILABLE LIVE COURTS (MULTI-COURT ARENA)
-            </span>
+
+      {/* 2. MULTI-COURT ARENA SELECTOR */}
+      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-3.5 shadow-xs select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-[#1E3A5F] text-xs">
+          <div className="flex items-center gap-2 font-mono uppercase tracking-wider text-slate-300">
+            <Radio className="w-3.5 h-3.5 text-[#AF101A] animate-pulse" />
+            <span className="font-bold text-white">ARENA COURTS SELECTOR</span>
           </div>
-          <div className="flex items-center gap-2 text-[11px] font-mono">
+
+          <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
             {sseConnected ? (
-              <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-800/80 px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1.5 shadow-sm">
+              <span className="text-emerald-400 font-bold flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                SSE REAL-TIME SYNCED (&lt; 30ms)
+                LIVE SYNC
               </span>
             ) : (
-              <span className="bg-amber-950/80 text-amber-400 border border-amber-800/80 px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1.5">
+              <span className="text-amber-400 font-bold flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                LIVE STREAM SYNC ACTIVE
+                CONNECTED
               </span>
             )}
-            <span className="text-slate-400 hidden sm:inline">
-              VIEWERS: <span className="text-white font-bold">{liveState?.viewerCount || 2840}</span>
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <span className="flex items-center gap-1">
+              <Eye className="w-3.5 h-3.5 text-slate-400" />
+              <span>ผู้ชม:</span>
+              <strong className="text-white tabular-nums">
+                {liveState?.viewerCount ? liveState.viewerCount.toLocaleString() : "2,840"}
+              </strong>
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3">
+        {/* 3 Courts Segmented Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-2.5">
           {/* Court 1 */}
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-1")}
-            className={`p-3 rounded-xl border text-left font-mono transition-all duration-200 cursor-pointer ${
+            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
               activeCourt === "court-1"
-                ? "bg-red-950/40 border-red-500 text-white shadow-lg shadow-red-950/30"
-                : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
-            <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="flex items-center gap-1.5 font-bold text-red-400">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="flex items-center gap-1.5 font-bold font-mono uppercase text-[#AF101A]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A] animate-pulse" />
                 สนาม 1 (MAIN COURT)
               </span>
-              <span className="bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
-                LIVE STREAM
+              <span className="bg-[#AF101A] text-white text-[9px] px-1.5 py-0.5 rounded-sm font-mono font-bold uppercase tracking-wider">
+                LIVE
               </span>
             </div>
-            <div className="text-sm font-bold text-white">
-              {liveState
-                ? `${liveState.homeTeam.shortName} (${liveState.homeTeam.score}) vs ${liveState.awayTeam.shortName} (${liveState.awayTeam.score})`
-                : "BCC (75) vs DS (63)"}
-            </div>
-            <div className="flex justify-between items-center text-[10px] text-slate-400 mt-1">
-              <span>{liveState ? `${liveState.quarterDisplay} ${liveState.gameClockDisplay}` : "Q4 05:20"}</span>
-              <span className="flex items-center gap-1 text-red-400">
-                <Eye className="w-3 h-3" />
-                {liveState?.viewerCount || 2840} VIEWERS
+            <div className="text-sm font-bold text-white flex items-center justify-between font-mono">
+              <span>{liveState ? `${liveState.homeTeam.shortName} (${liveState.homeTeam.score}) vs ${liveState.awayTeam.shortName} (${liveState.awayTeam.score})` : "BCC (75) vs DS (63)"}</span>
+              <span className="text-slate-400 text-xs font-normal tabular-nums">
+                {liveState ? `${liveState.quarterDisplay} ${liveState.gameClockDisplay}` : "Q4 05:20"}
               </span>
             </div>
           </button>
@@ -590,29 +566,27 @@ export default function UnifiedLiveMatchHub({
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-2")}
-            className={`p-3 rounded-xl border text-left font-mono transition-all duration-200 cursor-pointer ${
+            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
               activeCourt === "court-2"
-                ? "bg-red-950/40 border-red-500 text-white shadow-lg shadow-red-950/30"
-                : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
-            <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="flex items-center gap-1.5 font-bold text-slate-300">
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="flex items-center gap-1.5 font-bold font-mono uppercase text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 สนาม 2 (COURT B)
               </span>
-              <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                {!isMember && <Lock className="w-2.5 h-2.5 text-amber-400" />}
-                <span>Q3 04:11</span>
-              </span>
+              {!isMember && (
+                <span className="text-[9px] text-amber-400 uppercase font-bold flex items-center gap-0.5 font-mono">
+                  <Lock className="w-2.5 h-2.5" />
+                  MEMBER
+                </span>
+              )}
             </div>
-            <div className="text-sm font-bold text-slate-200">ACT (48) vs SK (48)</div>
-            <div className="flex justify-between items-center text-[10px] text-slate-400 mt-1">
-              <span>อัสสัมชัญธนบุรี vs สวนกุหลาบ</span>
-              <span className="flex items-center gap-1">
-                {!isMember && <span className="text-[9px] text-amber-400 uppercase font-bold">MEMBER</span>}
-                <span>382 VIEWERS</span>
-              </span>
+            <div className="text-sm font-bold text-slate-200 flex items-center justify-between font-mono">
+              <span>ACT (48) vs SK (48)</span>
+              <span className="text-slate-400 text-xs font-normal tabular-nums">Q3 04:11</span>
             </div>
           </button>
 
@@ -620,107 +594,104 @@ export default function UnifiedLiveMatchHub({
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-3")}
-            className={`p-3 rounded-xl border text-left font-mono transition-all duration-200 cursor-pointer ${
+            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
               activeCourt === "court-3"
-                ? "bg-red-950/40 border-red-500 text-white shadow-lg shadow-red-950/30"
-                : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
-            <div className="flex items-center justify-between text-[11px] mb-1">
-              <span className="flex items-center gap-1.5 font-bold text-slate-300">
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="flex items-center gap-1.5 font-bold font-mono uppercase text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 สนาม 3 (COURT C)
               </span>
-              <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                {!isMember && <Lock className="w-2.5 h-2.5 text-amber-400" />}
-                <span>Q2 01:15</span>
-              </span>
+              {!isMember && (
+                <span className="text-[9px] text-amber-400 uppercase font-bold flex items-center gap-0.5 font-mono">
+                  <Lock className="w-2.5 h-2.5" />
+                  MEMBER
+                </span>
+              )}
             </div>
-            <div className="text-sm font-bold text-slate-200">CMU (34) vs CHON (38)</div>
-            <div className="flex justify-between items-center text-[10px] text-slate-400 mt-1">
-              <span>สาธิต มช. vs ชลราษฎรอำรุง</span>
-              <span className="flex items-center gap-1">
-                {!isMember && <span className="text-[9px] text-amber-400 uppercase font-bold">MEMBER</span>}
-                <span>519 VIEWERS</span>
-              </span>
+            <div className="text-sm font-bold text-slate-200 flex items-center justify-between font-mono">
+              <span>CMU (34) vs CHON (38)</span>
+              <span className="text-slate-400 text-xs font-normal tabular-nums">Q2 01:15</span>
             </div>
           </button>
         </div>
       </div>
 
-      {/* ============================================================== */}
-      {/* 2. MATCH BROADCAST HEADER BAR                                  */}
-      {/* ============================================================== */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 mb-1.5 font-mono text-xs">
-            <span className="bg-red-950 text-red-400 border border-red-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+      {/* 3. BROADCAST COMMAND BAR (Scoreboard & Match Details) */}
+      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        {/* Match Identity */}
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] px-2 py-0.5 rounded-sm font-mono font-bold uppercase flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A] animate-pulse" />
               LIVE BROADCAST
             </span>
-            <span className="text-slate-400">
+            <span className="text-slate-300 text-xs font-medium font-sans">
               TOA Youth Basketball League Thailand 2026 • U18 Final
             </span>
             <span className="text-slate-600 hidden sm:inline">•</span>
-            <span className="text-slate-400 hidden sm:inline flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-red-400" />
+            <span className="text-slate-400 text-xs hidden sm:inline flex items-center gap-1 font-sans">
+              <MapPin className="w-3.5 h-3.5 text-[#AF101A]" />
               สนาม 1 (Main Court) - อาคารนิมิบุตร สนามกีฬาแห่งชาติ
             </span>
           </div>
 
-          <h1 className="font-headline-lg uppercase text-2xl sm:text-3xl font-black text-white tracking-wide">
-            BANGKOK CHRISTIAN COLLEGE <span className="text-red-500 font-light text-xl">VS</span> DEBSIRIN SCHOOL
+          <h1 className="font-headline uppercase text-2xl sm:text-3xl font-extrabold text-white tracking-wide">
+            BANGKOK CHRISTIAN COLLEGE <span className="text-[#AF101A] font-light text-xl sm:text-2xl mx-1.5">VS</span> DEBSIRIN SCHOOL
           </h1>
         </div>
 
-        {/* Header Right: Two-Tier Layout (Row 1: Scoreboard, Row 2: Action Buttons) */}
-        <div className="flex flex-col items-start lg:items-end gap-2.5 shrink-0">
-          {/* Row 1: Quick Score Badge */}
-          <div className="bg-slate-950 border border-slate-800 px-4 py-2 rounded-xl flex items-center gap-4 font-mono shadow-inner">
-            <div className="text-center">
-              <span className="text-[10px] text-slate-400 block font-bold">
+        {/* Scoreboard & Tactical Action Rail */}
+        <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3 shrink-0">
+          {/* Editorial Score Display */}
+          <div className="bg-[#081422] border border-[#1E3A5F] px-4 py-2 rounded-sm flex items-center gap-4">
+            <div className="text-center min-w-[48px]">
+              <span className="text-[11px] text-slate-400 block font-mono font-bold uppercase tracking-wider">
                 {liveState?.homeTeam.shortName || "BCC"}
               </span>
               <span
-                className={`text-2xl font-black text-white transition-all duration-300 inline-block ${
-                  scoreHighlight === "home"
-                    ? "scale-125 text-red-400 drop-shadow-[0_0_12px_rgba(239,68,68,0.9)] animate-bounce"
-                    : ""
+                className={`text-3xl sm:text-4xl font-mono font-bold text-white tabular-nums transition-all inline-block ${
+                  scoreHighlight === "home" ? "scale-110 text-[#AF101A]" : ""
                 }`}
               >
                 {liveState ? liveState.homeTeam.score : 75}
               </span>
             </div>
-            <div className="text-slate-600 font-black text-lg">:</div>
-            <div className="text-center">
-              <span className="text-[10px] text-slate-400 block font-bold">
+
+            <div className="text-slate-600 font-mono font-bold text-2xl">:</div>
+
+            <div className="text-center min-w-[48px]">
+              <span className="text-[11px] text-slate-400 block font-mono font-bold uppercase tracking-wider">
                 {liveState?.awayTeam.shortName || "DS"}
               </span>
               <span
-                className={`text-2xl font-black text-white transition-all duration-300 inline-block ${
-                  scoreHighlight === "away"
-                    ? "scale-125 text-amber-400 drop-shadow-[0_0_12px_rgba(245,158,11,0.9)] animate-bounce"
-                    : ""
+                className={`text-3xl sm:text-4xl font-mono font-bold text-white tabular-nums transition-all inline-block ${
+                  scoreHighlight === "away" ? "scale-110 text-amber-400" : ""
                 }`}
               >
                 {liveState ? liveState.awayTeam.score : 63}
               </span>
             </div>
-            <div className="pl-3 border-l border-slate-800 text-right">
-              <span className="px-1.5 py-0.5 rounded bg-red-600 text-white font-bold text-[10px] block">
+
+            <div className="pl-3 border-l border-[#1E3A5F] text-right font-mono">
+              <span className="px-2 py-0.5 rounded-sm bg-[#AF101A] text-white font-bold text-[10px] block uppercase tracking-wide">
                 {liveState ? liveState.quarterDisplay : "Q4"}
               </span>
-              <span className="text-xs font-bold text-amber-400 mt-0.5 block">
+              <span className="text-sm font-bold text-amber-400 mt-0.5 block tabular-nums">
                 {liveState ? liveState.gameClockDisplay : "05:20"}
               </span>
             </div>
+
             {liveState?.shotClockSec !== undefined && (
-              <div className="pl-2 border-l border-slate-800/80 text-center">
-                <span className="text-[8px] text-amber-400/80 block font-bold">SHOT</span>
+              <div className="pl-2 border-l border-[#1E3A5F] text-center font-mono">
+                <span className="text-[8px] text-slate-400 block font-bold uppercase">SHOT</span>
                 <span
-                  className={`text-xs font-bold ${
+                  className={`text-xs font-bold tabular-nums ${
                     liveState.shotClockSec <= 5
-                      ? "text-red-500 animate-pulse font-black"
+                      ? "text-[#AF101A] animate-pulse font-black"
                       : "text-amber-400"
                   }`}
                 >
@@ -730,37 +701,30 @@ export default function UnifiedLiveMatchHub({
             )}
           </div>
 
-          {/* Row 2: All 3 Action Buttons in One Clean Aligned Row */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 font-mono text-xs">
-            {/* Coach's Challenge & Instant Replay (IRS Review) Button */}
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 text-xs">
             <button
               type="button"
               onClick={handleOpenChallengeModal}
-              className="px-3.5 py-2 rounded-xl bg-red-950/80 hover:bg-red-900 border border-red-800/80 text-white font-bold transition flex items-center gap-1.5 shadow-md shadow-red-950/40 shrink-0 cursor-pointer whitespace-nowrap"
+              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] border border-[#1E3A5F] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="ระบบชาเลนจ์และตรวจสอบภาพช้าผู้ตัดสิน FIBA IRS"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>ระบบชาเลนจ์ (IRS REVIEW)</span>
-              {!isMember ? (
-                <Lock className="w-3 h-3 text-amber-400 ml-1" />
-              ) : (
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse ml-0.5" />
-              )}
+              <span className="font-mono tracking-wide">ชาเลนจ์ (IRS)</span>
+              {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
 
-            {/* Social Card Modal Button */}
             <button
               type="button"
               onClick={handleOpenSocialModal}
-              className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition flex items-center gap-1.5 border border-slate-700 shadow-md shrink-0 cursor-pointer whitespace-nowrap"
+              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] border border-[#1E3A5F] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="สร้างภาพกราฟิกสรุปผลคะแนนสำหรับโซเชียลมีเดีย"
             >
-              <Share2 className="w-3.5 h-3.5 text-amber-400" />
-              <span>ภาพสรุปโซเชียล (SOCIAL CARD)</span>
-              {!isMember && <Lock className="w-3 h-3 text-amber-400 ml-1" />}
+              <Share2 className="w-3.5 h-3.5 text-slate-300" />
+              <span className="font-mono tracking-wide">ภาพสรุป</span>
+              {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
 
-            {/* Player Pass Modal Button */}
             <button
               type="button"
               onClick={() =>
@@ -770,72 +734,67 @@ export default function UnifiedLiveMatchHub({
                   team: "BCC",
                 })
               }
-              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 to-[#AF101A] hover:from-red-500 hover:to-red-700 text-white font-bold transition flex items-center gap-1.5 shadow-md shadow-red-950/40 shrink-0 cursor-pointer whitespace-nowrap"
+              className="px-3.5 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="ตรวจบัตรประจำตัวนักกีฬาทางการ"
             >
               <BadgeCheck className="w-3.5 h-3.5" />
-              <span>ตรวจบัตรนักกีฬา (PLAYER PASS)</span>
-              {!isMember && <Lock className="w-3 h-3 text-amber-400 ml-1" />}
+              <span className="font-mono tracking-wide">ตรวจบัตรนักกีฬา</span>
+              {!isMember && <Lock className="w-3 h-3 text-white/80" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* ============================================================== */}
-      {/* 3. MAIN BROADCAST GRID: VIDEO PLAYER (8) + SIDEBAR TABS (4)   */}
-      {/* ============================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* LEFT COLUMN: HD LIVE BROADCAST VIDEO PLAYER (8 COLS) */}
-        <div className="lg:col-span-8 space-y-4">
-          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center group select-none">
-            
-            {/* Synthetic Basketball Broadcast Background Canvas */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black">
-              {/* Animated Court Lines */}
-              <div className="absolute inset-0 court-grid-pattern opacity-15" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-96 h-96 rounded-full border border-red-600/10 pointer-events-none" />
-                <div className="w-[500px] h-[300px] border border-amber-500/10 rounded-3xl pointer-events-none" />
+      {/* 4. MAIN BROADCAST GRID: VIDEO PLAYER (8) + SIDEBAR DOCK (4) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* LEFT: 16:9 BROADCAST THEATER CANVAS (8 Cols) */}
+        <div className="lg:col-span-8 space-y-3">
+          <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-[#1E3A5F] shadow-lg flex items-center justify-center group select-none">
+            {/* Arena Canvas Graphic */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0B1C30] via-[#081422] to-black">
+              <div className="absolute inset-0 court-grid-pattern opacity-10 pointer-events-none" />
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-80 h-80 rounded-full border border-red-600/10" />
+                <div className="w-[480px] h-[280px] border border-amber-500/10 rounded-lg" />
               </div>
             </div>
 
-            {/* Top-Left Live Score Ticker Overlay (Screenshot 1 & 2) */}
-            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-slate-950/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-xl font-mono text-xs shadow-2xl">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span className="bg-red-600 text-white font-bold text-[10px] px-1.5 py-0.5 rounded">
+            {/* Top-Left Live Score Bug */}
+            <div className="absolute top-3.5 left-3.5 z-20 flex items-center gap-2 bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 px-3 py-1.5 rounded-sm font-mono text-xs shadow-md">
+              <span className="w-2 h-2 rounded-full bg-[#AF101A] animate-pulse" />
+              <span className="bg-[#AF101A] text-white font-bold text-[10px] px-1.5 py-0.2 rounded-sm uppercase">
                 {liveState ? liveState.quarterDisplay : "Q4"}
               </span>
-              <span className="font-bold text-white">
+              <span className="font-bold text-white tracking-wide">
                 {liveState?.homeTeam.shortName || "BCC"}
               </span>
               <span
-                className={`font-black text-white text-sm transition-all inline-block ${
-                  scoreHighlight === "home" ? "scale-125 text-red-400" : ""
+                className={`font-bold text-white text-sm tabular-nums transition-all inline-block ${
+                  scoreHighlight === "home" ? "scale-110 text-[#AF101A]" : ""
                 }`}
               >
                 {liveState ? liveState.homeTeam.score : 75}
               </span>
               <span className="text-slate-500">:</span>
               <span
-                className={`font-black text-white text-sm transition-all inline-block ${
-                  scoreHighlight === "away" ? "scale-125 text-amber-400" : ""
+                className={`font-bold text-white text-sm tabular-nums transition-all inline-block ${
+                  scoreHighlight === "away" ? "scale-110 text-amber-400" : ""
                 }`}
               >
                 {liveState ? liveState.awayTeam.score : 63}
               </span>
-              <span className="font-bold text-slate-300">
+              <span className="font-bold text-slate-300 tracking-wide">
                 {liveState?.awayTeam.shortName || "DS"}
               </span>
-              <span className="text-amber-400 font-bold ml-1">
+              <span className="text-amber-400 font-bold ml-1 tabular-nums">
                 {liveState ? liveState.gameClockDisplay : simulatedVideoTimestamp}
               </span>
               {liveState?.shotClockSec !== undefined && (
                 <span
-                  className={`ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold border ${
+                  className={`ml-0.5 px-1.5 py-0.2 rounded-sm text-[10px] font-bold tabular-nums border ${
                     liveState.shotClockSec <= 5
-                      ? "bg-red-950 text-red-400 border-red-800 animate-pulse"
-                      : "bg-black/60 text-amber-400 border-amber-800/60"
+                      ? "bg-[#AF101A]/30 text-red-200 border-[#AF101A]/50 animate-pulse"
+                      : "bg-black/60 text-amber-400 border-amber-400/40"
                   }`}
                 >
                   {liveState.shotClockSec}s
@@ -843,79 +802,76 @@ export default function UnifiedLiveMatchHub({
               )}
             </div>
 
-            {/* Top-Right Player Controls: Camera Switchers */}
-            <div className="absolute top-4 right-4 z-20 flex flex-wrap items-center gap-2">
-              {/* Camera Switcher Buttons (CAM 1, CAM 2, CAM 3) */}
-              <div className="flex items-center bg-slate-950/90 backdrop-blur-md border border-slate-800 rounded-xl p-1 font-mono text-xs">
-                <button
-                  type="button"
-                  onClick={() => setActiveCam("CAM1")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
-                    activeCam === "CAM1"
-                      ? "bg-red-600 text-white"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                  title="กล้องหลักมุมกว้าง"
-                >
-                  CAM 1 (กว้าง)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCam("CAM2")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
-                    activeCam === "CAM2"
-                      ? "bg-red-600 text-white"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                  title="กล้องระดับคอร์ต"
-                >
-                  CAM 2 (ริมคอร์ต)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveCam("CAM3")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
-                    activeCam === "CAM3"
-                      ? "bg-red-600 text-white"
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                  title="กล้องหลังแป้นบาส Tactical"
-                >
-                  CAM 3 (หลังแป้น)
-                </button>
-              </div>
+            {/* Top-Right Camera Switcher Buttons */}
+            <div className="absolute top-3.5 right-3.5 z-20 flex items-center bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 rounded-sm p-1 font-mono text-xs shadow-md">
+              <button
+                type="button"
+                onClick={() => setActiveCam("CAM1")}
+                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                  activeCam === "CAM1"
+                    ? "bg-[#AF101A] text-white shadow-xs"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                title="กล้องหลักมุมกว้าง"
+              >
+                CAM 1
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCam("CAM2")}
+                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                  activeCam === "CAM2"
+                    ? "bg-[#AF101A] text-white shadow-xs"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                title="กล้องระดับคอร์ต"
+              >
+                CAM 2
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCam("CAM3")}
+                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                  activeCam === "CAM3"
+                    ? "bg-[#AF101A] text-white shadow-xs"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                title="กล้องหลังแป้นบาส Tactical"
+              >
+                CAM 3
+              </button>
             </div>
 
-            {/* Center Broadcast Watermark & Status */}
-            <div className="text-center space-y-2 pointer-events-none z-10">
-              <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-slate-400">
-                <Dribbble className="w-8 h-8 opacity-40 animate-spin-slow" />
+            {/* Center Broadcast Watermark */}
+            <div className="text-center space-y-1.5 pointer-events-none z-10">
+              <div className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-slate-400">
+                <Dribbble className="w-7 h-7 opacity-30 animate-spin-slow" />
               </div>
               <div className="font-mono text-xs text-slate-400 tracking-widest uppercase">
                 OFFICIAL BROADCAST FEED • 1080P 60FPS
               </div>
-              <div className="text-[11px] font-mono text-slate-500">
-                COURTSIDE TRACKER: BANGKOK CHRISTIAN VS DEBSIRIN
+              <div className="text-[11px] text-slate-500 font-sans">
+                สัญญาณตรงจากสนามแข่งขัน อาคารนิมิบุตร
               </div>
             </div>
 
-            {/* Click-to-Clip Active Video Queue Banner */}
+            {/* Click-to-Clip Active Video Banner (Overlay) */}
             {currentClip && (
-              <div className="absolute bottom-12 inset-x-4 z-20 bg-slate-950/95 border border-red-500/60 p-3 rounded-xl shadow-2xl flex items-center justify-between gap-3 font-mono text-xs animate-slideUp">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center shrink-0">
+              <div className="absolute bottom-12 inset-x-3.5 z-20 bg-[#0B1C30]/95 backdrop-blur-xs border border-[#AF101A] p-3 rounded-md shadow-2xl flex items-center justify-between gap-3 text-xs animate-slideUp">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-sm bg-[#AF101A] text-white flex items-center justify-center shrink-0">
                     <Flame className="w-4 h-4" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-400 font-bold">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="text-red-200 font-bold font-mono truncate">
                         ไฮไลท์เพลย์: {currentClip.playerName} (#{currentClip.jerseyNumber})
                       </span>
-                      <span className="bg-slate-800 text-slate-300 text-[10px] px-1.5 py-0.5 rounded">
+                      <span className="bg-[#142338] text-slate-200 text-[10px] px-1.5 py-0.2 rounded-sm font-mono tabular-nums shrink-0">
                         {currentClip.quarterClock}
                       </span>
                     </div>
-                    <div className="text-slate-300 text-[11px] font-sans mt-0.5">
+                    <div className="text-slate-300 text-[11px] font-sans mt-0.5 truncate">
                       {currentClip.title} — {currentClip.description}
                     </div>
                   </div>
@@ -926,7 +882,8 @@ export default function UnifiedLiveMatchHub({
                     type="button"
                     onClick={handlePrevClip}
                     disabled={currentClipIndex === 0}
-                    className="p-1.5 rounded bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40"
+                    aria-label="คลิปก่อนหน้า"
+                    className="p-1.5 rounded-sm bg-[#142338] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
                     title="คลิปก่อนหน้า"
                   >
                     <SkipBack className="w-3.5 h-3.5" />
@@ -934,10 +891,9 @@ export default function UnifiedLiveMatchHub({
                   <button
                     type="button"
                     onClick={handleNextClip}
-                    disabled={
-                      !activeClipQueue || currentClipIndex === activeClipQueue.length - 1
-                    }
-                    className="p-1.5 rounded bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40"
+                    disabled={!activeClipQueue || currentClipIndex === activeClipQueue.length - 1}
+                    aria-label="คลิปถัดไป"
+                    className="p-1.5 rounded-sm bg-[#142338] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
                     title="คลิปถัดไป"
                   >
                     <SkipForward className="w-3.5 h-3.5" />
@@ -945,7 +901,8 @@ export default function UnifiedLiveMatchHub({
                   <button
                     type="button"
                     onClick={() => setActiveClipQueue(null)}
-                    className="p-1.5 rounded bg-red-950 text-red-300 hover:bg-red-900 ml-2"
+                    aria-label="ปิดโหมดคลิป"
+                    className="p-1.5 rounded-sm bg-[#AF101A]/30 text-red-200 hover:bg-[#AF101A] hover:text-white ml-1.5 transition cursor-pointer"
                     title="ออกจากโหมดคลิป กลับสู่ Live สด"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -954,58 +911,63 @@ export default function UnifiedLiveMatchHub({
               </div>
             )}
 
-            {/* Bottom Video Controls Bar */}
-            <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/80 to-transparent flex items-center justify-between text-white font-mono text-xs z-10">
+            {/* Bottom Controls Bar */}
+            <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/80 to-transparent flex items-center justify-between text-white text-xs z-10 select-none">
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer"
+                  aria-label={isPlaying ? "หยุดชั่วคราว" : "เล่นต่อ"}
+                  className="p-1.5 rounded-sm bg-white/10 hover:bg-white/20 transition cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
                 </button>
 
-                <div className="flex items-center gap-2 text-slate-300 text-[11px]">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span>Q4 {simulatedVideoTimestamp}</span>
-                  <span className="text-slate-500">•</span>
-                  <span className="text-emerald-400 font-bold">LIVE SYNC</span>
+                <div className="flex items-center gap-2 text-slate-300 text-xs">
+                  <span className="w-2 h-2 rounded-full bg-[#AF101A] animate-pulse" />
+                  <span className="font-mono tabular-nums">Q4 {simulatedVideoTimestamp}</span>
+                  <span className="text-slate-600">•</span>
+                  <span className="text-emerald-400 font-mono font-bold">LIVE SYNC</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 text-slate-400 text-[11px]">
-                <span className="hidden sm:inline">อาคารนิมิบุตร สนามกีฬาแห่งชาติ</span>
-                <span className="bg-red-600 text-white font-bold text-[9px] px-1.5 py-0.5 rounded">
+              <div className="flex items-center gap-3 text-slate-400 text-xs">
+                <span className="hidden sm:inline font-sans">อาคารนิมิบุตร</span>
+                <span className="bg-[#AF101A] text-white font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-sm uppercase">
                   1080p 60fps
                 </span>
                 <button
                   type="button"
                   onClick={() => setIsMuted(!isMuted)}
-                  className="hover:text-white transition"
+                  aria-label={isMuted ? "เปิดเสียง" : "ปิดเสียง"}
+                  className="hover:text-white transition cursor-pointer"
                 >
                   {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                 </button>
-                <button type="button" className="hover:text-white transition">
+                <button
+                  type="button"
+                  aria-label="ขยายเต็มจอ"
+                  className="hover:text-white transition cursor-pointer"
+                >
                   <Maximize2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* RIGHT COLUMN: RICH INTERACTIVE SIDEBAR (4 COLS - MERGED TABS) */}
-        <div className="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-[520px] shadow-2xl">
-          
-          {/* Unified Tab Navigation Bar */}
-          <div className="px-3 py-2.5 bg-slate-950 border-b border-slate-800 flex items-center gap-1.5 font-mono text-xs">
+        {/* RIGHT: INTERACTIVE SIDEBAR DOCK (4 Cols) */}
+        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg overflow-hidden flex flex-col h-[520px] shadow-xs">
+          {/* Sidebar Tab Bar */}
+          <div className="p-1.5 bg-[#081422] border-b border-[#1E3A5F] flex items-center gap-1 text-xs">
             <button
               type="button"
               onClick={() => setActiveTab("CHAT")}
-              className={`flex-1 py-2 rounded-xl font-bold transition text-center whitespace-nowrap ${
+              aria-pressed={activeTab === "CHAT"}
+              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "CHAT"
-                  ? "bg-[#AF101A] text-white shadow-md shadow-red-950/40"
-                  : "text-slate-400 hover:text-white hover:bg-slate-900"
+                  ? "bg-[#AF101A] text-white shadow-xs"
+                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
               }`}
             >
               แชตสด ({chatMessages.length})
@@ -1013,10 +975,11 @@ export default function UnifiedLiveMatchHub({
             <button
               type="button"
               onClick={() => setActiveTab("PROGRAM")}
-              className={`flex-1 py-2 rounded-xl font-bold transition text-center whitespace-nowrap ${
+              aria-pressed={activeTab === "PROGRAM"}
+              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "PROGRAM"
-                  ? "bg-[#AF101A] text-white shadow-md shadow-red-950/40"
-                  : "text-slate-400 hover:text-white hover:bg-slate-900"
+                  ? "bg-[#AF101A] text-white shadow-xs"
+                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
               }`}
             >
               สูจิบัตรดิจิทัล
@@ -1024,29 +987,30 @@ export default function UnifiedLiveMatchHub({
             <button
               type="button"
               onClick={() => setActiveTab("LINEUP")}
-              className={`flex-1 py-2 rounded-xl font-bold transition text-center whitespace-nowrap ${
+              aria-pressed={activeTab === "LINEUP"}
+              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "LINEUP"
-                  ? "bg-[#AF101A] text-white shadow-md shadow-red-950/40"
-                  : "text-slate-400 hover:text-white hover:bg-slate-900"
+                  ? "bg-[#AF101A] text-white shadow-xs"
+                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
               }`}
             >
               5 ตัวจริง
             </button>
           </div>
 
-          {/* TAB 1: LIVE CHEER CHAT (Screenshot 2 + 1) */}
+          {/* TAB 1: LIVE CHEER CHAT */}
           {activeTab === "CHAT" && (
-            <div className="flex-1 flex flex-col justify-between p-4 font-mono text-xs overflow-hidden">
-              {/* Team Cheer Filter Buttons */}
-              <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-[11px]">
-                <span className="text-slate-400 text-[10px]">เลือกทีมเชียร์:</span>
+            <div className="flex-1 flex flex-col justify-between p-3.5 text-xs overflow-hidden">
+              {/* Team Cheer Filter */}
+              <div className="flex items-center gap-1.5 pb-2.5 border-b border-[#1E3A5F] text-[11px] font-mono">
+                <span className="text-slate-400 text-[10px]">ทีม:</span>
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("ALL")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
+                  className={`px-2 py-0.5 rounded-sm font-medium transition cursor-pointer ${
                     selectedTeamCheer === "ALL"
-                      ? "bg-slate-700 text-white"
-                      : "bg-slate-950 text-slate-400 hover:text-white"
+                      ? "bg-[#1E3A5F] text-white"
+                      : "bg-[#081422] text-slate-400 hover:text-white"
                   }`}
                 >
                   ทั้งหมด
@@ -1054,10 +1018,10 @@ export default function UnifiedLiveMatchHub({
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("BCC")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
+                  className={`px-2 py-0.5 rounded-sm font-bold transition cursor-pointer ${
                     selectedTeamCheer === "BCC"
-                      ? "bg-red-600 text-white shadow"
-                      : "bg-slate-950 text-red-400 hover:bg-red-950/40"
+                      ? "bg-[#AF101A] text-white shadow-xs"
+                      : "bg-[#081422] text-red-300 hover:bg-[#AF101A]/20"
                   }`}
                 >
                   เชียร์ BCC
@@ -1065,18 +1029,18 @@ export default function UnifiedLiveMatchHub({
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("DS")}
-                  className={`px-2.5 py-1 rounded-lg font-bold transition ${
+                  className={`px-2 py-0.5 rounded-sm font-bold transition cursor-pointer ${
                     selectedTeamCheer === "DS"
-                      ? "bg-amber-600 text-white shadow"
-                      : "bg-slate-950 text-amber-400 hover:bg-amber-950/40"
+                      ? "bg-amber-600 text-white shadow-xs"
+                      : "bg-[#081422] text-amber-300 hover:bg-amber-600/20"
                   }`}
                 >
                   เชียร์ DS
                 </button>
               </div>
 
-              {/* Chat Message Stream */}
-              <div className="flex-1 overflow-y-auto space-y-2 py-3 pr-1">
+              {/* Chat Message List */}
+              <div className="flex-1 overflow-y-auto broadcast-scrollbar space-y-2 py-2 pr-1.5">
                 {(liveState?.chatMessages?.length ? liveState.chatMessages : chatMessages)
                   .filter((m) =>
                     selectedTeamCheer === "ALL" ? true : m.badgeType === selectedTeamCheer
@@ -1084,20 +1048,20 @@ export default function UnifiedLiveMatchHub({
                   .map((msg) => (
                     <div
                       key={msg.id}
-                      className={`p-2.5 rounded-xl border text-[11px] space-y-1 ${
+                      className={`p-2.5 rounded-sm border text-xs space-y-1 transition-all ${
                         msg.badgeType === "BCC"
-                          ? "bg-red-950/30 border-red-900/60"
+                          ? "bg-[#AF101A]/10 border-[#AF101A]/30"
                           : msg.badgeType === "DS"
-                          ? "bg-amber-950/30 border-amber-900/60"
-                          : "bg-slate-950 border-slate-800"
+                          ? "bg-amber-500/10 border-amber-500/30"
+                          : "bg-[#081422] border-[#1E3A5F]"
                       }`}
                     >
-                      <div className="flex items-center justify-between text-[10px]">
+                      <div className="flex items-center justify-between text-[11px]">
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`px-1.5 py-0.2 rounded font-bold uppercase ${
+                            className={`px-1.5 py-0.2 rounded-sm font-mono font-bold uppercase text-[10px] ${
                               msg.badgeType === "BCC"
-                                ? "bg-red-600 text-white"
+                                ? "bg-[#AF101A] text-white"
                                 : msg.badgeType === "DS"
                                 ? "bg-amber-600 text-white"
                                 : "bg-emerald-700 text-white"
@@ -1107,7 +1071,7 @@ export default function UnifiedLiveMatchHub({
                           </span>
                           <span className="font-bold text-white">{msg.sender}</span>
                         </div>
-                        <span className="text-slate-500">{msg.time}</span>
+                        <span className="text-slate-500 font-mono tabular-nums">{msg.time}</span>
                       </div>
                       <p className="font-sans text-xs text-slate-200 leading-relaxed">
                         {msg.text}
@@ -1116,44 +1080,46 @@ export default function UnifiedLiveMatchHub({
                   ))}
               </div>
 
-              {/* Send Chat Form (Members Only) */}
+              {/* Chat Input or Member Gate */}
               {!isMember ? (
-                <div className="pt-3 border-t border-slate-800 bg-slate-950/80 -mx-4 -mb-4 p-3.5 rounded-b-2xl text-center space-y-1.5 font-mono">
+                <div className="pt-2 border-t border-[#1E3A5F] bg-[#081422] -mx-3.5 -mb-3.5 p-3 rounded-b-lg text-center space-y-1.5">
                   <div className="flex items-center justify-center gap-1.5 text-amber-400 font-bold text-xs">
                     <Lock className="w-3.5 h-3.5 shrink-0" />
                     <span>เฉพาะสมาชิกเท่านั้นที่สามารถส่งข้อความแชตได้</span>
                   </div>
-                  <p className="text-[10px] text-slate-400 font-sans">
-                    ผู้เข้าชมทั่วไปสามารถรับชม Live สดและอ่านข้อความแชตได้ฟรี
-                  </p>
-                  <div className="flex items-center justify-center gap-2 pt-1">
+                  <div className="flex items-center justify-center gap-2 pt-0.5">
                     <Link
                       href="/auth/register"
-                      className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] transition shadow"
+                      className="px-3.5 py-1 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition shadow-xs"
                     >
-                      สมัครสมาชิกเพื่อแชต
+                      สมัครสมาชิกฟรี
                     </Link>
                     <button
                       type="button"
                       onClick={() => loginAs("FAN")}
-                      className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold border border-slate-700 transition cursor-pointer"
+                      className="px-3 py-1 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-slate-200 text-xs border border-[#1E3A5F] transition cursor-pointer"
                     >
-                      ล็อกอินด่วน (FAN)
+                      ล็อกอิน (FAN)
                     </button>
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSendChat} className="pt-3 border-t border-slate-800 flex items-center gap-2">
+                <form onSubmit={handleSendChat} className="pt-2.5 border-t border-[#1E3A5F] flex items-center gap-2">
+                  <label htmlFor="live-chat-input" className="sr-only">
+                    ส่งข้อความเชียร์ในสนาม
+                  </label>
                   <input
+                    id="live-chat-input"
                     type="text"
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
-                    placeholder="พิมพ์ข้อความส่งแรงใจเชียร์..."
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-red-500 transition placeholder:text-slate-500"
+                    placeholder="ส่งข้อความเชียร์ในสนาม..."
+                    className="flex-1 bg-[#081422] border border-[#1E3A5F] focus:border-[#AF101A] rounded-sm px-3 py-1.5 text-xs text-white outline-none transition placeholder:text-slate-500 font-sans"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs transition flex items-center gap-1 shadow-lg shadow-red-950/40 shrink-0"
+                    aria-label="ส่งข้อความแชต"
+                    className="px-3.5 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>ส่ง</span>
@@ -1163,70 +1129,68 @@ export default function UnifiedLiveMatchHub({
             </div>
           )}
 
-          {/* TAB 2: DIGITAL GAME PROGRAM (Screenshot 1) */}
+          {/* TAB 2: DIGITAL GAME PROGRAM */}
           {activeTab === "PROGRAM" && (
-            <div className="p-4 overflow-y-auto flex-1 font-mono text-xs space-y-4">
-              {/* QR Code Scan Box */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center space-y-2.5">
-                <div className="w-16 h-16 rounded-xl bg-white text-slate-950 p-1 mx-auto flex items-center justify-center shadow-lg">
-                  <QrCode className="w-14 h-14" />
+            <div className="p-3.5 overflow-y-auto broadcast-scrollbar flex-1 text-xs space-y-3.5">
+              {/* QR Code */}
+              <div className="bg-[#081422] p-3.5 rounded-sm border border-[#1E3A5F] text-center space-y-2">
+                <div className="w-14 h-14 rounded-sm bg-white text-slate-950 p-1 mx-auto flex items-center justify-center shadow-xs">
+                  <QrCode className="w-12 h-12" />
                 </div>
-                <div className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="text-xs font-bold text-white font-mono uppercase tracking-wider">
                   SCAN FOR DIGITAL GAME PROGRAM
                 </div>
-                <p className="text-[10px] text-slate-400 leading-relaxed">
-                  ผู้ชมในสนามสามารถสแกน QR Code หน้าโรงยิมเพื่อเปิดสูจิบัตรดิจิทัลและสถิติสดบนมือถือได้แบบเรียลไทม์
+                <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+                  สแกนเพื่อเปิดสูจิบัตรดิจิทัลและสถิติสดบนมือถือได้แบบเรียลไทม์
                 </p>
               </div>
 
               {/* Head-to-Head */}
-              <div className="space-y-2">
-                <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
-                  ข้อมูลคู่แข่งขัน (HEAD-TO-HEAD)
+              <div className="space-y-1.5">
+                <span className="text-[10px] text-slate-400 uppercase font-mono font-bold tracking-wider block">
+                  HEAD-TO-HEAD
                 </span>
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-[11px]">
+                <div className="p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between items-center text-white font-bold">
                     <span>Bangkok Christian College</span>
-                    <span className="text-emerald-400 font-mono">ชนะ 4 แพ้ 0</span>
+                    <span className="text-emerald-400 tabular-nums">ชนะ 4 แพ้ 0</span>
                   </div>
                   <div className="flex justify-between items-center text-slate-400">
                     <span>Debsirin School</span>
-                    <span className="text-amber-400 font-mono">ชนะ 3 แพ้ 1</span>
+                    <span className="text-amber-400 tabular-nums">ชนะ 3 แพ้ 1</span>
                   </div>
                 </div>
               </div>
 
               {/* Match Details */}
-              <div className="space-y-1.5 text-[11px] text-slate-400 p-3 rounded-xl bg-slate-950 border border-slate-800">
+              <div className="space-y-1.5 text-[11px] text-slate-400 p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] font-sans">
                 <div>
-                  ผู้ตัดสินโต๊ะเทคนิค:{" "}
-                  <span className="text-white font-bold">BSAT Certified Official Crew</span>
+                  ผู้ตัดสินโต๊ะเทคนิค: <span className="text-white font-bold">BSAT Certified Official Crew</span>
                 </div>
                 <div>
-                  สถานที่:{" "}
-                  <span className="text-white font-bold">อาคารนิมิบุตร สนามกีฬาแห่งชาติ ปทุมวัน</span>
+                  สถานที่: <span className="text-white font-bold">อาคารนิมิบุตร สนามกีฬาแห่งชาติ</span>
                 </div>
                 <div>
-                  เวลาแข่งขัน: <span className="text-amber-300 font-bold">17:00 น. (Final Round)</span>
+                  เวลาแข่งขัน: <span className="text-amber-400 font-bold font-mono">17:00 น. (Final Round)</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: STARTING 5 LINEUP (Screenshot 1 & Custom Stats) */}
+          {/* TAB 3: STARTING 5 LINEUP */}
           {activeTab === "LINEUP" && (
-            <div className="p-4 overflow-y-auto flex-1 font-mono text-xs space-y-4">
+            <div className="p-3.5 overflow-y-auto broadcast-scrollbar flex-1 text-xs space-y-3.5">
               {/* BCC Starting 5 */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-red-400 font-bold uppercase tracking-wider block">
+                  <span className="text-xs text-red-300 font-bold font-mono uppercase tracking-wider block">
                     BCC STARTING 5 (กรุงเทพคริสเตียน)
                   </span>
-                  <span className="text-[10px] text-slate-400">
-                    ฟาวล์รวมทีม: <b className="text-red-400 font-bold">{liveState?.homeTeam.fouls ?? 4}</b>
+                  <span className="text-[11px] text-slate-400 font-sans">
+                    ฟาวล์รวม: <b className="text-red-300 font-bold font-mono tabular-nums">{liveState?.homeTeam.fouls ?? 4}</b>
                   </span>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 font-mono">
                   {[
                     { number: 7, name: "Thanakorn Siriphan", pos: "PG", pts: 18, ast: 8, reb: 3, fouls: 2 },
                     { number: 11, name: "Chayanon Wattana", pos: "SG", pts: 12, ast: 3, reb: 2, fouls: 1 },
@@ -1239,40 +1203,23 @@ export default function UnifiedLiveMatchHub({
                     return (
                       <div
                         key={p.number}
-                        className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2 text-white text-[11px]"
+                        className="p-2 rounded-sm bg-[#081422] border border-[#1E3A5F] flex items-center justify-between gap-2 text-white text-xs"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 truncate">
-                            <span className="font-bold text-red-400 shrink-0">#{p.number}</span>
-                            <span className="font-bold truncate">{p.name}</span>
+                            <span className="font-bold text-[#AF101A] shrink-0">#{p.number}</span>
+                            <span className="font-medium truncate font-sans">{p.name}</span>
                             <span className="text-slate-500 text-[10px] shrink-0">({p.pos})</span>
                           </div>
                         </div>
 
-                        {/* Stats: แต้ม, แอสซิส, รีบาว, ฟาว */}
-                        <div className="flex items-center gap-1 font-mono text-[10px] shrink-0">
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">แต้ม</span>
-                            <span className="font-bold text-amber-400">{p.pts}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">แอสซิส</span>
-                            <span className="font-bold text-slate-300">{p.ast}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">รีบาว</span>
-                            <span className="font-bold text-slate-300">{p.reb}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">ฟาว</span>
-                            <span
-                              className={`font-bold ${
-                                p.fouls >= 4 ? "text-red-400 font-black animate-pulse" : "text-slate-300"
-                              }`}
-                            >
-                              {p.fouls}
-                            </span>
-                          </div>
+                        <div className="flex items-center gap-2 text-xs shrink-0 tabular-nums">
+                          <span className="text-amber-400 font-bold">{p.pts} PTS</span>
+                          <span className="text-slate-400">{p.reb} REB</span>
+                          <span className="text-slate-400">{p.ast} AST</span>
+                          <span className={`text-[10px] px-1 rounded-sm ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
+                            {p.fouls} PF
+                          </span>
                         </div>
                       </div>
                     );
@@ -1281,16 +1228,16 @@ export default function UnifiedLiveMatchHub({
               </div>
 
               {/* DS Starting 5 */}
-              <div className="space-y-2 pt-2 border-t border-slate-800">
+              <div className="space-y-2 pt-2 border-t border-[#1E3A5F]">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-amber-400 font-bold uppercase tracking-wider block">
+                  <span className="text-xs text-amber-300 font-bold font-mono uppercase tracking-wider block">
                     DEBSIRIN STARTING 5 (เทพศิรินทร์)
                   </span>
-                  <span className="text-[10px] text-slate-400">
-                    ฟาวล์รวมทีม: <b className="text-amber-400 font-bold">{liveState?.awayTeam.fouls ?? 3}</b>
+                  <span className="text-[11px] text-slate-400 font-sans">
+                    ฟาวล์รวม: <b className="text-amber-300 font-bold font-mono tabular-nums">{liveState?.awayTeam.fouls ?? 3}</b>
                   </span>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 font-mono">
                   {[
                     { number: 23, name: "Nattapat Sukprasert", pos: "SG", pts: 21, ast: 1, reb: 4, fouls: 2 },
                     { number: 34, name: "Teerawat Prasertkul", pos: "PF", pts: 15, ast: 2, reb: 8, fouls: 3 },
@@ -1303,40 +1250,23 @@ export default function UnifiedLiveMatchHub({
                     return (
                       <div
                         key={p.number}
-                        className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2 text-white text-[11px]"
+                        className="p-2 rounded-sm bg-[#081422] border border-[#1E3A5F] flex items-center justify-between gap-2 text-white text-xs"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 truncate">
                             <span className="font-bold text-amber-400 shrink-0">#{p.number}</span>
-                            <span className="font-bold truncate">{p.name}</span>
+                            <span className="font-medium truncate font-sans">{p.name}</span>
                             <span className="text-slate-500 text-[10px] shrink-0">({p.pos})</span>
                           </div>
                         </div>
 
-                        {/* Stats: แต้ม, แอสซิส, รีบาว, ฟาว */}
-                        <div className="flex items-center gap-1 font-mono text-[10px] shrink-0">
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">แต้ม</span>
-                            <span className="font-bold text-amber-400">{p.pts}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">แอสซิส</span>
-                            <span className="font-bold text-slate-300">{p.ast}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">รีบาว</span>
-                            <span className="font-bold text-slate-300">{p.reb}</span>
-                          </div>
-                          <div className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-center min-w-[32px]">
-                            <span className="text-[8px] text-slate-400 block leading-tight">ฟาว</span>
-                            <span
-                              className={`font-bold ${
-                                p.fouls >= 4 ? "text-red-400 font-black animate-pulse" : "text-slate-300"
-                              }`}
-                            >
-                              {p.fouls}
-                            </span>
-                          </div>
+                        <div className="flex items-center gap-2 text-xs shrink-0 tabular-nums">
+                          <span className="text-amber-400 font-bold">{p.pts} PTS</span>
+                          <span className="text-slate-400">{p.reb} REB</span>
+                          <span className="text-slate-400">{p.ast} AST</span>
+                          <span className={`text-[10px] px-1 rounded-sm ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
+                            {p.fouls} PF
+                          </span>
                         </div>
                       </div>
                     );
@@ -1345,65 +1275,60 @@ export default function UnifiedLiveMatchHub({
               </div>
             </div>
           )}
-
         </div>
-
       </div>
 
-      {/* ============================================================== */}
-      {/* 4. PLAY-BY-PLAY FEED & FIBA OFFICIAL OPERATOR BOX               */}
-      {/* ============================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Play-by-Play Feed (8 Cols - Screenshot 2) */}
-        <div className="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 font-mono text-xs">
-            <div className="flex items-center gap-2 text-white font-bold">
-              <Clock className="w-4 h-4 text-red-500" />
+      {/* 5. PLAY-BY-PLAY FEED & FIBA OFFICIAL OPERATOR BOX */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Play-by-Play Feed (8 Cols) */}
+        <div className="lg:col-span-8 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs space-y-3">
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#1E3A5F] text-xs">
+            <div className="flex items-center gap-2 text-white font-bold font-mono uppercase tracking-wider">
+              <Clock className="w-4 h-4 text-[#AF101A]" />
               <span>ลำดับเหตุการณ์การแข่งขัน (PLAY-BY-PLAY FEED)</span>
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-slate-400">
+            <div className="flex items-center gap-2 text-xs text-slate-400 font-sans">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>เรียลไทม์จากโต๊ะเทคนิค BSAT</span>
+              <span>ซิงก์เรียลไทม์จากโต๊ะเทคนิค BSAT</span>
             </div>
           </div>
 
-          <div className="space-y-2.5 font-mono text-xs">
+          <div className="space-y-2">
             {(liveState?.recentEvents?.length ? liveState.recentEvents : allMatchClips).map((clip) => (
               <div
                 key={clip.id}
                 onClick={() => handleSelectSingleEvent(clip.title, clip.quarterClock)}
-                className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-red-500/60 transition-all flex items-center justify-between gap-3 cursor-pointer group"
+                className="p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] hover:border-[#AF101A] transition flex items-center justify-between gap-3 cursor-pointer group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="text-center font-bold text-slate-400 shrink-0">
-                    <span className="text-[11px] block text-white">{clip.quarterClock}</span>
-                    <span className="text-[9px] text-red-400">VIDEO SYNC</span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="text-center shrink-0 font-mono">
+                    <span className="text-xs block text-white font-bold tabular-nums">{clip.quarterClock}</span>
+                    <span className="text-[9px] text-red-300 uppercase font-bold tracking-wide">VIDEO SYNC</span>
                   </div>
 
                   <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      clip.team === "BCC" ? "bg-red-600 text-white" : "bg-amber-600 text-white"
+                    className={`px-2 py-0.5 rounded-sm text-[10px] font-mono font-bold shrink-0 ${
+                      clip.team === "BCC" ? "bg-[#AF101A] text-white" : "bg-amber-600 text-white"
                     }`}
                   >
                     #{clip.jerseyNumber}
                   </span>
 
-                  <div>
-                    <div className="text-white font-bold group-hover:text-red-400 transition">
+                  <div className="min-w-0">
+                    <div className="text-white text-xs font-bold group-hover:text-red-300 transition font-sans truncate">
                       {clip.playerName} ({clip.team}) — {clip.title}
                     </div>
-                    <div className="text-[11px] text-slate-400 font-sans">{clip.description}</div>
+                    <div className="text-[11px] text-slate-400 font-sans mt-0.5 truncate">{clip.description}</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xs font-bold text-red-400 flex items-center gap-1 group-hover:scale-105 transition">
+                <div className="flex items-center gap-2 shrink-0 font-mono">
+                  <span className="text-xs font-bold text-red-300 flex items-center gap-1 group-hover:scale-105 transition">
                     {!isMember ? <Lock className="w-3 h-3 text-amber-400" /> : <Play className="w-3 h-3 fill-current" />}
-                    <span>{!isMember ? "คลิป (สมาชิก)" : "ดูคลิปนี้"}</span>
+                    <span>{!isMember ? "คลิป (สมาชิก)" : "ดูคลิป"}</span>
                   </span>
                   {clip.points > 0 && (
-                    <span className="px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/40 text-[10px] font-bold">
+                    <span className="px-2 py-0.5 rounded-sm bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] font-bold tabular-nums">
                       +{clip.points} PTS
                     </span>
                   )}
@@ -1413,56 +1338,53 @@ export default function UnifiedLiveMatchHub({
           </div>
         </div>
 
-        {/* FIBA Official Operator Accreditation Card (4 Cols - Screenshot 2) */}
-        <div className="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-4">
-          <div className="space-y-3 font-mono">
-            <div className="flex items-center gap-2 text-white font-bold text-xs border-b border-slate-800 pb-3">
+        {/* FIBA Official Operator Accreditation Card (4 Cols) */}
+        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs flex flex-col justify-between space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-white font-bold text-xs border-b border-[#1E3A5F] pb-2.5 font-mono uppercase tracking-wider">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>เจ้าหน้าที่โต๊ะบันทึกคะแนน FIBA</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
+            <div className="p-3.5 rounded-sm bg-[#081422] border border-[#1E3A5F] space-y-2.5 text-xs">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-bold text-emerald-400 uppercase text-[11px]">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-bold text-emerald-400 uppercase text-[11px] font-mono tracking-wide">
                   VERIFIED OPERATOR ACCREDITED
                 </span>
               </div>
-              <p className="text-slate-300 text-[11px] leading-relaxed font-sans">
+              <p className="text-slate-300 text-xs leading-relaxed font-sans">
                 ข้อมูลสถิติถูกบันทึกและรับรองเรียลไทม์โดยกรรมการสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT)
                 สอดคล้องกับมาตรฐาน FIBA LiveStats 2026
               </p>
-              <div className="pt-2 border-t border-slate-800/80 space-y-1 text-[11px] text-slate-400 font-mono">
-                <div>OPERATOR: <span className="text-white font-bold">BSAT-TABLE-2026-088</span></div>
-                <div>TABLE CHIEF: <span className="text-white">อ.สมศักดิ์ วัฒนาเสถียร</span></div>
-                <div>LICENSED LEVEL: <span className="text-amber-400 font-bold">NATIONAL LEVEL 1</span></div>
+              <div className="pt-2 border-t border-[#1E3A5F] space-y-1 text-xs text-slate-400 font-sans">
+                <div>รหัสเจ้าหน้าที่: <span className="text-white font-mono font-bold">BSAT-TABLE-2026-088</span></div>
+                <div>หัวหน้าโต๊ะเทคนิค: <span className="text-white">อ.สมศักดิ์ วัฒนาเสถียร</span></div>
+                <div>ระดับใบอนุญาต: <span className="text-amber-400 font-mono font-bold">NATIONAL LEVEL 1</span></div>
               </div>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-[11px] font-mono">
-            <span className="text-slate-400">กติกา FIBA 2026:</span>
-            <span className="text-emerald-400 font-bold flex items-center gap-1">
+          <div className="bg-[#081422] p-3 rounded-sm border border-[#1E3A5F] flex items-center justify-between text-xs">
+            <span className="text-slate-400 font-sans">กติกา FIBA 2026:</span>
+            <span className="text-emerald-400 font-mono font-bold flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
               100% COMPLIANT
             </span>
           </div>
         </div>
-
       </div>
 
-      {/* ============================================================== */}
-      {/* 5. CLICK-TO-CLIP BOX SCORE SECTION (Screenshot 2)              */}
-      {/* ============================================================== */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800 font-mono text-xs">
-          <div className="flex items-center gap-2 text-white font-bold text-sm">
+      {/* 6. CLICK-TO-CLIP BOX SCORE SECTION */}
+      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E3A5F] text-xs">
+          <div className="flex items-center gap-2 text-white font-bold font-mono text-sm uppercase tracking-wide">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>สถิติคลิกระเบียบการเล่นรายบุคคล (CLICK-TO-CLIP BOX SCORE)</span>
+            <span>สถิติการเล่นรายบุคคล (CLICK-TO-CLIP BOX SCORE)</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-[11px] text-slate-400 hidden sm:inline">
+            <span className="text-xs text-slate-400 hidden sm:inline font-sans">
               คลิกที่แถวนักกีฬาเพื่อเปิดเพลย์ลิสต์คลิปวิดีโอต่อเนื่องทันที
             </span>
             <button
@@ -1479,39 +1401,38 @@ export default function UnifiedLiveMatchHub({
                   window.print();
                 }
               }}
-              className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center gap-1.5 transition text-[11px] border border-slate-700 shadow shrink-0 cursor-pointer"
+              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-white font-semibold flex items-center gap-1.5 transition text-xs border border-[#1E3A5F] shadow-xs shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>พิมพ์ใบบันทึกคะแนน (PRINT)</span>
+              <span className="font-mono tracking-wide">พิมพ์ใบบันทึกคะแนน (PRINT)</span>
               {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
           </div>
         </div>
 
-        {/* Box Score Tables Grid (BCC & DS) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
-          
+        {/* Box Score Tables Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 text-xs font-mono">
           {/* BCC Table */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between bg-red-950/60 border border-red-800/80 px-4 py-2.5 rounded-xl text-white font-bold">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between bg-[#142338] border border-[#1E3A5F] px-3.5 py-2 rounded-sm text-white font-bold">
               <span className="tracking-wide">BANGKOK CHRISTIAN COLLEGE (BCC)</span>
-              <span className="text-base text-red-400">75 PTS</span>
+              <span className="text-base text-red-300 tabular-nums">75 PTS</span>
             </div>
 
-            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+            <div className="overflow-x-auto rounded-sm border border-[#1E3A5F] bg-[#081422]">
               <table className="w-full text-left">
-                <thead className="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#1E3A5F]">
                   <tr>
-                    <th className="py-2.5 px-3">#</th>
+                    <th className="py-2.5 px-3 w-10 text-center">#</th>
                     <th className="py-2.5 px-3">นักกีฬา (คลิกดูคลิป)</th>
-                    <th className="py-2.5 px-2 text-center">PTS</th>
-                    <th className="py-2.5 px-2 text-center">REB</th>
-                    <th className="py-2.5 px-2 text-center">AST</th>
-                    <th className="py-2.5 px-2 text-center">FG%</th>
-                    <th className="py-2.5 px-2 text-center">PASS</th>
+                    <th className="py-2.5 px-2 w-14 text-right">PTS</th>
+                    <th className="py-2.5 px-2 w-12 text-right">REB</th>
+                    <th className="py-2.5 px-2 w-12 text-right">AST</th>
+                    <th className="py-2.5 px-2 w-16 text-right">FG%</th>
+                    <th className="py-2.5 px-2 w-16 text-center">PASS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-[11px]">
+                <tbody className="divide-y divide-[#1E3A5F]/60 text-xs">
                   {[
                     { number: 7, name: "Thanakorn Siriphan", pts: 18, reb: 3, ast: 8, fg: "54.5%" },
                     { number: 24, name: "Kittipong Rattana.", pts: 21, reb: 7, ast: 4, fg: "62.5%" },
@@ -1521,25 +1442,25 @@ export default function UnifiedLiveMatchHub({
                   ].map((player) => (
                     <tr
                       key={player.number}
-                      className="hover:bg-slate-900/80 transition cursor-pointer group"
+                      className="hover:bg-[#142338]/50 transition-colors cursor-pointer group"
                       onClick={() => handlePlayPlayerClips(player.name, player.number)}
                     >
-                      <td className="py-2.5 px-3 font-bold text-red-400">#{player.number}</td>
-                      <td className="py-2.5 px-3 text-white font-bold group-hover:text-red-300">
+                      <td className="py-2 px-3 font-bold text-center text-[#AF101A]">#{player.number}</td>
+                      <td className="py-2 px-3 text-white font-medium group-hover:text-red-300 transition font-sans">
                         {player.name}
                       </td>
-                      <td className="py-2.5 px-2 text-center font-bold text-white">{player.pts}</td>
-                      <td className="py-2.5 px-2 text-center text-slate-300">{player.reb}</td>
-                      <td className="py-2.5 px-2 text-center text-slate-300">{player.ast}</td>
-                      <td className="py-2.5 px-2 text-center text-emerald-400">{player.fg}</td>
-                      <td className="py-2.5 px-2 text-center">
+                      <td className="py-2 px-2 text-right font-bold text-white tabular-nums">{player.pts}</td>
+                      <td className="py-2 px-2 text-right text-slate-300 tabular-nums">{player.reb}</td>
+                      <td className="py-2 px-2 text-right text-slate-300 tabular-nums">{player.ast}</td>
+                      <td className="py-2 px-2 text-right text-emerald-400 font-bold tabular-nums">{player.fg}</td>
+                      <td className="py-2 px-2 text-center">
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenPlayerPass({ ...player, team: "BCC" });
                           }}
-                          className="px-2 py-0.5 rounded bg-slate-800 hover:bg-red-600 text-white text-[9px] font-bold transition"
+                          className="px-2 py-0.5 rounded-sm bg-[#1E3A5F] hover:bg-[#AF101A] text-white text-[10px] font-bold transition cursor-pointer"
                         >
                           PASS
                         </button>
@@ -1552,26 +1473,26 @@ export default function UnifiedLiveMatchHub({
           </div>
 
           {/* DS Table */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between bg-amber-950/60 border border-amber-800/80 px-4 py-2.5 rounded-xl text-white font-bold">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between bg-[#142338] border border-[#1E3A5F] px-3.5 py-2 rounded-sm text-white font-bold">
               <span className="tracking-wide">DEBSIRIN SCHOOL (DS)</span>
-              <span className="text-base text-amber-400">63 PTS</span>
+              <span className="text-base text-amber-300 tabular-nums">63 PTS</span>
             </div>
 
-            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+            <div className="overflow-x-auto rounded-sm border border-[#1E3A5F] bg-[#081422]">
               <table className="w-full text-left">
-                <thead className="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#1E3A5F]">
                   <tr>
-                    <th className="py-2.5 px-3">#</th>
+                    <th className="py-2.5 px-3 w-10 text-center">#</th>
                     <th className="py-2.5 px-3">นักกีฬา (คลิกดูคลิป)</th>
-                    <th className="py-2.5 px-2 text-center">PTS</th>
-                    <th className="py-2.5 px-2 text-center">REB</th>
-                    <th className="py-2.5 px-2 text-center">AST</th>
-                    <th className="py-2.5 px-2 text-center">FG%</th>
-                    <th className="py-2.5 px-2 text-center">PASS</th>
+                    <th className="py-2.5 px-2 w-14 text-right">PTS</th>
+                    <th className="py-2.5 px-2 w-12 text-right">REB</th>
+                    <th className="py-2.5 px-2 w-12 text-right">AST</th>
+                    <th className="py-2.5 px-2 w-16 text-right">FG%</th>
+                    <th className="py-2.5 px-2 w-16 text-center">PASS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-[11px]">
+                <tbody className="divide-y divide-[#1E3A5F]/60 text-xs">
                   {[
                     { number: 23, name: "Nattapat Sukprasert", pts: 21, reb: 4, ast: 1, fg: "52.0%" },
                     { number: 34, name: "Teerawat Prasertkul", pts: 15, reb: 8, ast: 2, fg: "46.5%" },
@@ -1581,25 +1502,25 @@ export default function UnifiedLiveMatchHub({
                   ].map((player) => (
                     <tr
                       key={player.number}
-                      className="hover:bg-slate-900/80 transition cursor-pointer group"
+                      className="hover:bg-[#142338]/50 transition-colors cursor-pointer group"
                       onClick={() => handlePlayPlayerClips(player.name, player.number)}
                     >
-                      <td className="py-2.5 px-3 font-bold text-amber-400">#{player.number}</td>
-                      <td className="py-2.5 px-3 text-white font-bold group-hover:text-amber-300">
+                      <td className="py-2 px-3 font-bold text-center text-amber-400">#{player.number}</td>
+                      <td className="py-2 px-3 text-white font-medium group-hover:text-amber-300 transition font-sans">
                         {player.name}
                       </td>
-                      <td className="py-2.5 px-2 text-center font-bold text-white">{player.pts}</td>
-                      <td className="py-2.5 px-2 text-center text-slate-300">{player.reb}</td>
-                      <td className="py-2.5 px-2 text-center text-slate-300">{player.ast}</td>
-                      <td className="py-2.5 px-2 text-center text-emerald-400">{player.fg}</td>
-                      <td className="py-2.5 px-2 text-center">
+                      <td className="py-2 px-2 text-right font-bold text-white tabular-nums">{player.pts}</td>
+                      <td className="py-2 px-2 text-right text-slate-300 tabular-nums">{player.reb}</td>
+                      <td className="py-2 px-2 text-right text-slate-300 tabular-nums">{player.ast}</td>
+                      <td className="py-2 px-2 text-right text-emerald-400 font-bold tabular-nums">{player.fg}</td>
+                      <td className="py-2 px-2 text-center">
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenPlayerPass({ ...player, team: "DS" });
                           }}
-                          className="px-2 py-0.5 rounded bg-slate-800 hover:bg-amber-600 text-white text-[9px] font-bold transition"
+                          className="px-2 py-0.5 rounded-sm bg-[#1E3A5F] hover:bg-amber-600 text-white text-[10px] font-bold transition cursor-pointer"
                         >
                           PASS
                         </button>
@@ -1610,13 +1531,10 @@ export default function UnifiedLiveMatchHub({
               </table>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* ============================================================== */}
-      {/* 6. MODALS: SOCIAL GRAPHICS & DIGITAL PLAYER PASS               */}
-      {/* ============================================================== */}
+      {/* 7. MODALS */}
       <SocialGraphicsGeneratorModal
         isOpen={isSocialModalOpen}
         onClose={() => setIsSocialModalOpen(false)}
@@ -1655,25 +1573,28 @@ export default function UnifiedLiveMatchHub({
 
       {/* MEMBER-ONLY FEATURE ACCESS PROMPT MODAL */}
       {memberModalConfig.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl p-6 relative overflow-hidden font-mono">
-            {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="member-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150"
+        >
+          <div className="bg-[#0B1C30] border border-[#1E3A5F] w-full max-w-md rounded-lg shadow-2xl p-6 relative overflow-hidden">
             <div className="flex items-start justify-between gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center shrink-0">
-                <Lock className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-sm bg-amber-400/15 border border-amber-400/30 text-amber-400 flex items-center justify-center shrink-0">
+                <Lock className="w-5 h-5" />
               </div>
               <button
                 type="button"
                 onClick={() => setMemberModalConfig((prev) => ({ ...prev, isOpen: false }))}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                aria-label="ปิดหน้าต่าง"
+                className="p-1.5 rounded-sm text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <h3 className="text-base font-bold text-white mb-2 leading-snug">
+            <h3 id="member-modal-title" className="text-base font-bold text-white mb-2 leading-snug font-sans">
               {memberModalConfig.title}
             </h3>
 
@@ -1685,7 +1606,7 @@ export default function UnifiedLiveMatchHub({
               <Link
                 href="/auth/register"
                 onClick={() => setMemberModalConfig((prev) => ({ ...prev, isOpen: false }))}
-                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <UserPlus className="w-4 h-4" />
                 <span>สมัครสมาชิกทั่วไปฟรี (เปิดใช้งานทันที)</span>
@@ -1697,16 +1618,16 @@ export default function UnifiedLiveMatchHub({
                   loginAs("FAN");
                   setMemberModalConfig((prev) => ({ ...prev, isOpen: false }));
                 }}
-                className="w-full py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-white font-semibold text-xs border border-[#1E3A5F] transition cursor-pointer flex items-center justify-center gap-2"
               >
                 <LogIn className="w-4 h-4 text-amber-400" />
-                <span>จำลองเข้าสู่ระบบทันที (DEMO AS FAN)</span>
+                <span>เข้าสู่ระบบเพื่อใช้งาน</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setMemberModalConfig((prev) => ({ ...prev, isOpen: false }))}
-                className="w-full py-2 text-center text-xs text-slate-400 hover:text-slate-200 transition cursor-pointer"
+                className="w-full py-1.5 text-center text-xs text-slate-400 hover:text-slate-200 transition cursor-pointer"
               >
                 รับชม Live ถ่ายทอดสดต่อไป
               </button>

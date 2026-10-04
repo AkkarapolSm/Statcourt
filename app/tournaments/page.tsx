@@ -6,22 +6,19 @@ import {
   Calendar,
   MapPin,
   Trophy,
-  Users,
   Search,
-  SlidersHorizontal,
   Download,
-  ExternalLink,
   ChevronRight,
   ShieldCheck,
-  Clock,
-  CheckCircle2,
   AlertTriangle,
-  ArrowUpRight,
   FileText,
-  Building,
+  Building2,
   Plus,
   X,
   GitBranch,
+  Radio,
+  SlidersHorizontal,
+  RotateCcw,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -47,7 +44,6 @@ interface TournamentItem {
   rulesPdfUrl: string;
   contactPerson: string;
   contactPhone: string;
-  bannerColor: string;
   liveMatchId?: string;
 }
 
@@ -70,7 +66,6 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-toa",
     contactPerson: "ฝ่ายจัดการแข่งขัน บสท.",
     contactPhone: "02-170-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
     liveMatchId: "match-bcc-ds-01",
   },
   {
@@ -91,7 +86,6 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-tcas",
     contactPerson: "อาจารย์กิตติศักดิ์",
     contactPhone: "081-998-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
     liveMatchId: "match-bcc-ds-01",
   },
   {
@@ -112,7 +106,6 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-korat",
     contactPerson: "โค้ชสมนึก โคราช",
     contactPhone: "089-445-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
   },
   {
     id: "tourn-chiangmai-open-2026",
@@ -132,7 +125,6 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-cm",
     contactPerson: "ฝ่ายกีฬาเยาวชนภาค 5",
     contactPhone: "053-221-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
   },
   {
     id: "tourn-hatyai-classic-2026",
@@ -152,7 +144,6 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-hatyai",
     contactPerson: "นายทะเบียนสโมสร",
     contactPhone: "074-233-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
   },
   {
     id: "tourn-chonburi-coastal-2026",
@@ -172,13 +163,11 @@ const mockTournamentsList: TournamentItem[] = [
     rulesPdfUrl: "#download-rules-chonburi",
     contactPerson: "โค้ชธนภัทร",
     contactPhone: "038-412-XXXX",
-    bannerColor: "from-[#0F172A] via-slate-900 to-slate-950",
   },
 ];
 
 export default function TournamentsDirectoryPage() {
   const [tournamentsList, setTournamentsList] = useState<TournamentItem[]>(mockTournamentsList);
-  const [isPersisted, setIsPersisted] = useState(false);
   const [selectedAge, setSelectedAge] = useState<string>("ALL");
   const [selectedRegion, setSelectedRegion] = useState<string>("ALL");
   const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
@@ -211,11 +200,9 @@ export default function TournamentsDirectoryPage() {
             rulesPdfUrl: item.rulesPdfUrl || "#download-rules",
             contactPerson: item.contactPerson || "ฝ่ายจัดการแข่งขัน",
             contactPhone: item.contactPhone || "02-170-XXXX",
-            bannerColor: item.bannerColor || "from-[#0F172A] via-slate-900 to-slate-950",
             liveMatchId: item.matches?.[0]?.id,
           }));
           setTournamentsList(mapped);
-          setIsPersisted(json.source === "PRISMA_SQLITE_PERSISTENT");
         }
       })
       .catch((err) => console.warn("Failed to fetch tournaments:", err));
@@ -248,120 +235,141 @@ export default function TournamentsDirectoryPage() {
     });
   }, [tournamentsList, selectedAge, selectedRegion, selectedStatus, searchQuery]);
 
+  const hasActiveFilters =
+    selectedAge !== "ALL" ||
+    selectedRegion !== "ALL" ||
+    selectedStatus !== "ALL" ||
+    searchQuery.trim() !== "";
+
+  const handleResetFilters = () => {
+    setSelectedAge("ALL");
+    setSelectedRegion("ALL");
+    setSelectedStatus("ALL");
+    setSearchQuery("");
+  };
+
   const getStatusBadge = (status: TournamentItem["status"], registered: number, max: number) => {
     const slotsLeft = max - registered;
     switch (status) {
       case "OPEN":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 text-slate-200 border border-slate-700 text-[11px] font-mono font-bold tracking-wider uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-            เปิดรับสมัคร (ว่างอีก {slotsLeft} ทีม)
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#4ADE80]/15 text-[#4ADE80] border border-[#4ADE80]/30 text-xs font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse" />
+            <span>เปิดรับสมัคร (ว่าง {slotsLeft} ทีม)</span>
           </span>
         );
       case "CLOSING_SOON":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/50 text-[11px] font-mono font-bold tracking-wider uppercase">
-            <AlertTriangle className="w-3 h-3 text-[#DC2626]" />
-            ใกล้ปิดรับสมัคร (เหลือ {slotsLeft} ทีมสุดท้าย)
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#FBBC30]/15 text-[#FBBC30] border border-[#FBBC30]/30 text-xs font-bold">
+            <AlertTriangle className="w-3.5 h-3.5 text-[#FBBC30]" />
+            <span>ใกล้ปิดรับสมัคร (เหลือ {slotsLeft} ทีม)</span>
           </span>
         );
       case "IN_PROGRESS":
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#AF101A] text-white border border-red-700 text-[11px] font-mono font-bold tracking-wider uppercase">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#AF101A] text-white border border-[#FF7A7A]/40 text-xs font-bold font-headline uppercase tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-            กำลังแข่งขัน (LIVE)
+            <span>กำลังแข่งขัน (LIVE)</span>
           </span>
         );
       case "COMPLETED":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 text-[11px] font-mono font-bold tracking-wider uppercase">
-            จบการแข่งขันแล้ว
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700 text-xs font-medium">
+            <span>จบการแข่งขันแล้ว</span>
           </span>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-body-md antialiased selection:bg-[#DC2626] selection:text-white">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased selection:bg-[#AF101A] selection:text-white">
       <Navbar />
 
       <main className="flex-1">
-        {/* Header Hero */}
-        <section className="bg-[#0F172A] text-white py-12 border-b border-slate-800 relative overflow-hidden">
-          <div className="absolute inset-0 court-grid-pattern opacity-15 pointer-events-none" />
+        {/* 1. EDITORIAL HERO SECTION (Courtside Editorial) */}
+        <section className="bg-[#0B1C30] text-white py-10 sm:py-12 border-b border-[#213145] relative overflow-hidden select-none">
+          <div className="absolute inset-0 court-grid-pattern opacity-10 pointer-events-none" />
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/20 border border-[#AF101A]/40 text-[#FFDAD6] text-xs font-mono font-bold tracking-widest uppercase">
-                  <Calendar className="w-3.5 h-3.5 text-[#DC2626]" />
-                  NATIONAL TOURNAMENT DIRECTORY
+              <div className="space-y-2 max-w-3xl">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-[#FF7A7A]/20 border border-[#FF7A7A]/40 text-[#FF7A7A] text-[11px] font-headline font-bold tracking-widest uppercase">
+                  <Calendar className="w-3.5 h-3.5 text-[#FF7A7A]" />
+                  <span>NATIONAL TOURNAMENT DIRECTORY</span>
                 </div>
-                <h1 className="font-headline-xl text-white uppercase tracking-wider text-3xl sm:text-4xl lg:text-5xl font-normal">
+                <h1 className="font-headline uppercase tracking-wide text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
                   ปฏิทินการแข่งขันบาสเกตบอลทั่วประเทศ
                 </h1>
-                <p className="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                  รวบรวมรายการแข่งขันบาสเกตบอลเยาวชนและประชาชนทุกรุ่นอายุ พร้อมสถานะรับสมัคร 
-                  เอกสารระเบียบการทางการ และพิกัดสนามแข่งขันในที่เดียว
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-sans">
+                  ศูนย์รวมรายการแข่งขันบาสเกตบอลเยาวชนและประชาชนทั่วประเทศไทยที่รับรองมาตรฐานสากล
+                  ตรวจสอบสถานะรับสมัคร ดาวน์โหลดระเบียบการทางการ และดูผลการแข่งขันแบบเรียลไทม์
                 </p>
               </div>
 
-              {/* Organizer Quick Button */}
+              {/* B2B Organizer Portal Action */}
               <div className="shrink-0">
                 <Link
-                  href="/#contact-form"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono font-bold text-xs tracking-wider uppercase transition shadow-md"
+                  href="/solutions"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white font-bold text-xs uppercase tracking-wide transition shadow-sm"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>ลงประกาศรายการแข่งขันของคุณ</span>
+                  <span>สำหรับผู้จัดการแข่งขัน (Organizer Portal)</span>
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Filters Bar */}
-        <section className="bg-white border-b border-slate-200 sticky top-14 z-30 shadow-xs">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-xs font-mono">
-              
+        {/* 2. REFINED FILTER BAR & ACTIVE CHIPS */}
+        <section className="bg-white/95 backdrop-blur-md border-b border-[#DFE2EB] sticky top-14 z-30 shadow-xs">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-2.5">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-xs">
               {/* Search Bar */}
-              <div className="flex items-center bg-[#F8F9FC] border border-slate-300 rounded px-3 py-2 w-full lg:w-72 focus-within:border-[#DC2626] focus-within:bg-white transition">
-                <Search className="w-3.5 h-3.5 text-slate-400 mr-2 shrink-0" />
+              <div className="flex items-center bg-[#F8F9FF] border border-[#CBD5E1] rounded-lg px-3 py-2 w-full lg:w-80 focus-within:border-[#AF101A] focus-within:ring-1 focus-within:ring-[#AF101A]/30 transition">
+                <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="ค้นหาชื่อทัวร์นาเมนต์, จังหวัด, สนาม..."
-                  className="bg-transparent border-0 p-0 text-slate-800 placeholder:text-slate-400 w-full outline-none"
+                  placeholder="ค้นหาชื่อรายการ, จังหวัด, สนาม หรือผู้จัด..."
+                  className="bg-transparent border-0 p-0 text-[#0B1C30] placeholder:text-slate-400 w-full outline-none font-sans text-xs"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="text-slate-400 hover:text-slate-600 ml-1 cursor-pointer"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
 
-              {/* Filter Selectors */}
+              {/* Filter Dropdowns */}
               <div className="flex flex-wrap items-center gap-2">
                 {/* Age Filter */}
-                <div className="flex items-center gap-1 bg-[#F8F9FC] border border-slate-300 rounded px-2.5 py-1.5">
-                  <span className="text-slate-500 uppercase font-bold text-[11px]">รุ่นอายุ:</span>
+                <div className="flex items-center gap-1.5 bg-[#F8F9FF] border border-[#CBD5E1] rounded-lg px-3 py-1.5">
+                  <span className="text-slate-500 font-bold text-xs">รุ่นอายุ:</span>
                   <select
                     value={selectedAge}
                     onChange={(e) => setSelectedAge(e.target.value)}
-                    className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer"
+                    className="bg-transparent text-[#0B1C30] font-bold focus:outline-none cursor-pointer text-xs font-sans"
                   >
                     <option value="ALL">ทุกรุ่นอายุ (All Ages)</option>
-                    <option value="U12">รุ่น U12 (อายุไม่เกิน 12 ปี)</option>
-                    <option value="U14">รุ่น U14 (อายุไม่เกิน 14 ปี)</option>
-                    <option value="U16">รุ่น U16 (อายุไม่เกิน 16 ปี)</option>
-                    <option value="U18">รุ่น U18 (อายุไม่เกิน 18 ปี / ม.ปลาย)</option>
+                    <option value="U12">รุ่น U12 (ไม่เกิน 12 ปี)</option>
+                    <option value="U14">รุ่น U14 (ไม่เกิน 14 ปี)</option>
+                    <option value="U16">รุ่น U16 (ไม่เกิน 16 ปี)</option>
+                    <option value="U18">รุ่น U18 (ม.ปลาย / โควตา TCAS)</option>
                     <option value="Open">รุ่นประชาชนทั่วไป (Open)</option>
                   </select>
                 </div>
 
                 {/* Region Filter */}
-                <div className="flex items-center gap-1 bg-[#F8F9FC] border border-slate-300 rounded px-2.5 py-1.5">
-                  <span className="text-slate-500 uppercase font-bold text-[11px]">ภูมิภาค:</span>
+                <div className="flex items-center gap-1.5 bg-[#F8F9FF] border border-[#CBD5E1] rounded-lg px-3 py-1.5">
+                  <span className="text-slate-500 font-bold text-xs">ภูมิภาค:</span>
                   <select
                     value={selectedRegion}
                     onChange={(e) => setSelectedRegion(e.target.value)}
-                    className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer"
+                    className="bg-transparent text-[#0B1C30] font-bold focus:outline-none cursor-pointer text-xs font-sans"
                   >
                     <option value="ALL">ทุกภูมิภาคทั่วไทย</option>
                     <option value="กรุงเทพฯ และปริมณฑล">กรุงเทพฯ และปริมณฑล</option>
@@ -374,12 +382,12 @@ export default function TournamentsDirectoryPage() {
                 </div>
 
                 {/* Status Filter */}
-                <div className="flex items-center gap-1 bg-[#F8F9FC] border border-slate-300 rounded px-2.5 py-1.5">
-                  <span className="text-slate-500 uppercase font-bold text-[11px]">สถานะ:</span>
+                <div className="flex items-center gap-1.5 bg-[#F8F9FF] border border-[#CBD5E1] rounded-lg px-3 py-1.5">
+                  <span className="text-slate-500 font-bold text-xs">สถานะ:</span>
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer"
+                    className="bg-transparent text-[#0B1C30] font-bold focus:outline-none cursor-pointer text-xs font-sans"
                   >
                     <option value="ALL">ทุกสถานะ</option>
                     <option value="OPEN">เปิดรับสมัคร (Open)</option>
@@ -389,17 +397,74 @@ export default function TournamentsDirectoryPage() {
                   </select>
                 </div>
               </div>
-
             </div>
+
+            {/* Active Filter Chips Strip */}
+            {hasActiveFilters && (
+              <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-100 text-xs animate-fadeIn">
+                <span className="text-slate-500 text-[11px] font-medium mr-1 flex items-center gap-1">
+                  <SlidersHorizontal className="w-3 h-3 text-slate-400" />
+                  <span>ตัวกรองที่ใช้งาน:</span>
+                </span>
+
+                {selectedAge !== "ALL" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#AF101A]/10 text-[#AF101A] border border-[#AF101A]/20 font-medium text-xs">
+                    <span>รุ่น: {selectedAge}</span>
+                    <button type="button" onClick={() => setSelectedAge("ALL")} className="hover:opacity-75">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                )}
+
+                {selectedRegion !== "ALL" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0B1C30]/10 text-[#0B1C30] border border-[#0B1C30]/20 font-medium text-xs">
+                    <span>ภาค: {selectedRegion}</span>
+                    <button type="button" onClick={() => setSelectedRegion("ALL")} className="hover:opacity-75">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                )}
+
+                {selectedStatus !== "ALL" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0B1C30]/10 text-[#0B1C30] border border-[#0B1C30]/20 font-medium text-xs">
+                    <span>สถานะ: {selectedStatus}</span>
+                    <button type="button" onClick={() => setSelectedStatus("ALL")} className="hover:opacity-75">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                )}
+
+                {searchQuery.trim() !== "" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 border border-slate-300 font-medium text-xs">
+                    <span>คำค้น: &quot;{searchQuery}&quot;</span>
+                    <button type="button" onClick={() => setSearchQuery("")} className="hover:opacity-75">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="text-xs text-[#AF101A] hover:underline font-bold ml-1.5 flex items-center gap-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>ล้างตัวกรองทั้งหมด</span>
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Tournament Cards List */}
+        {/* 3. TOURNAMENT CARDS GRID (Courtside Editorial) */}
         <section className="py-8 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="flex items-center justify-between mb-6 text-xs font-mono text-slate-600">
-            <span>พบรายการแข่งขันทั้งหมด {filteredTournaments.length} รายการ</span>
-            <span className="text-slate-400">อัปเดตข้อมูลล่าสุดทุก 6 ชั่วโมง</span>
+          <div className="flex items-center justify-between mb-5 text-xs text-slate-600">
+            <span className="font-bold text-[#0B1C30]">
+              พบรายการแข่งขันทั้งหมด <span className="text-[#AF101A] font-headline text-sm tabular-nums">{filteredTournaments.length}</span> รายการ
+            </span>
+            <span className="text-slate-400 hidden sm:inline">
+              อัปเดตสถิติและโควตาโต๊ะกลางแบบเรียลไทม์
+            </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -410,32 +475,38 @@ export default function TournamentsDirectoryPage() {
               return (
                 <div
                   key={tourn.id}
-                  className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md hover:border-[#DC2626]/40 transition flex flex-col justify-between"
+                  className="bg-white rounded-xl border border-[#DFE2EB] hover:border-[#7F8A9E] shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden"
                 >
                   {/* Card Header Top */}
                   <div>
-                    <div className={`bg-gradient-to-r ${tourn.bannerColor} p-4 sm:p-5 text-white flex items-start justify-between gap-4 border-b border-slate-800`}>
-                      <div className="space-y-1.5">
+                    <div className="bg-[#0B1C30] p-4 sm:p-5 text-white flex items-start justify-between gap-4 border-b border-[#213145]">
+                      <div className="space-y-1.5 min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          {tourn.isOfficialEndorsed && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#AF101A]/20 border border-[#AF101A]/50 text-red-200 text-[10px] font-mono font-bold tracking-wider uppercase">
-                              <ShieldCheck className="w-3 h-3 text-[#DC2626]" />
-                              BSAT VERIFIED
+                          {tourn.isOfficialEndorsed ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#4ADE80]/15 border border-[#4ADE80]/30 text-[#4ADE80] text-[11px] font-headline font-bold uppercase tracking-wider">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#4ADE80]" />
+                              BSAT OFFICIALLY CERTIFIED
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 text-[11px] font-headline font-bold uppercase">
+                              INVITATIONAL TOURNAMENT
                             </span>
                           )}
-                          <span className="px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 text-slate-300 text-[10px] font-mono font-bold uppercase">
+                          <span className="px-2 py-0.5 rounded bg-[#142C47] border border-[#213145] text-slate-300 text-[11px] font-medium">
                             {tourn.province} ({tourn.region})
                           </span>
                         </div>
-                        <h2 className="font-headline-md text-white font-bold text-xl uppercase tracking-wide">
+
+                        <h2 className="font-headline text-white font-extrabold text-xl sm:text-2xl uppercase tracking-wide truncate">
                           {tourn.name}
                         </h2>
-                        <p className="text-xs text-slate-300 font-mono">
+
+                        <p className="text-xs text-slate-300 font-sans truncate">
                           ผู้จัด: {tourn.organizer}
                         </p>
                       </div>
 
-                      {/* Status pill top right */}
+                      {/* Status badge top right */}
                       <div className="shrink-0">
                         {getStatusBadge(tourn.status, tourn.registeredTeams, tourn.maxTeams)}
                       </div>
@@ -443,34 +514,33 @@ export default function TournamentsDirectoryPage() {
 
                     {/* Card Body Details */}
                     <div className="p-4 sm:p-5 space-y-4">
-                      
-                      {/* Grid info: Dates, Venue, Fee */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div className="flex items-start gap-2 text-slate-700">
-                          <Calendar className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
+                      {/* Grid info: Dates, Venue, Categories, Entry Fee */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                        <div className="flex items-start gap-2.5 text-slate-700">
+                          <Calendar className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           <div>
-                            <span className="block font-mono font-bold text-slate-900">วันแข่งขัน:</span>
-                            <span>{tourn.startDate} ถึง {tourn.endDate}</span>
+                            <span className="block text-slate-500 font-bold text-[11px]">วันแข่งขัน:</span>
+                            <span className="font-medium text-[#0B1C30]">{tourn.startDate} ถึง {tourn.endDate}</span>
                           </div>
                         </div>
 
-                        <div className="flex items-start gap-2 text-slate-700">
-                          <MapPin className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-2.5 text-slate-700">
+                          <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           <div>
-                            <span className="block font-mono font-bold text-slate-900">สนามแข่งขัน:</span>
-                            <span className="line-clamp-1">{tourn.venue}</span>
+                            <span className="block text-slate-500 font-bold text-[11px]">สนามแข่งขัน:</span>
+                            <span className="font-medium text-[#0B1C30] line-clamp-1">{tourn.venue}</span>
                           </div>
                         </div>
 
-                        <div className="flex items-start gap-2 text-slate-700">
-                          <Trophy className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-2.5 text-slate-700">
+                          <Trophy className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           <div>
-                            <span className="block font-mono font-bold text-slate-900">รุ่นอายุที่เปิดรับ:</span>
+                            <span className="block text-slate-500 font-bold text-[11px]">รุ่นอายุที่เปิดรับ:</span>
                             <div className="flex flex-wrap gap-1 mt-0.5">
                               {tourn.ageCategories.map((c) => (
                                 <span
                                   key={c}
-                                  className="px-1.5 py-0.2 rounded bg-slate-100 border border-slate-300 text-slate-700 font-mono text-[10px] font-bold"
+                                  className="px-2 py-0.2 rounded bg-[#F1F5F9] border border-[#CBD5E1] text-[#0B1C30] font-headline font-bold text-[11px]"
                                 >
                                   {c}
                                 </span>
@@ -479,193 +549,241 @@ export default function TournamentsDirectoryPage() {
                           </div>
                         </div>
 
-                        <div className="flex items-start gap-2 text-slate-700">
-                          <Building className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-2.5 text-slate-700">
+                          <Building2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           <div>
-                            <span className="block font-mono font-bold text-slate-900">ค่าธรรมเนียมสมัคร:</span>
-                            <span className="font-mono font-black text-[#DC2626]">
-                              ฿{tourn.entryFeeThb.toLocaleString()} / ทีม
+                            <span className="block text-slate-500 font-bold text-[11px]">ค่าธรรมเนียมสมัคร:</span>
+                            <span className="font-headline font-black text-[#AF101A] text-base tabular-nums">
+                              ฿{tourn.entryFeeThb.toLocaleString()} <span className="text-xs text-slate-500 font-normal font-sans">/ ทีม</span>
                             </span>
                           </div>
                         </div>
                       </div>
 
                       {/* Quota Progress Bar */}
-                      <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1.5 font-mono text-xs">
+                      <div className="p-3 bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg space-y-1.5 text-xs">
                         <div className="flex items-center justify-between text-slate-600">
-                          <span>โควตารับสมัคร:</span>
-                          <span className="font-bold text-slate-900">
+                          <span className="font-medium">โควตารับสมัคร:</span>
+                          <span className="font-headline font-bold text-[#0B1C30] tabular-nums">
                             {tourn.registeredTeams} / {tourn.maxTeams} ทีม ({percentFilled}%)
                           </span>
                         </div>
-                        <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                        <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
-                              percentFilled >= 90
-                                ? "bg-[#AF101A]"
-                                : "bg-slate-900"
+                              percentFilled >= 90 ? "bg-[#AF101A]" : "bg-[#0B1C30]"
                             }`}
                             style={{ width: `${percentFilled}%` }}
                           />
                         </div>
                       </div>
-
                     </div>
                   </div>
 
-                  {/* Card Footer Actions */}
-                  <div className="p-4 sm:p-5 pt-0 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-                    <button
-                      onClick={() => setActiveDownloadModal(tourn)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold transition"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>ดาวน์โหลดระเบียบการ (PDF)</span>
-                    </button>
-
-                    <div className="flex items-center gap-2">
+                  {/* Card Footer: Auxiliary Rail (Left) + Distinct Primary Action (Right) */}
+                  <div className="p-4 sm:p-5 pt-3 border-t border-[#DFE2EB] bg-slate-50/50 flex flex-wrap items-center justify-between gap-2.5 text-xs">
+                    {/* Left: Auxiliary Tool Buttons (Disciplined Monochrome Palette) */}
+                    <div className="flex flex-wrap items-center gap-1.5">
                       <button
-                        onClick={() => setActiveStandingsModal(tourn)}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-300 font-bold transition cursor-pointer"
-                        title="ดูตารางคะแนนและอันดับ FIBA"
+                        type="button"
+                        onClick={() => setActiveDownloadModal(tourn)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-[#0B1C30] border border-[#CBD5E1] font-medium transition cursor-pointer"
+                        title="ดาวน์โหลดระเบียบการกติกาและคุณสมบัติ (PDF)"
                       >
-                        <Trophy className="w-3.5 h-3.5 text-amber-600" />
+                        <FileText className="w-3.5 h-3.5 text-slate-500" />
+                        <span>ระเบียบการ</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveStandingsModal(tourn)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-[#0B1C30] border border-[#CBD5E1] font-medium transition cursor-pointer"
+                        title="ดูตารางคะแนนและอันดับทีม FIBA"
+                      >
+                        <Trophy className="w-3.5 h-3.5 text-[#FBBC30]" />
                         <span>ตารางคะแนน</span>
                       </button>
 
                       <button
+                        type="button"
                         onClick={() => setActiveBracketModal(tourn)}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-indigo-50 text-indigo-800 hover:bg-indigo-100 border border-indigo-300 font-bold transition cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-[#0B1C30] border border-[#CBD5E1] font-medium transition cursor-pointer"
                         title="ดูสายการแข่งขันและตารางสนาม (Brackets & Court Schedule)"
                       >
-                        <GitBranch className="w-3.5 h-3.5 text-indigo-600" />
-                        <span>สายแข่ง &amp; ตารางสนาม</span>
+                        <GitBranch className="w-3.5 h-3.5 text-slate-500" />
+                        <span>สายแข่ง &amp; สนาม</span>
                       </button>
+                    </div>
 
+                    {/* Right: Distinct Primary Action */}
+                    <div className="flex items-center gap-2 shrink-0">
                       {tourn.liveMatchId && (
                         <Link
-                          href={`/matches/${tourn.liveMatchId}/film`}
-                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded bg-red-950 text-red-300 hover:bg-red-900 border border-red-800 font-bold transition"
+                          href={`/live`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#AF101A]/10 text-[#AF101A] hover:bg-[#AF101A]/20 border border-[#AF101A]/30 font-bold transition cursor-pointer"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                          <span>ดูสถิติสด</span>
+                          <span className="w-2 h-2 rounded-full bg-[#AF101A] animate-pulse" />
+                          <span>ดูถ่ายทอดสด</span>
                         </Link>
                       )}
 
                       {tourn.status === "OPEN" || tourn.status === "CLOSING_SOON" ? (
                         <button
+                          type="button"
                           onClick={() => setActiveRegisterModal(tourn)}
-                          className="inline-flex items-center gap-1 px-4 py-2 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition shadow-xs cursor-pointer"
+                          className="inline-flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white font-bold transition shadow-sm cursor-pointer"
                         >
                           <span>ลงทะเบียนทีม</span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       ) : (
-                        <span className="px-3 py-2 text-slate-400 font-bold">
+                        <span className="px-3 py-1.5 text-slate-400 font-medium">
                           ปิดรับสมัครแล้ว
                         </span>
                       )}
                     </div>
                   </div>
-
                 </div>
               );
             })}
           </div>
 
+          {/* Empty State */}
           {filteredTournaments.length === 0 && (
-            <div className="bg-white rounded-xl border border-slate-200 p-12 text-center space-y-3 my-8">
+            <div className="bg-white rounded-xl border border-[#DFE2EB] p-12 text-center space-y-3 my-8 shadow-sm">
               <Calendar className="w-10 h-10 text-slate-400 mx-auto" />
-              <h3 className="font-headline-md text-slate-800 font-bold text-xl uppercase">
+              <h3 className="font-headline text-[#0B1C30] font-bold text-xl uppercase">
                 ไม่พบรายการแข่งขันตามเงื่อนไขที่เลือก
               </h3>
-              <p className="text-xs text-slate-500 max-w-md mx-auto">
-                ลองรีเซ็ตตัวกรองรุ่นอายุหรือภูมิภาค เพื่อดูรายการแข่งขันทั้งหมดที่เปิดรับสมัครในประเทศไทย
+              <p className="text-xs text-slate-500 max-w-md mx-auto font-sans leading-relaxed">
+                ลองรีเซ็ตตัวกรองรุ่นอายุ ภูมิภาค หรือคำค้นหา เพื่อตรวจสอบรายการแข่งขันทั้งหมดที่เปิดรับสมัคร
               </p>
               <button
-                onClick={() => {
-                  setSelectedAge("ALL");
-                  setSelectedRegion("ALL");
-                  setSelectedStatus("ALL");
-                  setSearchQuery("");
-                }}
-                className="px-4 py-2 rounded bg-slate-800 text-white font-mono text-xs font-bold uppercase transition"
+                type="button"
+                onClick={handleResetFilters}
+                className="px-4 py-2 rounded-lg bg-[#0B1C30] hover:bg-[#142C47] text-white text-xs font-bold uppercase transition cursor-pointer"
               >
                 รีเซ็ตตัวกรองทั้งหมด
               </button>
             </div>
           )}
-
         </section>
 
-        {/* Modal: Rules Document Preview & Download */}
+        {/* Modal: Official Rules & Regulations Document Sheet */}
         {activeDownloadModal && (
           <div
             onClick={() => setActiveDownloadModal(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto cursor-pointer"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/80 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto cursor-pointer animate-fadeIn"
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-xl border border-slate-200 max-w-lg w-full p-6 text-slate-800 shadow-2xl cursor-default space-y-4"
+              className="bg-white rounded-xl border border-[#DFE2EB] max-w-2xl w-full p-5 sm:p-6 text-[#0B1C30] shadow-2xl cursor-default space-y-4 font-sans"
             >
-              <div className="flex items-start justify-between pb-3 border-b border-slate-200">
-                <div>
-                  <span className="text-[10px] font-mono font-bold text-[#DC2626] uppercase">
-                    OFFICIAL TOURNAMENT RULES & REGULATIONS
-                  </span>
-                  <h3 className="font-headline-md text-slate-900 font-bold text-lg uppercase mt-0.5">
-                    {activeDownloadModal.name}
+              {/* Document Header */}
+              <div className="flex items-start justify-between pb-3.5 border-b border-[#DFE2EB]">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-300 font-headline font-bold text-[10px] uppercase">
+                      BSAT Official Document
+                    </span>
+                    <span className="text-[11px] font-mono text-slate-400">
+                      ID: {activeDownloadModal.id}-REG-2026
+                    </span>
+                  </div>
+                  <h3 className="font-headline text-[#0B1C30] font-extrabold text-xl uppercase tracking-wide">
+                    ระเบียบการแข่งขันและคุณสมบัตินักกีฬา
                   </h3>
+                  <p className="text-xs text-slate-500 font-sans">
+                    {activeDownloadModal.name} • {activeDownloadModal.organizer}
+                  </p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setActiveDownloadModal(null)}
-                  className="p-1 rounded text-slate-400 hover:text-slate-700 cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="space-y-3 text-xs font-mono">
-                <div className="p-3 bg-slate-50 rounded border border-slate-200 space-y-1">
-                  <p className="text-slate-500 font-bold uppercase text-[10px]">เอกสารระเบียบการกติกาและคุณสมบัตินักกีฬา</p>
-                  <p className="text-slate-800">ไฟล์: {activeDownloadModal.id}-regulations-2026.pdf (1.4 MB)</p>
-                  <p className="text-slate-600">รับรองโดย: {activeDownloadModal.organizer}</p>
-                </div>
-
-                <div className="space-y-2 text-slate-700">
-                  <p className="font-bold text-slate-900 uppercase">ข้อกำหนดสำคัญโดยย่อ:</p>
-                  <ul className="list-disc pl-4 space-y-1">
-                    <li>นักกีฬาต้องมีสัญชาติไทย หรือศึกษาอยู่ในสถาบันการศึกษาตามรุ่นอายุ</li>
-                    <li>ต้องแสดงบัตร Digital Player Pass สแกนหน้าสนามก่อนลงแข่งทุกแมตช์</li>
-                    <li>ใช้กติกาการแข่งขันมาตรฐาน FIBA Official Basketball Rules 2024</li>
-                    <li>สถิติและผลการแข่งขันจะบันทึกผ่านระบบ StatCourtTH แบบเรียลไทม์</li>
+              {/* Document Body Sections */}
+              <div className="space-y-3.5 text-xs max-h-[60vh] overflow-y-auto pr-1">
+                {/* 1. Eligibility */}
+                <div className="p-3 bg-[#F8F9FF] rounded-lg border border-[#DFE2EB] space-y-1.5">
+                  <h4 className="font-bold text-[#0B1C30] flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <span>1. คุณสมบัตินักกีฬาและการตรวจสิทธิ์ Digital Player Pass</span>
+                  </h4>
+                  <ul className="list-disc pl-5 space-y-1 text-slate-600 leading-relaxed text-[11px]">
+                    <li>นักกีฬาต้องมีสัญชาติไทย หรือศึกษาอยู่ในสถาบันการศึกษาตามรุ่นอายุที่สมัคร</li>
+                    <li>ต้องแสดงบัตร <strong>Digital Player Pass</strong> สแกน QR Code หน้าสนามก่อนลงแข่งทุกแมตช์</li>
+                    <li>นักกีฬา 1 คนสามารถลงแข่งขันได้เพียง 1 ทีมต่อ 1 รุ่นอายุเท่านั้น</li>
                   </ul>
                 </div>
 
-                <div className="p-3 bg-slate-50 border border-slate-200 rounded text-slate-800 text-[11px]">
-                  ติดต่อฝ่ายจัดการแข่งขัน: <span className="font-bold">{activeDownloadModal.contactPerson}</span> โทร. {activeDownloadModal.contactPhone}
+                {/* 2. FIBA Rules */}
+                <div className="p-3 bg-[#F8F9FF] rounded-lg border border-[#DFE2EB] space-y-1.5">
+                  <h4 className="font-bold text-[#0B1C30] flex items-center gap-1.5">
+                    <Trophy className="w-4 h-4 text-amber-500" />
+                    <span>2. กติกาการแข่งขันและระบบสถิติโต๊ะกลาง</span>
+                  </h4>
+                  <ul className="list-disc pl-5 space-y-1 text-slate-600 leading-relaxed text-[11px]">
+                    <li>ใช้กติกาการแข่งขันมาตรฐาน <strong>FIBA Official Basketball Rules 2024</strong> แข่งขัน 4 ควอเตอร์ ควอเตอร์ละ 10 นาที (เวลานอก 5 ครั้ง)</li>
+                    <li>บันทึกสถิติสดระดับเสี้ยววินาทีผ่านระบบ <strong>FIBA LiveStats</strong> ของ StatCourtTH</li>
+                    <li>กรณีคะแนนเท่ากันในรอบแบ่งกลุ่ม ตัดสินด้วย Head-to-Head ตามข้อบังคับ FIBA D.1</li>
+                  </ul>
+                </div>
+
+                {/* 3. Portfolio & Recognition */}
+                <div className="p-3 bg-[#F8F9FF] rounded-lg border border-[#DFE2EB] space-y-1.5">
+                  <h4 className="font-bold text-[#0B1C30] flex items-center gap-1.5">
+                    <FileText className="w-4 h-4 text-[#AF101A]" />
+                    <span>3. การรับรองผลงานและสถิติรายบุคคล (TCAS Portfolio)</span>
+                  </h4>
+                  <p className="text-slate-600 leading-relaxed text-[11px]">
+                    สถิติการแข่งขันทุกนัดจะถูกเชื่อมโยงเข้าสู่ Digital Profile ของนักกีฬาโดยอัตโนมัติ สามารถดาวน์โหลดใบรับรองผลการแข่งขันอิเล็กทรอนิกส์ (E-Certificate) พร้อม QR ยืนยันข้อมูลไปยังมหาวิทยาลัย
+                  </p>
+                </div>
+
+                {/* Coordinator Contacts */}
+                <div className="p-3 bg-slate-50 border border-[#CBD5E1] rounded-lg text-slate-700 text-xs flex flex-wrap items-center justify-between gap-2">
+                  <span>ผู้ประสานงานฝ่ายจัดการแข่งขัน: <strong className="text-[#0B1C30]">{activeDownloadModal.contactPerson}</strong></span>
+                  <span className="font-mono font-bold text-[#0B1C30]">โทร: {activeDownloadModal.contactPhone}</span>
                 </div>
               </div>
 
-              <div className="pt-2 flex items-center justify-end gap-3">
-                <button
-                  onClick={() => setActiveDownloadModal(null)}
-                  className="px-4 py-2 rounded bg-slate-100 text-slate-700 font-mono text-xs font-bold"
-                >
-                  ปิดหน้าต่าง
-                </button>
-                <a
-                  href={`#download-${activeDownloadModal.id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert(`กำลังดาวน์โหลดระเบียบการ: ${activeDownloadModal.name}`);
-                    setActiveDownloadModal(null);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase transition"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>ดาวน์โหลดไฟล์ PDF</span>
-                </a>
+              {/* Action Buttons */}
+              <div className="pt-2 border-t border-[#DFE2EB] flex flex-wrap items-center justify-between gap-2.5">
+                <span className="text-[11px] text-slate-400 font-mono">
+                  ไฟล์ PDF ขนาด 1.4 MB (ประทับตราทางการ)
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveDownloadModal(null)}
+                    className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
+                  >
+                    ปิดหน้าต่าง
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Real download file trigger
+                      const dummyContent = `STATCOURT.TH - OFFICIAL TOURNAMENT REGULATIONS\n\nTournament: ${activeDownloadModal.name}\nOrganizer: ${activeDownloadModal.organizer}\nVenue: ${activeDownloadModal.venue}\nDates: ${activeDownloadModal.startDate} to ${activeDownloadModal.endDate}\nRules: FIBA Official Basketball Rules 2024\n\nCertified by BSAT Technical Committee.`;
+                      const blob = new Blob([dummyContent], { type: "text/plain;charset=utf-8" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `${activeDownloadModal.id}-official-regulations.txt`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white text-xs font-bold uppercase tracking-wide transition cursor-pointer shadow-sm"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>ดาวน์โหลดระเบียบการ</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -699,7 +817,6 @@ export default function TournamentsDirectoryPage() {
             canManage={false}
           />
         )}
-
       </main>
 
       <Footer />
