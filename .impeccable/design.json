@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T19:32:00.000Z",
+  "title": "Design System: StatCourtTH",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Brand Crimson",
+        "canonical": "#af101a",
+        "tonalRamp": ["#360004", "#5b0409", "#8e0d15", "#af101a", "#d93b3f", "#f87171", "#fca5a5", "#fee2e2"]
+      },
+      "signal-red": {
+        "role": "primary",
+        "displayName": "Signal Red",
+        "canonical": "#ff7a7a",
+        "tonalRamp": ["#450a0a", "#7f1d1d", "#b91c1c", "#ef4444", "#f87171", "#ff7a7a", "#fecaca", "#fee2e2"]
+      },
+      "court-ink": {
+        "role": "neutral",
+        "displayName": "Court Ink",
+        "canonical": "#0b1c30",
+        "tonalRamp": ["#050e18", "#0b1c30", "#142c47", "#1d3e63", "#285282", "#3a6ea5", "#7099c6", "#c3d5ea"]
+      },
+      "surface-base": {
+        "role": "neutral",
+        "displayName": "Ice Surface",
+        "canonical": "#f8f9ff",
+        "tonalRamp": ["#1e293b", "#334155", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8f9ff"]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Border Strong",
+        "canonical": "#7f8a9e",
+        "tonalRamp": ["#1e293b", "#334155", "#475569", "#64748b", "#7f8a9e", "#94a3b8", "#cbd5e1", "#e2e8f0"]
+      },
+      "medal-gold": {
+        "role": "tertiary",
+        "displayName": "Medal Gold",
+        "canonical": "#fbbc30",
+        "tonalRamp": ["#422006", "#713f12", "#a16207", "#ca8a04", "#eab308", "#fbbc30", "#fef08a", "#fefce8"]
+      },
+      "verified-green": {
+        "role": "secondary",
+        "displayName": "Verified Emerald",
+        "canonical": "#15803d",
+        "tonalRamp": ["#052e16", "#14532d", "#166534", "#15803d", "#22c55e", "#4ade80", "#86efac", "#dcfce7"]
+      },
+      "pending-amber": {
+        "role": "secondary",
+        "displayName": "Pending Amber",
+        "canonical": "#b45309",
+        "tonalRamp": ["#451a03", "#78350f", "#92400e", "#b45309", "#d97706", "#f59e0b", "#fde68a", "#fef3c7"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and primary score tallies." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings and bracket titles." },
+      "title": { "displayName": "Title", "purpose": "Card titles and modal headers." },
+      "stat": { "displayName": "Stat Numerals", "purpose": "High-density tabular statistics (EFF, PPG, RPG)." },
+      "body": { "displayName": "Body", "purpose": "Article text, descriptions, and user guidance." },
+      "label": { "displayName": "Label", "purpose": "Tag badges, table columns, and eyebrows." }
+    },
+    "shadows": [
+      { "name": "card-outline", "value": "0 0 0 1px #DFE2EB", "purpose": "Subtle boundary without heavy drop shadow." },
+      { "name": "modal-elevation", "value": "0 20px 25px -5px rgba(11, 28, 48, 0.1)", "purpose": "Elevated dialogs and modals." }
+    ],
+    "motion": [
+      { "name": "pulse-radar", "duration": "2s", "easing": "cubic-bezier(0.4, 0, 0.6, 1)", "purpose": "LIVE indicator beacon pulse." },
+      { "name": "subtle-hover", "duration": "150ms", "easing": "ease-out", "purpose": "Button and card interactive transitions." }
+    ],
+    "breakpoints": {
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px"
+    },
+    "narrative": {
+      "northStar": "Courtside Editorial",
+      "overview": "StatCourtTH fuses the raw athletic urgency of courtside basketball with the analytical clarity of elite sports journalism and FIBA official records. The design system is built to honor the dedication of Thailand's youth players, turning every sprint, rebound, and clutch jumper into a verifiable, high-contrast digital asset for university scouts and TCAS admissions.",
+      "keyCharacteristics": [
+        "High-contrast athletic typography featuring oversized display numerals and disciplined editorial line heights.",
+        "Restrained, intentional color discipline: Brand Crimson (#AF101A) as the singular action accent, paired with Signal Red (#FF7A7A) exclusively on dark surfaces.",
+        "Tactile, crisp layout geometry built from subtle court boundary lines rather than heavy decorative shadows.",
+        "Bilingual Thai-English harmony, pairing Barlow Condensed for numerical authority with Noto Sans Thai for effortless textual legibility."
+      ],
+      "rules": [
+        { "name": "The Signal Red Rule", "section": "Colors", "body": "Never render brand crimson (#AF101A) as text, badges, or icons on Court Ink (#0B1C30); its 2.38:1 contrast fails accessibility standards. Always use Signal Red (#FF7A7A) for accents and LIVE indicators on dark surfaces (6.80:1)." },
+        { "name": "The Status Pairing Rule", "section": "Colors", "body": "Never convey game or verification status by color alone; every state badge must pair chromatic indication with explicit textual labels (\"รับรองผลแล้ว\", \"รอตรวจสอบ\", \"LIVE\")." },
+        { "name": "The Control Border Rule", "section": "Colors", "body": "Form inputs, filter pills, and interactive table controls must use Border Strong (#7F8A9E) to remain distinct on light backgrounds; reserve Line (#DFE2EB) strictly for decorative row separators." },
+        { "name": "The Dual-Font Rule", "section": "Typography", "body": "Use Barlow Condensed exclusively for English headlines, scores, jersey numbers, and metric abbreviations; use Noto Sans Thai for all Thai copy, article bodies, and explanatory labels." },
+        { "name": "The No-Display-Tracking Rule", "section": "Typography", "body": "Never add positive letter-spacing (tracking-wide or tracking-widest) to headline classes; Barlow Condensed has optimized metrics, and manual tracking degrades rendering for embedded Thai characters." },
+        { "name": "The Tabular Score Rule", "section": "Typography", "body": "All game clocks, scoreboards, and stat columns must enforce tabular numerals (tabular-nums / font-feature-settings: 'tnum') to prevent horizontal jitter during live scorekeeping updates." },
+        { "name": "The Court Spacing Rule", "section": "Layout", "body": "Maintain strict structural rhythm: 4px for tight badge padding, 8px for element gaps, 14px for internal card padding, 20px for component separation, and 32px for section headers." },
+        { "name": "The Courtside Touch Rule", "section": "Layout", "body": "All table official controls, shot clock triggers, and substitution buttons must maintain an interactive hit area of at least 44×44px to prevent miss-clicks in fast-paced gym environments." },
+        { "name": "The Asymmetric Broadcast Rail Rule", "section": "Layout", "body": "In live match and video film pages, the video canvas maintains a 16:9 ratio and takes primary visual hierarchy; stat sheets and play feeds dock as a collapsible side rail without obscuring film controls." },
+        { "name": "The Tactical Outline Rule", "section": "Elevation & Depth", "body": "Prefer crisp 1px borders (borderStrong or borderNeutral) over drop shadows to delineate cards and tables; reserve box shadows exclusively for floating modals and player trading card hover elevation." },
+        { "name": "The Broadcast Frosted Rule", "section": "Elevation & Depth", "body": "Video HUD overlays and courtside stats superimposed on game film must use backdrop-blur-md with Tactical Slate (rgba(33, 49, 69, 0.85)) to preserve video legibility under fluctuating arena lighting." },
+        { "name": "The Athletic Chamfer Rule", "section": "Shapes", "body": "Keep corner radiuses disciplined between 4px (inputs, badges, buttons) and 8px (tactical cards); never use pill shapes (rounded-full) for primary data containers or tables." },
+        { "name": "The Geometry Over Ornament Rule", "section": "Shapes", "body": "Express basketball identity through thin court-line grids and coordinate markers rather than decorative basketball clip art or generic sports vectors." },
+        { "name": "The Reversal Rail Rule", "section": "Components", "body": "Every courtside scorekeeper action must immediately surface in a tactile Undo stack with clear player and point attribution to prevent irreversible recording errors." },
+        { "name": "The Timestamp Scrub Rule", "section": "Components", "body": "Every play-by-play event row must render its video timestamp as an interactive trigger that seeks the film player directly to that second." }
+      ],
+      "dos": [
+        "Do use Barlow Condensed for all sports numerals, box-score headers, and scoreboards to achieve authentic athletic density.",
+        "Do enforce tabular-nums on all countdown clocks, game times, and stat point counters.",
+        "Do use Signal Red (#FF7A7A) exclusively on dark Court Ink surfaces to ensure WCAG AA compliance.",
+        "Do pair every status color with clear textual labels (e.g. \"รับรองผลแล้ว\", \"รอตรวจสอบ\").",
+        "Do maintain a minimum touch target size of 44×44px on all courtside official console buttons.",
+        "Do anchor player statistics directly to video timestamps and official verification codes."
+      ],
+      "donts": [
+        "Don't use Brand Crimson (#AF101A) on Court Ink (#0B1C30); the 2.38:1 contrast fails legibility.",
+        "Don't add manual positive letter-spacing (tracking-wide) to display headline utility classes.",
+        "Don't use pill-shaped containers (rounded-full) for data tables, stat cards, or box-score wrappers.",
+        "Don't apply heavy drop shadows; rely on 1px borders and tonal contrast for layout definition.",
+        "Don't render unverified stats without an explicit \"Pending Review\" warning chip.",
+        "Don't let network latency disrupt the scorekeeping flow; always record courtside actions offline-first."
+      ]
+    }
+  }
+}

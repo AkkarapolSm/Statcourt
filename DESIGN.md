@@ -1,384 +1,253 @@
-# 🏀 StatCourtTH — System Architecture & Design Specification (DESIGN.md)
-
-> **STATCOURT.TH**: แพลตฟอร์มบันทึกสถิติ วิเคราะห์ข้อมูล และเชื่อมโยงโอกาสนักกีฬาบาสเกตบอลระดับเยาวชนและระดับรากหญ้าของประเทศไทย (Thailand Grassroots Basketball Analytics, Scouting & TCAS Athlete Hub)
-
+---
+name: StatCourtTH
+description: Elite Grassroots Basketball Analytics, Scouting & TCAS Athlete Hub
+colors:
+  primary: "#af101a"
+  primary-pressed: "#8e0d15"
+  primary-fixed: "#ffdad6"
+  signal-red: "#ff7a7a"
+  court-ink: "#0b1c30"
+  inverse-surface: "#213145"
+  surface-base: "#f8f9ff"
+  surface-container: "#ffffff"
+  surface-variant: "#e5eeff"
+  border-neutral: "#dfe2eb"
+  border-strong: "#7f8a9e"
+  text-heading: "#0b1c30"
+  text-secondary: "#5b6574"
+  muted-on-ink: "#a9b6c8"
+  medal-gold: "#fbbc30"
+  verified-green: "#15803d"
+  pending-amber: "#b45309"
+typography:
+  display:
+    fontFamily: "Barlow Condensed, Noto Sans Thai, sans-serif"
+    fontSize: "clamp(3rem, 5vw, 3.375rem)"
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "0"
+  headline:
+    fontFamily: "Barlow Condensed, Noto Sans Thai, sans-serif"
+    fontSize: "2.25rem"
+    fontWeight: 700
+    lineHeight: 1.1
+    letterSpacing: "0"
+  title:
+    fontFamily: "Barlow Condensed, Noto Sans Thai, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "0"
+  stat:
+    fontFamily: "Barlow Condensed, Noto Sans Thai, sans-serif"
+    fontSize: "2rem"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  body:
+    fontFamily: "Noto Sans Thai, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 400
+    lineHeight: 1.45
+    letterSpacing: "normal"
+  label:
+    fontFamily: "Barlow Condensed, Noto Sans Thai, sans-serif"
+    fontSize: "0.6875rem"
+    fontWeight: 700
+    lineHeight: 1.25
+    letterSpacing: "0.08em"
+rounded:
+  none: "0px"
+  sm: "4px"
+  md: "6px"
+  lg: "8px"
+  xl: "12px"
+  full: "9999px"
+spacing:
+  xs: "4px"
+  sm: "8px"
+  md: "14px"
+  lg: "20px"
+  xl: "32px"
+  gutter: "24px"
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "#ffffff"
+    rounded: "{rounded.sm}"
+    padding: "10px 20px"
+    typography: "{typography.label}"
+  button-primary-hover:
+    backgroundColor: "{colors.primary-pressed}"
+  button-secondary:
+    backgroundColor: "transparent"
+    textColor: "{colors.court-ink}"
+    rounded: "{rounded.sm}"
+    padding: "10px 20px"
+  card-tactical:
+    backgroundColor: "{colors.surface-container}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.lg}"
+  badge-live:
+    backgroundColor: "{colors.signal-red}"
+    textColor: "{colors.court-ink}"
+    rounded: "{rounded.sm}"
+    padding: "2px 8px"
 ---
 
-## 📑 สารบัญ (Table of Contents)
-1. [ภาพรวมของระบบและวิสัยทัศน์ (System Vision & Problem Statement)](#1-ภาพรวมของระบบและวิสัยทัศน์)
-2. [สถาปัตยกรรมระบบโดยรวม (System Architecture)](#2-สถาปัตยกรรมระบบโดยรวม)
-3. [ระบบการออกแบบ (Design System & Visual Language)](#3-ระบบการออกแบบ-design-system)
-   - 3.1 [Typography Scale & Typefaces](#31-typography-scale)
-   - 3.2 [Color Tokens & Palette](#32-color-tokens--palette)
-   - 3.3 [UI Components & Layout Patterns](#33-ui-components--layout-patterns)
-4. [โครงสร้างข้อมูลและฐานข้อมูล (Database Schema & Data Models)](#4-โครงสร้างข้อมูลและฐานข้อมูล)
-5. [กลไกการวิเคราะห์สถิติมาตรฐาน FIBA (FIBA Analytics Engine)](#5-กลไกการวิเคราะห์สถิติมาตรฐาน-fiba)
-   - 5.1 [FIBA Efficiency (EFF)](#51-fiba-efficiency-eff)
-   - 5.2 [Advanced Shooting Metrics (eFG%, TS%)](#52-advanced-shooting-metrics)
-   - 5.3 [Assist-to-Turnover & Per-40 Rates](#53-assist-to-turnover--per-40-rates)
-   - 5.4 [Continuous Match Experience & Activity Index](#54-continuous-match-experience--activity-index)
-   - 5.5 [5-Zone Court Shot Chart](#55-5-zone-court-shot-chart)
-6. [ระบบโต๊ะเทคนิคและการทำงานออฟไลน์ (Courtside Console & Offline-First)](#6-ระบบโต๊ะเทคนิคและการทำงานออฟไลน์)
-7. [ระบบวิดีโอและมัลติแคม (Hudl-Grade Game Film & Multi-Cam Arena)](#7-ระบบวิดีโอและมัลติแคม)
-8. [ระบบ TCAS Portfolio & Player Trading Cards](#8-ระบบ-tcas-portfolio--player-trading-cards)
-9. [โมเดลธุรกิจและการจำกัดสิทธิ์ (Freemium & RBAC Tiering)](#9-โมเดลธุรกิจและการจำกัดสิทธิ์)
-10. [ตลาดอุปกรณ์นักกีฬา (Student-Athlete Peer Gear Marketplace)](#10-ตลาดอุปกรณ์นักกีฬา)
-11. [เทคโนโลยีสแตกและแนวทางการพัฒนา (Tech Stack & Development Guidelines)](#11-เทคโนโลยีสแตกและแนวทางการพัฒนา)
-
----
-
-## 1. ภาพรวมของระบบและวิสัยทัศน์
-
-### 1.1 ปัญหาของวงการบาสเกตบอลเยาวชนไทย (The Grassroots Problem)
-1. **ขาดความน่าเชื่อถือของสถิติ (Stat Credibility Gap)**: การแข่งขันระดับเยาวชนมักจดใบบันทึกคะแนนด้วยกระดาษ ข้อมูลสูญหาย ไม่ได้มาตรฐาน FIBA และไม่มีการตรวจสอบย้อนกลับ (Verification)
-2. **อุปสรรคการยื่นพอร์ตโควตากีฬา TCAS (TCAS Athlete Verification)**: นักเรียน ม.ปลาย ที่ต้องการเข้าศึกษาต่อมหาวิทยาลัยชั้นนำผ่านโควตานักกีฬา ขาดเอกสารรับรองที่เป็นกลาง มีเพียงรูปถ่ายหรือคำบอกเล่า ขาดคลิปวิดีโออ้างอิงช็อตต่อช็อต
-3. **การเข้าถึงแมวมองและโค้ช (Scouting Invisibility)**: ช้างเผือกในต่างจังหวัดไม่มีช่องทางให้โค้ชทีมชาติหรือมหาวิทยาลัยเห็นผลงาน หากไม่เดินทางมาแข่งในกรุงเทพฯ
-4. **ภาระค่าใช้จ่ายอุปกรณ์ (Equipment Accessibility)**: รองเท้าบาสเกตบอลและอุปกรณ์เสริมของแท้มีราคาสูง นักกีฬาเยาวชนต้องการตลาดส่งต่ออุปกรณ์ที่ไว้ใจได้ระหว่างเพื่อนนักกีฬา
-
-### 1.2 พันธกิจของ StatCourtTH (Our Mission)
-StatCourtTH สร้าง Digital Infrastructure ครบวงจรสำหรับบาสเกตบอลไทย ตั้งแต่โต๊ะเทคนิคกรรมการข้างสนาม, การวิเคราะห์ขั้นสูงตามเกณฑ์ FIBA LiveStats, การเชื่อมโยงไทม์สแตมป์วิดีโอกับสถิติ, พอร์ตโฟลิโอ TCAS พร้อมรหัสตรวจสอบ QR Code, จนถึงระบบซื้อขายอุปกรณ์มือสองระหว่างนักกีฬา
-
----
-
-## 2. สถาปัตยกรรมระบบโดยรวม
-
-```mermaid
-graph TB
-    subgraph "Clients & Presentation Layer (Next.js 14 App Router)"
-        A1[Spectator / Public Web]
-        A2[Athlete TCAS Hub]
-        A3[Scout & Coach Leaderboard]
-        A4[Courtside Official Console]
-        A5[Gear Marketplace]
-    end
-
-    subgraph "State & Client Caching (Zustand + IndexedDB)"
-        B1[Auth & RBAC Store]
-        B2[Scorekeeper Store]
-        B3[IndexedDB Offline Queue: idb]
-    end
-
-    subgraph "Application Core & Analytics Layer"
-        C1[FIBA Analytics Engine: fiba.ts]
-        C2[Activity & Continuity Index: athlete-activity.ts]
-        C3[Tier Sanitization & RBAC Guard: permissions.ts]
-        C4[Shot Zone Spatial Processor]
-    end
-
-    subgraph "Data & Persistence Layer"
-        D1[Prisma ORM Client]
-        D2[(SQLite / PostgreSQL Database)]
-        D3[Video Highlights & Assets Storage]
-    end
-
-    A4 <--> B2
-    B2 <--> B3
-    B3 -.->|Sync when Online| C1
-    A1 & A2 & A3 & A5 --> B1
-    B1 --> C3
-    C3 --> C1 & C2 & C4
-    C1 & C2 & C4 --> D1
-    D1 --> D2
-```
-
----
-
-## 3. ระบบการออกแบบ (Design System)
-
-การออกแบบของ StatCourtTH ยึดแนวคิด **"Elite Athletic High-Performance Broadcast"** — ผสมผสานความดุดันของสนามบาสเกตบอลระดับ NBA เข้ากับความแม่นยำระดับห้องวิเคราะห์ข้อมูลของ FIBA
-
-### 3.1 Typography Scale
-
-| Token Class | Font Family | Size (Desktop) | Line Height | Letter Spacing | Weight | การใช้งานหลัก |
-|---|---|---|---|---|---|---|
-| `font-headline-xl` | Bebas Neue | 54px (Mobile 48px) | 56px | 0.04em | 400 | Hero Titles, หัวข้อสถิติหลัก |
-| `font-headline-lg` | Bebas Neue | 36px | 40px | 0.03em | 400 | Page Header, Scoreboard Points |
-| `font-headline-md` | Bebas Neue | 24px | 28px | 0.02em | 400 | Card Headings, Modal Titles |
-| `font-headline-sm` | Barlow Condensed | 18px | 22px | 0.01em | 700 | Subsection Labels, Player Positions |
-| `font-title-stat` | Bebas Neue | 32px | 32px | 0.01em | 400 | เลขตัวเลขสถิติเด่น (EFF, PPG, RPG) |
-| `font-body-lg` | Barlow Condensed | 16px | 22px | Normal | 600 | Highlight text, ตารางข้อมูลสำคัญ |
-| `font-body-md` | Barlow Condensed | 14px | 20px | Normal | 500 | เนื้อหาบทความ, คำอธิบายฟิลด์ |
-| `font-body-sm` | Barlow Condensed | 12px | 16px | Normal | 500 | Metadata, Timestamp, ข้อความย่อย |
-| `font-label-caps` | Barlow Condensed | 11px | 14px | 0.08em | 700 | Tag ชื่อหมวดหมู่, ตัวพิมพ์ใหญ่ทั้งหมด |
-| `font-label-badge`| Barlow Condensed | 10px | 12px | 0.06em | 700 | ป้ายสถานะ (LIVE, VERIFIED, PRO) |
-
-### 3.2 Color Tokens & Palette
-
-ระบบใช้ชุดสีที่ออกแบบมาเฉพาะเพื่อสะท้อนความดุดันของกีฬาบาสเกตบอล (Crimson & Tactical Ink) ตัดกับพื้นผิวคอนทราสต์สูง
-
-```
-Primary Crimson:     ████ #AF101A (Brand Primary)
-Primary Container:   ████ #D32F2F (Action Buttons, Live Badges)
-Primary Fixed:       ████ #FFDAD6 (Subtle Red Highlights)
-Inverse Surface:     ████ #213145 (Tactical Slate, Video Overlays)
-Surface Base:        ████ #F8F9FF (Clean Ice Stadium White)
-Surface Container:   ████ #E5EEFF (Subtle Card Background)
-Gold Accent:         ████ #FBBC30 (Trophy, MVP, TCAS Elite)
-Verified Emerald:    ████ #15803D (BSAT Verified Stats)
-Warning Amber:       ████ #B45309 (Pending Review, Table Warnings)
-```
-
-#### Tailwind Palette Mapping
-
-```typescript
-// tailwind.config.ts
-colors: {
-  brand: {
-    primary: "#DC2626", // Red 600
-    crimson: "#991B1B", // Red 800
-    subtle: "#FEE2E2",  // Red 100
-    glow: "#EF4444",    // Red 500
-  },
-  surface: {
-    base: "#F8FAFC",      // Slate 50
-    container: "#FFFFFF", // Pure White
-    muted: "#F1F5F9",     // Slate 100
-    dark: "#0F172A",      // Slate 900
-    card: "#FFFFFF",
-  },
-  primary: "#af101a",
-  "primary-container": "#d32f2f",
-  "inverse-surface": "#213145",
-  "surface-container": "#e5eeff",
-  "tertiary-fixed-dim": "#fbbc30",
-  verifiedGreen: { DEFAULT: "#15803D", light: "#DCFCE7" },
-  pendingAmber: { DEFAULT: "#B45309", light: "#FEF3C7" }
-}
-```
-
-### 3.3 UI Components & Layout Patterns
-- **Glassmorphism & Tactical Overlays**: การซ้อนข้อมูลสถิติทับวิดีโอด้วยพื้นหลังเบลอ `backdrop-blur-md` สไตล์ Broadcast
-- **Court Pulse & Radar Animations**: เอฟเฟกต์ไฟกระพริบเมื่อมีการแข่งสด (`pulse-radar`)
-- **Court Grid Pattern**: ลวดลายตารางยุทธวิธีบนสนามบาสเกตบอล (`court-grid-pattern`) ใน Hero Sections
-- **Action Reversal Rail (Undo)**: แถบย้อนประวัติการกดคะแนนข้างสนาม พร้อมแถบสีเตือนเพื่อป้องกัน Human Error
-
----
-
-## 4. โครงสร้างข้อมูลและฐานข้อมูล (Database Schema)
-
-ระบบใช้ **Prisma ORM** ควบคู่กับ SQLite (ในขั้นตอนพัฒนา) และรองรับ PostgreSQL สำหรับ Production
-
-```mermaid
-erDiagram
-    User ||--o| AthleteProfile : "has"
-    User ||--o| CoachProfile : "has"
-    User ||--o| OfficialProfile : "has"
-    User ||--o{ AuditLog : "creates"
-
-    AthleteProfile ||--o| AthleteSeasonStats : "aggregates"
-    AthleteProfile ||--o{ RosterMember : "enrolled"
-    AthleteProfile ||--o{ MatchParticipant : "plays"
-    AthleteProfile ||--o{ MatchEvent : "tagged"
-    AthleteProfile ||--o{ MarketplaceItem : "sells"
-
-    Team ||--o{ RosterMember : "contains"
-    Team ||--o{ Match : "homeMatches"
-    Team ||--o{ Match : "awayMatches"
-    CoachProfile ||--o{ Team : "manages"
-
-    Tournament ||--o{ Match : "schedules"
-    OfficialProfile ||--o{ MatchEvent : "certifies"
-    Match ||--o{ MatchEvent : "records"
-    Match ||--o{ MatchParticipant : "tracks"
-```
-
-### Entity สรุปสำคัญ
-1. **User**: บัญชีผู้ใช้งานกลาง ระบุ `Role` (`ATHLETE`, `COACH`, `OFFICIAL`, `ADMIN`)
-2. **AthleteProfile**: ข้อมูลกายภาพนักกีฬา (ส่วนสูง, น้ำหนัก, ความกว้างช่วงแขน Wingspan, ความสูงยืนเอื้อม Standing Reach, จังหวัด, สังกัดโรงเรียน, รหัสยืนยัน TCAS)
-3. **AthleteSeasonStats**: สถิติรวมและค่าเฉลี่ยมาตรฐาน FIBA (EFF, eFG%, TS%, AST/TO, PER, Radar Ratings)
-4. **OfficialProfile**: กรรมการและเจ้าหน้าที่โต๊ะเทคนิค ระบุสมาคมต้นสังกัด (เช่น BSAT) พร้อมสถานะการรับรอง
-5. **Match & MatchEvent**: บันทึกเกมการแข่งขันและทุก Event ย่อย (แต้มยิง, ฟาวล์, เทิร์นโอเวอร์) ผูกเวลาบาสเกตบอล และวินาทีวิดีโอ (`videoElapsedSec`)
-6. **MarketplaceItem**: สินค้ารองเท้าและอุปกรณ์กีฬา พร้อมฟังก์ชันระบุนักกีฬาที่เคยสวมใส่ (`wornByAthletes`)
-
----
-
-## 5. กลไกการวิเคราะห์สถิติมาตรฐาน FIBA
-
-StatCourtTH ยึดตามมาตรฐานการคำนวณของ **FIBA Official Basketball Rules & FIBA LiveStats**
-
-### 5.1 FIBA Efficiency (EFF)
-ดัชนีประสิทธิภาพทางการแข่งขันอย่างเป็นทางการของ FIBA:
-
-$$\text{EFF} = (\text{PTS} + \text{REB} + \text{AST} + \text{STL} + \text{BLK}) - [(\text{FGA} - \text{FGM}) + (\text{FTA} - \text{FTM}) + \text{TO}]$$
-
-- **Positive Factors**: ทำแต้ม, รีบาวด์ (เกมรุก + เกมรับ), แอสซิสต์, สตีล, บล็อก
-- **Negative Factors**: ยิงลูกฟิลด์โกลพลาด, ยิงลูกโทษพลาด, เสียเทิร์นโอเวอร์
-
-```typescript
-export function calculateFibaEff(stats: PlayerGameStats): number {
-  const positive = stats.pts + (stats.oreb + stats.dreb) + stats.ast + stats.stl + stats.blk;
-  const missedFg = stats.fga - stats.fgm;
-  const missedFt = stats.fta - stats.ftm;
-  const negative = missedFg + missedFt + stats.to;
-  return positive - negative;
-}
-```
-
-### 5.2 Advanced Shooting Metrics
-
-#### Effective Field Goal Percentage (eFG%)
-ชดเชยน้ำหนักของลูกยิง 3 แต้มที่มีมูลค่ามากกว่า 2 แต้ม:
-
-$$\text{eFG\%} = \frac{\text{FGM} + 0.5 \times \text{3PM}}{\text{FGA}} \times 100$$
-
-#### True Shooting Percentage (TS%)
-วัดประสิทธิภาพการทำคะแนนโดยรวมจากการยิงฟิลด์โกลและลูกโทษ:
-
-$$\text{TS\%} = \frac{\text{PTS}}{2 \times (\text{FGA} + 0.44 \times \text{FTA})} \times 100$$
-
-### 5.3 Assist-to-Turnover & Per-40 Rates
-- **Assist-to-Turnover Ratio**: $\frac{\text{AST}}{\text{TO}}$
-- **FIBA Per-40 Minutes Scaling**: ปรับสเกลสถิติให้เท่ากับเวลาการแข่งขันมาตรฐาน 40 นาที (4 ควอเตอร์ ควอเตอร์ละ 10 นาที):
-
-$$\text{Stat}_{\text{Per40}} = \frac{\text{Stat}}{\text{Minutes}} \times 40$$
-
-### 5.4 Continuous Match Experience & Activity Index
-ดัชนีวัดประสบการณ์และความต่อเนื่องในการลงเล่น (Experience & Continuity):
-- แบ่งกรอบเวลา: **1 เดือนย้อนหลัง (1M)**, **6 เดือนย้อนหลัง (6M)**, **1 ปีย้อนหลัง (1Y)**, และ **ตลอดการเล่น (ALL)**
-- บันทึกจำนวนแมตช์, จำนวนทัวร์นาเมนต์ที่เข้าร่วม, และจำนวนนาทีเฉลี่ยที่ได้ลงเล่นต่อเกม (`avgMinutesPerGame`)
-- ช่วยให้โค้ชและแมวมองทราบว่านักกีฬามีความต่อเนื่องของฟอร์มการเล่นหรือไม่
-
-### 5.5 5-Zone Court Shot Chart
-ระบบจำแนกโซนการยิง 5 โซนตามพิกัดสนามมาตรฐาน:
-1. `PAINT_RESTRICTED`: บริเวณใต้แป้นและในเขตกำหนด
-2. `MID_RANGE`: ระยะกลาง 2 คะแนน
-3. `CORNER_3_LEFT`: มุมสามแต้มฝั่งซ้าย
-4. `CORNER_3_RIGHT`: มุมสามแต้มฝั่งขวา
-5. `ABOVE_BREAK_3`: สามแต้มส่วนบนและหัวกะโหลก
-
----
-
-## 6. ระบบโต๊ะเทคนิคและการทำงานออฟไลน์ (Courtside Console)
-
-โต๊ะเทคนิคข้างสนามมักประสบปัญหาสัญญาณ Wi-Fi หรือ Cellular ไม่เสถียรในโรงยิม StatCourtTH ออกแบบด้วยสถาปัตยกรรม **Offline-First Resilience**:
-
-```mermaid
-sequenceDiagram
-    participant Table as Official Scorekeeper
-    participant Console as Courtside Console (Zustand)
-    participant IDB as IndexedDB (Offline Queue)
-    participant Cloud as StatCourt API Server
-
-    Table->>Console: บันทึกแต้ม (เช่น Thanakorn 2-PT Made)
-    Console->>Console: อัปเดต Scoreboard & Reversal Rail ทันที
-    Console->>IDB: เขียน Event ลง offline_events_queue (synced=false)
-    
-    alt สัญญาณ Online ปกติ
-        Console->>Cloud: ยิง Event ส่ง Server
-        Cloud-->>Console: 200 OK (Event Verified)
-        Console->>IDB: มาร์กสถานะ synced=true
-    else สัญญาณเน็ตหลุด (Offline)
-        Console->>Console: แสดง Badge ส้ม 'Offline (Queue: N)'
-        Console->>Table: ทำงานต่อได้ 100% ไม่สะดุด
-        Note over Console,Cloud: เมื่อเน็ตกลับมา Online
-        Console->>IDB: ดึงคิวที่ค้างทั้งหมด
-        Console->>Cloud: Flush Batch Sync ไปยัง Server
-        Cloud-->>Console: ยืนยันการซิงค์สมบูรณ์
-    end
-```
-
-### ฟีเจอร์สำคัญของ Courtside Console
-- **PIN Authorization**: ป้องกันคนนอกเข้าแก้ไขผล ต้องใส่รหัส PIN กรรมการโต๊ะ (`7788`, `1234`) พร้อมเลขที่ใบอนุญาต BSAT
-- **Integrated Shot Clock**: สลับรีเซ็ตเวลารุก 24 วิ และ 14 วิ สำหรับ Offensive Rebound
-- **Reversal Action Rail**: มีปุ่ม Undo สำหรับแก้คำสั่งย้อนหลังได้ทันที พร้อมบันทึก Audit Log ชัดเจน
-
----
-
-## 7. ระบบวิดีโอและมัลติแคม (Game Film & Multi-Cam Arena)
-
-StatCourtTH นำเสนอประสบการณ์การรับชมแบบ Hudl-Grade:
-1. **Interactive Event Timestamping**: ทุกแต้ม, ทุกบล็อก, ทุกสตีลใน Play-by-Play จะมีเวลา `videoElapsedSec` ผูกไว้ เมื่อผู้ชมหรือโค้ชคลิกที่เหตุการณ์ วิดีโอจะกระโดดไปยังจังหวะนั้นทันที
-2. **Multi-Cam Switcher**: สลับมุมมองกล้องถ่ายทอดสดได้หลายมุม (`CAM1: Tactical Wide`, `CAM2: Baseline Attack`, `CAM3: Court-side Zoom`)
-3. **Live Fan Chat & Team Cheer**: ห้องเชียร์สดแยกสีทีม (เช่น BCC ปะทะ Debsirin)
-
----
-
-## 8. ระบบ TCAS Portfolio & Player Trading Cards
-
-หนึ่งในจุดแข็งหลักของระบบ คือการช่วยนักเรียน ม.ปลาย ยื่นคัดเลือกเข้ามหาวิทยาลัยรอบโควตากีฬา (TCAS Portfolio):
-
-### 8.1 องค์ประกอบพอร์ตโฟลิโอ TCAS มาตรฐาน
-- **Verified Official Badge**: ตราประทับรับรองความถูกต้องของสถิติจากผู้ควบคุมการแข่งขัน (BSAT / Tournament Director)
-- **Verified QR Code Verification**: สแกนคิวอาร์โค้ดแล้วเปิดดูวิดีโอไฮไลต์จริงของนักกีฬาคนนั้นทันที ป้องกันการแอบอ้าง
-- **Highlight Reel Compiler**: เครื่องมือตัดต่อคลิปไฮไลต์ความยาว 1 นาที ที่รวบรวมเพลย์สำคัญ (Buzzer Beater, Clutch Plays, Chasedown Blocks) จากการแข่งขันจริง
-- **Physical Measurements**: ระบุส่วนสูง, น้ำหนัก, Wingspan, ยืนเอื้อม (Standing Reach) และสังกัดเดิม
-
-### 8.2 Player Trading Card
-การ์ดภาพนิ่งและภาพเคลื่อนไหวของนักกีฬาสำหรับแชร์บน Social Media (Instagram, TikTok, Facebook) แสดงค่าพลัง Radar Chart 4 ด้าน:
-- **Scoring (ทำแต้ม)**
-- **Playmaking (สร้างสรรค์เกม)**
-- **Defense (เกมรับ)**
-- **Athleticism (ความคล่องแคล่วและสมรรถภาพร่างกาย)**
-
----
-
-## 9. โมเดลธุรกิจและการจำกัดสิทธิ์ (Freemium & RBAC Tiering)
-
-StatCourtTH ใช้โมเดล **Freemium ที่เป็นธรรม**: นักกีฬาทุกคนสามารถเข้าถึงข้อมูลพื้นฐานได้ฟรีตลอดชีพ ขณะที่ฟีเจอร์ระดับมืออาชีพจะสงวนไว้สำหรับสมาชิก PRO
-
-```mermaid
-graph TD
-    subgraph "FREE TIER (฿0 / ตลอดชีพ)"
-        F1[Box Score พื้นฐาน PTS, REB, AST]
-        F2[คำนวณค่า FIBA EFF ของตนเอง]
-        F3[ดู Top 10 Leaderboard แต่ละตำแหน่ง]
-        F4[ดูคลิปสั้นหลังเกม 3-5 คลิป]
-        F5[ลงขายอุปกรณ์มือสอง 1 ชิ้นพร้อมกัน]
-    end
-
-    subgraph "PRO ATHLETE (฿199 / เดือน)"
-        P1[สถิติขั้นสูง eFG%, TS%, AST/TO]
-        P2[5-Zone Interactive Shot Chart]
-        P3[Top 100 Leaderboard ทั้งกระดาน]
-        P4[ส่งออกพอร์ต TCAS PDF พร้อม QR Code]
-        P5[Highlight Reel Compiler ไม่จำกัด]
-        P6[ลงขายอุปกรณ์ในมาร์เก็ตเพลสไม่จำกัด]
-    end
-
-    subgraph "SCOUT PRO (฿890 / เดือน)"
-        S1[ตัวกรองกายภาพลึก ส่วนสูง >= 190, Wingspan]
-        S2[วิเคราะห์เปรียบเทียบผู้เล่น H2H]
-        S3[เข้าถึง Game Film ทั้งเกม Full HD]
-        S4[ส่งออกรายงานแมวมอง Excel / CSV]
-    end
-```
-
-### การควบคุมสิทธิ์ที่ระดับ Logic (Security Guard)
-ไฟล์ [`lib/permissions.ts`](file:///c:/Users/Asus/StatCourtTH/lib/permissions.ts) ทำหน้าที่เป็น Single Source of Truth สำหรับการ Sanitize ข้อมูล:
-- หากผู้ใช้เป็น `FREE` ระบบจะตัดฟิลด์ `trueShootingPct`, `effectiveFgPct`, `astToRatio`, และ `shotChartData` ออกจาก Payload เพื่อป้องกันการดักจับผ่าน Inspect Network
-
----
-
-## 10. ตลาดอุปกรณ์นักกีฬา (Student-Athlete Peer Gear Marketplace)
-
-เพื่อลดภาระค่าใช้จ่ายของครอบครัวนักกีฬา StatCourtTH มีระบบซื้อขายรองเท้าและอุปกรณ์มือสอง:
-- **Worn By Athletes**: เชื่อมโยงอุปกรณ์กับโปรไฟล์นักกีฬาที่เคยสวมใส่จริงในสนามแข่งขัน
-- **Condition Grading**: กำหนดมาตรฐานสภาพชัดเจน (`Brand New`, `Mint 9.5/10`, `Good 8.5/10`, `Used 7/10`)
-- **Safe Escrow & In-Person Handover**: รองรับระบบนัดรับตามสนามแข่ง (เช่น สนามกีฬานิมิบุตร, สยามสแควร์) หรือระบบคนกลางตรวจสอบสินค้า
-
----
-
-## 11. เทคโนโลยีสแตกและแนวทางการพัฒนา
-
-### 11.1 Tech Stack Matrix
-| ส่วนประกอบ (Component) | เทคโนโลยีที่เลือกใช้ (Technology) | เหตุผลและความสำคัญ |
-|---|---|---|
-| **Framework** | Next.js 14.2 (App Router) | Server-Side Rendering ที่เร็ว, SEO Friendly, Static Opt |
-| **Language** | TypeScript 5.6 | Type safety สำหรับสถิติกีฬาที่มีความซับซ้อนสูง |
-| **State Management** | Zustand 4.5 | จัดการ Global State เช่น การเข้าสู่ระบบ, โต๊ะคะแนนสด |
-| **Styling** | Tailwind CSS 3.4 | ปรับแต่ง Utility ตาม Design System Tokens อย่างรวดเร็ว |
-| **Offline Persistence** | `idb` (IndexedDB Wrapper) | ทนทานต่อเน็ตหลุดข้างสนาม ไม่สูญเสียสถิติแม้รีเฟรชหน้า |
-| **Icons & Display** | Lucide React + Material Symbols | สัญลักษณ์กีฬาและอินเทอร์เฟซที่ชัดเจน |
-| **Data Visualizations** | Recharts 3.10 | กราฟแนวโน้มฟอร์ม EFF, Shot Chart, Radar Rating |
-| **ORM & Database** | Prisma 5.22 + SQLite / Postgres | Schema ยืดหยุ่น มั่นคงในการ Query สถิติสัมพันธ์ |
-| **PDF Generation** | HTML2Canvas + Native Print CSS | แปลงพอร์ตโฟลิโอ TCAS เป็นเอกสารทางการ |
-
-### 11.2 คำสั่งการทำงานของโปรเจกต์
-- เริ่มต้น Development Server: `npm run dev` (พอร์ต `3000`)
-- ตรวจสอบ Unit Test: `npm test` (รันการคำนวณ FIBA, สิทธิ์ RBAC, ดัชนีความต่อเนื่อง)
-- รัน Prisma Studio ตรวจสอบข้อมูล: `npx prisma studio`
-- Seed ข้อมูลเริ่มต้น: `npx prisma db seed`
-
----
-
-*เอกสารฉบับนี้จัดทำขึ้นเป็นคู่มือการออกแบบและพัฒนาอย่างเป็นทางการของโครงการ **StatCourtTH** เพื่อรักษามาตรฐานคุณภาพทั้งด้านประสบการณ์ผู้ใช้งาน (UX/UI), ความถูกต้องของสถิติการแข่งขัน, และความปลอดภัยของระบบ.*
+## Overview
+
+**Creative North Star: "Courtside Editorial"**
+
+StatCourtTH fuses the raw athletic urgency of courtside basketball with the analytical clarity of elite sports journalism and FIBA official records. The design system is built to honor the dedication of Thailand's youth players, turning every sprint, rebound, and clutch jumper into a verifiable, high-contrast digital asset for university scouts and TCAS admissions.
+
+The visual atmosphere balances two distinct operational environments:
+1. **The Reading Floor (Ice & Ink)**: A high-clarity daylight reading surface (`#F8F9FF` base with `#FFFFFF` cards and `#0B1C30` ink) optimized for coaches, scouts, and parents reviewing dense stat tables, shot charts, and player dossiers without visual fatigue.
+2. **The Tactical Arena (Court Ink & Slate)**: A focused, high-contrast dark environment (`#0B1C30` with `#213145` overlays) dedicated to live game broadcasts, multi-camera film breakdown, and time-critical courtside scorekeeping.
+
+**Key Characteristics:**
+- High-contrast athletic typography featuring oversized display numerals and disciplined editorial line heights.
+- Restrained, intentional color discipline: Brand Crimson (`#AF101A`) as the singular action accent, paired with Signal Red (`#FF7A7A`) exclusively on dark surfaces.
+- Tactile, crisp layout geometry built from subtle court boundary lines rather than heavy decorative shadows.
+- Bilingual Thai-English harmony, pairing **Barlow Condensed** for numerical authority with **Noto Sans Thai** for effortless textual legibility.
+
+## Colors
+
+The palette is engineered around high WCAG AA contrast, ensuring rapid recognition under variable gymnasium illumination and outdoor glare.
+
+### Primary Roles
+- **Brand Crimson** (`#AF101A`): Primary interactive brand color. Reserved for primary buttons, active tabs, and brand wordmarks. Requires white text (`#FFFFFF`) for an accessible 7.21:1 contrast ratio.
+- **Crimson Pressed** (`#8E0D15`): Hover and pressed state for primary controls (9.47:1 against white).
+- **Signal Red** (`#FF7A7A`): High-luminance warning and live status accent. Strictly reserved for LIVE indicators, pulse dots, and accent icons on dark Court Ink surfaces (6.80:1 contrast).
+- **Court Ink** (`#0B1C30`): Dominant text color on light surfaces (16.34:1 on Ice) and primary background for video broadcast modules and tactical HUDs.
+
+### Neutral & Surface Roles
+- **Surface Base (Ice)** (`#F8F9FF`): The clean, glare-reducing canvas for general page layouts.
+- **Surface Container (White)** (`#FFFFFF`): Elevated cards, box-score containers, and modal sheets.
+- **Surface Variant (Tinted Ice)** (`#E5EEFF`): Subtle nested grouping containers and table header rows.
+- **Inverse Surface (Tactical Slate)** (`#213145`): Video control rails, HUD overlays, and dropdown menus.
+- **Border Strong** (`#7F8A9E`): High-visibility border token (3.31:1 on Ice) for inputs, select boxes, and button outlines.
+- **Line / Border Neutral** (`#DFE2EB`): Low-contrast dividing rules (1.23:1) for table rows and subtle card separators.
+- **Secondary Text** (`#5B6574`): Explanatory labels, timestamps, and secondary metadata (5.62:1 on Ice).
+- **Muted on Ink** (`#A9B6C8`): Secondary descriptive text on dark Court Ink containers (8.35:1).
+
+### Feedback & Status Roles
+- **Verified Emerald** (`#15803D`): Official BSAT verification badges and certified game results.
+- **Pending Amber** (`#B45309`): Provisional scorekeeping events and unverified athlete records awaiting official sign-off.
+- **Medal Gold** (`#FBBC30`): Tournament trophies, MVP accolades, and championship achievements. Never pair with white text.
+
+### Color Rules
+- **The Signal Red Rule.** Never render brand crimson (`#AF101A`) as text, badges, or icons on Court Ink (`#0B1C30`); its 2.38:1 contrast fails accessibility standards. Always use Signal Red (`#FF7A7A`) for accents and LIVE indicators on dark surfaces (6.80:1).
+- **The Status Pairing Rule.** Never convey game or verification status by color alone; every state badge must pair chromatic indication with explicit textual labels ("รับรองผลแล้ว", "รอตรวจสอบ", "LIVE").
+- **The Control Border Rule.** Form inputs, filter pills, and interactive table controls must use Border Strong (`#7F8A9E`) to remain distinct on light backgrounds; reserve Line (`#DFE2EB`) strictly for decorative row separators.
+
+## Typography
+
+Typography establishes an immediate athletic rhythm. English metrics, scores, and jersey numbers employ condensed geometric letterforms, while Thai text remains open, human, and readable.
+
+### Type Scale
+- **Display (`font-headline-xl`)**: Barlow Condensed Bold, 48px mobile / 54px desktop (line-height: 56px). Used for hero headlines, major game scoreboards, and trading card title displays.
+- **Headline (`font-headline-lg`)**: Barlow Condensed Bold, 36px (line-height: 40px). Page headers, tournament bracket titles, and primary stat callouts.
+- **Title (`font-headline-md`)**: Barlow Condensed Bold, 24px (line-height: 28px). Card headings, modal headers, and table category splits.
+- **Stat Value (`font-title-stat`)**: Barlow Condensed Bold, 32px (line-height: 32px, `tabular-nums`). High-density stat counters (EFF, PPG, RPG, APG).
+- **Body Large (`font-body-lg`)**: Noto Sans Thai Medium, 16px (line-height: 24px). Lead paragraphs, emphasized table cells, and quotation callouts.
+- **Body Regular (`font-body-md`)**: Noto Sans Thai Regular, 15px (line-height: 22px). Default editorial copy, athlete biographies, and forms.
+- **Body Small (`font-body-sm`)**: Noto Sans Thai Regular, 13px (line-height: 18px). Timestamps, fine print, referee licenses, and table footnotes.
+- **Label Caps (`font-label-caps`)**: Barlow Condensed Bold, 11px (letter-spacing: 0.08em). Categorical tags, metric labels (MIN, FGM/A, 3PM/A), and navigation eyebrows.
+- **Label Badge (`font-label-badge`)**: Barlow Condensed Bold, 10px (letter-spacing: 0.06em). Status chips (LIVE, VERIFIED, PRO, TCAS).
+
+### Typography Rules
+- **The Dual-Font Rule.** Use Barlow Condensed exclusively for English headlines, scores, jersey numbers, and metric abbreviations; use Noto Sans Thai for all Thai copy, article bodies, and explanatory labels.
+- **The No-Display-Tracking Rule.** Never add positive letter-spacing (`tracking-wide` or `tracking-widest`) to headline classes; Barlow Condensed has optimized metrics, and manual tracking degrades rendering for embedded Thai characters.
+- **The Tabular Score Rule.** All game clocks, scoreboards, and stat columns must enforce tabular numerals (`tabular-nums` / `font-feature-settings: 'tnum'`) to prevent horizontal jitter during live scorekeeping updates.
+
+## Layout
+
+Layouts emphasize density, clarity, and structural balance, mimicking professional sports analytics boards and broadcast control rooms.
+
+### Grid & Density
+- **Container**: Max width `1280px` (`max-w-7xl`), centered with fluid horizontal padding (16px on mobile, 24px on desktop).
+- **12-Column Grid**: Responsive multi-column layout for dashboard views, splitting into 8-column primary analytical view (game video or play-by-play) and 4-column secondary contextual rail (live box score or shot chart).
+- **Spacing Steps**: Standardized on a 5-step scale: `xs` (4px), `sm` (8px), `md` (14px), `lg` (20px), `xl` (32px), with `gutter` (24px) for section divides.
+
+### Layout Rules
+- **The Court Spacing Rule.** Maintain strict structural rhythm: 4px for tight badge padding, 8px for element gaps, 14px for internal card padding, 20px for component separation, and 32px for section headers.
+- **The Courtside Touch Rule.** All table official controls, shot clock triggers, and substitution buttons must maintain an interactive hit area of at least 44×44px to prevent miss-clicks in fast-paced gym environments.
+- **The Asymmetric Broadcast Rail Rule.** In live match and video film pages, the video canvas maintains a 16:9 ratio and takes primary visual hierarchy; stat sheets and play feeds dock as a collapsible side rail without obscuring film controls.
+
+## Elevation & Depth
+
+StatCourtTH minimizes artificial drop shadows in favor of architectural border definition and tactical glassmorphism.
+
+### Depth Vocabulary
+- **Level 0 (Flat Ground)**: Surface Base (`#F8F9FF`) with no shadow.
+- **Level 1 (Card Outline)**: Surface Container (`#FFFFFF`) with 1px `borderNeutral` (`#DFE2EB`). No shadow needed in daylight mode.
+- **Level 2 (Tactical Glass)**: Tactical Slate (`#213145`) at 85% opacity with `backdrop-blur-md` and 1px `borderStrong` (`#7F8A9E`). Used for HUD controllers, floating stat cards, and video toolbars.
+- **Level 3 (Modal Sheet)**: Elevated modals and popup menus using `shadow-xl` (`0 20px 25px -5px rgba(11, 28, 48, 0.1)`) with a dark backdrop overlay (`rgba(11, 28, 48, 0.6)`).
+
+### Elevation Rules
+- **The Tactical Outline Rule.** Prefer crisp 1px borders (`borderStrong` or `borderNeutral`) over drop shadows to delineate cards and tables; reserve box shadows exclusively for floating modals and player trading card hover elevation.
+- **The Broadcast Frosted Rule.** Video HUD overlays and courtside stats superimposed on game film must use `backdrop-blur-md` with Tactical Slate (`rgba(33, 49, 69, 0.85)`) to preserve video legibility under fluctuating arena lighting.
+
+## Shapes
+
+Shapes communicate athletic precision through clean edges and controlled chamfers.
+
+### Form Vocabulary
+- **Sharp / None (`0px`)**: Table cell boundaries, division rules, and scoreboard time-tracks.
+- **Small (`4px`)**: Buttons, input fields, filter chips, and status badges.
+- **Medium (`6px`)**: Dropdown menus, tooltips, and tab switchers.
+- **Large (`8px`)**: Match summary cards, athlete profile cards, and video containers.
+- **Extra Large (`12px`)**: Hero spotlight banners and trading card containers.
+- **Full (`9999px`)**: User avatars, team crest containers, and live radar pulse indicators.
+
+### Shape Rules
+- **The Athletic Chamfer Rule.** Keep corner radiuses disciplined between 4px (inputs, badges, buttons) and 8px (tactical cards); never use pill shapes (`rounded-full`) for primary data containers or tables.
+- **The Geometry Over Ornament Rule.** Express basketball identity through thin court-line grids and coordinate markers rather than decorative basketball clip art or generic sports vectors.
+
+## Components
+
+The system implements a focused library of tactical components:
+
+### Primary Button
+- **Structure**: High-contrast rectangular button with 4px border radius and 10px 20px padding.
+- **Appearance**: Crimson (`#AF101A`) background, white (`#FFFFFF`) text, Barlow Condensed Bold uppercase label.
+- **Interaction**: Crimson Pressed (`#8E0D15`) on hover/active. Visible 2px focus ring (`#7F8A9E`).
+
+### Secondary Outline Button
+- **Structure**: Transparent background with 1px Border Strong (`#7F8A9E`).
+- **Appearance**: Court Ink (`#0B1C30`) text on light surfaces; Muted on Ink (`#A9B6C8`) on dark surfaces.
+
+### Live Match Ticker
+- **Structure**: High-density horizontal ribbon docking scores, period markers, and time remaining.
+- **Appearance**: Court Ink background, Signal Red live indicator dot with subtle radar pulse, white tabular team scores.
+
+### Player Trading Card
+- **Structure**: High-density 12px rounded card featuring athlete action portrait, physical measurements, QR verification code, and radar chart.
+- **Appearance**: Court Ink header with golden medal accents, white stat grid, and verified green badge.
+
+### Action Reversal Rail (Courtside Console)
+- **Structure**: Prominent reversible action queue positioned immediately adjacent to the scoreboard.
+- **Appearance**: Slate container with distinct undo triggers and clear player name/point tags to correct scorekeeper mistakes with zero panic.
+
+### Component Rules
+- **The Reversal Rail Rule.** Every courtside scorekeeper action must immediately surface in a tactile Undo stack with clear player and point attribution to prevent irreversible recording errors.
+- **The Timestamp Scrub Rule.** Every play-by-play event row must render its video timestamp as an interactive trigger that seeks the film player directly to that second.
+
+## Do's and Don'ts
+
+### Do's
+- **Do** use Barlow Condensed for all sports numerals, box-score headers, and scoreboards to achieve authentic athletic density.
+- **Do** enforce `tabular-nums` on all countdown clocks, game times, and stat point counters.
+- **Do** use Signal Red (`#FF7A7A`) exclusively on dark Court Ink surfaces to ensure WCAG AA compliance.
+- **Do** pair every status color with clear textual labels (e.g. "รับรองผลแล้ว", "รอตรวจสอบ").
+- **Do** maintain a minimum touch target size of 44×44px on all courtside official console buttons.
+- **Do** anchor player statistics directly to video timestamps and official verification codes.
+
+### Don'ts
+- **Don't** use Brand Crimson (`#AF101A`) on Court Ink (`#0B1C30`); the 2.38:1 contrast fails legibility.
+- **Don't** add manual positive letter-spacing (`tracking-wide`) to display headline utility classes.
+- **Don't** use pill-shaped containers (`rounded-full`) for data tables, stat cards, or box-score wrappers.
+- **Don't** apply heavy drop shadows; rely on 1px borders and tonal contrast for layout definition.
+- **Don't** render unverified stats without an explicit "Pending Review" warning chip.
+- **Don't** let network latency disrupt the scorekeeping flow; always record courtside actions offline-first.
