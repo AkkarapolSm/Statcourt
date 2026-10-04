@@ -61,3 +61,7 @@ temp/
 /Documents
 *.md
 !README.md
+
+# Broken skill junctions
+/skills/
+/data/skills/
