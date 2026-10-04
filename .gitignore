@@ -60,3 +60,4 @@ temp/
 #Documents
 /Documents
 *.md
+!README.md
