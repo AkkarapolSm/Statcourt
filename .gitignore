@@ -50,3 +50,6 @@ Thumbs.db
 # Temporary directories
 tmp/
 temp/
+
+# Impeccable review screenshots
+.impeccable/review/
