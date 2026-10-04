@@ -17,9 +17,42 @@ export interface AuthUser {
 }
 
 const guest: AuthUser = {
-  id: "guest-visitor", name: "Public Spectator", email: "",
-  role: "PUBLIC", approvalStatus: "PENDING", tier: "FREE",
+  id: "guest-visitor",
+  name: "Public Spectator",
+  email: "",
+  role: "PUBLIC",
+  approvalStatus: "PENDING",
+  tier: "FREE",
 };
+
+const CACHE_KEY = "statcourt_cached_user";
+
+function getCachedUser(): AuthUser | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.role === "string") {
+        return parsed as AuthUser;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+function persistCachedUser(user: AuthUser | null) {
+  if (typeof window === "undefined") return;
+  try {
+    if (user && user.role !== "PUBLIC") {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(CACHE_KEY);
+    }
+  } catch {}
+}
+
+const initialCached = getCachedUser();
 
 interface AuthState {
   currentUser: AuthUser;
@@ -34,19 +67,27 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  currentUser: guest,
-  loading: true,
+  currentUser: initialCached || guest,
+  loading: !initialCached,
   refreshSession: async () => {
     try {
       const response = await fetch("/api/auth/me", { cache: "no-store" });
       if (!response.ok) {
+        persistCachedUser(null);
         set({ currentUser: guest, loading: false });
         return;
       }
       const data = await response.json();
-      set({ currentUser: data.user as AuthUser, loading: false });
+      if (data.authenticated && data.user) {
+        const authedUser = data.user as AuthUser;
+        persistCachedUser(authedUser);
+        set({ currentUser: authedUser, loading: false });
+      } else {
+        persistCachedUser(null);
+        set({ currentUser: guest, loading: false });
+      }
     } catch {
-      set({ currentUser: guest, loading: false });
+      set({ loading: false });
     }
   },
   switchRole: async (role: Role | "PUBLIC", tier?: SubscriptionTier) => {
@@ -60,7 +101,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.user) {
-          set({ currentUser: data.user as AuthUser, loading: false });
+          const authedUser = data.user as AuthUser;
+          persistCachedUser(authedUser);
+          set({ currentUser: authedUser, loading: false });
           return true;
         }
       }
@@ -84,6 +127,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   verifyOfficialTablePin: () => false,
   logout: () => {
-    void fetch("/api/auth/logout", { method: "POST" }).finally(() => set({ currentUser: guest }));
+    persistCachedUser(null);
+    void fetch("/api/auth/logout", { method: "POST" }).finally(() =>
+      set({ currentUser: guest })
+    );
   },
 }));

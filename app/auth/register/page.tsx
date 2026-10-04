@@ -6,6 +6,7 @@ import { Role, Position } from "@/lib/types";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import QuickDemoLoginCard from "@/components/auth/QuickDemoLoginCard";
 
 export default function RegisterPortalPage() {
   const { loginAs } = useAuthStore();
@@ -87,8 +88,20 @@ export default function RegisterPortalPage() {
       </div>
 
       {/* MAIN REGISTRATION CANVAS */}
-      <main className="flex-grow py-space-lg md:py-space-xl px-4 md:px-gutter-desktop">
-        <div className="max-w-4xl mx-auto">
+      <main className="flex-grow py-8 sm:py-12 px-4 md:px-gutter-desktop">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* 1-Click Demo Login Box */}
+          <QuickDemoLoginCard />
+
+          {/* Divider between demo and manual registration */}
+          <div className="relative flex items-center justify-center">
+            <div className="border-t border-slate-300 w-full" />
+            <span className="bg-background px-3 text-xs font-mono font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+              หรือลงทะเบียนสร้างบัญชีใหม่ตามบทบาท (Manual Registration)
+            </span>
+            <div className="border-t border-slate-300 w-full" />
+          </div>
+
           {/* Primary Card Container */}
           <div className="bg-surface-container-lowest border border-outline-variant/60 rounded-xl shadow-sm overflow-hidden">
             {submitted ? (

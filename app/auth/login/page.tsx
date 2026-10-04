@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import QuickDemoLoginCard from "@/components/auth/QuickDemoLoginCard";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import type { Role } from "@/lib/types";
 
@@ -133,8 +134,20 @@ export default function LoginPage() {
       </div>
 
       {/* MAIN CONTENT */}
-      <main className="flex-grow py-space-lg md:py-space-xl px-4 md:px-gutter-desktop flex items-center justify-center">
-        <div className="w-full max-w-xl mx-auto">
+      <main className="flex-grow py-8 sm:py-12 px-4 md:px-gutter-desktop flex items-center justify-center">
+        <div className="w-full max-w-xl mx-auto space-y-6">
+          {/* 1-Click Demo Login Box */}
+          <QuickDemoLoginCard />
+
+          {/* Divider between demo and manual login */}
+          <div className="relative flex items-center justify-center">
+            <div className="border-t border-slate-300 w-full" />
+            <span className="bg-background px-3 text-xs font-mono font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">
+              หรือเข้าสู่ระบบด้วยอีเมลและรหัสผ่าน (Manual Login)
+            </span>
+            <div className="border-t border-slate-300 w-full" />
+          </div>
+
           {/* Primary Card Container */}
           <div className="bg-surface-container-lowest border border-outline-variant/60 rounded-xl shadow-sm overflow-hidden">
             {/* Card Header Section */}

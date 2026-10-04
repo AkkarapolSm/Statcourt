@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
         approvalStatus: user.officialProfile?.approvalStatus || "APPROVED",
         organization: user.coachProfile?.organization || user.officialProfile?.licensingBody,
         tier: targetTier,
-        athleteId: user.athleteProfile?.id || (targetRole === "ATHLETE" ? "ath-01" : undefined),
+        athleteId: user.athleteProfile?.id || (targetRole === "ATHLETE" ? "ath-1" : undefined),
       },
     });
 
