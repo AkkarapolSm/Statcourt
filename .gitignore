@@ -56,3 +56,7 @@ temp/
 
 # Impeccable
 .impeccable/
+
+#Documents
+/Documents
+*.md
