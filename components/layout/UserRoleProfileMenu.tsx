@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { User, LogOut, ChevronDown, Shield, Users, Award, Clock, Heart, ExternalLink, KeyRound } from "lucide-react";
+import { User, LogOut, ChevronDown, Shield, Users, Award, Clock, Heart, ExternalLink, KeyRound, Zap } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import { ROLE_METADATA } from "@/lib/auth/rbac";
 import AccountSecurityModal from "@/components/auth/AccountSecurityModal";
@@ -31,14 +31,22 @@ export default function UserRoleProfileMenu() {
     return (
       <div className="flex items-center gap-2 text-xs font-mono font-bold">
         <Link
+          href="/demo"
+          className="text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+          title="เปิดศูนย์รวมทางลัดทดสอบระบบ (Demo Hub)"
+        >
+          <Zap className="w-3.5 h-3.5 text-emerald-600" />
+          <span>ทดสอบระบบ</span>
+        </Link>
+        <Link
           href="/auth/login"
-          className="text-[#0B1C30] hover:text-[#DC2626] px-2.5 py-1.5 rounded transition"
+          className="text-[#0B1C30] hover:text-[#AF101A] px-2.5 py-1.5 rounded transition"
         >
           เข้าสู่ระบบ
         </Link>
         <Link
           href="/auth/register"
-          className="rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] px-3 py-1.5 text-white transition shadow-xs"
+          className="rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] px-3 py-1.5 text-white transition shadow-xs"
         >
           สมัครสมาชิก
         </Link>
@@ -53,9 +61,9 @@ export default function UserRoleProfileMenu() {
       case "COACH":
         return "/team";
       case "OFFICIAL":
-        return "/official/console/m-2026-001";
+        return "/official/console/match-bcc-ds-01";
       case "ATHLETE":
-        return currentUser.athleteId ? `/athlete/${currentUser.athleteId}` : "/athlete/ath-01";
+        return currentUser.athleteId ? `/athlete/${currentUser.athleteId}` : "/athlete/ath-1";
       case "ADMIN":
         return "/admin";
       case "FAN":
@@ -136,6 +144,18 @@ export default function UserRoleProfileMenu() {
             >
               <span>{getWorkspaceLabel()}</span>
               <ExternalLink className="w-3 h-3 text-slate-400" />
+            </Link>
+
+            <Link
+              href="/demo"
+              onClick={() => setDropdownOpen(false)}
+              className="flex items-center justify-between px-3.5 py-2 text-xs font-medium text-emerald-700 hover:bg-emerald-50 transition"
+            >
+              <div className="flex items-center gap-2">
+                <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="font-bold">ศูนย์รวมทดสอบระบบ (Demo)</span>
+              </div>
+              <ExternalLink className="w-3 h-3 text-emerald-500" />
             </Link>
 
             <button

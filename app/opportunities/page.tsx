@@ -1,27 +1,18 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import Link from "next/link";
 import {
   GraduationCap,
-  Trophy,
   Calendar,
-  Building2,
-  MapPin,
-  CheckCircle2,
   Clock,
   Send,
   X,
   ShieldCheck,
   Search,
-  Filter,
-  DollarSign,
-  FileText,
   UserCheck,
   AlertCircle,
-  ExternalLink,
-  ChevronRight,
   Check,
+  CheckCircle2,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -39,17 +30,15 @@ export default function OpportunitiesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState<"ALL" | "HIGH_SCHOOL" | "UNIVERSITY" | "SEMI_PRO">("ALL");
   const [selectedFunding, setSelectedFunding] = useState<"ALL" | "FULL_100" | "PARTIAL_50" | "QUOTA_ONLY">("ALL");
-  const [selectedRegion, setSelectedRegion] = useState<"ALL" | "BANGKOK" | "CENTRAL" | "NORTH" | "NORTHEAST" | "SOUTH">("ALL");
+  const [selectedRegion] = useState<"ALL" | "BANGKOK" | "CENTRAL" | "NORTH" | "NORTHEAST" | "SOUTH">("ALL");
 
   // Recruitment Workflow State
   const [isMyApplicationsOpen, setIsMyApplicationsOpen] = useState(false);
   const [isCandidatesModalOpen, setIsCandidatesModalOpen] = useState(false);
   const [candidatesList, setCandidatesList] = useState<any[]>([]);
   const [activeReviewCandidate, setActiveReviewCandidate] = useState<any | null>(null);
-  const [loadingCandidates, setLoadingCandidates] = useState(false);
 
   const fetchCandidates = () => {
-    setLoadingCandidates(true);
     fetch("/api/opportunities/applications")
       .then((res) => res.json())
       .then((data) => {
@@ -58,8 +47,7 @@ export default function OpportunitiesPage() {
           setIsCandidatesModalOpen(true);
         }
       })
-      .catch((err) => console.warn(err))
-      .finally(() => setLoadingCandidates(false));
+      .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
@@ -97,10 +85,10 @@ export default function OpportunitiesPage() {
 
   // Selected for application
   const [applyingOpportunity, setApplyingOpportunity] = useState<OpportunityPosting | null>(null);
-  const [applicantName, setApplicantName] = useState("Thanakorn Siriphan");
-  const [applicantTcasCode, setApplicantTcasCode] = useState("STC-VERIFIED-TH-BCC-007");
-  const [applicantGpax, setApplicantGpax] = useState("3.68");
-  const [applicantPosition, setApplicantPosition] = useState("Point Guard (PG)");
+  const [applicantName] = useState(currentUser.name || "Thanakorn Siriphan");
+  const [applicantTcasCode] = useState(currentUser.tcasReferenceCode || "STC-VERIFIED-TH-BCC-007");
+  const [applicantGpax] = useState("3.68");
+  const [applicantPosition] = useState("Point Guard (PG)");
   const [applicantPhone, setApplicantPhone] = useState("081-234-5678");
   const [applicantNotes, setApplicantNotes] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -134,6 +122,7 @@ export default function OpportunitiesPage() {
     e.preventDefault();
     if (!applyingOpportunity) return;
     setSubmitError(null);
+    setIsSubmitting(true);
     try {
       const res = await fetch("/api/opportunities", {
         method: "POST",
@@ -170,41 +159,39 @@ export default function OpportunitiesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans">
       <Navbar />
 
       <main className="flex-1 pb-20">
-        {/* Hero Banner */}
-        <section className="bg-[#0F172A] text-white py-14 border-b border-slate-800">
+        {/* Hero Banner (Courtside Editorial) */}
+        <section className="bg-[#0B1C30] text-white py-12 border-b border-[#1E3A5F]">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/30 border border-[#AF101A]/50 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
-                  <GraduationCap className="w-4 h-4 text-[#DC2626]" />
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-200 text-xs font-mono font-semibold tracking-wider uppercase">
+                  <GraduationCap className="w-3.5 h-3.5 text-[#AF101A]" />
                   <span>NATIONAL BASKETBALL SCHOLARSHIPS &amp; TCAS QUOTA BOARD</span>
                 </div>
-                <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl uppercase tracking-wider font-normal text-white leading-tight">
-                  กระดานคัดตัวนักกีฬาช้างเผือก <br />
-                  <span className="text-[#DC2626]">และทุนการศึกษาบาสเกตบอล</span> ทั่วประเทศ
+                <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl uppercase tracking-wide font-normal text-white leading-tight">
+                  กระดานคัดตัวนักกีฬา <br />
+                  <span className="text-[#AF101A]">และทุนการศึกษาบาสเกตบอล</span> ทั่วประเทศ
                 </h1>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  รวบรวมโควตากีฬา TCAS รอบที่ 1 Portfolio ของมหาวิทยาลัยชั้นนำ, 
-                  ทุนการศึกษาระดับ ม.ปลาย และเวทีคัดตัวเยาวชนสโมสรกึ่งอาชีพ 
-                  สมัครได้ทันทีด้วยพอร์ตสถิติและบัตรดิจิทัลที่ผ่านการรับรอง
+                  รวบรวมโควตากีฬา TCAS รอบที่ 1 Portfolio ของมหาวิทยาลัยชั้นนำ, ทุนการศึกษาระดับ ม.ปลาย และเวทีคัดตัวเยาวชนสโมสรกึ่งอาชีพ สมัครได้ทันทีด้วยพอร์ตสถิติและบัตรดิจิทัลที่ผ่านการรับรอง
                 </p>
               </div>
 
               {/* Stats & Role-Aware Action Bar */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+              <div className="bg-[#142338] border border-[#223956] rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                 <div className="space-y-1">
-                  <div className="text-[11px] font-mono text-slate-400 uppercase font-bold">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase font-semibold">
                     ทุนที่เปิดรับสมัครอยู่
                   </div>
-                  <div className="text-3xl font-headline-xl text-white font-normal">
+                  <div className="text-3xl font-headline-xl text-white font-normal tabular-nums">
                     {opportunities.length} รายการ
                   </div>
-                  <div className="text-[11px] text-slate-300 font-mono flex items-center gap-1">
-                    <Check className="w-3 h-3 text-[#DC2626]" />
+                  <div className="text-[11px] text-slate-300 font-mono flex items-center gap-1.5">
+                    <Check className="w-3.5 h-3.5 text-[#AF101A]" />
                     <span>อัปเดตเกณฑ์ระเบียบการทางการ 2026/2570</span>
                   </div>
                 </div>
@@ -212,19 +199,21 @@ export default function OpportunitiesPage() {
                 {/* Workflow Buttons */}
                 <div className="flex flex-col gap-2 w-full sm:w-auto font-mono text-xs">
                   <button
+                    type="button"
                     onClick={() => setIsMyApplicationsOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-blue-950/80 hover:bg-blue-900 text-blue-200 border border-blue-700/60 font-bold transition shadow-xs cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold transition cursor-pointer"
                   >
-                    <Calendar className="w-4 h-4 text-blue-400" />
+                    <Calendar className="w-4 h-4 text-slate-300" />
                     <span>ติดตามใบสมัครของฉัน</span>
                   </button>
 
                   {(currentUser.role === "COACH" || currentUser.role === "ADMIN") && (
                     <button
+                      type="button"
                       onClick={fetchCandidates}
-                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-amber-950/80 hover:bg-amber-900 text-amber-200 border border-amber-700/60 font-bold transition shadow-xs cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-semibold transition cursor-pointer shadow-xs"
                     >
-                      <UserCheck className="w-4 h-4 text-amber-400" />
+                      <UserCheck className="w-4 h-4" />
                       <span>ระบบคัดกรองผู้สมัคร (โค้ช)</span>
                     </button>
                   )}
@@ -235,22 +224,30 @@ export default function OpportunitiesPage() {
         </section>
 
         {/* Filter Bar */}
-        <section className="bg-white border-b border-slate-200 sticky top-14 z-30 shadow-xs">
+        <section className="bg-white border-b border-[#DFE2EB] sticky top-14 z-30 shadow-xs">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              
               {/* Search input */}
-              <div className="flex items-center bg-slate-100 border border-slate-200 rounded px-3 py-1.5 w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+              <div className="relative w-full sm:w-80">
+                <label htmlFor="opportunity-search" className="sr-only">
+                  ค้นหาโครงการ, สถาบัน หรือจังหวัด
+                </label>
+                <Search className="w-4 h-4 text-[#505A69] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id="opportunity-search"
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="ค้นหาโครงการ, สถาบัน หรือจังหวัด..."
-                  className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-400 w-full outline-none"
+                  className="w-full bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm pl-9 pr-8 py-1.5 text-xs text-[#0B1C30] placeholder:text-[#505A69] focus:outline-none focus:border-[#AF101A] focus:bg-white transition"
                 />
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery("")} className="text-slate-400 hover:text-slate-600">
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#505A69] hover:text-[#0B1C30]"
+                    aria-label="ล้างคำค้นหา"
+                  >
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
@@ -268,11 +265,13 @@ export default function OpportunitiesPage() {
                 ).map((lvl) => (
                   <button
                     key={lvl.id}
+                    type="button"
                     onClick={() => setSelectedLevel(lvl.id)}
-                    className={`px-3 py-1.5 rounded font-bold transition whitespace-nowrap ${
+                    aria-pressed={selectedLevel === lvl.id}
+                    className={`px-3 py-1.5 rounded-sm font-bold transition whitespace-nowrap cursor-pointer ${
                       selectedLevel === lvl.id
-                        ? "bg-[#AF101A] text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        ? "bg-[#0B1C30] text-white"
+                        : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                     }`}
                   >
                     {lvl.label}
@@ -291,18 +290,19 @@ export default function OpportunitiesPage() {
                 ).map((fund) => (
                   <button
                     key={fund.id}
+                    type="button"
                     onClick={() => setSelectedFunding(fund.id)}
-                    className={`px-2.5 py-1 rounded font-bold transition ${
+                    aria-pressed={selectedFunding === fund.id}
+                    className={`px-2.5 py-1 rounded-sm font-semibold transition cursor-pointer ${
                       selectedFunding === fund.id
-                        ? "bg-slate-900 text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        ? "bg-[#AF101A] text-white shadow-xs"
+                        : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30]"
                     }`}
                   >
                     {fund.label}
                   </button>
                 ))}
               </div>
-
             </div>
           </div>
         </section>
@@ -311,39 +311,39 @@ export default function OpportunitiesPage() {
         <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <div className="space-y-4">
             {filteredList.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-lg mx-auto space-y-3">
-                <AlertCircle className="w-10 h-10 text-slate-400 mx-auto" />
-                <h3 className="font-headline-lg uppercase text-lg text-slate-800">
+              <div className="bg-white rounded-lg border border-[#DFE2EB] p-12 text-center max-w-lg mx-auto space-y-3 shadow-xs">
+                <AlertCircle className="w-10 h-10 text-[#505A69] mx-auto" />
+                <h3 className="font-headline-lg uppercase text-lg text-[#0B1C30]">
                   ไม่พบประกาศรับสมัครตามเงื่อนไขที่เลือก
                 </h3>
-                <p className="text-xs text-slate-500 font-mono">
+                <p className="text-xs text-[#505A69] font-mono">
                   ลองเลือก "ทุกระดับชั้น" หรือล้างคำค้นหาเพื่อดูทุนการศึกษาทั้งหมด
                 </p>
               </div>
             ) : (
               filteredList.map((opp) => (
-                <div
+                <article
                   key={opp.id}
-                  className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-md transition space-y-4"
+                  className="bg-white border border-[#DFE2EB] rounded-lg p-6 hover:border-[#7F8A9E] transition-all space-y-4 shadow-xs"
                 >
-                  {/* Top Bar: Institution Logo, Level & Deadline */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                  {/* Top Bar: Institution Crest, Level & Deadline */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#DFE2EB] pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-sm tracking-tight shrink-0 shadow-xs">
+                      <div className="w-12 h-12 rounded-sm bg-[#0B1C30] text-white flex items-center justify-center font-bold text-sm tracking-tight shrink-0 border border-[#1E3A5F]">
                         {opp.institutionLogo}
                       </div>
                       <div>
-                        <span className="text-xs font-mono font-bold text-slate-400 uppercase">
+                        <span className="text-xs font-mono font-semibold text-[#505A69] uppercase">
                           {opp.institution}
                         </span>
-                        <h2 className="font-bold text-base sm:text-lg text-slate-900 hover:text-[#DC2626] transition">
+                        <h2 className="font-bold text-base sm:text-lg text-[#0B1C30] hover:text-[#AF101A] transition-colors">
                           {opp.title}
                         </h2>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-red-50 border border-red-200 text-[#DC2626] font-mono font-bold text-xs">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-[#AF101A]/10 border border-[#AF101A]/30 text-[#AF101A] font-mono font-bold text-xs">
                         <Clock className="w-3.5 h-3.5" />
                         <span>ปิดรับสมัคร: {opp.deadline}</span>
                       </span>
@@ -351,22 +351,22 @@ export default function OpportunitiesPage() {
                   </div>
 
                   {/* Highlights Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono bg-[#F8F9FC] p-4 rounded-xl border border-slate-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono bg-[#F8F9FF] p-4 rounded-sm border border-[#DFE2EB]">
                     <div>
-                      <span className="text-slate-400 uppercase block text-[10px]">ระดับชั้น</span>
-                      <span className="font-bold text-slate-900">{opp.levelDisplay}</span>
+                      <span className="text-[#505A69] uppercase font-semibold block text-[10px]">ระดับชั้น</span>
+                      <span className="font-bold text-[#0B1C30]">{opp.levelDisplay}</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 uppercase block text-[10px]">ประเภททุน</span>
-                      <span className="font-bold text-[#DC2626]">{opp.scholarshipDisplay}</span>
+                      <span className="text-[#505A69] uppercase font-semibold block text-[10px]">ประเภททุน</span>
+                      <span className="font-bold text-[#AF101A]">{opp.scholarshipDisplay}</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 uppercase block text-[10px]">จำนวนที่รับ</span>
-                      <span className="font-bold text-slate-900">{opp.quotaCount} ตำแหน่ง</span>
+                      <span className="text-[#505A69] uppercase font-semibold block text-[10px]">จำนวนที่รับ</span>
+                      <span className="font-bold text-[#0B1C30] tabular-nums">{opp.quotaCount} ตำแหน่ง</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 uppercase block text-[10px]">เกณฑ์ GPAX</span>
-                      <span className="font-bold text-slate-900">
+                      <span className="text-[#505A69] uppercase font-semibold block text-[10px]">เกณฑ์ GPAX</span>
+                      <span className="font-bold text-[#0B1C30] tabular-nums">
                         {opp.minGpax ? `ไม่ต่ำกว่า ${opp.minGpax.toFixed(2)}` : "ไม่กำหนดเกรดขั้นต่ำ"}
                       </span>
                     </div>
@@ -374,14 +374,14 @@ export default function OpportunitiesPage() {
 
                   {/* Description & Requirements */}
                   <div className="space-y-2 text-xs">
-                    <p className="text-slate-600 leading-relaxed">
+                    <p className="text-[#0B1C30] leading-relaxed">
                       {opp.description}
                     </p>
-                    <div className="space-y-1 pt-1 font-mono text-[11px] text-slate-500">
-                      <span className="font-bold text-slate-700 block uppercase">เกณฑ์การพิจารณาเบื้องต้น:</span>
+                    <div className="space-y-1 pt-1 font-mono text-[11px] text-[#505A69]">
+                      <span className="font-bold text-[#0B1C30] block uppercase">เกณฑ์การพิจารณาเบื้องต้น:</span>
                       <ul className="list-disc list-inside space-y-0.5">
                         {opp.requirements.map((req, idx) => (
-                          <li key={idx} className="text-slate-600">
+                          <li key={idx} className="text-[#505A69]">
                             {req}
                           </li>
                         ))}
@@ -390,21 +390,21 @@ export default function OpportunitiesPage() {
                   </div>
 
                   {/* Card Bottom CTA */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
-                    <div className="text-xs font-mono text-slate-400">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#DFE2EB]">
+                    <div className="text-xs font-mono text-[#505A69]">
                       ติดต่อ: {opp.contactEmail} • โทร {opp.contactPhone}
                     </div>
 
                     <button
                       type="button"
                       onClick={() => setApplyingOpportunity(opp)}
-                      className="px-6 py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-md shadow-red-950/20"
+                      className="px-5 py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>สมัครด้วย StatCourt ID</span>
                     </button>
                   </div>
-                </div>
+                </article>
               ))
             )}
           </div>
@@ -412,61 +412,68 @@ export default function OpportunitiesPage() {
 
         {/* Application Modal */}
         {applyingOpportunity && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-            <div className="bg-[#0F172A] border border-slate-700 w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="apply-modal-title"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/70 backdrop-blur-xs p-4 overflow-y-auto"
+          >
+            <div className="bg-white border border-[#DFE2EB] w-full max-w-xl rounded-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
               {/* Modal Header */}
-              <div className="px-6 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-white">
+              <div className="px-6 py-4 bg-[#0B1C30] text-white flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded bg-[#AF101A] flex items-center justify-center text-white">
+                  <div className="w-8 h-8 rounded-sm bg-[#AF101A] flex items-center justify-center text-white">
                     <Send className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-headline-lg uppercase text-base sm:text-lg tracking-wide font-normal">
+                    <h3 id="apply-modal-title" className="font-headline-lg uppercase text-base sm:text-lg tracking-wide font-normal">
                       สมัครคัดตัวด้วย StatCourt ID
                     </h3>
-                    <p className="text-[11px] text-slate-400 font-mono">
+                    <p className="text-[11px] text-slate-300 font-mono">
                       ระบบจะส่ง Digital Pass และสถิติที่ผ่านการรับรองตรงสู่กรรมการคัดเลือก
                     </p>
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={handleCloseModal}
-                  className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+                  aria-label="ปิดหน้าต่างสมัคร"
+                  className="text-slate-400 hover:text-white p-1 rounded-sm hover:bg-white/10 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Modal Body */}
-              <div className="p-6 overflow-y-auto space-y-5 text-slate-200 text-xs font-mono">
+              <div className="p-6 overflow-y-auto space-y-5 text-[#0B1C30] text-xs font-mono">
                 {isSubmitted ? (
                   <div className="text-center py-6 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-[#AF101A] flex items-center justify-center mx-auto text-white shadow-lg">
+                    <div className="w-16 h-16 rounded-full bg-[#AF101A] flex items-center justify-center mx-auto text-white shadow-md">
                       <CheckCircle2 className="w-8 h-8" />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="font-headline-lg uppercase text-xl text-white font-normal">
+                      <h4 className="font-headline-lg uppercase text-xl text-[#0B1C30] font-normal">
                         ส่งใบสมัครและพอร์ตสำเร็จ!
                       </h4>
-                      <p className="text-slate-300">
+                      <p className="text-[#505A69]">
                         โครงการ: {applyingOpportunity.title}
                       </p>
-                      <p className="text-[11px] text-slate-300 font-bold">
+                      <p className="text-[11px] text-[#0B1C30] font-bold">
                         รหัสการสมัคร: APP-CU-2026-{(Math.random() * 9000 + 1000).toFixed(0)}
                       </p>
                     </div>
 
-                    <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 text-left space-y-2 text-[11px]">
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-[#DC2626]" />
+                    <div className="bg-[#F8F9FF] p-4 rounded-sm border border-[#DFE2EB] text-left space-y-2 text-[11px]">
+                      <div className="flex items-center gap-2 text-[#0B1C30]">
+                        <Check className="w-4 h-4 text-[#AF101A]" />
                         <span>แนบเอกสาร Digital Player Pass &amp; QR Code ยืนยันตัวตน</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-[#DC2626]" />
+                      <div className="flex items-center gap-2 text-[#0B1C30]">
+                        <Check className="w-4 h-4 text-[#AF101A]" />
                         <span>แนบประวัติสถิติ FIBA Box Score และวิดีโอคลิปการแข่งขัน</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Check className="w-4 h-4 text-[#DC2626]" />
+                      <div className="flex items-center gap-2 text-[#0B1C30]">
+                        <Check className="w-4 h-4 text-[#AF101A]" />
                         <span>แนบเกรดเฉลี่ยสะสม GPAX ({applicantGpax}) และใบ ปพ.1 ดิจิทัล</span>
                       </div>
                     </div>
@@ -474,19 +481,19 @@ export default function OpportunitiesPage() {
                     <button
                       type="button"
                       onClick={handleCloseModal}
-                      className="w-full py-2.5 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold uppercase transition"
+                      className="w-full py-2.5 rounded-sm bg-[#0B1C30] hover:bg-[#142338] text-white font-bold uppercase transition cursor-pointer"
                     >
                       เสร็จสิ้น
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleApplySubmit} className="space-y-4">
-                    <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800 space-y-1">
-                      <span className="text-[10px] text-slate-400 uppercase font-bold">โครงการที่สมัคร</span>
-                      <div className="font-bold text-white text-sm">
+                    <div className="bg-[#F8F9FF] p-3.5 rounded-sm border border-[#DFE2EB] space-y-1">
+                      <span className="text-[10px] text-[#505A69] uppercase font-bold">โครงการที่สมัคร</span>
+                      <div className="font-bold text-[#0B1C30] text-sm">
                         {applyingOpportunity.title}
                       </div>
-                      <div className="text-red-400 text-[11px]">
+                      <div className="text-[#AF101A] text-[11px] font-semibold">
                         {applyingOpportunity.institution} • {applyingOpportunity.scholarshipDisplay}
                       </div>
                     </div>
@@ -494,87 +501,92 @@ export default function OpportunitiesPage() {
                     {/* Pre-filled Dossier Credentials */}
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-slate-400 mb-1 uppercase font-bold">
+                        <label htmlFor="applicant-name" className="block text-[#505A69] mb-1 uppercase font-bold">
                           ชื่อ-นามสกุล นักกีฬา (Verified Profile)
                         </label>
                         <input
+                          id="applicant-name"
                           type="text"
                           disabled
                           value={applicantName}
-                          className="w-full px-3 py-2 rounded bg-slate-800/80 border border-slate-700 text-slate-300 cursor-not-allowed"
+                          className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] cursor-not-allowed font-sans"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="block text-slate-400 mb-1 uppercase font-bold">
+                          <label htmlFor="applicant-tcas" className="block text-[#505A69] mb-1 uppercase font-bold">
                             รหัส TCAS / StatCourt ID
                           </label>
                           <input
+                            id="applicant-tcas"
                             type="text"
                             disabled
                             value={applicantTcasCode}
-                            className="w-full px-3 py-2 rounded bg-slate-800/80 border border-slate-700 text-slate-200 font-bold cursor-not-allowed"
+                            className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#0B1C30] font-bold cursor-not-allowed"
                           />
                         </div>
                         <div>
-                          <label className="block text-slate-400 mb-1 uppercase font-bold">
+                          <label htmlFor="applicant-gpax" className="block text-[#505A69] mb-1 uppercase font-bold">
                             ผลการเรียนเฉลี่ยสะสม (GPAX)
                           </label>
                           <input
+                            id="applicant-gpax"
                             type="text"
                             disabled
                             value={applicantGpax}
-                            className="w-full px-3 py-2 rounded bg-slate-800/80 border border-slate-700 text-slate-300 cursor-not-allowed"
+                            className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#0B1C30] font-bold cursor-not-allowed"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-slate-400 mb-1 uppercase font-bold">
+                        <label htmlFor="applicant-phone" className="block text-[#505A69] mb-1 uppercase font-bold">
                           เบอร์โทรศัพท์สำหรับติดต่อกลับ *
                         </label>
                         <input
+                          id="applicant-phone"
                           type="tel"
                           required
                           value={applicantPhone}
                           onChange={(e) => setApplicantPhone(e.target.value)}
-                          className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-red-500"
+                          className="w-full px-3 py-2 rounded-sm bg-white border border-[#DFE2EB] text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-slate-400 mb-1 uppercase font-bold">
+                        <label htmlFor="applicant-notes" className="block text-[#505A69] mb-1 uppercase font-bold">
                           ข้อความเพิ่มเติมถึงสตาฟฟ์โค้ชผู้คัดเลือก
                         </label>
                         <textarea
+                          id="applicant-notes"
                           rows={2}
                           value={applicantNotes}
                           onChange={(e) => setApplicantNotes(e.target.value)}
-                          placeholder="ระบุประสบการณ์แข่งพิเศษ, เป้าหมายการเรียน, หรือตำแหน่งที่ถนัด"
-                          className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500"
+                          placeholder="ระบุประสบการณ์แข่งพิเศษ, เป้าหมายการเรียน หรือตำแหน่งที่ถนัด"
+                          className="w-full px-3 py-2 rounded-sm bg-white border border-[#DFE2EB] text-[#0B1C30] placeholder:text-[#505A69] focus:outline-none focus:border-[#AF101A] font-sans"
                         />
                       </div>
                     </div>
 
                     {submitError && (
-                      <div className="p-3 bg-red-950 border border-red-800 text-red-200 rounded-xl flex items-center gap-2 text-xs font-mono">
-                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                      <div className="p-3 bg-red-50 border border-red-200 text-[#AF101A] rounded-sm flex items-center gap-2 text-xs font-mono">
+                        <AlertCircle className="w-4 h-4 text-[#AF101A] shrink-0" />
                         <span>{submitError}</span>
                       </div>
                     )}
 
-                    <div className="p-3 bg-red-950/40 border border-red-900/50 rounded-xl flex items-start gap-2.5 text-[11px] text-red-200">
-                      <ShieldCheck className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div className="p-3 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm flex items-start gap-2.5 text-[11px] text-[#505A69]">
+                      <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0 mt-0.5" />
                       <span>
-                        การกดส่งใบสมัครจะเป็นการยินยอมให้ระบบส่งรายงานสถิติ FIBA, ผลการเรียน GPAX และประวัติการแข่งขันให้แก่ทีมงานสเกาต์ของสถาบันเพื่อการพิจารณาคัดตัว
+                        การกดส่งใบสมัครเป็นการยินยอมให้ระบบส่งรายงานสถิติ FIBA, ผลการเรียน GPAX และประวัติการแข่งขันให้แก่ทีมงานสเกาต์ของสถาบันเพื่อการพิจารณาคัดตัว
                       </span>
                     </div>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-red-950/50 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                      className="w-full py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono font-bold text-xs uppercase tracking-wider transition shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                     >
                       <Send className="w-4 h-4" />
                       <span>{isSubmitting ? "กำลังตรวจสอบและส่งใบสมัคร..." : "ยืนยันการส่งใบสมัครและพอร์ตโฟลิโอ"}</span>
@@ -594,64 +606,70 @@ export default function OpportunitiesPage() {
         {/* Modal: Coach / Recruiter Candidates Review List */}
         {isCandidatesModalOpen && (
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="candidates-modal-title"
             onClick={() => setIsCandidatesModalOpen(false)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto cursor-pointer"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/70 backdrop-blur-xs p-4 overflow-y-auto cursor-pointer"
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0B1C30] border border-slate-700 rounded-2xl max-w-3xl w-full p-6 text-white shadow-2xl space-y-4 cursor-default max-h-[90vh] overflow-y-auto"
+              className="bg-white border border-[#DFE2EB] rounded-lg max-w-3xl w-full p-6 text-[#0B1C30] shadow-2xl space-y-4 cursor-default max-h-[90vh] overflow-y-auto"
             >
-              <div className="flex items-start justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-start justify-between pb-3 border-b border-[#DFE2EB]">
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-[#DC2626] uppercase">
+                  <span className="text-[10px] font-mono font-bold text-[#AF101A] uppercase">
                     CANDIDATE RECRUITMENT WORKSPACE
                   </span>
-                  <h3 className="text-lg font-bold text-white mt-0.5">
+                  <h3 id="candidates-modal-title" className="text-lg font-bold text-[#0B1C30] mt-0.5">
                     รายชื่อนักกีฬาที่สมัครเข้ารับการคัดเลือก ({candidatesList.length} คน)
                   </h3>
-                  <p className="text-xs text-slate-400">
-                    สำหรับผู้ฝึกสอนและฝ่ายสรรหา: คัดกรองพอร์ต, นัดหมายคัดตัว, และบันทึกผลการคัดเลือก
+                  <p className="text-xs text-[#505A69]">
+                    สำหรับผู้ฝึกสอนและฝ่ายสรรหา: คัดกรองพอร์ต, นัดหมายคัดตัว และบันทึกผลการคัดเลือก
                   </p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsCandidatesModalOpen(false)}
-                  className="p-1 rounded text-slate-400 hover:text-white"
+                  aria-label="ปิดหน้าต่างรายชื่อผู้สมัคร"
+                  className="p-1 rounded-sm text-[#505A69] hover:text-[#0B1C30] transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {candidatesList.length === 0 ? (
-                <div className="p-8 text-center text-slate-400">ยังไม่มีผู้สมัครในโครงการ</div>
+                <div className="p-8 text-center text-[#505A69] font-mono text-xs">ยังไม่มีผู้สมัครในโครงการ</div>
               ) : (
                 <div className="space-y-2.5 max-h-[480px] overflow-y-auto">
                   {candidatesList.map((cand) => (
                     <div
                       key={cand.id}
-                      className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between gap-4 text-xs font-mono"
+                      className="p-3.5 bg-[#F8F9FF] rounded-sm border border-[#DFE2EB] flex items-center justify-between gap-4 text-xs font-mono"
                     >
                       <div className="space-y-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-sm truncate">{cand.applicantName}</span>
-                          <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
+                          <span className="font-bold text-[#0B1C30] text-sm truncate font-sans">{cand.applicantName}</span>
+                          <span className="text-[10px] bg-white border border-[#DFE2EB] text-[#505A69] px-2 py-0.5 rounded-sm">
                             {cand.applicantPosition}
                           </span>
-                          <span className="text-[10px] text-emerald-400 font-bold">
+                          <span className="text-[10px] text-emerald-700 font-bold">
                             GPAX {cand.applicantGpax}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400 truncate">
+                        <p className="text-[11px] text-[#505A69] truncate">
                           โครงการ: {cand.opportunity?.title || "ทุนนักกีฬา"} • โทร {cand.applicantPhone}
                         </p>
                       </div>
 
                       <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-amber-500/30">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-sm bg-white border border-[#DFE2EB] text-[#0B1C30]">
                           {cand.status}
                         </span>
                         <button
+                          type="button"
                           onClick={() => setActiveReviewCandidate(cand)}
-                          className="px-3 py-1.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition cursor-pointer"
+                          className="px-3 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition cursor-pointer"
                         >
                           ประเมิน &amp; นัดหมาย
                         </button>

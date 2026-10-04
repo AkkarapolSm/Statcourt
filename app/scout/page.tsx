@@ -4,34 +4,23 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import {
   Search,
-  Filter,
-  SlidersHorizontal,
   ShieldCheck,
-  Trophy,
-  ArrowUpDown,
   Bookmark,
   BookmarkCheck,
   Columns2,
   X,
-  ExternalLink,
   Film,
   GraduationCap,
   Sparkles,
   ChevronRight,
-  TrendingUp,
   Download,
-  Share2,
   Lock,
-  UserPlus,
-  LogIn,
-  ArrowLeft,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HighlightReelGeneratorModal from "@/components/scout/HighlightReelGeneratorModal";
 import AcademicTrackerModal from "@/components/athlete/AcademicTrackerModal";
 import { Position } from "@/lib/types";
-import { mockAthleteProfiles, mockLeaderboardAthletes } from "@/lib/db/seed-data";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import { canAccessScoutHub } from "@/lib/auth/rbac";
 
@@ -65,14 +54,11 @@ export default function AdvancedScoutEnginePage() {
   const [selectedPosition, setSelectedPosition] = useState<"ALL" | Position>("ALL");
   const [minHeight, setMinHeight] = useState<number>(175);
   const [onlyOver190, setOnlyOver190] = useState(false);
-  const [selectedAge, setSelectedAge] = useState<"ALL" | "U16" | "U18" | "OPEN">("ALL");
-  const [selectedRegion, setSelectedRegion] = useState<"ALL" | "BANGKOK" | "CENTRAL" | "NORTH" | "NORTHEAST" | "SOUTH">("ALL");
-  
+
   // Advanced FIBA Metrics Filters
-  const [minEff, setMinEff] = useState<number>(0);
+  const [minEff] = useState<number>(0);
   const [minTsPct, setMinTsPct] = useState<number>(0);
   const [minAstTo, setMinAstTo] = useState<number>(0);
-  const [timeframe, setTimeframe] = useState<"1M" | "6M" | "SEASON" | "CAREER">("SEASON");
 
   // Interaction States
   const [shortlistedIds, setShortlistedIds] = useState<string[]>(["ath-1"]);
@@ -86,7 +72,7 @@ export default function AdvancedScoutEnginePage() {
   const [selectedAthleteForReel, setSelectedAthleteForReel] = useState<ScoutProspect | null>(null);
   const [selectedAthleteForAcademic, setSelectedAthleteForAcademic] = useState<ScoutProspect | null>(null);
 
-  // Raw mock list combining seed profiles with stats
+  // Raw mock list combining seed profiles with verified combine stats
   const allProspects: ScoutProspect[] = useMemo(() => {
     return [
       {
@@ -162,13 +148,13 @@ export default function AdvancedScoutEnginePage() {
         id: "ath-11",
         name: "Teerawat Prasertkul",
         fullName: "Teerawat Prasertkul (ธีรวัฒน์ ประเสริฐกุล)",
-        school: "Debsirin School",
-        province: "Bangkok",
+        school: "Suankularb Wittayalai",
+        province: "Nonthaburi",
         position: "POWER_FORWARD" as Position,
         age: 18,
         heightCm: 199,
-        wingspanCm: 208,
-        standingReachCm: 260,
+        wingspanCm: 206,
+        standingReachCm: 258,
         effPerGame: 21.6,
         ppg: 15.2,
         rpg: 10.6,
@@ -176,7 +162,7 @@ export default function AdvancedScoutEnginePage() {
         efgPct: 56.0,
         tsPct: 58.0,
         astToRatio: 1.2,
-        tcasCode: "STC-VERIFIED-TH-DS-034",
+        tcasCode: "STC-VERIFIED-TH-SK-034",
         avatarUrl: "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=400&q=80",
         gpax: 3.15,
         isNationalPool: true,
@@ -302,120 +288,52 @@ export default function AdvancedScoutEnginePage() {
 
   const comparedProspects = allProspects.filter((p) => comparedIds.includes(p.id));
 
-  // Non-member Access Gate (Strict RBAC protection)
-  if (currentUser.role === "PUBLIC") {
-    return (
-      <div className="min-h-screen bg-[#080c14] text-white flex flex-col font-sans relative overflow-x-hidden">
-        <Navbar />
-        {/* Subtle Background Ambience */}
-        <div className="fixed inset-0 court-grid-pattern pointer-events-none opacity-40" />
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-red-600/10 blur-[120px] rounded-full pointer-events-none" />
-
-        <main className="flex-1 flex items-center justify-center p-4 py-16 relative z-10">
-          <div className="w-full max-w-lg bg-[#101622] border border-white/10 rounded-2xl p-6 sm:p-8 text-center space-y-5 shadow-2xl relative">
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto shadow-[0_0_24px_rgba(245,158,11,0.2)]">
-              <Lock className="w-8 h-8 text-amber-400" />
-            </div>
-
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#2b1014] border border-red-500/30 text-red-300 text-[10px] font-mono font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>RESTRICTED SCOUT INTELLIGENCE HUB</span>
-              </div>
-              <h1 className="font-headline-lg text-xl sm:text-2xl uppercase tracking-wider text-white">
-                พื้นที่สงวนสิทธิ์สำหรับสมาชิกและผู้ฝึกสอน
-              </h1>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans max-w-md mx-auto">
-                ระบบ Scout Engine และคลังข้อมูลนักกีฬาเยาวชน TCAS สงวนสิทธิ์สำหรับสมาชิก StatCourtTH, ผู้ฝึกสอน (Coaches) และผู้ใช้ระดับ PRO เท่านั้น กรุณาสมัครสมาชิกทั่วไป (ฟรี) หรือเข้าสู่ระบบเพื่อใช้งาน
-              </p>
-            </div>
-
-            <div className="space-y-2.5 pt-2 font-mono text-xs">
-              <Link
-                href="/auth/register"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 to-[#AF101A] hover:from-red-500 hover:to-red-600 text-white font-bold uppercase transition flex items-center justify-center gap-2 shadow-lg shadow-red-950/50"
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>สมัครสมาชิกทั่วไปฟรี (Free Member Pass)</span>
-              </Link>
-              <button
-                type="button"
-                onClick={() => loginAs("COACH")}
-                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold uppercase transition border border-slate-700 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>เข้าสู่ระบบบัญชีโค้ช</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => loginAs("FAN")}
-                className="w-full py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold uppercase transition border border-amber-500/30 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <LogIn className="w-4 h-4 text-amber-400" />
-                <span>เข้าสู่ระบบสมาชิก</span>
-              </button>
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 py-2 text-slate-400 hover:text-white transition text-xs"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>กลับสู่หน้าแรก (Return to Home)</span>
-              </Link>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans">
       <Navbar />
 
       <main className="flex-1 pb-20">
-        {/* Hero Banner (Scout & Recruiter Portal) */}
-        <section className="bg-[#0F172A] text-white py-12 border-b border-slate-800">
+        {/* Hero Banner (Courtside Editorial Combine Hub) */}
+        <section className="bg-[#0B1C30] text-white py-10 border-b border-[#1E3A5F]">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/30 border border-[#AF101A]/50 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
-                  <ShieldCheck className="w-4 h-4 text-[#DC2626]" />
-                  <span>COLLEGE SCOUTING &amp; TALENT RECRUITMENT ENGINE</span>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-2.5 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-200 text-xs font-mono font-semibold tracking-wider uppercase">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#AF101A]" />
+                  <span>SCOUTING COMBINE &amp; RECRUITING INTELLIGENCE</span>
                 </div>
-                <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl uppercase tracking-wider font-normal text-white leading-tight">
-                  ค้นหานักกีฬาช้างเผือก <br />
-                  <span className="text-[#DC2626]">ด้วยตัวกรองสรีระระดับลึก</span> และสถิติ FIBA
+                <h1 className="font-headline-xl text-3xl sm:text-4xl uppercase tracking-wide font-normal text-white">
+                  ศูนย์ค้นหาดาวรุ่ง <span className="text-[#AF101A]">และข้อมูลสรีระ FIBA</span>
                 </h1>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  สำหรับโค้ชมหาวิทยาลัย, ทีมงานคัดตัวโควตากีฬา TCAS และสโมสรอาชีพ 
-                  กรองส่วนสูง Wingspan ค่า eFG% และ True Shooting จากการแข่งขันที่ตรวจสอบคลิปได้จริง
+                  สำหรับผู้ฝึกสอนมหาวิทยาลัย โควตากีฬา TCAS และแมวมองสโมสรอาชีพ ข้อมูลสรีระ Wingspan, Standing Reach พร้อมสถิติขั้นสูง True Shooting และบันทึกผลการแข่งขันที่ตรวจสอบคลิปได้จริง
                 </p>
               </div>
 
-              {/* Quick Actions & Shortlist Counter */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-[#AF101A] flex items-center justify-center text-white font-bold">
-                    <Bookmark className="w-5 h-5" />
+              {/* Counters & Shortlist / Compare Quick Actions */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="bg-[#142338] border border-[#223956] rounded-lg px-4 py-3 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-sm bg-[#AF101A] flex items-center justify-center text-white">
+                    <Bookmark className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-[11px] font-mono text-slate-400 uppercase font-bold">
-                      SHORTLISTED PROSPECTS
+                    <div className="text-[10px] font-mono text-slate-400 uppercase font-semibold">
+                      SHORTLIST TARGETS
                     </div>
-                    <div className="text-xl font-headline-lg text-white font-normal">
-                      {shortlistedIds.length} นักกีฬาในเป้าหมาย
+                    <div className="text-lg font-headline-lg text-white font-normal tabular-nums">
+                      {shortlistedIds.length} คนในเป้าหมาย
                     </div>
                   </div>
                 </div>
 
                 {comparedIds.length > 0 && (
                   <button
+                    type="button"
                     onClick={() => setIsCompareDrawerOpen(true)}
-                    className="px-4 py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-red-950/50"
+                    className="px-4 py-3 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition cursor-pointer shadow-xs"
                   >
                     <Columns2 className="w-4 h-4" />
-                    <span>เปรียบเทียบ ({comparedIds.length}) คน</span>
+                    <span>เปรียบเทียบสถิติ ({comparedIds.length}) คน</span>
                   </button>
                 )}
               </div>
@@ -423,23 +341,32 @@ export default function AdvancedScoutEnginePage() {
           </div>
         </section>
 
-        {/* Filter Bar & Search Controls */}
-        <section className="bg-white border-b border-slate-200 sticky top-14 z-30 shadow-xs">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+        {/* Filter Bar & Combine Station */}
+        <section className="bg-white border-b border-[#DFE2EB] sticky top-14 z-30 shadow-xs">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-3">
+            {/* Row 1: Search, Position Filter, View Mode */}
             <div className="flex flex-wrap items-center justify-between gap-3">
-              
               {/* Search Box */}
-              <div className="flex items-center bg-slate-100 border border-slate-200 rounded px-3 py-1.5 w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+              <div className="relative w-full sm:w-80">
+                <label htmlFor="scout-search-input" className="sr-only">
+                  ค้นหาชื่อ, โรงเรียน, หรือรหัส TCAS
+                </label>
+                <Search className="w-4 h-4 text-[#505A69] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id="scout-search-input"
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="ค้นหาชื่อ, โรงเรียน, หรือรหัส TCAS..."
-                  className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-400 w-full outline-none"
+                  className="w-full bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm pl-9 pr-8 py-1.5 text-xs text-[#0B1C30] placeholder:text-[#505A69] focus:outline-none focus:border-[#AF101A] focus:bg-white transition"
                 />
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery("")} className="text-slate-400 hover:text-slate-600">
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#505A69] hover:text-[#0B1C30]"
+                    aria-label="ล้างคำค้นหา"
+                  >
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
@@ -449,20 +376,33 @@ export default function AdvancedScoutEnginePage() {
               <div className="flex items-center gap-1.5 overflow-x-auto text-xs font-mono">
                 {(["ALL", "POINT_GUARD", "SHOOTING_GUARD", "SMALL_FORWARD", "POWER_FORWARD", "CENTER"] as const).map(
                   (pos) => {
-                    const label = pos === "ALL" ? "ALL POS" : pos.replace("_", " ");
+                    const shortLabel =
+                      pos === "ALL"
+                        ? "ALL"
+                        : pos === "POINT_GUARD"
+                        ? "PG"
+                        : pos === "SHOOTING_GUARD"
+                        ? "SG"
+                        : pos === "SMALL_FORWARD"
+                        ? "SF"
+                        : pos === "POWER_FORWARD"
+                        ? "PF"
+                        : "C";
                     const isSelected = selectedPosition === pos;
 
                     return (
                       <button
                         key={pos}
+                        type="button"
                         onClick={() => setSelectedPosition(pos)}
-                        className={`px-3 py-1.5 rounded uppercase font-bold transition whitespace-nowrap ${
+                        aria-pressed={isSelected}
+                        className={`px-3 py-1.5 rounded-sm uppercase font-bold transition whitespace-nowrap cursor-pointer ${
                           isSelected
-                            ? "bg-[#AF101A] text-white shadow-xs"
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            ? "bg-[#0B1C30] text-white"
+                            : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                         }`}
                       >
-                        {label}
+                        {shortLabel}
                       </button>
                     );
                   }
@@ -470,73 +410,83 @@ export default function AdvancedScoutEnginePage() {
               </div>
 
               {/* Tab Selector: All vs Shortlist */}
-              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded font-mono text-xs">
+              <div className="flex items-center gap-1 bg-[#F8F9FF] p-1 rounded-sm border border-[#DFE2EB] font-mono text-xs">
                 <button
+                  type="button"
                   onClick={() => setActiveTab("ALL_PROSPECTS")}
-                  className={`px-3 py-1 rounded font-bold transition ${
+                  aria-pressed={activeTab === "ALL_PROSPECTS"}
+                  className={`px-3 py-1 rounded-sm font-semibold transition cursor-pointer ${
                     activeTab === "ALL_PROSPECTS"
-                      ? "bg-white text-slate-900 shadow-xs"
-                      : "text-slate-500 hover:text-slate-800"
+                      ? "bg-white text-[#0B1C30] shadow-xs"
+                      : "text-[#505A69] hover:text-[#0B1C30]"
                   }`}
                 >
                   ทั้งหมด ({allProspects.length})
                 </button>
                 <button
+                  type="button"
                   onClick={() => setActiveTab("SHORTLIST")}
-                  className={`px-3 py-1 rounded font-bold transition flex items-center gap-1 ${
+                  aria-pressed={activeTab === "SHORTLIST"}
+                  className={`px-3 py-1 rounded-sm font-semibold transition flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "SHORTLIST"
                       ? "bg-[#AF101A] text-white shadow-xs"
-                      : "text-slate-500 hover:text-slate-800"
+                      : "text-[#505A69] hover:text-[#0B1C30]"
                   }`}
                 >
                   <Bookmark className="w-3 h-3" />
                   <span>บันทึกไว้ ({shortlistedIds.length})</span>
                 </button>
               </div>
-
             </div>
 
-            {/* Deep Metric Sliders Drawer / Bar */}
-            <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+            {/* Row 2: Deep Metric Sliders & Combine Filters */}
+            <div className="pt-2.5 border-t border-[#DFE2EB] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="flex items-center gap-4 flex-wrap">
-                
                 {/* 190+ cm Quick Switch */}
                 <button
                   type="button"
                   onClick={() => setOnlyOver190(!onlyOver190)}
-                  className={`px-3 py-1 rounded border font-bold flex items-center gap-1.5 transition ${
+                  aria-pressed={onlyOver190}
+                  className={`px-2.5 py-1 rounded-sm border font-semibold flex items-center gap-1.5 transition cursor-pointer ${
                     onlyOver190
-                      ? "bg-red-50 border-[#DC2626] text-[#DC2626]"
-                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      ? "bg-[#AF101A]/10 border-[#AF101A] text-[#AF101A]"
+                      : "bg-white border-[#DFE2EB] text-[#505A69] hover:border-[#7F8A9E]"
                   }`}
                 >
                   <Sparkles className="w-3 h-3" />
-                  <span>เฉพาะส่วนสูง &ge; 190 cm</span>
+                  <span>สรีระ &ge; 190 cm</span>
                 </button>
 
                 {/* Min Height Slider */}
                 {!onlyOver190 && (
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-500 uppercase">ส่วนสูงขั้นต่ำ:</span>
+                    <label htmlFor="min-height-range" className="text-[#505A69] uppercase">
+                      ส่วนสูงขั้นต่ำ:
+                    </label>
                     <input
+                      id="min-height-range"
                       type="range"
-                      min={170}
+                      min={175}
                       max={205}
                       value={minHeight}
                       onChange={(e) => setMinHeight(Number(e.target.value))}
+                      aria-label="ส่วนสูงขั้นต่ำหน่วยเซนติเมตร"
                       className="accent-[#AF101A] cursor-pointer w-24"
                     />
-                    <span className="font-bold text-slate-900 w-12">{minHeight} cm</span>
+                    <span className="font-bold text-[#0B1C30] tabular-nums w-12">{minHeight} cm</span>
                   </div>
                 )}
 
                 {/* Min True Shooting */}
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-500 uppercase">TS% &ge;</span>
+                  <label htmlFor="min-ts-select" className="text-[#505A69] uppercase">
+                    TS% &ge;
+                  </label>
                   <select
+                    id="min-ts-select"
                     value={minTsPct}
                     onChange={(e) => setMinTsPct(Number(e.target.value))}
-                    className="bg-slate-100 border border-slate-200 rounded px-2 py-0.5 text-slate-800 font-bold"
+                    className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm px-2 py-0.5 text-[#0B1C30] font-semibold focus:outline-none focus:border-[#AF101A]"
                   >
                     <option value={0}>ทั้งหมด</option>
                     <option value={50}>50%+</option>
@@ -547,68 +497,67 @@ export default function AdvancedScoutEnginePage() {
 
                 {/* Min Assist/TO */}
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-500 uppercase">AST/TO &ge;</span>
+                  <label htmlFor="min-ast-select" className="text-[#505A69] uppercase">
+                    AST/TO &ge;
+                  </label>
                   <select
+                    id="min-ast-select"
                     value={minAstTo}
                     onChange={(e) => setMinAstTo(Number(e.target.value))}
-                    className="bg-slate-100 border border-slate-200 rounded px-2 py-0.5 text-slate-800 font-bold"
+                    className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm px-2 py-0.5 text-[#0B1C30] font-semibold focus:outline-none focus:border-[#AF101A]"
                   >
                     <option value={0}>ทั้งหมด</option>
                     <option value={1.5}>1.5+</option>
                     <option value={2.0}>2.0+ (Floor General)</option>
                   </select>
                 </div>
-
-                {/* Timeframe */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400">ช่วงเวลา:</span>
-                  <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-700 font-bold">
-                    ซีซันปัจจุบัน (2026)
-                  </span>
-                </div>
               </div>
 
-              <div className="text-slate-500">
-                พบ <span className="font-bold text-slate-900">{filteredProspects.length}</span> คนตรงตามเกณฑ์
+              <div className="text-[#505A69]">
+                พบ <span className="font-bold text-[#0B1C30] tabular-nums">{filteredProspects.length}</span> คนตรงตามเกณฑ์
               </div>
             </div>
           </div>
         </section>
 
-        {/* Role Access Notice for Public / Non-Coach Users */}
+        {/* Dignified Recruiter Access Notice for Non-Coach Users */}
         {!hasScoutAccess && (
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-            <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
+            <div className="bg-white border border-[#DFE2EB] rounded-lg p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
-                  <Lock className="w-5 h-5 text-amber-700" />
+                <div className="w-9 h-9 rounded-sm bg-[#AF101A]/10 border border-[#AF101A]/30 text-[#AF101A] flex items-center justify-center shrink-0 mt-0.5">
+                  <ShieldCheck className="w-5 h-5 text-[#AF101A]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-amber-950">
-                      สิทธิ์การใช้งาน Scout Hub สำหรับ ผู้ฝึกสอน (Coaches), สโมสร และสมาชิก PRO
+                    <h3 className="text-sm font-bold text-[#0B1C30]">
+                      พื้นที่สำหรับผู้ฝึกสอน (Coaches), แมวมองสถาบัน และฝ่ายสรรหาบุคลากรกีฬา
                     </h3>
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 uppercase">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] uppercase">
                       ROLE: {currentUser.role}
                     </span>
                   </div>
-                  <p className="text-xs text-amber-800 mt-1">
-                    ในฐานะ {currentUser.role === "ATHLETE" ? "นักกีฬา" : "ผู้เข้าชมทั่วไป"} ท่านสามารถดูตัวอย่างรายชื่อดาวรุ่งได้ 2 คน หากต้องการใช้ตัวกรองสรีระ 190+, ดูค่า GPAX และข้อมูลติดต่อ กรุณาใช้งานในบทบาทโค้ชหรือสมาชิก PRO
+                  <p className="text-xs text-[#505A69] mt-1 leading-relaxed">
+                    ระบบแสดงตัวอย่างรายชื่อดาวรุ่งที่ผ่านการรับรองเพื่อการศึกษา หากท่านเป็นผู้ฝึกสอน หรือต้องการทดลองสิทธิ์แมวมองเพื่อเข้าถึงฐานข้อมูลฉบับเต็ม บันทึกผลการเรียน GPAX และคลิปวิเคราะห์ กรุณาเข้าสู่ระบบด้วยบัญชีโค้ช
                   </p>
                 </div>
               </div>
 
-              {/* Quick Switch Buttons for Evaluator / User */}
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => loginAs("COACH")}
-                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-xs font-bold px-3 py-2 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="bg-[#0B1C30] hover:bg-[#142338] text-white font-mono text-xs font-semibold px-3 py-2 rounded-sm transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>เข้าสู่ระบบบัญชีโค้ช</span>
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>สลับเป็นบัญชีโค้ช</span>
                 </button>
-                <span className="bg-amber-500/10 text-amber-900 font-mono text-xs font-bold px-3 py-2 rounded-lg">PRO ยังไม่เปิดให้สมัคร</span>
+                <Link
+                  href="/auth/register"
+                  className="bg-white border border-[#DFE2EB] hover:bg-[#F8F9FF] text-[#0B1C30] font-mono text-xs font-semibold px-3 py-2 rounded-sm transition"
+                >
+                  สมัครสมาชิก
+                </Link>
               </div>
             </div>
           </div>
@@ -617,14 +566,14 @@ export default function AdvancedScoutEnginePage() {
         {/* Prospect Grid List */}
         <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           {filteredProspects.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-lg mx-auto space-y-4">
-              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+            <div className="bg-white rounded-lg border border-[#DFE2EB] p-12 text-center max-w-lg mx-auto space-y-4 shadow-xs">
+              <div className="w-12 h-12 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] flex items-center justify-center mx-auto">
                 <Search className="w-6 h-6" />
               </div>
-              <h3 className="font-headline-lg uppercase text-xl font-normal text-slate-800">
+              <h3 className="font-headline-lg uppercase text-xl font-normal text-[#0B1C30]">
                 ไม่พบข้อมูลนักกีฬาตามเกณฑ์ที่เลือก
               </h3>
-              <p className="text-xs text-slate-500 font-mono">
+              <p className="text-xs text-[#505A69] font-mono">
                 ลองปรับลดเงื่อนไขส่วนสูง หรือค่าตัวชี้วัดประสิทธิภาพเพื่อขยายผลการค้นหา
               </p>
               <button
@@ -637,7 +586,7 @@ export default function AdvancedScoutEnginePage() {
                   setSelectedPosition("ALL");
                   setSearchQuery("");
                 }}
-                className="px-4 py-2 rounded bg-slate-900 text-white font-mono text-xs font-bold uppercase transition cursor-pointer"
+                className="px-4 py-2 rounded-sm bg-[#0B1C30] hover:bg-[#142338] text-white font-mono text-xs font-semibold uppercase transition cursor-pointer"
               >
                 ล้างตัวกรองทั้งหมด
               </button>
@@ -649,40 +598,42 @@ export default function AdvancedScoutEnginePage() {
                 const isCompared = comparedIds.includes(prospect.id);
 
                 return (
-                  <div
+                  <article
                     key={prospect.id}
-                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition flex flex-col justify-between"
+                    className="bg-white border border-[#DFE2EB] rounded-lg overflow-hidden hover:border-[#7F8A9E] transition-all flex flex-col justify-between shadow-xs"
                   >
-                    {/* Card Header & Bio */}
+                    {/* Card Content & Bio */}
                     <div className="p-5 space-y-4">
-                      
                       {/* Top Badges & Actions */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
-                          <span className="bg-[#AF101A] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded uppercase">
+                          <span className="bg-[#AF101A] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-sm uppercase tracking-wider">
                             {prospect.position.replace("_", " ")}
                           </span>
                           {prospect.isNationalPool && (
-                            <span className="bg-slate-900 text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded uppercase">
+                            <span className="bg-[#0B1C30] text-white font-mono font-semibold text-[10px] px-2 py-0.5 rounded-sm uppercase">
                               NATIONAL POOL
                             </span>
                           )}
                         </div>
 
-                        <div className="flex items-center gap-1">
-                          <button
-                            type="button"
-                            onClick={() => toggleShortlist(prospect.id)}
-                            className={`p-1.5 rounded-lg border transition ${
-                              isShortlisted
-                                ? "bg-red-50 border-red-300 text-[#DC2626]"
-                                : "bg-slate-50 border-slate-200 text-slate-400 hover:text-slate-700"
-                            }`}
-                            title={isShortlisted ? "ลบออกจากลิสต์" : "บันทึกในลิสต์สเกาต์"}
-                          >
-                            {isShortlisted ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
-                          </button>
-                        </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleShortlist(prospect.id)}
+                          aria-label={
+                            isShortlisted
+                              ? `นำ ${prospect.name} ออกจาก Shortlist`
+                              : `บันทึก ${prospect.name} ใน Shortlist`
+                          }
+                          aria-pressed={isShortlisted}
+                          className={`p-1.5 rounded-sm border transition cursor-pointer ${
+                            isShortlisted
+                              ? "bg-[#AF101A]/10 border-[#AF101A] text-[#AF101A]"
+                              : "bg-[#F8F9FF] border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30]"
+                          }`}
+                        >
+                          {isShortlisted ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                        </button>
                       </div>
 
                       {/* Athlete Identity */}
@@ -690,71 +641,81 @@ export default function AdvancedScoutEnginePage() {
                         <img
                           src={prospect.avatarUrl}
                           alt={prospect.name}
-                          className="w-14 h-14 rounded-xl object-cover border border-slate-200 shadow-xs shrink-0"
+                          className="w-14 h-14 rounded-md object-cover border border-[#DFE2EB] shrink-0"
                         />
                         <div className="flex-1 min-w-0">
                           <Link
                             href={`/athlete/${prospect.id}`}
-                            className="font-bold text-slate-900 text-base hover:text-[#DC2626] transition flex items-center gap-1.5 truncate"
+                            className="font-bold text-[#0B1C30] text-base hover:text-[#AF101A] transition-colors flex items-center gap-1.5 truncate"
                           >
-                            <span>{prospect.name}</span>
-                            <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" />
+                            <span className="truncate">{prospect.name}</span>
+                            <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" title="ยืนยันผลงานโดย StatCourtTH" />
                           </Link>
-                          <div className="text-xs text-slate-500 font-mono truncate">
+                          <div className="text-xs text-[#505A69] font-medium truncate mt-0.5">
                             {prospect.school} • {prospect.province}
                           </div>
-                          <div className="text-[10px] text-slate-400 font-mono mt-0.5">
-                            TCAS CODE: {prospect.tcasCode}
+                          <div className="text-[10px] text-[#505A69] font-mono mt-0.5">
+                            TCAS: <span className="font-semibold text-[#0B1C30]">{prospect.tcasCode}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Biometric Measurements Bar */}
-                      <div className="grid grid-cols-3 gap-2 bg-[#F8F9FC] p-2.5 rounded-xl border border-slate-100 font-mono text-center">
-                        <div>
-                          <span className="text-[10px] text-slate-400 uppercase block">ส่วนสูง</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.heightCm} cm</span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-slate-400 uppercase block">ช่วงแขน</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.wingspanCm} cm</span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-slate-400 uppercase block">ยืนเอื้อม</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.standingReachCm} cm</span>
+                      <div className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm p-2.5 font-mono">
+                        <div className="grid grid-cols-3 divide-x divide-[#DFE2EB] text-center">
+                          <div>
+                            <span className="text-[10px] text-[#505A69] uppercase font-semibold block">ส่วนสูง</span>
+                            <span className="font-bold text-sm text-[#0B1C30] tabular-nums">{prospect.heightCm} cm</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-[#505A69] uppercase font-semibold block">ช่วงแขน</span>
+                            <span className="font-bold text-sm text-[#0B1C30] tabular-nums">{prospect.wingspanCm} cm</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-[#505A69] uppercase font-semibold block">ยืนเอื้อม</span>
+                            <span className="font-bold text-sm text-[#0B1C30] tabular-nums">{prospect.standingReachCm} cm</span>
+                          </div>
                         </div>
                       </div>
 
                       {/* FIBA Analytics Metrics Grid */}
-                      <div className="grid grid-cols-4 gap-2 pt-1 font-mono text-center">
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                          <span className="text-[10px] text-slate-400 uppercase block">FIBA EFF</span>
-                          <span className="font-bold text-xs text-[#DC2626]">{prospect.effPerGame.toFixed(1)}</span>
+                      <div className="grid grid-cols-4 gap-2 font-mono text-center">
+                        <div className="bg-[#F8F9FF] p-2 rounded-sm border border-[#DFE2EB]">
+                          <span className="text-[10px] text-[#505A69] uppercase font-semibold block">FIBA EFF</span>
+                          <span className="font-bold text-sm text-[#AF101A] tabular-nums">
+                            {prospect.effPerGame.toFixed(1)}
+                          </span>
                         </div>
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                          <span className="text-[10px] text-slate-400 uppercase block">PPG</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.ppg.toFixed(1)}</span>
+                        <div className="bg-[#F8F9FF] p-2 rounded-sm border border-[#DFE2EB]">
+                          <span className="text-[10px] text-[#505A69] uppercase font-semibold block">PPG</span>
+                          <span className="font-bold text-sm text-[#0B1C30] tabular-nums">
+                            {prospect.ppg.toFixed(1)}
+                          </span>
                         </div>
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                          <span className="text-[10px] text-slate-400 uppercase block">TS%</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.tsPct.toFixed(1)}%</span>
+                        <div className="bg-[#F8F9FF] p-2 rounded-sm border border-[#DFE2EB]">
+                          <span className="text-[10px] text-[#505A69] uppercase font-semibold block">TS%</span>
+                          <span className="font-bold text-sm text-[#0B1C30] tabular-nums">
+                            {prospect.tsPct.toFixed(1)}%
+                          </span>
                         </div>
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                          <span className="text-[10px] text-slate-400 uppercase block">AST/TO</span>
-                          <span className="font-bold text-xs text-slate-900">{prospect.astToRatio.toFixed(1)}</span>
+                        <div className="bg-[#F8F9FF] p-2 rounded-sm border border-[#DFE2EB]">
+                          <span className="text-[10px] text-[#505A69] uppercase font-semibold block">AST/TO</span>
+                          <span className="font-bold text-sm text-[#0B1C30] tabular-nums">
+                            {prospect.astToRatio.toFixed(1)}
+                          </span>
                         </div>
                       </div>
-
                     </div>
 
                     {/* Card Actions Footer */}
-                    <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-mono">
-                      <label className="flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 select-none">
+                    <div className="px-5 py-3 bg-[#F8F9FF] border-t border-[#DFE2EB] flex items-center justify-between text-xs font-mono">
+                      <label className="flex items-center gap-2 cursor-pointer text-[#505A69] hover:text-[#0B1C30] select-none">
                         <input
                           type="checkbox"
                           checked={isCompared}
                           onChange={() => toggleCompare(prospect.id)}
-                          className="accent-[#AF101A] w-3.5 h-3.5 rounded"
+                          aria-label={`เลือกเปรียบเทียบสถิติของ ${prospect.name}`}
+                          className="accent-[#AF101A] w-3.5 h-3.5 rounded-sm"
                         />
                         <span>เทียบสถิติ</span>
                       </label>
@@ -763,54 +724,61 @@ export default function AdvancedScoutEnginePage() {
                         <button
                           type="button"
                           onClick={() => setSelectedAthleteForReel(prospect)}
-                          className="p-1.5 rounded hover:bg-slate-200 text-slate-700 transition"
+                          className="p-1.5 rounded-sm border border-transparent hover:border-[#DFE2EB] hover:bg-white text-[#505A69] hover:text-[#AF101A] transition cursor-pointer"
+                          aria-label={`สร้างคลิปไฮไลต์ของ ${prospect.name}`}
                           title="สร้าง Highlight Reel 1 นาที"
                         >
-                          <Film className="w-4 h-4 text-red-600" />
+                          <Film className="w-4 h-4" />
                         </button>
                         <button
                           type="button"
                           onClick={() => setSelectedAthleteForAcademic(prospect)}
-                          className="p-1.5 rounded hover:bg-slate-200 text-slate-700 transition"
+                          className="p-1.5 rounded-sm border border-transparent hover:border-[#DFE2EB] hover:bg-white text-[#505A69] hover:text-[#0B1C30] transition cursor-pointer"
+                          aria-label={`ดูประวัติการศึกษาและเกรด GPAX ของ ${prospect.name}`}
                           title="ดูประวัติผลการเรียน GPAX"
                         >
-                          <GraduationCap className="w-4 h-4 text-slate-700" />
+                          <GraduationCap className="w-4 h-4" />
                         </button>
                         <Link
                           href={`/athlete/${prospect.id}?tab=TCAS`}
-                          className="text-[#DC2626] hover:underline font-bold flex items-center pl-1"
+                          className="text-[#AF101A] hover:underline font-bold flex items-center pl-1"
                         >
                           <span>พอร์ต TCAS</span>
                           <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 );
               })}
 
               {/* Locked Prospect Card for Non-Coach / Public */}
               {!hasScoutAccess && filteredProspects.length > 2 && (
-                <div className="bg-slate-100/70 border-2 border-dashed border-slate-300 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[320px]">
-                  <div className="w-12 h-12 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center shadow-xs">
-                    <Lock className="w-6 h-6 text-slate-700" />
+                <div className="bg-white border-2 border-dashed border-[#DFE2EB] rounded-lg p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[340px]">
+                  <div className="w-12 h-12 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] flex items-center justify-center">
+                    <Lock className="w-5 h-5 text-[#0B1C30]" />
                   </div>
-                  <h4 className="font-bold text-slate-800 text-base">
-                    ซ่อนนักกีฬาอีก {filteredProspects.length - 2} คน
+                  <h4 className="font-bold text-[#0B1C30] text-base">
+                    ซ่อนดาวรุ่งอีก {filteredProspects.length - 2} คนในฐานข้อมูล
                   </h4>
-                  <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                    ฟังก์ชันค้นหาดาวรุ่ง คัดกรองสรีระ 190+, ดูเกรดสะสม GPAX และข้อมูลติดต่อโรงเรียน เปิดให้เข้าถึงเฉพาะ โค้ช / แมวมอง และสมาชิก PRO
+                  <p className="text-xs text-[#505A69] max-w-xs leading-relaxed">
+                    การเข้าถึงดาวรุ่งระดับลึก คัดกรองสรีระ 190+ ตรวจสอบ GPAX ฉบับเต็ม และดูข้อมูลการติดต่อโรงเรียน เปิดให้สำหรับผู้ฝึกสอน โค้ชมหาวิทยาลัย และสโมสร
                   </p>
                   <div className="pt-2 flex flex-col sm:flex-row gap-2 w-full max-w-xs">
                     <button
                       type="button"
                       onClick={() => loginAs("COACH")}
-                      className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-xs font-bold py-2 px-3 rounded-lg transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
+                      className="w-full bg-[#0B1C30] hover:bg-[#142338] text-white font-mono text-xs font-semibold py-2 px-3 rounded-sm transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
                     >
-                      <ShieldCheck className="w-4 h-4" />
-                      <span>เข้าสู่ระบบบัญชีโค้ช</span>
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      <span>สลับเป็นบัญชีโค้ช</span>
                     </button>
-                    <span className="w-full bg-slate-100 text-slate-600 font-mono text-xs font-bold py-2 px-3 rounded-lg text-center">PRO ยังไม่เปิดให้สมัคร</span>
+                    <Link
+                      href="/auth/register"
+                      className="w-full bg-white border border-[#DFE2EB] hover:bg-[#F8F9FF] text-[#0B1C30] font-mono text-xs font-semibold py-2 px-3 rounded-sm transition text-center"
+                    >
+                      สมัครสมาชิก
+                    </Link>
                   </div>
                 </div>
               )}
@@ -818,60 +786,72 @@ export default function AdvancedScoutEnginePage() {
           )}
         </section>
 
-        {/* Head-to-Head Comparison Drawer / Modal */}
+        {/* Head-to-Head Comparison Modal */}
         {isCompareDrawerOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-            <div className="bg-[#0F172A] border border-slate-700 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
-              {/* Drawer Header */}
-              <div className="px-6 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-white">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="compare-modal-title"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/70 backdrop-blur-xs p-4 overflow-y-auto"
+          >
+            <div className="bg-white border border-[#DFE2EB] w-full max-w-4xl rounded-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+              {/* Modal Header */}
+              <div className="px-6 py-4 bg-[#0B1C30] text-white flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded bg-[#AF101A] flex items-center justify-center text-white">
+                  <div className="w-8 h-8 rounded-sm bg-[#AF101A] flex items-center justify-center text-white">
                     <Columns2 className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal">
+                    <h3 id="compare-modal-title" className="font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal">
                       Head-to-Head Prospect Comparison
                     </h3>
-                    <p className="text-xs text-slate-400 font-mono">
+                    <p className="text-xs text-slate-300 font-mono">
                       เปรียบเทียบสรีระ สมรรถภาพ และประสิทธิภาพขั้นสูง FIBA แบบตัวต่อตัว
                     </p>
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsCompareDrawerOpen(false)}
-                  className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+                  aria-label="ปิดหน้าต่างเปรียบเทียบ"
+                  className="text-slate-400 hover:text-white p-1 rounded-sm hover:bg-white/10 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Drawer Content */}
-              <div className="p-6 overflow-y-auto space-y-6 text-slate-200">
+              {/* Modal Content */}
+              <div className="p-6 overflow-y-auto space-y-6 text-[#0B1C30]">
                 {comparedProspects.length < 2 ? (
-                  <div className="text-center py-8 space-y-2 text-slate-400 font-mono text-xs">
+                  <div className="text-center py-8 space-y-2 text-[#505A69] font-mono text-xs">
                     <p>กรุณาเลือกนักกีฬาอย่างน้อย 2 คนเพื่อเปรียบเทียบสถิติเคียงข้างกัน</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {/* Header Columns for selected athletes */}
+                    {/* Selected Athletes Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {comparedProspects.map((p) => (
-                        <div key={p.id} className="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center space-y-2 relative">
+                        <div
+                          key={p.id}
+                          className="bg-[#F8F9FF] p-4 rounded-lg border border-[#DFE2EB] text-center space-y-2 relative"
+                        >
                           <button
+                            type="button"
                             onClick={() => toggleCompare(p.id)}
-                            className="absolute top-2 right-2 text-slate-500 hover:text-white"
+                            aria-label={`นำ ${p.name} ออกจากการเปรียบเทียบ`}
+                            className="absolute top-2 right-2 text-[#505A69] hover:text-[#AF101A] transition cursor-pointer"
                           >
                             <X className="w-4 h-4" />
                           </button>
                           <img
                             src={p.avatarUrl}
                             alt={p.name}
-                            className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-slate-700"
+                            className="w-16 h-16 rounded-md mx-auto object-cover border border-[#DFE2EB]"
                           />
                           <div>
-                            <div className="font-bold text-white text-sm">{p.name}</div>
-                            <div className="text-xs text-slate-400 font-mono">{p.school}</div>
-                            <div className="text-[11px] text-red-400 font-mono font-bold mt-1">
+                            <div className="font-bold text-[#0B1C30] text-sm">{p.name}</div>
+                            <div className="text-xs text-[#505A69] font-medium">{p.school}</div>
+                            <div className="text-[11px] text-[#AF101A] font-mono font-bold mt-1">
                               {p.position.replace("_", " ")} • {p.heightCm} cm
                             </div>
                           </div>
@@ -880,79 +860,103 @@ export default function AdvancedScoutEnginePage() {
                     </div>
 
                     {/* Comparison Metrics Table */}
-                    <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/60 text-xs font-mono">
+                    <div className="border border-[#DFE2EB] rounded-lg overflow-hidden bg-white text-xs font-mono">
                       <table className="w-full text-left">
-                        <thead className="bg-slate-900 border-b border-slate-800 text-slate-400 text-[11px]">
+                        <thead className="bg-[#F8F9FF] border-b border-[#DFE2EB] text-[#505A69] text-[11px]">
                           <tr>
-                            <th className="py-3 px-4">ดัชนีชี้วัด (METRIC)</th>
+                            <th className="py-3 px-4 font-semibold uppercase">ดัชนีชี้วัด (METRIC)</th>
                             {comparedProspects.map((p) => (
-                              <th key={p.id} className="py-3 px-4 text-center text-white">
+                              <th key={p.id} className="py-3 px-4 text-center text-[#0B1C30] font-bold">
                                 {p.name}
                               </th>
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800/60">
+                        <tbody className="divide-y divide-[#DFE2EB]">
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">ส่วนสูง (Height)</td>
+                            <td className="py-3 px-4 text-[#505A69]">ส่วนสูง (Height)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.heightCm} cm
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">ช่วงแขน (Wingspan)</td>
+                            <td className="py-3 px-4 text-[#505A69]">ช่วงแขน (Wingspan)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.wingspanCm} cm
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">FIBA EFF / Game</td>
+                            <td className="py-3 px-4 text-[#505A69]">ยืนเอื้อม (Standing Reach)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-red-400 text-sm">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
+                                {p.standingReachCm} cm
+                              </td>
+                            ))}
+                          </tr>
+                          <tr className="bg-[#AF101A]/5">
+                            <td className="py-3 px-4 text-[#AF101A] font-bold">FIBA EFF / Game</td>
+                            {comparedProspects.map((p) => (
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#AF101A] text-sm tabular-nums">
                                 {p.effPerGame.toFixed(1)}
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">แต้มเฉลี่ย (PPG)</td>
+                            <td className="py-3 px-4 text-[#505A69]">แต้มเฉลี่ย (PPG)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.ppg.toFixed(1)}
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">True Shooting (TS%)</td>
+                            <td className="py-3 px-4 text-[#505A69]">รีบาวด์เฉลี่ย (RPG)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
+                                {p.rpg.toFixed(1)}
+                              </td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="py-3 px-4 text-[#505A69]">แอสซิสต์เฉลี่ย (APG)</td>
+                            {comparedProspects.map((p) => (
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
+                                {p.apg.toFixed(1)}
+                              </td>
+                            ))}
+                          </tr>
+                          <tr>
+                            <td className="py-3 px-4 text-[#505A69]">True Shooting (TS%)</td>
+                            {comparedProspects.map((p) => (
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.tsPct.toFixed(1)}%
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">Effective FG (eFG%)</td>
+                            <td className="py-3 px-4 text-[#505A69]">Effective FG (eFG%)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.efgPct.toFixed(1)}%
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">Assist-to-Turnover (AST/TO)</td>
+                            <td className="py-3 px-4 text-[#505A69]">Assist-to-Turnover (AST/TO)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-white">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.astToRatio.toFixed(1)}
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="py-3 px-4 text-slate-400">ผลการเรียนเฉลี่ย (GPAX)</td>
+                            <td className="py-3 px-4 text-[#505A69]">ผลการเรียนเฉลี่ย (GPAX)</td>
                             {comparedProspects.map((p) => (
-                              <td key={p.id} className="py-3 px-4 text-center font-bold text-slate-200">
+                              <td key={p.id} className="py-3 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                                 {p.gpax.toFixed(2)}
                               </td>
                             ))}
@@ -964,9 +968,9 @@ export default function AdvancedScoutEnginePage() {
                 )}
               </div>
 
-              {/* Drawer Footer */}
-              <div className="px-6 py-4 bg-slate-900 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
-                <span className="text-slate-400">
+              {/* Modal Footer */}
+              <div className="px-6 py-4 bg-[#F8F9FF] border-t border-[#DFE2EB] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+                <span className="text-[#505A69] text-center sm:text-left">
                   สถิติอ้างอิงจากการแข่งขันที่ผ่านการรับรองโดยสมาคมและโต๊ะเทคนิค StatCourtTH
                 </span>
                 <div className="flex items-center gap-2">
@@ -975,7 +979,7 @@ export default function AdvancedScoutEnginePage() {
                     onClick={() => {
                       alert("ดาวน์โหลดตารางเปรียบเทียบนักกีฬา (PDF Report) เรียบร้อยแล้ว");
                     }}
-                    className="px-4 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center gap-1.5 transition"
+                    className="px-4 py-2 rounded-sm bg-[#0B1C30] hover:bg-[#142338] text-white font-semibold flex items-center gap-1.5 transition cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>ส่งออกรายงาน PDF</span>
@@ -983,7 +987,7 @@ export default function AdvancedScoutEnginePage() {
                   <button
                     type="button"
                     onClick={() => setIsCompareDrawerOpen(false)}
-                    className="px-4 py-2 rounded bg-[#DC2626] text-white font-bold"
+                    className="px-4 py-2 rounded-sm bg-white border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] font-semibold cursor-pointer"
                   >
                     ปิด
                   </button>

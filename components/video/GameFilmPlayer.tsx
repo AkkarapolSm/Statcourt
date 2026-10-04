@@ -259,7 +259,7 @@ export default function GameFilmPlayer({
         <div className="absolute top-14 right-4 z-30 w-72 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-4 shadow-2xl space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-800">
             <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-brand-primary" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-brand-signal" />
               <span>TIMELINE EVENT FILTERS</span>
             </div>
             <button
@@ -462,7 +462,7 @@ export default function GameFilmPlayer({
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-mono transition"
             title="Replay previous 8 seconds"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-brand-primary" />
+            <RotateCcw className="w-3.5 h-3.5 text-brand-signal" />
             <span>8s REPLAY</span>
           </button>
 
@@ -494,7 +494,7 @@ export default function GameFilmPlayer({
         <div className="flex items-center gap-3">
           {selectedEventId && (
             <div className="hidden md:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-md text-xs font-mono">
-              <Clock className="w-3.5 h-3.5 text-brand-primary" />
+              <Clock className="w-3.5 h-3.5 text-brand-signal" />
               <span className="text-slate-300">
                 Seek Play: -8s lead-in anchored
               </span>
@@ -582,7 +582,7 @@ export default function GameFilmPlayer({
                   setShowQuotaWarning(false);
                   setIsPricingModalOpen(true);
                 }}
-                className="px-5 py-2 rounded-lg font-black bg-brand-primary hover:bg-red-700 text-white shadow flex items-center gap-1.5"
+                className="px-5 py-2 rounded-lg font-black bg-brand-primary hover:bg-brand-crimson text-white shadow flex items-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                 <span>อัปเกรดเป็น PRO</span>

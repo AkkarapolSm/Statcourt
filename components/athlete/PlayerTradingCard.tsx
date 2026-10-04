@@ -7,6 +7,7 @@ import {
   Share2,
   MapPin,
   Check,
+  QrCode,
 } from "lucide-react";
 import { AthleteProfile, AthleteSeasonStats, Position } from "@/lib/types";
 
@@ -16,20 +17,20 @@ interface PlayerTradingCardProps {
   onVerificationClick?: () => void;
 }
 
-function formatPosition(pos: Position): { full: string; abbr: string } {
+function formatPosition(pos: Position): { full: string; abbr: string; thai: string } {
   switch (pos) {
     case "POINT_GUARD":
-      return { full: "POINT GUARD", abbr: "PG" };
+      return { full: "POINT GUARD", abbr: "PG", thai: "พอยต์การ์ด" };
     case "SHOOTING_GUARD":
-      return { full: "SHOOTING GUARD", abbr: "SG" };
+      return { full: "SHOOTING GUARD", abbr: "SG", thai: "ชูตติ้งการ์ด" };
     case "SMALL_FORWARD":
-      return { full: "SMALL FORWARD", abbr: "SF" };
+      return { full: "SMALL FORWARD", abbr: "SF", thai: "สมอลฟอร์เวิร์ด" };
     case "POWER_FORWARD":
-      return { full: "POWER FORWARD", abbr: "PF" };
+      return { full: "POWER FORWARD", abbr: "PF", thai: "เพาเวอร์ฟอร์เวิร์ด" };
     case "CENTER":
-      return { full: "CENTER", abbr: "C" };
+      return { full: "CENTER", abbr: "C", thai: "เซ็นเตอร์" };
     default:
-      return { full: String(pos).replace("_", " "), abbr: "ATH" };
+      return { full: String(pos).replace("_", " "), abbr: "ATH", thai: "นักกีฬา" };
   }
 }
 
@@ -136,8 +137,8 @@ export default function PlayerTradingCard({
                 TCAS ATHLETE
               </span>
             </div>
-            <div className="flex items-center gap-1 bg-[#AF101A]/20 border border-[#AF101A]/60 px-1.5 py-0.5 rounded text-[8.5px] font-mono text-red-200 font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626] animate-pulse" />
+            <div className="flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/50 px-1.5 py-0.5 rounded text-[8.5px] font-mono text-emerald-300 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#15803D] animate-pulse" />
               <span>OFFICIAL VERIFIED</span>
             </div>
           </div>
@@ -164,8 +165,9 @@ export default function PlayerTradingCard({
             </div>
 
             {/* Position Pill */}
-            <div className="mt-2 px-2.5 py-0.5 rounded-full bg-slate-800/90 border border-red-500/40 text-[9.5px] font-mono font-bold text-red-300 uppercase tracking-wider">
-              {posInfo.full}
+            <div className="mt-2 px-2.5 py-0.5 rounded-full bg-slate-800/90 border border-red-500/40 text-[9.5px] font-mono font-bold text-red-300 uppercase tracking-wider flex items-center gap-1.5">
+              <span>{posInfo.full} ({posInfo.abbr})</span>
+              <span className="text-slate-400 font-sans font-normal text-[9px]">· {posInfo.thai}</span>
             </div>
 
             {/* Centered Athlete Name */}
@@ -175,7 +177,7 @@ export default function PlayerTradingCard({
 
             {/* Centered School & Province */}
             <div className="text-xs text-slate-300 font-medium flex items-center justify-center gap-1 mt-0.5 font-mono">
-              <MapPin className="w-3 h-3 text-brand-primary shrink-0" />
+              <MapPin className="w-3 h-3 text-brand-signal shrink-0" />
               <span className="truncate max-w-[280px]">
                 {athlete.schoolOrClub} • {athlete.province}
               </span>
@@ -185,35 +187,47 @@ export default function PlayerTradingCard({
           {/* Physical Biometrics Section */}
           <div className="relative z-10 grid grid-cols-4 gap-1 py-1.5 px-1 bg-slate-900/90 rounded-xl border border-slate-800 text-center font-mono shadow-inner divide-x divide-slate-800/80">
             <div className="px-0.5">
-              <span className="text-[8.5px] uppercase tracking-widest text-slate-400 block font-semibold">
+              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
                 HEIGHT
               </span>
-              <span className="text-xs sm:text-sm font-black text-white">
-                {height} <span className="text-[9px] font-normal text-slate-400">cm</span>
+              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+                ส่วนสูง
+              </span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
+                {height} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8.5px] uppercase tracking-widest text-slate-400 block font-semibold">
+              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
                 WINGSPAN
               </span>
-              <span className="text-xs sm:text-sm font-black text-white">
-                {wingspan} <span className="text-[9px] font-normal text-slate-400">cm</span>
+              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+                วงแขน
+              </span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
+                {wingspan} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8.5px] uppercase tracking-widest text-slate-400 block font-semibold">
+              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
                 REACH
               </span>
-              <span className="text-xs sm:text-sm font-black text-white">
-                {reach} <span className="text-[9px] font-normal text-slate-400">cm</span>
+              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+                ระยะเอื้อม
+              </span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
+                {reach} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8.5px] uppercase tracking-widest text-slate-400 block font-semibold">
+              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
                 WEIGHT
               </span>
-              <span className="text-xs sm:text-sm font-black text-white">
-                {weight} <span className="text-[9px] font-normal text-slate-400">kg</span>
+              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+                น้ำหนัก
+              </span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
+                {weight} <span className="text-[8.5px] font-normal text-slate-400">kg</span>
               </span>
             </div>
           </div>
@@ -340,7 +354,7 @@ export default function PlayerTradingCard({
           <div className="relative z-10 grid grid-cols-6 gap-1 p-1.5 bg-slate-900/90 rounded-xl border border-slate-800 text-center font-mono shadow-inner items-center">
             <div className="bg-brand-primary/15 border border-brand-primary/40 rounded-lg py-1 px-0.5">
               <span className="text-[7.5px] text-red-400 font-bold block leading-none">FIBA EFF</span>
-              <span className="text-xs font-black text-brand-primary leading-tight mt-0.5 block">
+              <span className="text-xs font-black text-brand-signal leading-tight mt-0.5 block">
                 {stats?.effPerGame ?? stats?.per ?? "28.0"}
               </span>
             </div>
@@ -379,8 +393,8 @@ export default function PlayerTradingCard({
           {/* Official Table Verification Seal Footer */}
           <div className="relative z-10 pt-2.5 mt-0.5 border-t border-slate-800/90 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center shadow-md">
-                <ShieldCheck className="w-4 h-4 text-[#DC2626]" />
+              <div className="w-7 h-7 rounded-lg bg-emerald-950/70 border border-emerald-600/50 flex items-center justify-center shadow-md">
+                <ShieldCheck className="w-4 h-4 text-[#15803D]" />
               </div>
               <div>
                 <div className="text-[9.5px] font-black uppercase text-white font-mono tracking-wider">
@@ -392,19 +406,21 @@ export default function PlayerTradingCard({
               </div>
             </div>
 
-            <div className="flex flex-col items-end">
-              <div className="flex items-center gap-0.5 h-2.5 opacity-60">
-                <span className="w-0.5 h-full bg-slate-400" />
-                <span className="w-1 h-full bg-slate-400" />
-                <span className="w-0.5 h-full bg-slate-500" />
-                <span className="w-1.5 h-full bg-slate-400" />
-                <span className="w-0.5 h-full bg-slate-400" />
-                <span className="w-1 h-full bg-slate-500" />
-                <span className="w-0.5 h-full bg-slate-400" />
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <div className="text-[8px] uppercase tracking-wider text-slate-300 font-mono font-bold leading-tight">
+                  SCAN PROFILE
+                </div>
+                <div className="text-[7.5px] text-slate-400 font-sans leading-none mt-0.5">
+                  BSAT / TCAS
+                </div>
               </div>
-              <span className="text-[8px] uppercase tracking-wider text-slate-400 font-mono font-semibold mt-0.5">
-                BSAT / THAI TABLE
-              </span>
+              <div
+                className="w-7 h-7 rounded bg-white p-0.5 flex items-center justify-center shadow-sm shrink-0"
+                title={`Scan to view: /athlete/${athlete.id}`}
+              >
+                <QrCode className="w-5 h-5 text-slate-900" />
+              </div>
             </div>
           </div>
         </div>
@@ -415,7 +431,7 @@ export default function PlayerTradingCard({
         <button
           onClick={handleExportCard}
           disabled={isExporting}
-          className="flex-1 flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-red-700 text-white font-bold font-mono text-xs py-2 px-3 rounded-xl shadow-md transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-crimson text-white font-bold font-mono text-xs py-2 px-3 rounded-xl shadow-md transition disabled:opacity-50"
         >
           <Download className="w-3.5 h-3.5" />
           <span>{isExporting ? "EXPORTING..." : "EXPORT PNG"}</span>
@@ -426,7 +442,7 @@ export default function PlayerTradingCard({
             onClick={onVerificationClick}
             className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-semibold py-2 px-3 rounded-xl border border-slate-700 transition"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>LOGS</span>
           </button>
         )}
@@ -438,8 +454,8 @@ export default function PlayerTradingCard({
         >
           {copiedCode ? (
             <>
-              <Check className="w-3.5 h-3.5 text-red-400" />
-              <span className="text-red-400 font-bold">COPIED</span>
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-emerald-400 font-bold">COPIED</span>
             </>
           ) : (
             <>

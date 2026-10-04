@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { X, Send, Image as ImageIcon, Sparkles, AlertCircle } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Send, Sparkles, AlertCircle } from "lucide-react";
 import { NewsArticle, NewsCategory } from "@/lib/types";
 
 interface CreateArticleModalProps {
@@ -30,10 +30,24 @@ export default function CreateArticleModal({
   );
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("กองบรรณาธิการ StatCourt News (Admin)");
+  const [author, setAuthor] = useState("กองบรรณาธิการ StatCourt News");
   const [authorRole, setAuthorRole] = useState("Official Chief Editor");
   const [isFeatured, setIsFeatured] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -68,68 +82,84 @@ export default function CreateArticleModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-[#0F172A] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden my-6 text-white font-mono flex flex-col max-h-[92vh]">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="create-article-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-2xl bg-white border border-[#DFE2EB] rounded-lg shadow-xl overflow-hidden my-6 text-slate-900 font-sans flex flex-col max-h-[92vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* HEADER */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#1E293B]/70 shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#DFE2EB] bg-[#F8F9FF] shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 flex items-center justify-center text-red-400">
+            <div className="w-8 h-8 rounded-sm bg-[#AF101A]/10 border border-[#AF101A]/30 flex items-center justify-center text-[#AF101A]">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-100 flex items-center gap-2">
+              <h2
+                id="create-article-title"
+                className="text-sm sm:text-base font-bold uppercase tracking-wider text-[#0B1C30] flex items-center gap-2 font-mono"
+              >
                 <span>ระบบเผยแพร่ข่าวสาร (ADMIN PUBLISHING PORTAL)</span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-red-600 text-white font-bold">
-                  ADMIN ONLY
+                <span className="text-[10px] px-2 py-0.5 rounded-sm bg-[#AF101A] text-white font-bold">
+                  OFFICIAL
                 </span>
-              </h3>
-              <p className="text-xs text-slate-400 font-sans">
+              </h2>
+              <p className="text-xs text-[#505A69]">
                 สร้างข่าวสรุปผลการแข่งขัน บทความวิทยาศาสตร์การกีฬา หรือดาราเด่นประจำสัปดาห์
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            aria-label="ปิดหน้าต่างเขียนข่าว"
+            className="p-1.5 rounded-sm text-slate-500 hover:text-slate-900 hover:bg-slate-200/70 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {error && (
-          <div className="bg-red-950/80 border-b border-red-800 text-red-300 px-6 py-2.5 text-xs font-bold flex items-center gap-2 shrink-0">
-            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+          <div className="bg-red-50 border-b border-red-200 text-[#AF101A] px-6 py-2.5 text-xs font-bold flex items-center gap-2 shrink-0">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {/* FORM */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4 text-xs font-mono">
           {/* Title */}
           <div className="space-y-1">
-            <label className="text-slate-300 font-bold block">
-              หัวข้อข่าว (Headline) <span className="text-red-400">*</span>
+            <label htmlFor="article-title" className="text-slate-800 font-bold block">
+              หัวข้อข่าว (Headline) <span className="text-[#AF101A]">*</span>
             </label>
             <input
+              id="article-title"
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="เช่น 'THIS TEAM IS SCARY' | RECAP: 2026 ROCKETS MEDIA DAY"
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-bold focus:outline-none focus:border-red-500 text-sm"
+              className="w-full px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 font-bold focus:outline-none focus:border-[#0B1C30] focus:bg-white text-sm"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Category */}
             <div className="space-y-1">
-              <label className="text-slate-300 font-bold block">
+              <label htmlFor="article-category" className="text-slate-800 font-bold block">
                 หมวดหมู่ข่าว (Category)
               </label>
               <select
+                id="article-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value as NewsCategory)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-bold focus:outline-none focus:border-red-500"
+                className="w-full px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 text-xs font-bold focus:outline-none focus:border-[#0B1C30] focus:bg-white"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -141,28 +171,32 @@ export default function CreateArticleModal({
 
             {/* Author */}
             <div className="space-y-1">
-              <label className="text-slate-300 font-bold block">ผู้เขียน / สังกัด (Author)</label>
+              <label htmlFor="article-author" className="text-slate-800 font-bold block">
+                ผู้เขียน / สังกัด (Author)
+              </label>
               <input
+                id="article-author"
                 type="text"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs focus:outline-none focus:border-red-500"
+                className="w-full px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 text-xs focus:outline-none focus:border-[#0B1C30] focus:bg-white"
               />
             </div>
           </div>
 
           {/* Cover Image URL */}
           <div className="space-y-1">
-            <label className="text-slate-300 font-bold block">
+            <label htmlFor="article-cover" className="text-slate-800 font-bold block">
               ลิงก์ภาพหน้าปก (Cover Image URL)
             </label>
             <div className="flex gap-2">
               <input
+                id="article-cover"
                 type="url"
                 value={coverImage}
                 onChange={(e) => setCoverImage(e.target.value)}
                 placeholder="https://images.unsplash.com/..."
-                className="flex-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs focus:outline-none focus:border-red-500"
+                className="flex-1 px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 text-xs focus:outline-none focus:border-[#0B1C30] focus:bg-white"
               />
               <button
                 type="button"
@@ -171,7 +205,7 @@ export default function CreateArticleModal({
                     "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80"
                   )
                 }
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 text-slate-300 text-[11px]"
+                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-sm border border-[#DFE2EB] text-slate-700 text-[11px] font-bold transition cursor-pointer"
               >
                 ภาพตัวอย่าง
               </button>
@@ -180,60 +214,62 @@ export default function CreateArticleModal({
 
           {/* Excerpt */}
           <div className="space-y-1">
-            <label className="text-slate-300 font-bold block">
-              คำโปรยสั้น (Excerpt) <span className="text-red-400">*</span>
+            <label htmlFor="article-excerpt" className="text-slate-800 font-bold block">
+              คำโปรยสั้น (Excerpt) <span className="text-[#AF101A]">*</span>
             </label>
             <textarea
+              id="article-excerpt"
               rows={2}
               required
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               placeholder="สรุป 1-2 ประโยคสำหรับแสดงใต้พาดหัวและบนฟีด..."
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-sans text-xs focus:outline-none focus:border-red-500 resize-none"
+              className="w-full px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 font-sans text-xs focus:outline-none focus:border-[#0B1C30] focus:bg-white resize-none"
             />
           </div>
 
           {/* Content */}
           <div className="space-y-1">
-            <label className="text-slate-300 font-bold block">
-              เนื้อหาข่าวเต็ม (Full Article Content) <span className="text-red-400">*</span>
+            <label htmlFor="article-content" className="text-slate-800 font-bold block">
+              เนื้อหาข่าวเต็ม (Full Article Content) <span className="text-[#AF101A]">*</span>
             </label>
             <textarea
+              id="article-content"
               rows={6}
               required
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="เขียนรายละเอียดการแข่งขัน สถิติเด่น บทวิเคราะห์แท็กติก หรือคำสัมภาษณ์..."
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-sans text-xs focus:outline-none focus:border-red-500"
+              className="w-full px-3 py-2 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm text-slate-900 font-sans text-xs focus:outline-none focus:border-[#0B1C30] focus:bg-white"
             />
           </div>
 
           {/* Featured Checkbox */}
-          <div className="flex items-center gap-2 p-3 bg-slate-900/80 rounded-lg border border-slate-800">
+          <div className="flex items-center gap-2 p-3 bg-[#F8F9FF] rounded-sm border border-[#DFE2EB]">
             <input
               type="checkbox"
               id="isFeatured"
               checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
-              className="w-4 h-4 text-red-600 rounded bg-slate-800 border-slate-700 focus:ring-red-500"
+              className="w-4 h-4 text-[#AF101A] rounded-sm border-[#DFE2EB] focus:ring-[#AF101A]"
             />
-            <label htmlFor="isFeatured" className="text-slate-300 font-bold cursor-pointer">
+            <label htmlFor="isFeatured" className="text-slate-800 font-bold cursor-pointer font-sans">
               ปักหมุดเป็นข่าวพาดหัวหลักบนหน้าแรกของหมวดข่าว (Featured Hero Story)
             </label>
           </div>
 
           {/* MODAL ACTIONS */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#DFE2EB]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition"
+              className="px-4 py-2 rounded-sm bg-white border border-[#DFE2EB] hover:bg-slate-100 text-slate-700 text-xs font-bold transition cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-red-950/50 transition cursor-pointer"
+              className="px-5 py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8F0D15] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition cursor-pointer"
             >
               <Send className="w-4 h-4" />
               <span>เผยแพร่ข่าวสาร (Publish News)</span>

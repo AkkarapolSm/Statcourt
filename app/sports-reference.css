@@ -1,0 +1,328 @@
+/* Route-scoped sports layouts retain the StatCourt palette and type system. */
+.sc-market, .sc-ranking, .sc-athlete-hero { --sc-ink: #0b1c30; --sc-red: #af101a; --sc-ice: #f8f9ff; font-family: "Noto Sans Thai", sans-serif; caret-color: #af101a; }
+.sc-market :is(h1,h2,h3), .sc-ranking h1, .sc-athlete-hero :is(h1,h2), .sc-athlete-number { font-family: "Barlow Condensed", sans-serif; }
+:is(.sc-market,.sc-ranking,.sc-athlete-hero) :is(button,a,input,select,summary):focus-visible { outline: 3px solid #ff7a7a; outline-offset: 4px; }
+:is(.sc-market,.sc-ranking,.sc-athlete-hero) button { cursor: pointer; }
+:is(.sc-market,.sc-ranking,.sc-athlete-hero) button:disabled { opacity: .4; cursor: not-allowed; }
+.sc-market { background: white; color: var(--sc-ink); }
+.sc-market-top { background: var(--sc-ink); color: #dbe5f2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px max(24px,calc((100vw - 1240px)/2)); font-size: 11px; }
+.sc-market-top > div { display: flex; align-items: center; gap: 20px; }
+.sc-market-top button { display: flex; gap: 6px; align-items: center; font-weight: 700; color: white; }
+.sc-market-hero { position: relative; min-height: 500px; background: var(--sc-ink); color: white; overflow: hidden; }
+.sc-market-hero-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 68%; }
+.sc-market-hero-copy { position: relative; z-index: 1; max-width: 1240px; margin: auto; padding: 74px 0; }
+.sc-market-hero-copy h1 { font-weight: 800; font-size: clamp(54px,5.5vw,80px); line-height: .96; letter-spacing: -.02em; max-width: 540px; }
+.sc-market-hero-copy h1 span { color: #ff7a7a; }
+.sc-market-hero-copy p { font-size: 15px; line-height: 1.8; margin: 26px 0; color: #e2eaf4; }
+.sc-market-hero-copy > div { display: flex; gap: 12px; flex-wrap: wrap; }
+.sc-sport-button { display: inline-flex; justify-content: center; align-items: center; gap: 20px; padding: 13px 19px; min-height: 46px; background: var(--sc-red); color: white; font-size: 12px; font-weight: 700; border: 1px solid transparent; transition: background .18s ease; }
+.sc-sport-button:hover { background: #870c14; }
+.sc-sport-button.is-outline { background: transparent; border-color: #64748b; }
+.sc-sport-button.is-outline:hover { background: #213a55; }
+.sc-market-art-caption { position: absolute; bottom: 12px; right: 24px; font-size: 10px; color: #d1deec; }
+.sc-market-services { max-width: 1240px; margin: auto; display: grid; grid-template-columns: repeat(4,1fr); padding: 27px 0; gap: 20px; }
+.sc-market-services > :is(div,button) { display: flex; align-items: center; gap: 14px; text-align: left; }
+.sc-market-services svg { width: 27px; height: 27px; stroke-width: 1.5; flex-shrink: 0; }
+.sc-market-services span { font-size: 11px; color: #546579; line-height: 1.8; }
+.sc-market-services b { display: block; font-size: 12px; color: var(--sc-ink); }
+.sc-market-demo { text-align: center; background: #f2f4f8; color: #566175; font-size: 11px; padding: 10px 24px; }
+.sc-market-body { max-width: 1240px; margin: auto; padding: 0 0 64px; }
+.sc-market-categories { display: flex; justify-content: center; gap: 55px; padding: 44px 0 49px; }
+.sc-market-categories button { width: 130px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.sc-market-categories button > span { width: 80px; height: 80px; border-radius: 50%; background: #f2f4f8; display: grid; place-items: center; transition: background .18s, color .18s; }
+.sc-market-categories button:hover > span { background: #fbe8ea; }
+.sc-market-categories button.is-selected > span { background: var(--sc-red); color: white; }
+.sc-market-categories b { font-size: 12px; }
+.sc-market-categories small { font-size: 10px; color: #566175; }
+.sc-market-products { scroll-margin-top: 85px; }
+.sc-market-products-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 25px; }
+.sc-market-products h2 { font-size: 34px; font-weight: 700; line-height: 1; }
+.sc-market-products-heading p { font-size: 12px; color: #546579; margin-top: 8px; }
+.sc-market-search { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #bbc6d4; padding: 10px 0; width: 330px; }
+.sc-market-search input { width: 100%; min-width: 0; outline: none; font-size: 12px; background: transparent; }
+.sc-market-search input::placeholder { color: #64748b; }
+.sc-market-product-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 30px 20px; }
+.sc-market-product { min-width: 0; }
+.sc-market-product-image { position: relative; height: 230px; background: #f2f4f8; overflow: hidden; }
+.sc-market-product-image img { width: 100%; height: 100%; object-fit: cover; }
+.sc-market-product-image > span { position: absolute; top: 12px; left: 12px; padding: 4px 7px; background: white; font-size: 10px; font-weight: 700; }
+.sc-market-product-image button { position: absolute; top: 7px; right: 7px; background: white; color: var(--sc-red); width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; }
+.sc-market-product-meta { padding: 14px 0 0; }
+.sc-market-product-meta > span { font-size: 10px; color: #546579; }
+.sc-market-product-meta h3 { font-size: 21px; line-height: 1.12; font-weight: 700; margin: 6px 0 8px; min-height: 48px; }
+.sc-market-product-meta > strong { font-size: 19px; font-weight: 800; color: var(--sc-red); font-variant-numeric: tabular-nums; }
+.sc-market-product-meta > p { margin: 12px 0 8px; font-size: 11px; font-weight: 600; }
+.sc-market-product-meta small { display: block; font-weight: 400; color: #546579; font-size: 10px; margin-top: 3px; }
+.sc-market-history { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--sc-red); min-height: 30px; }
+.sc-market-history svg:last-child { margin-left: auto; }
+.sc-market-inquire { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; margin-top: 10px; background: var(--sc-ink); color: white; font-size: 11px; font-weight: 700; }
+.sc-market-inquire:hover { background: var(--sc-red); }
+.sc-market-empty { text-align: center; padding: 70px 20px; background: #f5f7fa; }
+.sc-market-empty svg { margin: auto auto 16px; }
+.sc-market-empty h3 { font-size: 24px; font-family: inherit; }
+.sc-market-empty p { font-size: 13px; margin: 10px 0 20px; }
+.sc-market-empty button { color: var(--sc-red); text-decoration: underline; text-underline-offset: 5px; font-size: 13px; }
+.sc-market-promos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 55px; }
+.sc-market-promos section { position: relative; overflow: hidden; padding: 38px; min-height: 285px; background: var(--sc-ink); color: white; }
+.sc-market-promos section:first-child { background: var(--sc-red); }
+.sc-market-promos section:first-child .sc-sport-button { background: white; color: var(--sc-ink); }
+.sc-market-promos h2 { position: relative; z-index: 1; font-size: 42px; font-weight: 700; line-height: .95; }
+.sc-market-promos h2 span { color: #ff7a7a; }
+.sc-market-promos p { position: relative; z-index: 1; margin: 14px 0 20px; font-size: 12px; line-height: 1.7; }
+.sc-market-promos button { position: relative; z-index: 1; }
+.sc-market-promos img { position: absolute; right: -37%; bottom: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+
+.sc-athlete-hero { color: var(--sc-ink); margin-bottom: 28px; }
+.sc-athlete-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 7px 0 20px; font-size: 11px; }
+.sc-athlete-toolbar :is(a,button), .sc-athlete-toolbar > div { display: flex; align-items: center; gap: 8px; }
+.sc-athlete-toolbar > div { gap: 22px; }
+.sc-athlete-toolbar button:hover { color: var(--sc-red); }
+.sc-athlete-stage { position: relative; min-height: 670px; padding: 44px 38px 34px; background: white; border-radius: 16px; overflow: hidden; }
+.sc-athlete-heading { position: relative; z-index: 2; }
+.sc-athlete-heading h2 { font-size: clamp(38px,4.1vw,58px); font-weight: 800; line-height: .94; letter-spacing: -.02em; }
+.sc-athlete-heading h2 span { color: var(--sc-red); }
+.sc-athlete-heading p { font-size: 12px; color: #566175; margin-top: 14px; }
+.sc-athlete-emblem { position: absolute; width: 600px; height: 600px; border: 16px solid #ecedf2; border-radius: 50%; right: -5%; top: 20px; display: grid; place-items: center; color: #edf0f6; }
+.sc-athlete-emblem::before { content: ""; position: absolute; inset: 13px; border: 2px solid #e4e8ef; border-radius: 50%; }
+.sc-athlete-emblem span { font-family: "Barlow Condensed"; font-size: 200px; font-weight: 700; }
+.sc-athlete-art { position: absolute; right: -3%; top: 0; width: 51%; height: 100%; margin: 0; }
+.sc-athlete-art img { width: 100%; height: calc(100% - 16px); object-fit: contain; object-position: center bottom; }
+.sc-athlete-art figcaption { position: absolute; bottom: 16px; right: 30px; font-size: 9px; color: #657286; }
+.sc-athlete-profile { width: 58%; max-width: 665px; margin-top: 32px; position: relative; z-index: 3; border-radius: 12px; background: white; box-shadow: 0 12px 32px #0b1c3014; overflow: hidden; }
+.sc-athlete-profile-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 21px; gap: 12px; background: var(--sc-ink); color: white; }
+.sc-athlete-profile-bar > span:first-child { font-family: "Barlow Condensed"; font-weight: 700; font-size: 20px; }
+.sc-dot-th { color: #ff7a7a; }
+.sc-athlete-profile-bar > span:last-child { font-size: 10px; color: #dae3f0; }
+.sc-athlete-season-note { padding: 10px 20px; background: #fbe8ea; color: #870c14; font-size: 11px; line-height: 1.8; }
+.sc-athlete-identity { display: flex; align-items: center; position: relative; gap: 24px; padding: 28px 24px 24px; }
+.sc-athlete-number { font-size: 72px; font-weight: 800; letter-spacing: -.04em; color: var(--sc-red); line-height: 1; }
+.sc-athlete-identity p { font-size: 10px; font-weight: 600; color: #546579; }
+.sc-athlete-identity h1 { font-size: 42px; line-height: .96; font-weight: 700; margin: 7px 0 11px; overflow-wrap: anywhere; }
+.sc-athlete-identity span { font-size: 11px; color: #546579; display: block; }
+.sc-athlete-follow { width: 36px; height: 36px; position: absolute; top: 17px; right: 14px; display: grid; place-items: center; color: #6d7d91; }
+.sc-athlete-follow.is-following { color: var(--sc-red); }
+.sc-athlete-metrics { display: grid; grid-template-columns: repeat(4,1fr); margin: 0 24px; padding: 18px 0; border-block: 1px solid #e5e9ef; }
+.sc-athlete-metrics > div + div { border-left: 1px solid #e5e9ef; padding-left: 20px; }
+.sc-athlete-metrics dt { font-size: 10px; color: #546579; font-weight: 600; }
+.sc-athlete-metrics dd { font-size: 36px; font-family: "Barlow Condensed"; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.sc-athlete-metrics > div:last-child dd { color: var(--sc-red); }
+.sc-athlete-bio { display: grid; grid-template-columns: repeat(4,1fr); gap: 15px; padding: 22px 24px; }
+.sc-athlete-bio dt { color: #546579; font-size: 10px; margin-bottom: 6px; }
+.sc-athlete-bio dd { font-size: 12px; font-weight: 600; }
+.sc-athlete-profile-foot { padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #f4f6fa; font-size: 10px; }
+.sc-athlete-profile-foot a { display: flex; align-items: center; gap: 10px; color: var(--sc-red); font-weight: 700; }
+
+.sc-ranking { flex: 1; background: var(--sc-ink); color: white; padding: 40px 24px 60px; }
+.sc-ranking-inner { max-width: 1240px; margin: auto; }
+.sc-ranking-title { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 27px; }
+.sc-ranking-title h1 { font-weight: 800; font-size: 54px; line-height: 1; letter-spacing: -.02em; }
+.sc-ranking-title h1 span { color: #ff7a7a; }
+.sc-ranking-title p { margin-top: 11px; font-size: 12px; color: #b9c9de; }
+.sc-ranking-actions { display: flex; gap: 10px; }
+.sc-ranking-actions button { display: flex; align-items: center; gap: 8px; min-height: 40px; border: 1px solid #3d5068; padding: 10px 12px; font-size: 11px; }
+.sc-ranking-actions button:hover { background: #213a55; }
+.sc-ranking-positions { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 22px; }
+.sc-ranking-positions button { padding: 9px 15px; font-size: 11px; color: #c3d1e4; border-bottom: 2px solid transparent; }
+.sc-ranking-positions button:hover { background: #172d46; }
+.sc-ranking-positions button.is-selected { border-color: #ff7a7a; color: white; background: #243047; }
+.sc-ranking-filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px; padding: 18px 20px; background: #12263e; }
+.sc-ranking-filters label > span { display: block; font-size: 10px; color: #b9c9de; padding-bottom: 6px; }
+.sc-ranking-filters select { background: #0b1c30; border: 1px solid #3a4e68; padding: 9px 28px 9px 10px; color: white; font-size: 11px; min-height: 40px; max-width: 190px; }
+.sc-ranking-search { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #405671; padding: 10px 0; }
+.sc-ranking-search svg { color: #b9c9de; flex-shrink: 0; }
+.sc-ranking-search input { width: 100%; min-width: 0; font-size: 12px; background: transparent; outline: none; }
+.sc-ranking-search input::placeholder { color: #b9c9de; }
+.sc-ranking-viewbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0 15px; font-size: 11px; color: #b9c9de; }
+.sc-ranking-viewbar > div { display: flex; align-items: center; gap: 8px; }
+.sc-ranking-viewbar button { display: grid; place-items: center; height: 32px; width: 32px; color: #b9c9de; }
+.sc-ranking-viewbar button[aria-pressed="true"] { color: white; background: #af101a; }
+.sc-ranking-sort { display: flex; align-items: center; gap: 6px; }
+.sc-ranking-sort select { background: #12263e; color: white; padding: 5px 8px; font-size: 11px; }
+.sc-ranking-column-head, .sc-ranking-row { display: grid; grid-template-columns: 65px minmax(0,1fr) 370px 78px 26px; align-items: center; gap: 20px; padding: 12px 20px; }
+.sc-ranking-column-head { background: #071525; font-size: 10px; color: #b9c9de; }
+.sc-ranking-column-head > div { display: grid; grid-template-columns: repeat(6,1fr); }
+.sc-ranking-column-head button { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 24px; }
+.sc-ranking-column-head button:hover { color: #ff7a7a; }
+.sc-ranking-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.sc-ranking-list li + li { margin-top: 8px; }
+.sc-ranking-row { min-height: 88px; background: #172b43; border: 1px solid #2a3d55; transition: background .18s, border-color .18s; border-radius: 4px; }
+.sc-ranking-row:hover { background: #223b57; border-color: #617b99; }
+.sc-ranking-row.is-first { background: #263047; border-color: #713140; }
+.sc-ranking-rank { display: flex; align-items: center; justify-content: center; gap: 8px; font-family: "Barlow Condensed"; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sc-ranking-rank svg { color: #ff7a7a; flex-shrink: 0; }
+.sc-ranking-player { display: flex; align-items: center; min-width: 0; gap: 16px; }
+.sc-ranking-avatar { width: 45px; height: 50px; background: #304765; color: #e1eaf6; flex-shrink: 0; display: grid; place-items: center; font-family: "Barlow Condensed"; font-size: 23px; font-weight: 600; clip-path: polygon(50% 0,100% 18%,100% 82%,50% 100%,0 82%,0 18%); }
+.sc-ranking-player > div:last-child { min-width: 0; }
+.sc-ranking-player h2 { font-size: 14px; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.sc-ranking-player p { font-size: 10px; color: #cfdaea; margin-top: 5px; }
+.sc-ranking-player small { display: block; color: #b9c9de; font-size: 9px; margin-top: 3px; }
+.sc-ranking-metrics { display: grid; grid-template-columns: repeat(6,1fr); text-align: center; font-variant-numeric: tabular-nums; }
+.sc-ranking-metrics dt { font-size: 9px; color: #ff9ba1; }
+.sc-ranking-metrics dd { font-size: 16px; font-weight: 700; margin-top: 4px; }
+.sc-ranking-metrics dd svg { margin: 7px auto 0; color: #becce0; }
+.sc-ranking-access { display: flex; flex-wrap: wrap; gap: 12px; color: #b9c9de; font-size: 10px; padding-bottom: 15px; }
+.sc-ranking-access button { display: inline-flex; align-items: center; gap: 6px; color: #ffb3b8; min-height: 26px; }
+.sc-ranking-access button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.sc-ranking-loading { padding: 70px 20px; text-align: center; font-size: 13px; color: #cfdaea; }
+.sc-ranking-score { text-align: center; }
+.sc-ranking-score span { display: none; font-size: 9px; color: #e5edf7; }
+.sc-ranking-score strong { display: block; padding: 5px 8px; border-radius: 7px; background: var(--sc-red); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sc-ranking-arrow { color: #d1deef; }
+.sc-ranking-board.is-cards .sc-ranking-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.sc-ranking-board.is-cards .sc-ranking-list li { margin: 0; }
+.sc-ranking-board.is-cards .sc-ranking-row { grid-template-columns: 34px minmax(0,1fr) 65px; gap: 15px 10px; padding: 19px 15px; }
+.sc-ranking-board.is-cards .sc-ranking-player { gap: 10px; }
+.sc-ranking-board.is-cards .sc-ranking-avatar { display: none; }
+.sc-ranking-board.is-cards .sc-ranking-metrics { grid-column: 1/-1; grid-row: 2; }
+.sc-ranking-board.is-cards .sc-ranking-score span { display: block; margin-bottom: 5px; }
+.sc-ranking-board.is-cards .sc-ranking-arrow { display: none; }
+.sc-ranking-pagination { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; font-size: 11px; color: #b9c9de; }
+.sc-ranking-pagination > div { display: flex; align-items: center; gap: 16px; }
+.sc-ranking-pagination button { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #3d5068; }
+.sc-ranking-formula { border-top: 1px solid #3a4e68; padding-top: 20px; font-size: 11px; color: #b9c9de; line-height: 1.8; }
+.sc-ranking-formula summary { cursor: pointer; color: white; font-weight: 600; }
+.sc-ranking-formula p { margin-top: 12px; }
+.sc-ranking-empty { text-align: center; padding: 60px 20px; background: #12263e; }
+.sc-ranking-empty svg { margin: auto auto 16px; }
+.sc-ranking-empty h2 { font-size: 17px; font-weight: 600; }
+.sc-ranking-empty p { font-size: 12px; color: #b9c9de; margin: 12px 0 20px; }
+.sc-ranking-empty button { font-size: 12px; padding: 10px 20px; background: var(--sc-red); }
+
+@media (max-width: 1300px) {
+  .sc-market-hero-copy, .sc-market-services, .sc-market-body { margin-inline: 32px; }
+  .sc-market-hero-copy { padding-block: 68px; }
+  .sc-market-categories { gap: 35px; }
+  .sc-ranking-column-head, .sc-ranking-row { grid-template-columns: 50px minmax(0,1fr) 310px 75px 20px; gap: 16px; }
+  .sc-ranking-player { gap: 12px; }
+}
+@media (max-width: 1000px) {
+  .sc-market-hero { min-height: 440px; }
+  .sc-market-hero-copy h1 { max-width: 440px; }
+  .sc-market-hero-image { object-position: 64% 68%; }
+  .sc-market-services { grid-template-columns: repeat(2,1fr); padding-block: 24px; gap: 22px; }
+  .sc-market-product-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .sc-athlete-stage { padding: 32px 26px; min-height: 620px; }
+  .sc-athlete-heading h2 { font-size: 43px; }
+  .sc-athlete-profile { width: 64%; margin-top: 35px; }
+  .sc-athlete-emblem { width: 510px; height: 510px; right: -16%; top: 60px; }
+  .sc-athlete-art { right: -8%; width: 52%; }
+  .sc-athlete-identity { gap: 15px; padding-inline: 20px; }
+  .sc-athlete-identity h1 { font-size: 35px; }
+  .sc-athlete-number { font-size: 60px; }
+  .sc-athlete-bio { grid-template-columns: repeat(2,1fr); padding-block: 17px; }
+  .sc-ranking-title { align-items: flex-start; }
+  .sc-ranking-title h1 { font-size: 46px; }
+  .sc-ranking-actions { flex-direction: column; }
+  .sc-ranking-column-head { display: none; }
+  .sc-ranking-row { grid-template-columns: 43px minmax(0,1fr) 72px 20px; gap: 10px 16px; }
+  .sc-ranking-metrics { grid-row: 2; grid-column: 2/4; padding-top: 8px; border-top: 1px solid #334963; }
+  .sc-ranking-score { grid-column: 3; grid-row: 1; }
+  .sc-ranking-score span { display: block; margin-bottom: 5px; }
+  .sc-ranking-arrow { grid-column: 4; grid-row: 1; }
+  .sc-ranking-board.is-cards .sc-ranking-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 680px) {
+  .sc-market-top { padding: 11px 18px; }
+  .sc-market-top > span { display: none; }
+  .sc-market-top > div { justify-content: space-between; width: 100%; gap: 10px; }
+  .sc-market-hero { min-height: 600px; }
+  .sc-market-hero-image { height: 340px; top: auto; bottom: 0; object-fit: cover; object-position: 77% bottom; }
+  .sc-market-hero-copy { padding: 35px 0; margin-inline: 20px; }
+  .sc-market-hero-copy h1 { font-size: 57px; max-width: 390px; }
+  .sc-market-hero-copy p { margin: 18px 0 22px; font-size: 13px; }
+  .sc-market-hero-copy > div { gap: 8px; }
+  .sc-sport-button { font-size: 11px; gap: 10px; padding: 11px 13px; }
+  .sc-market-services { margin-inline: 20px; gap: 20px 14px; }
+  .sc-market-services > :is(div,button) { gap: 9px; }
+  .sc-market-services b { font-size: 11px; }
+  .sc-market-services span { font-size: 10px; }
+  .sc-market-services svg { width: 22px; height: 22px; }
+  .sc-market-services button > svg:last-child { display: none; }
+  .sc-market-demo { text-align: left; line-height: 1.8; }
+  .sc-market-body { margin-inline: 18px; padding-bottom: 36px; }
+  .sc-market-categories { gap: 16px; justify-content: flex-start; overflow-x: auto; padding: 28px 0; scrollbar-width: thin; scrollbar-color: #af101a #edf0f5; }
+  .sc-market-categories button { flex-shrink: 0; width: 92px; }
+  .sc-market-categories button > span { width: 64px; height: 64px; }
+  .sc-market-categories b { font-size: 10px; }
+  .sc-market-products-heading { flex-direction: column; align-items: stretch; gap: 15px; margin-bottom: 18px; }
+  .sc-market-products h2 { font-size: 29px; }
+  .sc-market-search { width: 100%; }
+  .sc-market-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 14px; }
+  .sc-market-product-image { height: 170px; }
+  .sc-market-product-image > span { top: 8px; left: 7px; font-size: 8px; padding: 4px; }
+  .sc-market-product-image button { width: 30px; height: 30px; right: 5px; top: 5px; }
+  .sc-market-product-meta h3 { font-size: 18px; min-height: 60px; }
+  .sc-market-product-meta > span { font-size: 9px; }
+  .sc-market-product-meta > p { min-height: 50px; }
+  .sc-market-product-meta > strong { font-size: 17px; }
+  .sc-market-history { font-size: 9px; gap: 4px; }
+  .sc-market-promos { grid-template-columns: 1fr; margin-top: 35px; gap: 16px; }
+  .sc-market-promos section { padding: 30px; min-height: 265px; }
+  .sc-athlete-toolbar { flex-wrap: wrap; font-size: 10px; padding-bottom: 15px; }
+  .sc-athlete-toolbar > div { gap: 16px; }
+  .sc-athlete-stage { min-height: 0; padding: 27px 20px 20px; }
+  .sc-athlete-heading h2 { font-size: clamp(32px,9.8vw,49px); }
+  .sc-athlete-heading p { font-size: 11px; max-width: 170px; line-height: 1.7; }
+  .sc-athlete-art { position: relative; width: 100%; height: 335px; right: auto; margin-top: -30px; }
+  .sc-athlete-art img { object-position: right bottom; }
+  .sc-athlete-art figcaption { bottom: 14px; right: 0; font-size: 8px; }
+  .sc-athlete-emblem { width: 370px; height: 370px; top: 130px; right: -110px; border-width: 10px; }
+  .sc-athlete-emblem span { font-size: 150px; }
+  .sc-athlete-profile { width: 100%; margin-top: 0; }
+  .sc-athlete-profile-bar { padding: 13px 15px; }
+  .sc-athlete-profile-bar > span:first-child { font-size: 18px; }
+  .sc-athlete-profile-bar > span:last-child { font-size: 9px; }
+  .sc-athlete-identity { padding: 25px 15px 20px; gap: 15px; }
+  .sc-athlete-identity h1 { font-size: 34px; }
+  .sc-athlete-identity span { font-size: 10px; }
+  .sc-athlete-number { font-size: 50px; }
+  .sc-athlete-metrics { margin-inline: 15px; padding-block: 15px; }
+  .sc-athlete-metrics > div + div { padding-left: 12px; }
+  .sc-athlete-metrics dd { font-size: 30px; }
+  .sc-athlete-bio { padding: 18px 15px; }
+  .sc-athlete-profile-foot { padding: 13px 15px; font-size: 9px; }
+  .sc-ranking { padding: 30px 15px 42px; }
+  .sc-ranking-title { flex-direction: column; gap: 19px; margin-bottom: 19px; }
+  .sc-ranking-title h1 { font-size: clamp(34px,10.3vw,46px); }
+  .sc-ranking-title p { font-size: 11px; max-width: 280px; line-height: 1.8; }
+  .sc-ranking-actions { flex-direction: row; gap: 8px; }
+  .sc-ranking-actions button { font-size: 10px; padding: 8px 10px; }
+  .sc-ranking-positions { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: #ff7a7a #12263e; }
+  .sc-ranking-positions button { white-space: nowrap; padding-inline: 12px; }
+  .sc-ranking-filters { display: grid; grid-template-columns: 1fr 1fr; padding: 15px; gap: 12px; }
+  .sc-ranking-search { grid-column: 1/-1; min-width: 0; }
+  .sc-ranking-filters select { width: 100%; max-width: none; font-size: 10px; padding-right: 10px; }
+  .sc-ranking-viewbar { flex-wrap: wrap; gap: 10px; font-size: 10px; }
+  .sc-ranking-viewbar > div { width: 100%; justify-content: flex-end; }
+  .sc-ranking-sort { margin-right: auto; }
+  .sc-ranking-row { grid-template-columns: 25px minmax(0,1fr) 56px 13px; padding: 15px 12px; gap: 13px 10px; }
+  .sc-ranking-rank { font-size: 25px; flex-direction: column; gap: 3px; }
+  .sc-ranking-rank svg { width: 15px; height: 15px; }
+  .sc-ranking-avatar { width: 30px; height: 36px; font-size: 16px; }
+  .sc-ranking-player { gap: 9px; }
+  .sc-ranking-player h2 { font-size: 12px; line-height: 1.3; }
+  .sc-ranking-player p { font-size: 9px; line-height: 1.4; }
+  .sc-ranking-player small { font-size: 8px; line-height: 1.5; }
+  .sc-ranking-score strong { font-size: 18px; padding-inline: 3px; }
+  .sc-ranking-score span { font-size: 8px; }
+  .sc-ranking-arrow { width: 17px; }
+  .sc-ranking-metrics { grid-column: 2/-1; }
+  .sc-ranking-metrics dt { font-size: 8px; }
+  .sc-ranking-metrics dd { font-size: 13px; }
+  .sc-ranking-pagination { font-size: 10px; gap: 12px; }
+  .sc-ranking-pagination > div { gap: 9px; }
+  .sc-ranking-board.is-cards .sc-ranking-list { grid-template-columns: 1fr; }
+  .sc-ranking-board.is-cards .sc-ranking-row { grid-template-columns: 32px minmax(0,1fr) 60px; }
+}
+@media (max-width: 360px) {
+  .sc-market-hero-copy h1 { font-size: 49px; }
+  .sc-market-product-image { height: 140px; }
+  .sc-athlete-stage { padding-inline: 13px; }
+  .sc-athlete-number { font-size: 43px; }
+  .sc-athlete-identity h1 { font-size: 30px; }
+  .sc-ranking-avatar { display: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sc-market-hero-image { animation: sc-gear-arrive .75s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes sc-gear-arrive { from { clip-path: inset(0 0 5% 0); filter: brightness(.82); } to { clip-path: inset(0); filter: brightness(1); } }
+}

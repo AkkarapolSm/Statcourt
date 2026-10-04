@@ -34,7 +34,7 @@ export default function PaywallOverlay({
     <>
       <div className="absolute inset-0 z-30 flex items-center justify-center p-3 sm:p-4 backdrop-blur-md bg-slate-950/85 border border-slate-700/60 rounded-xl overflow-y-auto transition-all">
         <div className={`w-full text-center ${compact ? "max-w-xs space-y-2 p-3" : "max-w-md space-y-3 p-4 sm:p-5"} bg-slate-900/95 border border-slate-700/90 rounded-xl shadow-2xl text-white my-auto max-h-[96%]`}>
-          <div className="mx-auto w-8 h-8 rounded-lg bg-red-950/80 border border-brand-primary/50 text-brand-primary flex items-center justify-center shadow">
+          <div className="mx-auto w-8 h-8 rounded-lg bg-red-950/80 border border-brand-primary/50 text-brand-signal flex items-center justify-center shadow">
             <Lock className="w-4 h-4" />
           </div>
 
@@ -67,7 +67,7 @@ export default function PaywallOverlay({
           <div className="flex flex-col gap-1.5 pt-1">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="w-full flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-secondary text-white py-2.5 px-4 rounded-lg text-xs font-black font-mono tracking-wider uppercase transition shadow-lg"
+              className="w-full flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-crimson text-white py-2.5 px-4 rounded-lg text-xs font-black font-mono tracking-wider uppercase transition shadow-lg"
             >
               <span>ดูรายละเอียดแพ็กเกจ PRO</span>
               <ArrowRight className="w-3.5 h-3.5" />

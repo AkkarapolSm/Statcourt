@@ -91,7 +91,7 @@ const ROLE_OPTIONS: RoleOption[] = [
     },
     icon: Award,
     descriptionTh: "ข้อมูลสรีระ Ape Index, แฟ้มสะสมงาน TCAS, บัตร Digital Pass, สถิติส่วนตัว",
-    suggestedUrl: "/athlete/ath-01",
+    suggestedUrl: "/athlete/ath-1",
     suggestedLabel: "หน้าโปรไฟล์นักกีฬา (TCAS)",
   },
   {
@@ -158,7 +158,6 @@ export default function NavbarRoleSwitcher() {
   const [switching, setSwitching] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
-
   // Active configuration based on current user role
   const activeRoleOption =
     ROLE_OPTIONS.find((r) => r.role === currentUser.role) || ROLE_OPTIONS[5];
@@ -220,6 +219,14 @@ export default function NavbarRoleSwitcher() {
     }
   };
 
+  const isDev =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ENABLE_DEV_ROLE_SWITCHER === "true";
+
+  if (!isDev) {
+    return null;
+  }
+
   return (
     <div className="relative" ref={menuRef}>
       {/* Toast Alert Notification */}
@@ -275,7 +282,7 @@ export default function NavbarRoleSwitcher() {
           {/* Header */}
           <div className="flex items-start justify-between pb-3 border-b border-slate-800">
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#DC2626]">
+              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#FF7A7A]">
                 <Zap className="w-3.5 h-3.5" />
                 <span>ROLE & ACCESS SWITCHER</span>
               </div>
@@ -403,7 +410,7 @@ export default function NavbarRoleSwitcher() {
                     <button
                       type="button"
                       onClick={() => handleRoleSelect(option, true)}
-                      className="text-slate-300 hover:text-[#DC2626] font-bold flex items-center gap-1 transition cursor-pointer"
+                      className="text-slate-300 hover:text-[#FF7A7A] font-bold flex items-center gap-1 transition cursor-pointer"
                     >
                       <span>{option.suggestedLabel}</span>
                       <ArrowRight className="w-3 h-3" />

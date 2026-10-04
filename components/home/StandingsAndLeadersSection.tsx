@@ -110,21 +110,18 @@ export default function StandingsAndLeadersSection() {
           {/* ========================================================= */}
           {/* LEFT: TOURNAMENT LEAGUE STANDINGS TABLE (7 COLS)          */}
           {/* ========================================================= */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div className="lg:col-span-7 bg-white rounded-lg border border-borderNeutral p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#AF101A] uppercase">
-                  <Trophy className="w-4 h-4" />
-                  <span>{tournamentTitle}</span>
-                </div>
-                <h3 className="text-xl font-black text-[#0B1C30] uppercase">
-                  ตารางคะแนนรอบแบ่งกลุ่ม (Standings)
+                <span className="text-xs text-slate-500 font-sans block">{tournamentTitle}</span>
+                <h3 className="text-xl font-bold text-[#0B1C30] font-sans">
+                  ตารางคะแนนรอบแบ่งกลุ่ม
                 </h3>
               </div>
 
               <Link
                 href="/tournaments"
-                className="text-xs font-mono font-bold text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition"
+                className="text-xs font-sans font-medium text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition-colors"
               >
                 <span>ดูทุกกลุ่ม</span>
                 <ChevronRight className="w-4 h-4" />
@@ -134,23 +131,23 @@ export default function StandingsAndLeadersSection() {
             {/* Standings Table */}
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-sans">
-                <thead className="bg-slate-50 text-slate-500 font-mono uppercase text-[11px] border-b border-slate-200">
+                <thead className="bg-slate-50 text-slate-600 font-sans text-xs border-b border-slate-200">
                   <tr>
                     <th className="py-2.5 px-3 text-center w-10">อันดับ</th>
                     <th className="py-2.5 px-3">ทีม</th>
-                    <th className="py-2.5 px-3 text-center">แข่ง (P)</th>
-                    <th className="py-2.5 px-3 text-center">ชนะ (W)</th>
-                    <th className="py-2.5 px-3 text-center">แพ้ (L)</th>
-                    <th className="py-2.5 px-3 text-right">ผลต่าง (+/-)</th>
-                    <th className="py-2.5 px-3 text-right font-bold text-[#0B1C30]">แต้ม (PTS)</th>
+                    <th className="py-2.5 px-3 text-center">แข่ง</th>
+                    <th className="py-2.5 px-3 text-center">ชนะ</th>
+                    <th className="py-2.5 px-3 text-center">แพ้</th>
+                    <th className="py-2.5 px-3 text-right">ผลต่าง</th>
+                    <th className="py-2.5 px-3 text-right font-bold text-[#0B1C30]">แต้ม</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-mono tabular-nums">
+                <tbody className="divide-y divide-slate-100 tabular-nums">
                   {standings.map((row) => (
-                    <tr key={row.rank} className="hover:bg-slate-50/70 transition">
+                    <tr key={row.rank} className="hover:bg-slate-50/70 transition-colors">
                       <td className="py-3 px-3 text-center font-bold text-slate-700">
                         {row.rank <= 2 ? (
-                          <span className="w-5 h-5 rounded-full bg-red-100 text-[#AF101A] inline-flex items-center justify-center font-bold text-[11px]">
+                          <span className="w-5 h-5 rounded-full bg-red-50 text-[#AF101A] inline-flex items-center justify-center font-bold text-[11px]">
                             {row.rank}
                           </span>
                         ) : (
@@ -158,15 +155,15 @@ export default function StandingsAndLeadersSection() {
                         )}
                       </td>
                       <td className="py-3 px-3">
-                        <Link href="/teams" className="font-bold text-[#0B1C30] hover:text-[#AF101A] transition font-sans">
+                        <Link href="/teams" className="font-semibold text-[#0B1C30] hover:text-[#AF101A] transition-colors font-sans">
                           {row.team}
                         </Link>
                       </td>
                       <td className="py-3 px-3 text-center text-slate-600">{row.played}</td>
-                      <td className="py-3 px-3 text-center text-emerald-700 font-bold">{row.won}</td>
+                      <td className="py-3 px-3 text-center text-emerald-700 font-semibold">{row.won}</td>
                       <td className="py-3 px-3 text-center text-slate-500">{row.lost}</td>
                       <td className="py-3 px-3 text-right text-slate-600">{row.diff}</td>
-                      <td className="py-3 px-3 text-right font-black text-sm text-[#0B1C30] bg-slate-50/50">
+                      <td className="py-3 px-3 text-right font-bold text-sm text-[#0B1C30]">
                         {row.pts}
                       </td>
                     </tr>
@@ -175,30 +172,27 @@ export default function StandingsAndLeadersSection() {
               </table>
             </div>
 
-            <div className="pt-2 text-[11px] text-slate-400 font-mono flex items-center justify-between">
-              <span>* กติกามาตรฐาน FIBA: ชนะ 2 แต้ม, แพ้ 1 แต้ม, สละสิทธิ์ 0 แต้ม</span>
-              <span className="text-[#AF101A] font-semibold">อันดับ 1-2 ผ่านเข้ารอบรองชนะเลิศ</span>
+            <div className="pt-2 text-[11px] text-[#5B6574] font-sans flex items-center justify-between">
+              <span>* ชนะ 2 แต้ม, แพ้ 1 แต้ม, สละสิทธิ์ 0 แต้ม</span>
+              <span className="text-[#AF101A] font-medium">อันดับ 1-2 ผ่านเข้ารอบรองชนะเลิศ</span>
             </div>
           </div>
 
           {/* ========================================================= */}
           {/* RIGHT: STAT LEADERS SHOWCASE (5 COLS)                     */}
           {/* ========================================================= */}
-          <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div className="lg:col-span-5 bg-white rounded-lg border border-borderNeutral p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#AF101A] uppercase">
-                  <Award className="w-4 h-4" />
-                  <span>SEASON 2026 STAT LEADERS</span>
-                </div>
-                <h3 className="text-xl font-black text-[#0B1C30] uppercase">
+                <span className="text-xs text-slate-500 font-sans block">Season 2026</span>
+                <h3 className="text-xl font-bold text-[#0B1C30] font-sans">
                   ผู้นำสถิติยอดเยี่ยม
                 </h3>
               </div>
 
               <Link
                 href="/leaderboard"
-                className="text-xs font-mono font-bold text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition"
+                className="text-xs font-sans font-medium text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition-colors"
               >
                 <span>ดูทั้งหมด</span>
                 <ChevronRight className="w-4 h-4" />
@@ -206,24 +200,24 @@ export default function StandingsAndLeadersSection() {
             </div>
 
             {/* Category Selector Buttons */}
-            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-xl font-mono text-xs font-bold text-slate-600">
+            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-lg font-sans text-xs font-medium text-slate-600">
               {[
-                { id: "PPG", label: "คะแนน (PPG)" },
-                { id: "RPG", label: "รีบาวด์ (RPG)" },
-                { id: "APG", label: "แอสซิสต์ (APG)" },
-                { id: "EFF", label: "FIBA EFF" },
+                { id: "PPG", label: "คะแนน" },
+                { id: "RPG", label: "รีบาวด์" },
+                { id: "APG", label: "แอสซิสต์" },
+                { id: "EFF", label: "EFF" },
               ].map((c) => (
                 <button
                   key={c.id}
                   type="button"
                   onClick={() => setLeaderCategory(c.id as typeof leaderCategory)}
-                  className={`py-1.5 rounded-lg transition cursor-pointer text-center ${
+                  className={`py-1.5 rounded-md transition-colors cursor-pointer text-center ${
                     leaderCategory === c.id
-                      ? "bg-white text-[#AF101A] shadow-xs"
+                      ? "bg-white text-[#AF101A] font-semibold shadow-xs"
                       : "hover:text-[#0B1C30]"
                   }`}
                 >
-                  {c.label.split(" ")[0]}
+                  {c.label}
                 </button>
               ))}
             </div>
@@ -252,7 +246,7 @@ export default function StandingsAndLeadersSection() {
                   <Link
                     key={athlete.athleteId}
                     href={`/athlete/${athlete.athleteId}`}
-                    className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50/80 transition group font-mono"
+                    className="flex items-center justify-between p-2.5 rounded-lg border border-slate-100 hover:border-slate-300 hover:bg-slate-50/70 transition-colors group font-sans"
                   >
                     <div className="flex items-center gap-3">
                       <span
@@ -265,20 +259,20 @@ export default function StandingsAndLeadersSection() {
                         {index + 1}
                       </span>
                       <div>
-                        <div className="font-bold text-sm text-[#0B1C30] group-hover:text-[#AF101A] transition font-sans">
+                        <div className="font-semibold text-sm text-[#0B1C30] group-hover:text-[#AF101A] transition-colors">
                           {athlete.firstName} {athlete.lastName}
                         </div>
-                        <div className="text-[11px] text-slate-400">
-                          #{athlete.jerseyNumber || 0} • {athlete.schoolOrClub} ({athlete.position})
+                        <div className="text-[11px] text-slate-500">
+                          #{athlete.jerseyNumber || 0} · {athlete.schoolOrClub} ({athlete.position})
                         </div>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-base font-black text-[#AF101A] tabular-nums">
+                      <div className="text-base font-bold text-[#AF101A] tabular-nums leading-none">
                         {statValue}
                       </div>
-                      <div className="text-[10px] text-slate-400 uppercase">
+                      <div className="text-[10px] text-[#5B6574] mt-0.5">
                         {leaderCategory}
                       </div>
                     </div>

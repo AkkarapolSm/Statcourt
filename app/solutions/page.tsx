@@ -2,256 +2,250 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import TournamentCreationWizardModal from "@/components/solutions/TournamentCreationWizardModal";
 import TournamentRoiCalculator from "@/components/solutions/TournamentRoiCalculator";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
-import { canAccessOfficialConsole, canCreateTournament } from "@/lib/auth/rbac";
+import { canAccessOfficialConsole } from "@/lib/auth/rbac";
 import {
-  Trophy,
+  ArrowRight,
   ShieldCheck,
   Radio,
-  Zap,
-  CheckCircle2,
-  Clock,
-  ArrowRight,
-  Sparkles,
-  Users,
   FileText,
-  BadgeCheck,
-  ChevronDown,
-  ChevronUp,
-  Play,
-  HelpCircle,
-  TrendingUp,
-  Layers,
-  Award,
-  Flame,
+  Sparkles,
   QrCode,
-  DollarSign,
+  Check,
+  Plus,
+  Play,
+  Clock,
+  Award,
 } from "lucide-react";
 
 export default function SolutionsLandingPage() {
-  const { currentUser, loginAs } = useAuthStore();
+  const { currentUser } = useAuthStore();
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const hasConsoleAccess = canAccessOfficialConsole(currentUser);
-  const canCreate = canCreateTournament(currentUser);
-
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
 
   const faqs = [
     {
       q: "ระบบรองรับกติกาบาสเกตบอลของสหพันธ์บาสเกตบอลนานาชาติ (FIBA) หรือไม่?",
-      a: "รองรับ 100% ครับ ระบบ Table Official Console ถูกออกแบบตามกฎมาตรฐาน FIBA Official Basketball Rules 2026 รองรับเวลาแข่งขัน 4 ควอเตอร์ ควอเตอร์ละ 10 นาที (หรือปรับแต่งได้), ช็อตคล็อก 24 วินาที และ 14 วินาที (รีเซ็ตหลังรีบาวด์เกมบุก), การนับฟาวล์บุคคลและฟาวล์ทีม รวมถึงปุ่ม Undo เหตุการณ์ย้อนหลังภายใน 60 วินาที",
+      a: "รองรับตามมาตรฐานสากลครับ ระบบ Table Official Console ถูกออกแบบตามกฎ FIBA Official Basketball Rules รองรับเวลาแข่งขัน 4 ควอเตอร์ ควอเตอร์ละ 10 นาที (หรือปรับแต่งตามรุ่นอายุ), ช็อตคล็อก 24 วินาที และ 14 วินาที (รีเซ็ตหลังรีบาวด์เกมบุก), การนับฟาวล์บุคคลและฟาวล์ทีม พร้อมระบบ Undo เพื่อแก้ไขเหตุการณ์ย้อนหลังได้ทันท่วงที",
     },
     {
-      q: "การถ่ายทอดสดสถิติ (Live SSE Broadcasting) ต้องใช้อุปกรณ์อะไรบ้าง?",
-      a: "ผู้จัดต้องการเพียง iPad, แท็บเล็ต หรือโน้ตบุ๊ก 1 เครื่องประจำโต๊ะกรรมการที่มีสัญญาณอินเทอร์เน็ต (แม้เป็น Hotspot มือถือก็ใช้งานได้) กรรมการกดบันทึกคะแนนแล้วระบบจะส่งข้อมูลไปยังผู้ชมบนมือถือผ่านเทคโนโลยี Server-Sent Events (SSE) แบบ Real-Time ทันที โดยไม่ต้องมีรถถ่ายทอดสดหรืออุปกรณ์ราคาแพง",
+      q: "การถ่ายทอดสดสถิติ (Live Streaming) ต้องใช้อุปกรณ์อะไรบ้าง?",
+      a: "ผู้จัดต้องการเพียงแท็บเล็ต iPad หรือโน้ตบุ๊ก 1 เครื่องประจำโต๊ะกรรมการที่มีสัญญาณอินเทอร์เน็ต (สามารถใช้ Hotspot จากมือถือได้) เมื่อกรรมการกดบันทึกคะแนน ระบบจะส่งข้อมูลไปยังผู้ชมบนมือถือผ่านเทคโนโลยี Server-Sent Events (SSE) แบบ Real-Time ทันที โดยไม่ต้องใช้อุปกรณ์ถ่ายทอดสดราคาแพง",
     },
     {
-      q: "ระบบป้องกันปัญหานักกีฬาปลอมอายุ หรือสวมสิทธิ์ข้ามรุ่นอย่างไร?",
-      a: "StatCourtTH มีระบบ Digital Player Pass ที่ผูกข้อมูลนักเรียนกับเลขประจำตัวประชาชน (เข้ารหัสความปลอดภัย SHA-256 Hashing) และระบุรุ่นอายุที่สามารถลงแข่งขันได้ชัดเจน กรรมการสามารถสแกน QR Code หน้าสนามก่อนลงแข่งเพื่อยืนยันตัวตนได้ใน 3 วินาที",
+      q: "ระบบช่วยป้องกันปัญหานักกีฬาปลอมอายุ หรือสวมสิทธิ์ข้ามรุ่นอย่างไร?",
+      a: "StatCourtTH มีระบบ Digital Player Pass ที่ผูกข้อมูลนักเรียนกับเลขประจำตัวประชาชน และระบุรุ่นอายุที่สามารถลงแข่งขันได้ชัดเจน กรรมการสามารถสแกน QR Code หน้าสนามก่อนลงแข่งเพื่อยืนยันตัวตนและตรวจสอบสิทธิ์ได้ทันที",
     },
     {
       q: "สามารถส่งออกใบบันทึกคะแนนทางการ (FIBA Scoresheet) ได้หรือไม่?",
-      a: "ได้ครับ เมื่อจบการแข่งขัน ระบบสามารถ Export ใบบันทึกคะแนน 4 ควอเตอร์พร้อมลายเซ็นดิจิทัลของผู้ตัดสินและผู้บันทึกคะแนนเป็นไฟล์ PDF ตามฟอร์มมาตรฐาน FIBA เพื่อนำส่งฝ่ายจัดการแข่งขันหรือสมาคมฯ ได้ทันที",
+      a: "ได้ครับ เมื่อจบการแข่งขัน ระบบสามารถ Export ใบบันทึกคะแนน 4 ควอเตอร์พร้อมลายเซ็นดิจิทัลของผู้ตัดสินและผู้บันทึกคะแนนเป็นไฟล์ PDF ตามแบบฟอร์มมาตรฐานสากล เพื่อนำส่งฝ่ายจัดการแข่งขันหรือสมาคมฯ ได้ทันที",
     },
     {
-      q: "คิดค่าบริการอย่างไร?",
-      a: "เรามีแพ็กเกจ Community สำหรับทัวร์นาเมนต์ขนาดเล็กทดลองใช้ฟรี และแพ็กเกจ Pro สำหรับทัวร์นาเมนต์ทางการ เริ่มต้นเพียง 8,900 บาทต่อรายการ (ไม่จำกัดจำนวนคู่แข่งขันตลอดทัวร์นาเมนต์) ครอบคลุมระบบโต๊ะกรรมการ, ถ่ายทอดสดคะแนน และระบบยืนยันสถิติสำหรับแฟ้มสะสมงาน TCAS",
+      q: "มีค่าบริการอย่างไร?",
+      a: "เรามีแพ็กเกจ Community สำหรับทัวร์นาเมนต์ขนาดเล็กทดลองใช้ฟรี และแพ็กเกจ Pro สำหรับทัวร์นาเมนต์ทางการ เริ่มต้น 8,900 บาทต่อรายการ (ไม่จำกัดจำนวนคู่แข่งขันตลอดทัวร์นาเมนต์) ครอบคลุมระบบโต๊ะกรรมการ, ถ่ายทอดสดคะแนน และระบบรับรองสถิติสำหรับแฟ้มสะสมงาน TCAS",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-body-md antialiased selection:bg-[#DC2626] selection:text-white">
+    <div className="bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans antialiased min-h-screen selection:bg-[#AF101A] selection:text-white">
       {/* Universal Navigation */}
       <Navbar />
 
-      <main className="flex-1 pb-24 space-y-16">
+      <main className="flex-1 pb-20 space-y-16 lg:space-y-20">
         {/* ============================================================== */}
-        {/* 1. HERO SECTION: BRAND SIGNATURE SLATE BANNER                  */}
+        {/* 1. HERO SECTION: EDITORIAL COURTSIDE STAGE                     */}
         {/* ============================================================== */}
-        <section className="bg-[#0F172A] text-white py-14 sm:py-20 border-b border-slate-800 relative overflow-hidden">
-          <div className="absolute inset-0 court-grid-pattern opacity-15 pointer-events-none" />
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-4xl mx-auto space-y-6">
-              
-              {/* Platform Identification Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#AF101A]/20 border border-[#AF101A]/40 text-[#FFDAD6] text-xs font-mono font-bold tracking-widest uppercase shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse" />
-                <span>FIBA COMPLIANT BASKETBALL TOURNAMENT SAAS</span>
-                <span className="text-slate-500">•</span>
-                <span className="text-amber-400 font-bold">2026 EDITION</span>
+        <section className="bg-[#0B1C30] text-white pt-14 pb-16 lg:pt-20 lg:pb-24 border-b border-slate-800 relative overflow-hidden">
+          <div className="absolute inset-0 court-grid-pattern opacity-10 pointer-events-none" />
+
+          <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="max-w-3xl space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/10 text-slate-200 text-xs font-mono font-medium">
+                <span className="w-2 h-2 rounded-full bg-[#FF7A7A]" />
+                <span>สำหรับผู้จัดการแข่งขัน สโมสร และองค์กรกีฬา</span>
               </div>
 
-              {/* Main Headline */}
-              <h1 className="font-headline-xl text-white uppercase tracking-wider text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08]">
-                ยกระดับทัวร์นาเมนต์บาสเกตบอล <br className="hidden sm:inline" />
-                สู่มาตรฐานสากล <span className="text-[#DC2626] font-normal">ด้วยแพลตฟอร์มดิจิทัลครบวงจร</span>
+              <h1 className="font-headline text-white uppercase text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                จัดการแข่งขันบาสเกตบอล <br />
+                <span className="text-[#FF7A7A]">ด้วยระบบดิจิทัลที่ทุกคนเชื่อถือ</span>
               </h1>
 
-              {/* Subtitle */}
-              <p className="text-slate-300 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed">
-                เปลี่ยนระบบกระดาษสู่ดิจิทัล 100% — โต๊ะเทคนิคระบบสัมผัส (Table Official Console), สตรีมมิ่งสถิติสดระดับเสี้ยววินาที (SSE), ตรวจสอบอายุด้วยบัตรนักกีฬาป้องกันการโกง และออกใบบันทึกคะแนน FIBA ในคลิกเดียว
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
+                เปลี่ยนความยุ่งยากของใบบันทึกคะแนนกระดาษ สู่ระบบโต๊ะเทคนิคสัมผัส (Table Official Console), สตรีมมิ่งสถิติสดระดับเสี้ยววินาที, ตรวจสอบคุณสมบัตินักกีฬาด้วย Digital Pass และออกใบบันทึกคะแนนมาตรฐานสากลในคลิกเดียว
               </p>
 
-              {/* Hero Action CTAs */}
-              <div className="pt-2 flex flex-wrap items-center justify-center gap-3.5 font-mono text-xs">
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center gap-3.5 font-sans text-xs sm:text-sm">
                 <button
                   type="button"
                   onClick={() => setIsWizardOpen(true)}
-                  className="bg-[#AF101A] hover:bg-[#8F0D15] text-white font-bold px-7 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2.5 uppercase tracking-wider cursor-pointer active:scale-98"
+                  className="bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold px-6 py-3.5 rounded transition flex items-center gap-2 cursor-pointer shadow-sm"
                 >
                   <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>เปิดระบบทัวร์นาเมนต์ทันที (Start Tournament)</span>
+                  <span>เปิดระบบทัวร์นาเมนต์</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 {hasConsoleAccess ? (
                   <Link
                     href="/official/console/match-bcc-ds-01"
-                    className="bg-slate-800/90 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-700 flex items-center gap-2 transition uppercase tracking-wider shadow-md"
+                    className="bg-white/10 hover:bg-white/15 text-white font-medium px-5 py-3.5 rounded border border-slate-700 flex items-center gap-2 transition"
                   >
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>ทดลองใช้ Table Console (Demo)</span>
+                    <span>ทดลองใช้ระบบโต๊ะกรรมการ</span>
                   </Link>
                 ) : (
                   <a
                     href="#roi-calculator"
-                    className="bg-slate-800/90 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-xl border border-slate-700 flex items-center gap-2 transition uppercase tracking-wider shadow-md"
+                    className="bg-white/10 hover:bg-white/15 text-white font-medium px-5 py-3.5 rounded border border-slate-700 flex items-center gap-2 transition"
                   >
-                    <DollarSign className="w-4 h-4 text-amber-400" />
-                    <span>คำนวณความคุ้มค่า (ROI Calculator)</span>
+                    <span>คำนวณงบประมาณและความคุ้มค่า</span>
                   </a>
                 )}
+              </div>
+            </div>
 
-                <Link
-                  href="/live"
-                  className="bg-slate-800/60 hover:bg-slate-700 text-slate-300 hover:text-white font-bold px-5 py-3.5 rounded-xl border border-slate-700/60 flex items-center gap-2 transition uppercase tracking-wider"
-                >
-                  <Radio className="w-4 h-4 text-[#DC2626] animate-pulse" />
-                  <span>ดูหน้าถ่ายทอดสด (/live)</span>
-                </Link>
+            {/* Service Capabilities Strip */}
+            <div className="mt-12 pt-8 border-t border-slate-800 grid grid-cols-2 lg:grid-cols-4 gap-6 font-sans text-xs">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold">
+                  <ShieldCheck className="w-4 h-4 shrink-0" />
+                  <span>กติกามาตรฐาน FIBA</span>
+                </div>
+                <p className="text-slate-400 text-[11px] leading-relaxed">
+                  ควบคุมเวลา ฟาวล์ และช็อตคล็อก 24/14 วิ ตามกฎสากล
+                </p>
               </div>
 
-              {/* Live Proof Metrics Ticker */}
-              <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto font-mono text-xs">
-                <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <span className="text-xl sm:text-2xl font-black text-white block">12+</span>
-                  <span className="text-[11px] text-slate-400">ทัวร์นาเมนต์รับรองในระบบ</span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-amber-400 font-bold">
+                  <Clock className="w-4 h-4 shrink-0" />
+                  <span>ใช้งานได้แม้ออฟไลน์</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <span className="text-xl sm:text-2xl font-black text-emerald-400 block">&lt; 30ms</span>
-                  <span className="text-[11px] text-slate-400">SSE Latency ถ่ายทอดสด</span>
+                <p className="text-slate-400 text-[11px] leading-relaxed">
+                  บันทึกลงเครื่องอัตโนมัติ ไม่ต้องกังวลเรื่องสัญญาณเน็ตในสนาม
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-blue-400 font-bold">
+                  <Radio className="w-4 h-4 shrink-0" />
+                  <span>คะแนนสดบนมือถือ</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <span className="text-xl sm:text-2xl font-black text-amber-400 block">100%</span>
-                  <span className="text-[11px] text-slate-400">FIBA LiveStats Compliant</span>
+                <p className="text-slate-400 text-[11px] leading-relaxed">
+                  สตรีมคะแนนสดถึงผู้ชมและผู้ปกครองแบบเรียลไทม์
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-[#FF7A7A] font-bold">
+                  <Award className="w-4 h-4 shrink-0" />
+                  <span>รับรองสถิติ TCAS</span>
                 </div>
-                <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80">
-                  <span className="text-xl sm:text-2xl font-black text-red-400 block">0 Case</span>
-                  <span className="text-[11px] text-slate-400">ข้อพิพาทเรื่องอายุผู้เล่น</span>
-                </div>
+                <p className="text-slate-400 text-[11px] leading-relaxed">
+                  สถิติที่ได้รับรอง นำไปใช้ยื่นพอร์ตโฟลิโอเข้ามหาวิทยาลัยได้จริง
+                </p>
               </div>
             </div>
           </div>
         </section>
 
         {/* ============================================================== */}
-        {/* 2. CORE PILLARS: 4 KEY ADVANTAGES FOR TOURNAMENT ORGANIZERS   */}
+        {/* 2. CORE CAPABILITIES: 4 PILLARS                                */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto w-full pt-4">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-mono font-bold tracking-widest text-[#AF101A] uppercase">
-              TOURNAMENT INFRASTRUCTURE
+        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-10 space-y-2">
+            <span className="text-xs font-mono text-[#AF101A] font-bold uppercase tracking-wider block">
+              TOURNAMENT CAPABILITIES
             </span>
-            <h2 className="font-headline-lg text-[#0B1C30] uppercase tracking-wide text-3xl sm:text-4xl font-normal">
-              4 เสาหลักที่ทำให้ทัวร์นาเมนต์ของคุณเหนือระดับ
+            <h2 className="font-headline text-[#0B1C30] uppercase text-2xl sm:text-3xl font-bold">
+              ครบทุกฟังก์ชันที่ฝ่ายจัดการแข่งขันต้องการ
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              โครงสร้างพื้นฐานเทคโนโลยีสำหรับผู้จัดการแข่งขันยุคใหม่ ลดภาระฝ่ายเทคนิค เพิ่มความน่าเชื่อถือ และดึงดูดทีมชั้นนำทั่วประเทศ
+            <p className="text-[#5B6574] text-xs sm:text-sm leading-relaxed">
+              ออกแบบจากประสบการณ์การจัดการแข่งขันจริง ลดข้อผิดพลาดของกรรมการ และยกระดับมาตรฐานรายการให้เป็นที่ยอมรับ
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pillar 1 */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#AF101A]/50 transition-all duration-300 shadow-sm hover:shadow-md group space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center text-[#AF101A] group-hover:bg-[#AF101A] group-hover:text-white transition">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-headline-sm font-bold uppercase text-[#0B1C30] text-lg group-hover:text-[#AF101A] transition">
-                  โต๊ะบันทึกคะแนน FIBA ระบบสัมผัส
+            <div className="p-6 rounded-lg bg-white border border-[#DFE2EB] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <div className="w-10 h-10 rounded bg-red-50 text-[#AF101A] flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-[#0B1C30]">
+                  โต๊ะบันทึกคะแนนระบบสัมผัส
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  ควบคุมนาฬิกาแข่ง, ช็อตคล็อก 24s/14s, แต้ม และฟาวล์ผ่านแท็บเล็ต มีระบบ Undo ย้อนหลัง 60 วิ ป้องกันความผิดพลาดของกรรมการโต๊ะ
+                <p className="text-xs text-[#5B6574] leading-relaxed">
+                  ควบคุมนาฬิกาแข่ง, ช็อตคล็อก 24/14 วิ, แต้ม และฟาวล์ผ่านแท็บเล็ต 10 นิ้ว พร้อมปุ่ม Undo เหตุการณ์ย้อนหลังเพื่อแก้ไขความผิดพลาดได้ทันที
                 </p>
               </div>
-              <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-emerald-700 font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>ส่งออก FIBA PDF ใน 1 คลิก</span>
-              </div>
+              <span className="text-[11px] text-emerald-700 font-medium pt-2 border-t border-slate-100 flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>รองรับกฎ FIBA 2026</span>
+              </span>
             </div>
 
             {/* Pillar 2 */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#AF101A]/50 transition-all duration-300 shadow-sm hover:shadow-md group space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 group-hover:bg-amber-600 group-hover:text-white transition">
-                <Radio className="w-6 h-6" />
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-headline-sm font-bold uppercase text-[#0B1C30] text-lg group-hover:text-amber-700 transition">
-                  สตรีมมิ่งสดผ่าน SSE ระดับเสี้ยววินาที
+            <div className="p-6 rounded-lg bg-white border border-[#DFE2EB] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <div className="w-10 h-10 rounded bg-amber-50 text-amber-700 flex items-center justify-center">
+                  <Radio className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-[#0B1C30]">
+                  สตรีมคะแนนสดสู่มือถือ
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  สตรีมคะแนนสด, ช็อตคล็อกนับถอยหลัง, รายชื่อผู้เล่น และ Play-by-Play สู่หน้าจอมือถือผู้ชมและผู้ปกครองทั่วโลกแบบ Real-Time
+                <p className="text-xs text-[#5B6574] leading-relaxed">
+                  ส่งผลคะแนน, ช็อตคล็อก และเพลย์ต่อเพลย์สู่หน้าจอผู้ชมและผู้ปกครองทั่วโลกแบบ Real-time โดยไม่ต้องพึ่งพารถถ่ายทอดสดราคาแพง
                 </p>
               </div>
-              <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-amber-700 font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>รองรับ Multi-Court 3 สนามพร้อมกัน</span>
-              </div>
+              <span className="text-[11px] text-emerald-700 font-medium pt-2 border-t border-slate-100 flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>ส่งข้อมูลแบบเรียลไทม์</span>
+              </span>
             </div>
 
             {/* Pillar 3 */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#AF101A]/50 transition-all duration-300 shadow-sm hover:shadow-md group space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition">
-                <QrCode className="w-6 h-6" />
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-headline-sm font-bold uppercase text-[#0B1C30] text-lg group-hover:text-blue-700 transition">
-                  บัตรนักกีฬา QR Pass ป้องกันโกงอายุ
+            <div className="p-6 rounded-lg bg-white border border-[#DFE2EB] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <div className="w-10 h-10 rounded bg-blue-50 text-blue-700 flex items-center justify-center">
+                  <QrCode className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-[#0B1C30]">
+                  บัตรนักกีฬา Digital Pass
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  หมดปัญหานักกีฬาข้ามรุ่นหรือสวมสิทธิ์ ด้วยบัตรประจำตัวดิจิทัลเข้ารหัสเลขบัตรประชาชน SHA-256 สแกนเช็กชื่อหน้าสนามได้รวดเร็ว
+                <p className="text-xs text-[#5B6574] leading-relaxed">
+                  หมดปัญหาข้อพิพาทเรื่องนักกีฬาปลอมอายุหรือสวมสิทธิ์ข้ามรุ่น ด้วยบัตรประจำตัวดิจิทัล เจ้าหน้าที่สามารถสแกนเช็กชื่อหน้าสนามได้รวดเร็ว
                 </p>
               </div>
-              <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-blue-700 font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" />
+              <span className="text-[11px] text-emerald-700 font-medium pt-2 border-t border-slate-100 flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
                 <span>สแกนตรวจสอบใน 3 วินาที</span>
-              </div>
+              </span>
             </div>
 
             {/* Pillar 4 */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#AF101A]/50 transition-all duration-300 shadow-sm hover:shadow-md group space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white transition">
-                <Award className="w-6 h-6" />
-              </div>
-              <div className="space-y-1.5">
-                <h3 className="font-headline-sm font-bold uppercase text-[#0B1C30] text-lg group-hover:text-emerald-700 transition">
-                  เชื่อมต่อสถิติ TCAS &amp; โควตามหาวิทยาลัย
+            <div className="p-6 rounded-lg bg-white border border-[#DFE2EB] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <div className="w-10 h-10 rounded bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base text-[#0B1C30]">
+                  ออกใบคะแนน FIBA ใน 1 คลิก
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  ดึงดูดทีมเยาวชนระดับประเทศ เพราะสถิติทุกคู่แข่งขันได้รับการยืนยันอย่างเป็นทางการเพื่อใช้ยื่นพอร์ตโฟลิโอเข้าศึกษาต่อระดับอุดมศึกษา
+                <p className="text-xs text-[#5B6574] leading-relaxed">
+                  เมื่อจบเกม ดาวน์โหลดใบบันทึกคะแนนเป็นไฟล์ PDF ตามแบบฟอร์มทางการ พร้อมสถิติรายบุคคลสำหรับใช้ยื่นพอร์ตโฟลิโอโควตากีฬา TCAS
                 </p>
               </div>
-              <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-emerald-700 font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>ดึงดูดทีมระดับ Top ของประเทศ</span>
-              </div>
+              <span className="text-[11px] text-emerald-700 font-medium pt-2 border-t border-slate-100 flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>ส่งออก PDF ทางการทันที</span>
+              </span>
             </div>
           </div>
         </section>
@@ -259,75 +253,70 @@ export default function SolutionsLandingPage() {
         {/* ============================================================== */}
         {/* 3. INTERACTIVE ROI CALCULATOR SECTION                          */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto w-full">
+        <section id="roi-calculator" className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           <TournamentRoiCalculator />
         </section>
 
         {/* ============================================================== */}
         {/* 4. COMPARISON MATRIX: TRADITIONAL VS STATCOURTTH SAAS          */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto w-full">
-          <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
-            <span className="text-xs font-mono uppercase text-[#AF101A] font-bold tracking-widest block">
-              COMPETITIVE COMPARISON
+        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-8 space-y-2">
+            <span className="text-xs font-mono uppercase text-[#AF101A] font-bold tracking-wider block">
+              OPERATIONAL COMPARISON
             </span>
-            <h2 className="font-headline-lg text-[#0B1C30] uppercase tracking-wide text-3xl sm:text-4xl font-normal">
-              เปรียบเทียบการจัดแข่งขันแบบเดิม vs ระบบ StatCourtTH
+            <h2 className="font-headline text-[#0B1C30] uppercase text-2xl sm:text-3xl font-bold">
+              เปรียบเทียบการจัดแบบเดิม vs ระบบ StatCourtTH
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              ทำไมฝ่ายจัดการแข่งขันยุคใหม่จึงเปลี่ยนมาใช้ระบบดิจิทัลแบบครบวงจร
+            <p className="text-xs sm:text-sm text-[#5B6574]">
+              ทำไมฝ่ายจัดการแข่งขันยุคใหม่จึงเปลี่ยนมาใช้ระบบดิจิทัล
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-[#DFE2EB] rounded-lg overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs border-collapse">
+              <table className="w-full text-left text-xs border-collapse min-w-[600px]">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase text-[11px]">
-                    <th className="py-4 px-6 font-bold">ฟังก์ชันการทำงาน</th>
-                    <th className="py-4 px-6 font-bold text-slate-500">การจัดแบบดั้งเดิม (กระดาษ)</th>
-                    <th className="py-4 px-6 font-bold text-[#AF101A]">ระบบ StatCourtTH SaaS</th>
+                  <tr className="bg-slate-50 border-b border-[#DFE2EB] text-[#0B1C30] text-[11px] font-mono">
+                    <th className="py-3 px-5 font-bold w-1/4">กระบวนการ</th>
+                    <th className="py-3 px-5 font-bold text-[#5B6574] w-3/8">การจัดแบบเดิม (กระดาษ)</th>
+                    <th className="py-3 px-5 font-bold text-[#AF101A] bg-red-50/30 w-3/8">ระบบ StatCourtTH</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 font-sans text-xs sm:text-sm">
+                <tbody className="divide-y divide-slate-100 font-sans">
                   <tr className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#0B1C30] font-mono">การบันทึกคะแนนและเวลา</td>
-                    <td className="py-4 px-6 text-slate-500">ใช้ปากกาเขียนใบบันทึกคะแนน เสี่ยงต่อการคำนวณคะแนนผิด</td>
-                    <td className="py-4 px-6 text-emerald-700 font-semibold flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>หน้าจอสัมผัส FIBA Console คำนวณแต้มและฟาวล์อัตโนมัติ</span>
+                    <td className="py-3.5 px-5 font-bold text-[#0B1C30]">การบันทึกคะแนนและเวลา</td>
+                    <td className="py-3.5 px-5 text-[#5B6574]">ใช้ปากกาเขียน เสี่ยงต่อการคำนวณคะแนนผิดพลาด</td>
+                    <td className="py-3.5 px-5 text-emerald-800 font-medium bg-red-50/10">
+                      หน้าจอสัมผัส FIBA Console คำนวณแต้มและฟาวล์อัตโนมัติ
                     </td>
                   </tr>
                   <tr className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#0B1C30] font-mono">การถ่ายทอดผลสดให้ผู้ชม</td>
-                    <td className="py-4 px-6 text-slate-500">ต้องรออัปเดตสรุปหลังจบเกม หรือถ่ายทอดสดด้วยต้นทุนหลักแสน</td>
-                    <td className="py-4 px-6 text-emerald-700 font-semibold flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>Broadcast สดผ่าน SSE ถึงมือถือผู้ชมระดับเสี้ยววินาที ฟรี</span>
+                    <td className="py-3.5 px-5 font-bold text-[#0B1C30]">การรายงานผลสดให้ผู้ชม</td>
+                    <td className="py-3.5 px-5 text-[#5B6574]">ต้องรอสรุปหลังจบเกม หรือใช้ทีมถ่ายทอดสดต้นทุนสูง</td>
+                    <td className="py-3.5 px-5 text-emerald-800 font-medium bg-red-50/10">
+                      สตรีมคะแนนสดถึงมือถือผู้ชมและผู้ปกครองแบบเรียลไทม์ ฟรี
                     </td>
                   </tr>
                   <tr className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#0B1C30] font-mono">การตรวจสอบคุณสมบัติและอายุ</td>
-                    <td className="py-4 px-6 text-slate-500">ตรวจสำเนาบัตรประชาชน เกิดข้อพิพาทเรื่องนักกีฬาปลอมอายุบ่อยครั้ง</td>
-                    <td className="py-4 px-6 text-emerald-700 font-semibold flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>สแกน QR Digital Pass เข้ารหัส SHA-256 ตรวจสอบทันที</span>
+                    <td className="py-3.5 px-5 font-bold text-[#0B1C30]">การตรวจสอบคุณสมบัติผู้เล่น</td>
+                    <td className="py-3.5 px-5 text-[#5B6574]">ตรวจสำเนาเอกสาร เสี่ยงต่อการสวมสิทธิ์และโกงอายุ</td>
+                    <td className="py-3.5 px-5 text-emerald-800 font-medium bg-red-50/10">
+                      สแกน Digital Player Pass ตรวจสอบสิทธิ์ใน 3 วินาที
                     </td>
                   </tr>
                   <tr className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#0B1C30] font-mono">การออกใบบันทึกคะแนน (Scoresheet)</td>
-                    <td className="py-4 px-6 text-slate-500">ต้องถ่ายสำเนาหรือพิมพ์ใหม่เพื่อส่งสมาคมฯ ใช้เวลานาน</td>
-                    <td className="py-4 px-6 text-emerald-700 font-semibold flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>ดาวน์โหลดเป็น PDF ทางการตามแบบฟอร์ม FIBA ได้ทันที</span>
+                    <td className="py-3.5 px-5 font-bold text-[#0B1C30]">การออกใบบันทึกคะแนน</td>
+                    <td className="py-3.5 px-5 text-[#5B6574]">ต้องถ่ายสำเนาหรือพิมพ์ใหม่เพื่อส่งสมาคมฯ</td>
+                    <td className="py-3.5 px-5 text-emerald-800 font-medium bg-red-50/10">
+                      ดาวน์โหลดเป็น PDF ทางการตามแบบฟอร์มสากลได้ทันที
                     </td>
                   </tr>
                   <tr className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-bold text-[#0B1C30] font-mono">การสนับสนุนพอร์ตโฟลิโอนักกีฬา</td>
-                    <td className="py-4 px-6 text-slate-500">ไม่มีระบบบันทึกคลิปและสถิติรายบุคคลที่เป็นทางการ</td>
-                    <td className="py-4 px-6 text-emerald-700 font-semibold flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span>ออกรายงานสถิติยืนยันตัวตนสำหรับแฟ้มสะสมงาน TCAS 100%</span>
+                    <td className="py-3.5 px-5 font-bold text-[#0B1C30]">สถิติสำหรับนักกีฬา</td>
+                    <td className="py-3.5 px-5 text-[#5B6574]">ไม่มีระบบบันทึกสถิติที่เป็นทางการรายบุคคล</td>
+                    <td className="py-3.5 px-5 text-emerald-800 font-medium bg-red-50/10">
+                      รับรองสถิติเพื่อนำไปใช้ยื่นพอร์ตโฟลิโอโควตา TCAS ได้จริง
                     </td>
                   </tr>
                 </tbody>
@@ -339,49 +328,47 @@ export default function SolutionsLandingPage() {
         {/* ============================================================== */}
         {/* 5. PRICING TIERS SECTION                                       */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto w-full">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-mono uppercase text-[#AF101A] font-bold tracking-widest block">
+        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-10 space-y-2">
+            <span className="text-xs font-mono uppercase text-[#AF101A] font-bold tracking-wider block">
               TRANSPARENT PRICING
             </span>
-            <h2 className="font-headline-lg text-[#0B1C30] uppercase tracking-wide text-3xl sm:text-4xl font-normal">
-              แพ็กเกจราคาค่าบริการสำหรับผู้จัดการแข่งขัน
+            <h2 className="font-headline text-[#0B1C30] uppercase text-2xl sm:text-3xl font-bold">
+              แพ็กเกจราคาสำหรับผู้จัดการแข่งขัน
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="text-xs sm:text-sm text-[#5B6574]">
               เลือกแพ็กเกจที่เหมาะสมกับขนาดของทัวร์นาเมนต์ ไม่มีค่าใช้จ่ายแอบแฝง
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Free / Community Plan */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 space-y-5 flex flex-col justify-between shadow-sm">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500 uppercase font-bold tracking-wider">
-                    COMMUNITY LEAGUE
-                  </span>
-                  <span className="inline-flex items-center text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold uppercase">
-                    [ พร้อมใช้งาน (LIVE) ]
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+            {/* Free Plan */}
+            <div className="p-6 rounded-lg bg-white border border-[#DFE2EB] space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-[#5B6574] font-bold">COMMUNITY</span>
+                  <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[10px]">
+                    ฟรี
                   </span>
                 </div>
-                <div className="font-mono">
-                  <span className="text-3xl font-black text-[#0B1C30]">ฟรี</span>
-                  <span className="text-xs text-slate-500"> / ทัวร์นาเมนต์</span>
+                <div>
+                  <span className="text-3xl font-black text-[#0B1C30] font-mono">ฟรี</span>
+                  <span className="text-xs text-[#5B6574] font-sans"> / ทัวร์นาเมนต์</span>
                 </div>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-[#5B6574] leading-relaxed">
                   สำหรับทัวร์นาเมนต์กระชับมิตร หรือการแข่งขันภายในโรงเรียน/ชมรม
                 </p>
-                <div className="space-y-2 text-xs text-slate-700 font-sans pt-3 border-t border-slate-100">
+                <div className="space-y-2 text-xs text-[#0B1C30] pt-3 border-t border-slate-100">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>รองรับสูงสุด 8 ทีม</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>ระบบ Table Official Console พื้นฐาน</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>ระบบโต๊ะบันทึกคะแนนพื้นฐาน</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>ตารางสายการแข่งขันอัตโนมัติ</span>
                   </div>
                 </div>
@@ -390,53 +377,47 @@ export default function SolutionsLandingPage() {
               <button
                 type="button"
                 onClick={() => setIsWizardOpen(true)}
-                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono text-xs font-bold transition"
+                className="w-full py-2.5 rounded bg-slate-100 hover:bg-slate-200 text-[#0B1C30] text-xs font-bold transition cursor-pointer"
               >
                 เริ่มใช้งานฟรี
               </button>
             </div>
 
-            {/* Pro Plan (Most Popular) */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border-2 border-[#AF101A] shadow-xl space-y-5 flex flex-col justify-between relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#AF101A] text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow">
-                MOST POPULAR FOR TOURNAMENTS
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-[#AF101A] uppercase font-bold tracking-wider">
-                    PRO LEAGUE TOURNAMENT
-                  </span>
-                  <span className="inline-flex items-center text-[10px] font-mono text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded font-bold uppercase">
-                    [ แพ็กเกจพร้อมบริการ ]
+            {/* Pro Plan */}
+            <div className="p-6 rounded-lg bg-white border-2 border-[#AF101A] space-y-4 flex flex-col justify-between relative shadow-sm">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-[#AF101A] font-bold">PRO TOURNAMENT</span>
+                  <span className="text-[#AF101A] bg-red-50 border border-red-200 px-2 py-0.5 rounded text-[10px] font-bold">
+                    แนะนำ
                   </span>
                 </div>
-                <div className="font-mono">
-                  <span className="text-3xl font-black text-[#0B1C30]">8,900</span>
-                  <span className="text-xs text-slate-500"> THB / ทัวร์นาเมนต์</span>
+                <div>
+                  <span className="text-3xl font-black text-[#0B1C30] font-mono">8,900</span>
+                  <span className="text-xs text-[#5B6574] font-sans"> บาท / รายการ</span>
                 </div>
-                <p className="text-xs text-slate-600">
-                  สำหรับทัวร์นาเมนต์เยาวชนและประชาชนระดับจังหวัด / ประเทศ
+                <p className="text-xs text-[#5B6574] leading-relaxed">
+                  สำหรับทัวร์นาเมนต์เยาวชนและประชาชนระดับจังหวัดและประเทศ ไม่จำกัดจำนวนแมตช์
                 </p>
-                <div className="space-y-2 text-xs text-slate-700 font-sans pt-3 border-t border-slate-100">
+                <div className="space-y-2 text-xs text-[#0B1C30] pt-3 border-t border-slate-100">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>ไม่จำกัดจำนวนทีมและคู่แข่งขัน</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>ถ่ายทอดสดคะแนนผ่าน SSE สู่หน้า /live</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>ระบบ Digital Player Pass ตรวจสอบอายุ</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>ออกใบบันทึกคะแนน FIBA Scoresheet PDF</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>รับรองสถิติสำหรับแฟ้มสะสมงาน TCAS</span>
                   </div>
                 </div>
@@ -445,47 +426,50 @@ export default function SolutionsLandingPage() {
               <button
                 type="button"
                 onClick={() => setIsWizardOpen(true)}
-                className="w-full py-3 rounded-xl bg-[#AF101A] hover:bg-[#8F0D15] text-white font-mono text-xs font-bold transition shadow-md cursor-pointer"
+                className="w-full py-3 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold transition cursor-pointer"
               >
-                เปิดระบบ Pro Tournament
+                เปิดระบบ Pro Tournament (8,900 บาท)
               </button>
             </div>
 
-            {/* Enterprise / Federation Plan */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-[#0F172A] border border-slate-800 text-white space-y-5 flex flex-col justify-between shadow-xl">
-              <div className="space-y-4">
-                <span className="text-xs font-mono text-amber-400 uppercase font-bold tracking-wider">
-                  ENTERPRISE &amp; FEDERATION
-                </span>
-                <div className="font-mono">
-                  <span className="text-3xl font-black text-white">ติดต่อทีมงาน</span>
+            {/* Enterprise Plan */}
+            <div className="p-6 rounded-lg bg-[#0B1C30] border border-slate-800 text-white space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-amber-400 font-bold">FEDERATION &amp; LEAGUE</span>
+                  <span className="text-slate-300 bg-slate-800 px-2 py-0.5 rounded text-[10px]">
+                    องค์กร
+                  </span>
                 </div>
-                <p className="text-xs text-slate-400">
+                <div>
+                  <span className="text-3xl font-black text-white font-mono">ติดต่อทีมงาน</span>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed font-sans">
                   สำหรับลีกอาชีพ สมาคมกีฬา และทัวร์นาเมนต์ระดับภูมิภาคหลายสนาม
                 </p>
-                <div className="space-y-2 text-xs text-slate-300 font-sans pt-3 border-t border-slate-800">
+                <div className="space-y-2 text-xs text-slate-300 pt-3 border-t border-slate-800 font-sans">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                     <span>เชื่อมต่อกล้องวิดีโอหลายมุม (Multi-Cam)</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <span>ระบบชาเลนจ์ภาพช้าผู้ตัดสิน (FIBA IRS Review)</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>ระบบชาเลนจ์ภาพช้าผู้ตัดสิน (FIBA IRS)</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                     <span>Custom Branding &amp; โดเมนเฉพาะ</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <span>มีเจ้าหน้าที่เทคนิคประจำสนาม (On-site Support)</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>มีเจ้าหน้าที่เทคนิคประจำสนาม (On-site)</span>
                   </div>
                 </div>
               </div>
 
               <a
                 href="mailto:partner@statcourt.th"
-                className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs font-bold transition text-center block border border-slate-700"
+                className="w-full py-2.5 rounded bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition text-center block border border-slate-700"
               >
                 ติดต่อฝ่ายพันธมิตร
               </a>
@@ -494,80 +478,65 @@ export default function SolutionsLandingPage() {
         </section>
 
         {/* ============================================================== */}
-        {/* 6. FAQ SECTION                                                 */}
+        {/* 6. FAQ SECTION (CLEAN NATIVE DISCLOSURE)                       */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 space-y-2">
-            <span className="text-xs font-mono uppercase text-[#AF101A] font-bold tracking-widest block">
-              FREQUENTLY ASKED QUESTIONS
-            </span>
-            <h2 className="font-headline-lg text-[#0B1C30] uppercase tracking-wide text-2xl sm:text-3xl font-normal">
-              คำถามที่พบบ่อยเกี่ยวกับระบบทัวร์นาเมนต์
+            <h2 className="font-headline text-[#0B1C30] uppercase text-2xl sm:text-3xl font-bold">
+              คำถามที่พบบ่อย
             </h2>
+            <p className="text-xs sm:text-sm text-[#5B6574]">
+              ข้อสงสัยเกี่ยวกับการใช้งานระบบโต๊ะกรรมการและข้อกำหนดทางเทคนิค
+            </p>
           </div>
 
           <div className="space-y-3 font-sans">
-            {faqs.map((faq, index) => (
-              <div
+            {faqs.map(({ q, a }, index) => (
+              <details
                 key={index}
-                className="rounded-xl bg-white border border-slate-200 overflow-hidden shadow-xs transition hover:border-slate-300"
+                className="rounded-lg bg-white border border-[#DFE2EB] p-4 sm:p-5 group transition"
               >
-                <button
-                  type="button"
-                  onClick={() => toggleFaq(index)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition"
-                >
-                  <span className="font-bold text-sm sm:text-base text-[#0B1C30]">{faq.q}</span>
-                  {openFaq === index ? (
-                    <ChevronUp className="w-4 h-4 text-[#AF101A] shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                  )}
-                </button>
-                {openFaq === index && (
-                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
+                <summary className="font-bold text-sm text-[#0B1C30] cursor-pointer list-none flex items-center justify-between gap-4">
+                  <span>{q}</span>
+                  <Plus className="w-4 h-4 text-[#5B6574] shrink-0 group-open:rotate-45 transition-transform duration-200" />
+                </summary>
+                <p className="mt-3 text-xs sm:text-sm text-[#5B6574] leading-relaxed border-t border-slate-100 pt-3">
+                  {a}
+                </p>
+              </details>
             ))}
           </div>
         </section>
 
         {/* ============================================================== */}
-        {/* 7. FINAL HIGH-IMPACT CTA BANNER                                */}
+        {/* 7. CLOSING BANNER                                              */}
         {/* ============================================================== */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto w-full">
-          <div className="p-8 sm:p-14 rounded-3xl bg-[#0F172A] border border-slate-800 text-white relative overflow-hidden court-grid-pattern shadow-xl text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-[#AF101A] text-white flex items-center justify-center mx-auto shadow-md">
-              <Trophy className="w-8 h-8" />
-            </div>
-
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <h2 className="font-headline-xl text-white uppercase tracking-wider text-2xl sm:text-4xl font-normal">
-                พร้อมยกระดับทัวร์นาเมนต์ของคุณแล้วหรือยัง?
+        <section className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-8 sm:p-12 rounded-lg bg-[#0B1C30] border border-slate-800 text-white flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <h2 className="font-headline text-white uppercase text-2xl sm:text-3xl font-bold">
+                พร้อมยกระดับทัวร์นาเมนต์ของคุณหรือยัง?
               </h2>
-              <p className="text-xs sm:text-base text-slate-300 leading-relaxed">
-                เปิดระบบใน 3 นาที ไม่มีขั้นตอนซับซ้อน ดึงดูดทีมชั้นนำและยกระดับมาตรฐานวงการบาสเกตบอลไทยไปด้วยกัน
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                เปิดระบบได้ในไม่กี่ขั้นตอน ดึงดูดทีมชั้นนำ และร่วมสร้างมาตรฐานใหม่ให้วงการบาสเกตบอลไทย
               </p>
             </div>
 
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-4 font-mono text-xs sm:text-sm">
+            <div className="shrink-0 flex flex-wrap items-center gap-3 font-sans text-xs sm:text-sm">
               <button
                 type="button"
                 onClick={() => setIsWizardOpen(true)}
-                className="px-8 py-3.5 rounded-xl bg-[#AF101A] hover:bg-[#8F0D15] text-white font-bold transition shadow-md flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition flex items-center gap-2 cursor-pointer shadow-sm"
               >
                 <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>เปิดระบบทัวร์นาเมนต์ทันที</span>
-                <ArrowRight className="w-4 h-4" />
               </button>
 
               <Link
                 href="/tournaments"
-                className="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition border border-slate-700"
+                className="px-5 py-3 rounded bg-white/10 hover:bg-white/15 text-white font-medium transition border border-slate-700"
               >
-                ดูตัวอย่างทัวร์นาเมนต์ในระบบ
+                ดูทัวร์นาเมนต์ในระบบ
               </Link>
             </div>
           </div>

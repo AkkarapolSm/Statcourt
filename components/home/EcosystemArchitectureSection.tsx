@@ -46,7 +46,7 @@ export default function EcosystemArchitectureSection({
         <span className="text-xs font-mono font-bold tracking-widest text-[#AF101A] uppercase">
           END-TO-END BASKETBALL INTELLIGENCE ECOSYSTEM
         </span>
-        <h2 className="font-headline-lg text-[#0B1C30] uppercase tracking-wide text-3xl sm:text-4xl font-normal">
+        <h2 className="font-sans font-bold text-[#0B1C30] text-2xl sm:text-3xl lg:text-4xl leading-tight">
           สถาปัตยกรรมระบบ 4 มิติ ยกระดับมาตรฐานบาสเกตบอลครบวงจร
         </h2>
         <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -169,7 +169,7 @@ export default function EcosystemArchitectureSection({
                 {hasOfficialAccess ? (
                   <Link
                     href="/official/console/match-bcc-ds-01"
-                    className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
+                    className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
                   >
                     <Play className="w-3.5 h-3.5" />
                     <span>เข้าสู่ Live Courtside Console</span>
@@ -177,7 +177,7 @@ export default function EcosystemArchitectureSection({
                 ) : (
                   <Link
                     href="/live"
-                    className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
+                    className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
                   >
                     <Play className="w-3.5 h-3.5" />
                     <span>เข้าสู่ศูนย์ถ่ายทอดสด &amp; สถิติสด (Live Hub)</span>
@@ -253,7 +253,7 @@ export default function EcosystemArchitectureSection({
                 {hasScoutAccess ? (
                   <Link
                     href="/scout"
-                    className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
+                    className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
                   >
                     <Search className="w-3.5 h-3.5" />
                     <span>เข้าสู่ Scout Intelligence Platform</span>
@@ -261,7 +261,7 @@ export default function EcosystemArchitectureSection({
                 ) : !isMember ? (
                   <Link
                     href="/auth/register"
-                    className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition shadow-md shadow-red-950/40"
+                    className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition shadow-md shadow-red-950/40"
                   >
                     <Search className="w-3.5 h-3.5" />
                     <span>สมัครสมาชิกเพื่อปลดล็อก Scout Hub</span>
@@ -269,7 +269,7 @@ export default function EcosystemArchitectureSection({
                 ) : (
                   <Link
                     href="/opportunities"
-                    className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
+                    className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
                   >
                     <Search className="w-3.5 h-3.5" />
                     <span>ศูนย์ข้อมูลทุนการศึกษา TCAS</span>
@@ -350,7 +350,7 @@ export default function EcosystemArchitectureSection({
               <div className="flex flex-wrap items-center gap-3 pt-4">
                 <Link
                   href="/team"
-                  className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
+                  className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition"
                 >
                   <Brain className="w-3.5 h-3.5" />
                   <span>เข้าสู่ระบบจัดการและวิเคราะห์ทีม (Team Hub)</span>
@@ -421,7 +421,7 @@ export default function EcosystemArchitectureSection({
                 <button
                   type="button"
                   onClick={onOpenEdgeCameraModal}
-                  className="px-5 py-2.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition shadow-md shadow-red-950/30 cursor-pointer"
+                  className="px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-mono font-bold uppercase rounded flex items-center gap-2 transition shadow-md shadow-red-950/30 cursor-pointer"
                 >
                   <Cpu className="w-3.5 h-3.5" />
                   <span>ทดสอบระบบ Edge AI Tracking</span>

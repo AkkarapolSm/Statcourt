@@ -121,28 +121,28 @@ export default function DigitalPlayerPassModal({
         {/* Top Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#DC2626]/20 border border-[#DC2626]/40 flex items-center justify-center text-[#DC2626]">
+            <div className="w-8 h-8 rounded-lg bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-[#FF7A7A]">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest block">
                 TOURNAMENT INTEGRITY GUARD
               </span>
-              <h3 className="font-headline-md text-white font-bold text-lg uppercase">
+              <h3 className="font-sans font-bold text-white text-base sm:text-lg">
                 บัตรประจำตัวนักกีฬาดิจิทัล (Digital Player Pass)
               </h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white transition"
+            className="p-1 rounded text-slate-400 hover:text-white transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Digital Pass Card Body */}
-        <div className="bg-gradient-to-b from-slate-800 via-slate-800/90 to-slate-900 border-2 border-[#AF101A] rounded-xl p-5 shadow-xl relative overflow-hidden space-y-4 font-mono select-none">
+        <div className="bg-gradient-to-b from-slate-800 via-slate-800/90 to-slate-900 border-2 border-[#AF101A] rounded-lg p-5 shadow-xl relative overflow-hidden space-y-4 font-mono select-none">
           {/* Watermark Logo */}
           <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-[#AF101A]/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -154,8 +154,8 @@ export default function DigitalPlayerPassModal({
               </div>
               <span className="font-bold text-xs text-white">STATCOURT.TH PASS</span>
             </div>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/60 text-[10px] font-bold">
-              <ShieldCheck className="w-3 h-3 text-[#DC2626]" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-600/50 text-[10px] font-bold">
+              <ShieldCheck className="w-3 h-3 text-[#15803D]" />
               VERIFIED ELIGIBLE
             </span>
           </div>
@@ -164,7 +164,7 @@ export default function DigitalPlayerPassModal({
           <div className="flex items-start gap-3.5 pt-1">
             <div className="w-20 h-24 rounded-lg bg-slate-700 border border-slate-600 flex flex-col items-center justify-center text-white shrink-0 relative overflow-hidden shadow">
               <User className="w-8 h-8 text-slate-400 mb-1" />
-              <span className="font-headline-lg text-lg font-black text-[#DC2626] leading-none">
+              <span className="font-headline-lg text-lg font-black text-[#FF7A7A] leading-none">
                 #{data.jerseyNumber}
               </span>
               <span className="text-[8px] text-slate-400 mt-0.5">U18 ATHLETE</span>
@@ -198,7 +198,7 @@ export default function DigitalPlayerPassModal({
 
             <div className="text-[10px] space-y-0.5 flex-1">
               <p className="font-bold text-slate-900 uppercase">PASS CODE:</p>
-              <p className="text-[#DC2626] font-bold text-xs tracking-wider">{data.passQrCode}</p>
+              <p className="text-[#AF101A] font-bold text-xs tracking-wider">{data.passQrCode}</p>
               <p className="text-slate-500">ID HASH: {data.nationalIdHashed}</p>
               <p className="text-slate-500">วันหมดอายุ: {data.validUntil}</p>
             </div>
@@ -211,7 +211,7 @@ export default function DigitalPlayerPassModal({
         </div>
 
         {/* Scan & Verification Simulator */}
-        <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-4 space-y-3 text-xs font-mono">
+        <div className="bg-slate-800/80 border border-slate-700 rounded-lg p-4 space-y-3 text-xs font-mono">
           <div className="flex items-center justify-between">
             <span className="text-slate-300 font-bold uppercase text-[11px]">
               ระบบจำลองการตรวจสอบสิทธิ์หน้าสนามแข่งขัน (Gate Scanner):
@@ -219,7 +219,7 @@ export default function DigitalPlayerPassModal({
             <button
               onClick={handleSimulateScan}
               disabled={isScanning}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold transition disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition disabled:opacity-50 cursor-pointer"
             >
               <Scan className="w-3.5 h-3.5" />
               <span>{isScanning ? "กำลังสแกน..." : "ตรวจสอบความถูกต้องของบัตร"}</span>
@@ -229,7 +229,7 @@ export default function DigitalPlayerPassModal({
           {scanResult && (
             <div className="p-3 bg-slate-900 border border-slate-700 rounded text-white space-y-1 animate-in fade-in duration-200">
               <div className="flex items-center gap-1.5 font-bold text-white">
-                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>รับรองคุณสมบัตินักกีฬาถูกต้องตามระเบียบการแข่งขัน — อนุมัติลงสนาม</span>
               </div>
               <p className="text-[11px] text-slate-300">

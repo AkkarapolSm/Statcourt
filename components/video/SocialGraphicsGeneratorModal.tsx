@@ -78,7 +78,7 @@ export default function SocialGraphicsGeneratorModal({
       }
     } catch (err) {
       console.error("Export graphic error:", err);
-      alert("ดาวน์โหลดรูปภาพสำเร็จ (1080x1080 PNG สำหรับ Instagram / Facebook)");
+      alert("ไม่สามารถสร้างภาพกราฟิกได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง");
     } finally {
       setIsExporting(false);
     }

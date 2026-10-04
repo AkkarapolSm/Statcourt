@@ -62,7 +62,7 @@ export default function PricingModal({
         <div className="bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 px-6 py-5 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-brand-primary/20 border border-brand-primary/50 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-brand-primary fill-current" />
+              <Zap className="w-5 h-5 text-brand-signal fill-current" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ export default function PricingModal({
                   className={`w-full py-2.5 rounded-lg text-xs font-black font-mono uppercase tracking-wider transition shadow-lg ${
                     isCurrentPro
                       ? "bg-emerald-600 text-white cursor-default"
-                      : "bg-brand-primary hover:bg-brand-secondary text-white"
+                      : "bg-brand-primary hover:bg-brand-crimson text-white"
                   }`}
                 >
                   {isCurrentPro ? "คุณกำลังใช้งานสิทธิ์ PRO อยู่แล้ว" : "อัปเกรดเป็น PRO ATHLETE (฿199/ด.)"}

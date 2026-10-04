@@ -18,7 +18,7 @@ export default function TcasScholarshipsSection() {
             <div className="inline-block bg-emerald-100 text-emerald-800 font-mono uppercase font-bold px-3 py-1 rounded text-xs mb-2">
               TCAS ATHLETIC QUOTAS &amp; SCHOLARSHIPS
             </div>
-            <h2 className="font-headline-xl text-3xl sm:text-4xl uppercase text-[#0B1C30] font-black tracking-tight">
+            <h2 className="font-sans font-bold text-2xl sm:text-3xl text-[#0B1C30] tracking-tight">
               ศูนย์รวมโควตาทุนการศึกษาและโอกาสนักกีฬา มหาวิทยาลัยชั้นนำ
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -28,7 +28,7 @@ export default function TcasScholarshipsSection() {
 
           <Link
             href="/opportunities"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded bg-slate-900 hover:bg-[#DC2626] text-white font-mono font-bold text-xs uppercase transition shadow-xs shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded bg-slate-900 hover:bg-[#AF101A] text-white font-mono font-bold text-xs uppercase transition shadow-xs shrink-0"
           >
             <span>สำรวจโควตาทั้งหมด 12 สถาบัน</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -39,7 +39,7 @@ export default function TcasScholarshipsSection() {
           {featuredOpportunities.map((opp) => (
             <div
               key={opp.id}
-              className="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md hover:border-[#DC2626]/40 transition flex flex-col justify-between"
+              className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md hover:border-[#AF101A]/40 transition flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex justify-between items-start">
@@ -55,7 +55,7 @@ export default function TcasScholarshipsSection() {
                   <span className="text-[11px] font-mono text-[#AF101A] font-bold block mb-0.5">
                     {opp.institution}
                   </span>
-                  <h4 className="font-headline-sm font-bold text-slate-900 text-base leading-snug line-clamp-2">
+                  <h4 className="font-sans font-bold text-slate-900 text-base leading-snug line-clamp-2">
                     {opp.title}
                   </h4>
                 </div>
@@ -77,12 +77,12 @@ export default function TcasScholarshipsSection() {
               </div>
 
               <div className="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono text-[#5B6574]">
                   รอบ 1 Portfolio (TCAS)
                 </span>
                 <Link
                   href="/opportunities"
-                  className="text-xs font-mono font-bold text-[#DC2626] hover:underline flex items-center gap-1"
+                  className="text-xs font-mono font-bold text-[#AF101A] hover:underline flex items-center gap-1"
                 >
                   <span>ดูระเบียบการ</span>
                   <ChevronRight className="w-3.5 h-3.5" />

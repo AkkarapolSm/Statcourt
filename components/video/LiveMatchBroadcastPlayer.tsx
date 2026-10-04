@@ -154,7 +154,7 @@ export default function LiveMatchBroadcastPlayer({
           <div className="flex items-center gap-2 font-mono text-xs">
             <span className="font-bold text-white">
               {stream.homeTeam.shortName}{" "}
-              <span className="text-brand-primary font-black">
+              <span className="text-brand-signal font-black">
                 {stream.homeTeam.score}
               </span>
             </span>

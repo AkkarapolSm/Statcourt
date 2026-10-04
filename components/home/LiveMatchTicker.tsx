@@ -10,53 +10,56 @@ export default function LiveMatchTicker() {
       court: "สนาม 1",
       teams: "BCC 75 : 63 DS",
       time: "Q4 05:20",
-      status: "LIVE",
     },
     {
       court: "สนาม 2",
       teams: "ACT 48 : 48 SK",
       time: "Q3 04:11",
-      status: "LIVE",
     },
     {
       court: "สนาม 3",
       teams: "CMU 34 : 38 CHON",
       time: "Q2 01:15",
-      status: "LIVE",
     },
   ];
 
   return (
-    <section className="bg-[#0A0F1D] text-slate-300 py-2 px-4 sm:px-6 border-b border-slate-800/80 font-mono text-xs">
+    <section className="bg-[#0B1C30] text-slate-300 py-2.5 px-4 sm:px-6 border-b border-slate-800 font-sans text-xs">
       <div className="max-w-[1536px] mx-auto flex items-center justify-between gap-4">
-        {/* Left: Tournament & Live Pulse */}
-        <div className="flex items-center gap-3 shrink-0">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-950/80 text-red-400 border border-red-800/60 font-bold text-[10px] uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-            TOA YOUTH LEAGUE LIVE
+        {/* Left: Tournament Indicator */}
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A7A] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A7A]" />
+          </span>
+          <span className="font-semibold text-white tracking-wide">
+            สดจากสนาม (Live)
+          </span>
+          <span className="text-slate-400 hidden lg:inline">
+            · TOA Youth Basketball League
           </span>
         </div>
 
-        {/* Center: Multi-court Scores Ticker */}
-        <div className="hidden md:flex items-center gap-6 overflow-x-auto no-scrollbar">
+        {/* Center: Multi-court Scores Ticker (Scrollable on mobile) */}
+        <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-0.5">
           {tickerMatches.map((m, idx) => (
-            <div key={idx} className="flex items-center gap-2 text-[11px] whitespace-nowrap">
-              <span className="text-slate-500 text-[10px] font-bold">{m.court}:</span>
-              <span className="font-bold text-white">{m.teams}</span>
-              <span className="text-amber-400 text-[10px] bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 font-bold">
+            <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs whitespace-nowrap shrink-0">
+              <span className="text-slate-400 text-[11px]">{m.court}:</span>
+              <span className="font-barlow font-bold text-white tabular-nums tracking-wide">{m.teams}</span>
+              <span className="text-slate-300 bg-white/10 px-1.5 py-0.5 rounded text-[11px] font-barlow tabular-nums">
                 {m.time}
               </span>
             </div>
           ))}
         </div>
 
-        {/* Right: Single Direct Action to Multi-Court Arena */}
-        <div className="shrink-0">
+        {/* Right: Direct Action to Multi-Court Arena */}
+        <div className="shrink-0 hidden sm:block">
           <Link
             href="/live"
-            className="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-white font-bold transition"
+            className="inline-flex items-center gap-1 text-xs text-[#FF7A7A] hover:text-white font-medium py-1 px-1.5 transition-colors"
           >
-            <span>ชมสด 3 สนาม (Live Arena)</span>
+            <span>เปิดสนามสด 3 คอร์ท</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>

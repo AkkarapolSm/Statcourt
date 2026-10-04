@@ -1,15 +1,12 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   X,
   Download,
-  Share2,
   CheckCircle2,
   Sparkles,
   ShieldCheck,
-  Instagram,
-  Facebook,
   Copy,
 } from "lucide-react";
 import { POTWData } from "@/lib/types";
@@ -31,6 +28,20 @@ export default function POTWShareModal({
   const [copied, setCopied] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleDownloadImage = async () => {
@@ -40,10 +51,10 @@ export default function POTWShareModal({
     try {
       const element = cardRef.current;
       const canvas = await html2canvas(element, {
-        scale: 3, // Ultra crisp 3x resolution for IG Story
+        scale: 3, // Crisp 3x resolution for IG Story
         useCORS: true,
         allowTaint: true,
-        backgroundColor: "#0B0F19",
+        backgroundColor: "#0B1C30",
         logging: false,
       });
 
@@ -71,19 +82,33 @@ export default function POTWShareModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-[#0F172A] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden my-6 text-white font-mono flex flex-col max-h-[95vh]">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="potw-share-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-lg bg-[#0B1C30] border border-[#1E3A5F] rounded-lg shadow-2xl overflow-hidden my-6 text-white font-mono flex flex-col max-h-[95vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* HEADER */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-[#1E293B]/70 shrink-0">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#1E3A5F] bg-[#081422] shrink-0">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-100">
+            <Sparkles className="w-4 h-4 text-[#AF101A]" />
+            <h2
+              id="potw-share-title"
+              className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-100"
+            >
               แชร์รูปสถิติลง IG Story / Facebook
-            </span>
+            </h2>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            aria-label="ปิดหน้าต่างแชร์รูปสถิติ"
+            className="p-1 rounded-sm text-slate-400 hover:text-white hover:bg-[#1E3A5F]/60 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -98,40 +123,36 @@ export default function POTWShareModal({
         )}
 
         {/* GRAPHIC CANVAS PREVIEW CONTAINER */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-950 flex justify-center items-center">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#050C16] flex justify-center items-center">
           {/* ============================================================== */}
           {/* 9:16 INSTAGRAM STORY READY GRAPHIC CARD                         */}
           {/* ============================================================== */}
           <div
             ref={cardRef}
-            className="w-full max-w-[340px] aspect-[9/16] bg-gradient-to-b from-[#1E1B4B] via-[#0F172A] to-black rounded-2xl border-2 border-red-600/70 p-5 shadow-2xl relative flex flex-col justify-between overflow-hidden select-none"
+            className="w-full max-w-[340px] aspect-[9/16] bg-[#0B1C30] rounded-lg border-2 border-[#AF101A] p-5 shadow-2xl relative flex flex-col justify-between overflow-hidden select-none"
           >
-            {/* AMBIENT GLOW */}
-            <div className="absolute top-0 right-0 w-44 h-44 bg-red-600/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-10 left-0 w-44 h-44 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
-
             {/* CARD TOP BRANDING */}
             <div className="relative z-10">
-              <div className="flex items-center justify-between border-b border-slate-700/80 pb-2.5">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-6 h-6 rounded bg-[#AF101A] flex items-center justify-center text-white text-[10px] font-black">
+              <div className="flex items-center justify-between border-b border-[#1E3A5F] pb-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-sm bg-[#AF101A] flex items-center justify-center text-white text-[10px] font-black">
                     SC
                   </div>
                   <span className="font-headline-sm text-xs font-bold tracking-wider text-white">
                     STATCOURT.TH
                   </span>
                 </div>
-                <div className="px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-red-300 text-[9px] font-bold tracking-widest uppercase">
-                  {potw.ageCategory} DIVISION
+                <div className="px-2 py-0.5 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-300 text-[9px] font-bold tracking-widest uppercase">
+                  รุ่น {potw.ageCategory}
                 </div>
               </div>
 
               {/* CARD TITLE */}
               <div className="text-center mt-3">
-                <div className="text-[10px] tracking-widest text-amber-400 font-bold uppercase">
+                <div className="text-[10px] tracking-widest text-amber-400 font-bold uppercase font-mono">
                   OFFICIAL FIBA RECOGNITION
                 </div>
-                <h3 className="text-xl font-headline-xl font-normal text-white uppercase tracking-wider mt-0.5 leading-none">
+                <h3 className="text-2xl font-headline-xl font-normal text-white uppercase tracking-wider mt-0.5 leading-none">
                   PLAYER OF THE WEEK
                 </h3>
               </div>
@@ -139,47 +160,47 @@ export default function POTWShareModal({
 
             {/* PLAYER PORTRAIT & DETAILS */}
             <div className="relative z-10 flex flex-col items-center my-auto py-2">
-              <div className="relative w-32 h-36 rounded-xl overflow-hidden border-2 border-amber-400/80 shadow-2xl bg-slate-900">
+              <div className="relative w-32 h-36 rounded-md overflow-hidden border-2 border-[#1E3A5F] shadow-lg bg-[#081422]">
                 <img
                   src={potw.avatarUrl}
                   alt={potw.athleteName}
                   className="w-full h-full object-cover object-top"
                 />
-                <div className="absolute bottom-0 inset-x-0 bg-red-950/90 text-white text-[9px] font-bold text-center py-0.5">
+                <div className="absolute bottom-0 inset-x-0 bg-[#0B1C30]/95 border-t border-[#1E3A5F] text-white text-[9px] font-bold text-center py-0.5 truncate px-1">
                   {potw.athleteSchool}
                 </div>
               </div>
 
-              <h4 className="text-base font-bold text-white uppercase mt-2.5 text-center">
+              <h4 className="text-base font-bold text-white uppercase mt-2.5 text-center font-headline-sm">
                 {potw.athleteName}
               </h4>
-              <p className="text-[10px] text-slate-400 text-center font-sans max-w-[260px] line-clamp-2 mt-0.5 italic">
+              <p className="text-[10px] text-slate-300 text-center font-sans max-w-[260px] line-clamp-2 mt-1 italic">
                 "{potw.quote}"
               </p>
 
               {/* STATS MATRIX (4 CORE METRICS) */}
-              <div className="grid grid-cols-4 gap-2 w-full mt-3 bg-black/60 border border-slate-700/80 rounded-xl p-2.5 text-center font-mono">
+              <div className="grid grid-cols-4 gap-1.5 w-full mt-3 bg-[#081422] border border-[#1E3A5F] rounded-sm p-2 text-center font-mono">
                 <div>
                   <div className="text-[9px] text-amber-400 font-bold">EFF</div>
-                  <div className="text-base font-bold text-white leading-none mt-0.5">
+                  <div className="text-base font-bold text-white leading-none mt-1 tabular-nums">
                     {potw.effPerGame.toFixed(1)}
                   </div>
                 </div>
                 <div>
                   <div className="text-[9px] text-slate-400 font-bold">PPG</div>
-                  <div className="text-base font-bold text-white leading-none mt-0.5">
+                  <div className="text-base font-bold text-white leading-none mt-1 tabular-nums">
                     {potw.ppg.toFixed(1)}
                   </div>
                 </div>
                 <div>
                   <div className="text-[9px] text-slate-400 font-bold">RPG</div>
-                  <div className="text-base font-bold text-white leading-none mt-0.5">
+                  <div className="text-base font-bold text-white leading-none mt-1 tabular-nums">
                     {potw.rpg.toFixed(1)}
                   </div>
                 </div>
                 <div>
                   <div className="text-[9px] text-slate-400 font-bold">APG</div>
-                  <div className="text-base font-bold text-white leading-none mt-0.5">
+                  <div className="text-base font-bold text-white leading-none mt-1 tabular-nums">
                     {potw.apg.toFixed(1)}
                   </div>
                 </div>
@@ -187,10 +208,10 @@ export default function POTWShareModal({
             </div>
 
             {/* CARD BOTTOM VERIFICATION FOOTER */}
-            <div className="relative z-10 border-t border-slate-700/80 pt-2 flex items-center justify-between text-[8px] text-slate-400">
+            <div className="relative z-10 border-t border-[#1E3A5F] pt-2 flex items-center justify-between text-[8px] text-slate-400">
               <div className="flex items-center gap-1 text-emerald-400 font-bold">
-                <ShieldCheck className="w-3 h-3" />
-                <span>BSAT 100% VERIFIED</span>
+                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                <span>100% BSAT VERIFIED</span>
               </div>
               <div className="font-mono text-slate-400">statcourt.in.th/news</div>
             </div>
@@ -198,12 +219,12 @@ export default function POTWShareModal({
         </div>
 
         {/* MODAL ACTION BUTTONS */}
-        <div className="p-4 border-t border-slate-800 bg-[#0F172A] shrink-0 flex flex-wrap items-center justify-between gap-2.5">
+        <div className="p-4 border-t border-[#1E3A5F] bg-[#081422] shrink-0 flex flex-wrap items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopyLink}
               type="button"
-              className="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition flex items-center gap-1.5"
+              className="px-3 py-2 rounded-sm bg-[#142338] hover:bg-[#1E3A5F] text-slate-200 border border-[#1E3A5F] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{copied ? "คัดลอกลิงก์แล้ว!" : "คัดลอกลิงก์"}</span>
@@ -214,7 +235,7 @@ export default function POTWShareModal({
             onClick={handleDownloadImage}
             disabled={isExporting}
             type="button"
-            className="px-5 py-2 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-red-950/50 transition cursor-pointer disabled:opacity-50"
+            className="px-5 py-2 rounded-sm bg-[#AF101A] hover:bg-[#8F0D15] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition cursor-pointer disabled:opacity-50"
           >
             {isExporting ? (
               <>

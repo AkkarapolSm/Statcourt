@@ -19,7 +19,7 @@ export default function SolutionsByRoleSection({
           <span className="text-xs font-mono font-bold tracking-widest text-red-400 uppercase">
             TAILORED SOLUTIONS
           </span>
-          <h2 className="font-headline-lg uppercase tracking-wide text-3xl sm:text-4xl font-normal text-white leading-tight">
+          <h2 className="font-sans font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight">
             โซลูชันเทคโนโลยีที่ปรับแต่งเพื่อเป้าหมายของแต่ละองค์กร
           </h2>
           <p className="text-slate-400 text-xs sm:text-sm">
@@ -34,7 +34,7 @@ export default function SolutionsByRoleSection({
             onClick={() => onSelectTab("ORGANIZER")}
             className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
               activeTab === "ORGANIZER"
-                ? "bg-[#DC2626] border-[#DC2626] text-white shadow-lg shadow-red-950/50"
+                ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
                 : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
             }`}
           >
@@ -45,7 +45,7 @@ export default function SolutionsByRoleSection({
             onClick={() => onSelectTab("SCHOOL")}
             className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
               activeTab === "SCHOOL"
-                ? "bg-[#DC2626] border-[#DC2626] text-white shadow-lg shadow-red-950/50"
+                ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
                 : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
             }`}
           >
@@ -56,7 +56,7 @@ export default function SolutionsByRoleSection({
             onClick={() => onSelectTab("SCOUT")}
             className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
               activeTab === "SCOUT"
-                ? "bg-[#DC2626] border-[#DC2626] text-white shadow-lg shadow-red-950/50"
+                ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
                 : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
             }`}
           >
@@ -65,14 +65,14 @@ export default function SolutionsByRoleSection({
         </div>
 
         {/* Tab Content Display */}
-        <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 sm:p-8">
+        <div className="bg-slate-800/60 border border-slate-700 rounded-lg p-6 sm:p-8">
           {activeTab === "ORGANIZER" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-5">
                 <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-widest">
                   FOR TOURNAMENT ORGANIZERS
                 </span>
-                <h3 className="font-headline-lg text-white font-normal text-2xl sm:text-3xl uppercase leading-snug">
+                <h3 className="font-sans font-bold text-white text-xl sm:text-2xl leading-snug">
                   ยกระดับมาตรฐานการแข่งขัน ลดข้อพิพาท เพิ่มมูลค่าผู้สนับสนุน
                 </h3>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
@@ -109,7 +109,7 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-xl p-6 text-xs font-mono space-y-4">
+              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-slate-400">TOURNAMENT PACKAGE</span>
                   <span className="text-white font-bold text-sm">฿3,000 – 15,000 / รายการ</span>
@@ -123,7 +123,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
                 >
                   ติดต่อขอรับข้อเสนอสำหรับรายการแข่งขัน
                 </a>
@@ -137,7 +137,7 @@ export default function SolutionsByRoleSection({
                 <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-widest">
                   FOR SCHOOLS &amp; ACADEMIES
                 </span>
-                <h3 className="font-headline-lg text-white font-normal text-2xl sm:text-3xl uppercase leading-snug">
+                <h3 className="font-sans font-bold text-white text-xl sm:text-2xl leading-snug">
                   ติดตามพัฒนาการนักกีฬา ยกระดับผลงานทีม พร้อมรายงานผลผู้บริหาร
                 </h3>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
@@ -174,7 +174,7 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-xl p-6 text-xs font-mono space-y-4">
+              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-slate-400">ACADEMY LICENSE</span>
                   <span className="text-white font-bold text-sm">฿1,500 – 3,500 / เดือน</span>
@@ -187,7 +187,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
                 >
                   ติดต่อขอรับสิทธิ์สำหรับสถานศึกษา
                 </a>
@@ -201,7 +201,7 @@ export default function SolutionsByRoleSection({
                 <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-widest">
                   FOR COLLEGES &amp; PRO SCOUTS
                 </span>
-                <h3 className="font-headline-lg text-white font-normal text-2xl sm:text-3xl uppercase leading-snug">
+                <h3 className="font-sans font-bold text-white text-xl sm:text-2xl leading-snug">
                   ค้นหาและคัดกรองบุคลากรนักกีฬาที่มีศักยภาพสูง พร้อมคลิปวิดีโอยืนยันทุกเพลย์
                 </h3>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
@@ -237,7 +237,7 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-xl p-6 text-xs font-mono space-y-4">
+              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <span className="text-slate-400">SCOUT PRO PASS</span>
                   <span className="text-white font-bold text-sm">฿890 – 1,500 / เดือน</span>
@@ -250,7 +250,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
                 >
                   สมัครสมาชิกสิทธิ์ Scout Intelligence Pass
                 </a>

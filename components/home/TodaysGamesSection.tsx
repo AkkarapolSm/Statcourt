@@ -72,40 +72,36 @@ export default function TodaysGamesSection() {
   });
 
   return (
-    <section className="py-10 bg-white border-b border-slate-200">
+    <section className="py-10 bg-white border-b border-borderNeutral">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header with Date & Filter Tabs */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-[#AF101A] text-xs font-mono font-bold uppercase tracking-wider mb-1.5">
-              <Calendar className="w-3.5 h-3.5" />
-              <span>TODAY&apos;S SCHEDULE &amp; RECENT RESULTS</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#0B1C30] uppercase tracking-tight">
-              โปรแกรมและผลการแข่งขันประจำวัน
+        {/* Section Header with Filter Tabs */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-100">
+          <div className="space-y-1">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#0B1C30] tracking-tight font-sans">
+              โปรแกรมและผลการแข่งขัน
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-sans">
-              อัปเดตผลคะแนนสด ควอเตอร์ต่อควอเตอร์ และตารางสนามแข่งขันทางการจากระบบฐานข้อมูลกลาง
+            <p className="text-xs sm:text-sm text-[#5B6574] font-sans">
+              คะแนนสด ควอเตอร์ต่อควอเตอร์ และตารางสนามแข่งขันทางการ
             </p>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto">
+          <div className="flex items-center gap-1.5 overflow-x-auto font-sans">
             {[
               { id: "ALL", label: "ทั้งหมด" },
-              { id: "LIVE", label: "กำลังแข่ง (Live)" },
-              { id: "COMPLETED", label: "จบการแข่งขัน (Final)" },
+              { id: "LIVE", label: "กำลังแข่งขัน" },
+              { id: "COMPLETED", label: "จบการแข่งขัน" },
               { id: "SCHEDULED", label: "โปรแกรมถัดไป" },
             ].map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setFilter(tab.id as typeof filter)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition whitespace-nowrap cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap cursor-pointer ${
                   filter === tab.id
-                    ? "bg-[#0B1C30] text-white shadow-xs"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    ? "bg-[#0B1C30] text-white"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
                 {tab.label}
@@ -114,9 +110,9 @@ export default function TodaysGamesSection() {
 
             <Link
               href="/matches"
-              className="px-3.5 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:border-[#AF101A] hover:text-[#AF101A] text-xs font-mono font-bold transition flex items-center gap-1 whitespace-nowrap"
+              className="px-3 py-1.5 rounded-lg border border-borderStrong text-[#0B1C30] hover:border-[#AF101A] hover:text-[#AF101A] text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap ml-1"
             >
-              <span>ดูตารางทั้งหมด</span>
+              <span>ดูทั้งหมด</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -155,12 +151,21 @@ export default function TodaysGamesSection() {
 
         {/* Empty State */}
         {!isLoading && filteredMatches.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-slate-200 rounded-2xl mt-6 bg-slate-50/50">
-            <Calendar className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm font-bold text-slate-700">ไม่พบรายการแข่งขันในหมวดนี้</p>
-            <p className="text-xs text-slate-400 mt-1">
+          <div className="text-center py-12 border border-dashed border-slate-200 rounded-xl mt-6 bg-slate-50/50">
+            <Calendar className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+            <p className="text-sm font-bold text-[#0B1C30]">ไม่พบรายการแข่งขันในหมวดนี้</p>
+            <p className="text-xs text-[#5B6574] mt-1">
               {isError ? "ไม่สามารถโหลดข้อมูลจากเซิร์ฟเวอร์ได้" : "ไม่มีแมตช์ที่ตรงตามเงื่อนไขตัวกรองในขณะนี้"}
             </p>
+            {isError && (
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-borderStrong text-xs font-semibold text-[#0B1C30] hover:bg-slate-100 transition cursor-pointer"
+              >
+                <span>ลองใหม่อีกครั้ง</span>
+              </button>
+            )}
           </div>
         )}
 
@@ -176,66 +181,66 @@ export default function TodaysGamesSection() {
               return (
                 <div
                   key={match.id}
-                  className="rounded-2xl border border-slate-200 bg-white hover:border-slate-300 shadow-xs hover:shadow-md transition-all p-5 flex flex-col justify-between space-y-4"
+                  className="rounded-xl border border-borderNeutral bg-white hover:border-slate-400 transition-colors p-4 sm:p-5 flex flex-col justify-between space-y-4"
                 >
                   {/* Match Card Top Metadata */}
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-500 pb-3 border-b border-slate-100">
-                    <div className="truncate max-w-[200px] font-semibold text-slate-700">
-                      🏆 {tourneyName}
+                  <div className="flex items-center justify-between text-xs text-[#5B6574] font-sans pb-3 border-b border-slate-100">
+                    <div className="truncate max-w-[200px] font-medium text-slate-700">
+                      {tourneyName}
                     </div>
                     <div>
                       {isLive ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-50 text-[#AF101A] text-[11px] font-semibold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A]" />
                           <span>LIVE Q{match.currentQuarter || 1}</span>
                         </span>
                       ) : isDone ? (
-                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-bold">
-                          FINAL
+                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
+                          จบการแข่งขัน
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-bold">
-                          SCHEDULED
+                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-medium">
+                          รอเริ่มแข่ง
                         </span>
                       )}
                     </div>
                   </div>
 
                   {/* Teams & Scores */}
-                  <div className="space-y-3 font-sans">
+                  <div className="space-y-2.5 font-sans">
                     {/* Home Team */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-800 shrink-0">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-[11px] text-slate-800 shrink-0">
                           {match.homeTeam.shortName || match.homeTeam.name?.substring(0, 3) || "HOM"}
                         </div>
-                        <span className="font-bold text-sm text-[#0B1C30] truncate max-w-[160px]">
+                        <span className="font-semibold text-sm text-[#0B1C30] truncate max-w-[160px]">
                           {match.homeTeam.name}
                         </span>
                       </div>
-                      <span className="font-mono text-xl font-black text-[#0B1C30] tabular-nums">
+                      <span className="font-headline-md text-2xl font-bold text-[#0B1C30] tabular-nums">
                         {match.homeScore}
                       </span>
                     </div>
 
                     {/* Away Team */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-800 shrink-0">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-[11px] text-slate-800 shrink-0">
                           {match.awayTeam.shortName || match.awayTeam.name?.substring(0, 3) || "AWY"}
                         </div>
-                        <span className="font-bold text-sm text-[#0B1C30] truncate max-w-[160px]">
+                        <span className="font-semibold text-sm text-[#0B1C30] truncate max-w-[160px]">
                           {match.awayTeam.name}
                         </span>
                       </div>
-                      <span className="font-mono text-xl font-black text-[#0B1C30] tabular-nums">
+                      <span className="font-headline-md text-2xl font-bold text-[#0B1C30] tabular-nums">
                         {match.awayScore}
                       </span>
                     </div>
                   </div>
 
                   {/* Card Footer Action */}
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-sans text-[#5B6574]">
                     <div className="flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-slate-400" />
                       <span className="truncate max-w-[140px]">{match.venue || "นิมิบุตร (สนาม 1)"}</span>
@@ -243,9 +248,9 @@ export default function TodaysGamesSection() {
 
                     <Link
                       href={isLive ? `/live` : `/matches/${match.id}/film`}
-                      className="inline-flex items-center gap-1 text-[#AF101A] font-bold hover:underline"
+                      className="inline-flex items-center gap-1 text-[#AF101A] font-semibold hover:underline"
                     >
-                      <span>{isLive ? "ชมถ่ายทอดสด" : "ดู Box Score"}</span>
+                      <span>{isLive ? "ชมถ่ายทอดสด" : "ดูสถิติเกม"}</span>
                       <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>

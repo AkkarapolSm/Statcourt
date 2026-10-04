@@ -1,27 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState, useMemo } from "react";
 import {
   GraduationCap,
   BookOpen,
   Users,
   ShieldCheck,
-  CheckCircle2,
-  AlertTriangle,
-  Play,
-  Clock,
-  Video,
-  ExternalLink,
-  ChevronRight,
   Camera,
   Search,
-  Sparkles,
-  DollarSign,
-  Calendar,
-  X,
   PlusCircle,
-  Video as VideoIcon,
+  X,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -30,23 +18,18 @@ import AcademyCourseCard from "@/components/academy/AcademyCourseCard";
 import CoursePlayerModal from "@/components/academy/CoursePlayerModal";
 import CreateCourseModal from "@/components/academy/CreateCourseModal";
 import {
-  mockAcademyCourses,
   mockOfficialsRoster,
 } from "@/lib/db/phase4-data";
 import { mockAcademyVideoCourses } from "@/lib/db/academy-courses-data";
 import {
-  AcademyCourse,
-  OfficialHireProfile,
   AcademyVideoCourse,
   CourseCategory,
 } from "@/lib/types";
 
 export default function AcademyPage() {
-  const [activeTab, setActiveTab] = useState<
-    "COURSES" | "OFFICIALS_MARKET"
-  >("COURSES");
+  const [activeTab, setActiveTab] = useState<"COURSES" | "OFFICIALS_MARKET">("COURSES");
 
-  // Video Courses State (Image 3)
+  // Video Courses State
   const [videoCourses, setVideoCourses] = useState<AcademyVideoCourse[]>(mockAcademyVideoCourses);
   const [selectedCategory, setSelectedCategory] = useState<"ALL" | CourseCategory>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
@@ -56,50 +39,63 @@ export default function AcademyPage() {
   // Edge Camera Simulator
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
 
+  const filteredCourses = useMemo(() => {
+    return videoCourses.filter((course) => {
+      const matchCat =
+        selectedCategory === "ALL" || course.category === selectedCategory;
+      const matchSearch =
+        searchQuery.trim() === "" ||
+        course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.instructorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.instructorTitle.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [videoCourses, selectedCategory, searchQuery]);
+
   return (
-    <div className="min-h-screen bg-[#F8F9FF] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8F9FF] text-[#0B1C30] flex flex-col font-sans">
       <Navbar />
 
       <main className="flex-1 pb-20">
-        {/* Hero Section */}
-        <section className="bg-[#0F172A] text-white py-14 border-b border-slate-800">
+        {/* Hero Section (Courtside Editorial) */}
+        <section className="bg-[#0B1C30] text-white py-12 border-b border-[#1E3A5F]">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/30 border border-[#AF101A]/50 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
-                  <GraduationCap className="w-4 h-4 text-[#DC2626]" />
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-200 text-xs font-mono font-semibold tracking-wider uppercase">
+                  <GraduationCap className="w-3.5 h-3.5 text-[#AF101A]" />
                   <span>FIBA OFFICIAL CERTIFICATION &amp; TECHNICAL ACADEMY</span>
                 </div>
-                <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl uppercase tracking-wider font-normal text-white leading-tight">
+                <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl uppercase tracking-wide font-normal text-white leading-tight">
                   สถาบันพัฒนาผู้ตัดสินโต๊ะเทคนิค <br />
-                  <span className="text-[#DC2626]">และระบบรับรองมาตรฐาน FIBA</span>
+                  <span className="text-[#AF101A]">และระบบรับรองมาตรฐาน FIBA</span>
                 </h1>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  หลักสูตรพัฒนาศักยภาพผู้ฝึกสอนและผู้ตัดสินโต๊ะเทคนิคครบวงจร 
-                  พร้อมทำเนียบว่าจ้างกรรมการเทคนิคที่ผ่านการรับรองมาตรฐานสากล
+                  หลักสูตรพัฒนาศักยภาพผู้ฝึกสอนและผู้ตัดสินโต๊ะเทคนิคครบวงจร พร้อมทำเนียบว่าจ้างกรรมการเทคนิคที่ผ่านการรับรองมาตรฐานสากล
                 </p>
               </div>
 
-              {/* Edge AI Camera Launcher Button */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              {/* Edge AI Camera Launcher Card */}
+              <div className="bg-[#142338] border border-[#223956] rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="space-y-1 font-mono">
-                  <span className="text-[10px] text-red-400 font-bold uppercase tracking-wider block">
+                  <span className="text-[10px] text-red-300 font-bold uppercase tracking-wider block">
                     STATCOURT FOCUS MOBILE
                   </span>
                   <div className="text-sm font-bold text-white">
                     กล้อง AI ติดตามอัตโนมัติบนมือถือ
                   </div>
-                  <div className="text-[11px] text-slate-400">
-                    ลดต้นทุนทีมตากล้องด้วย Edge Computer Vision
+                  <div className="text-[11px] text-slate-300">
+                    แบบจำลองระบบ Edge Computer Vision
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setIsCameraModalOpen(true)}
-                  className="px-4 py-2.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition shadow-lg shadow-red-950/50 shrink-0"
+                  className="px-3.5 py-2 rounded-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition cursor-pointer shrink-0"
                 >
-                  <Camera className="w-4 h-4" />
+                  <Camera className="w-4 h-4 text-slate-200" />
                   <span>ทดสอบ AI Camera</span>
                 </button>
               </div>
@@ -108,16 +104,17 @@ export default function AcademyPage() {
         </section>
 
         {/* Tab Navigation */}
-        <section className="bg-white border-b border-slate-200 sticky top-14 z-30 shadow-xs">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        <section className="bg-white border-b border-[#DFE2EB] sticky top-14 z-30 shadow-xs">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
             <div className="flex items-center gap-2 overflow-x-auto font-mono text-xs no-scrollbar">
               <button
                 type="button"
                 onClick={() => setActiveTab("COURSES")}
-                className={`px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2 whitespace-nowrap ${
+                aria-pressed={activeTab === "COURSES"}
+                className={`px-4 py-2 rounded-sm font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                   activeTab === "COURSES"
-                    ? "bg-[#AF101A] text-white shadow-xs"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    ? "bg-[#0B1C30] text-white shadow-xs"
+                    : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
@@ -127,17 +124,15 @@ export default function AcademyPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("OFFICIALS_MARKET")}
-                className={`px-4 py-2.5 rounded-lg font-bold transition flex items-center gap-2 whitespace-nowrap ${
+                aria-pressed={activeTab === "OFFICIALS_MARKET"}
+                className={`px-4 py-2 rounded-sm font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                   activeTab === "OFFICIALS_MARKET"
-                    ? "bg-[#AF101A] text-white shadow-xs"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    ? "bg-[#0B1C30] text-white shadow-xs"
+                    : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                 }`}
               >
                 <Users className="w-4 h-4" />
                 <span>ทำเนียบและว่าจ้างผู้ตัดสิน</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-700 border border-amber-500/30 uppercase font-mono">
-                  [DEMO SIMULATION]
-                </span>
               </button>
             </div>
           </div>
@@ -145,22 +140,21 @@ export default function AcademyPage() {
 
         {/* Content Section */}
         <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          
-          {/* TAB 1: COURSES CATALOG (Image 3 Style) */}
+          {/* TAB 1: COURSES CATALOG */}
           {activeTab === "COURSES" && (
-            <div className="space-y-8">
-              {/* Category selector & Action Bar */}
-              <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
+            <div className="space-y-6">
+              {/* Category Selector & Action Bar */}
+              <div className="bg-white text-[#0B1C30] rounded-lg p-5 border border-[#DFE2EB] shadow-xs space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold uppercase tracking-wider mb-2">
-                      <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>[ พร้อมใช้งาน (LIVE) ] กฎกติกา &amp; วิดีโอหลักสูตรมาตรฐาน FIBA 2026</span>
+                    <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-sm bg-[#AF101A]/10 text-[#AF101A] border border-[#AF101A]/30 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
+                      <GraduationCap className="w-3.5 h-3.5" />
+                      <span>กฎกติกา &amp; วิดีโอหลักสูตรมาตรฐาน FIBA</span>
                     </div>
-                    <h2 className="text-2xl font-bold font-headline tracking-wide uppercase text-white">
+                    <h2 className="text-xl font-bold tracking-wide uppercase text-[#0B1C30]">
                       คอร์สอบรมออนไลน์และคลินิกวิดีโอ (Video Courses)
                     </h2>
-                    <p className="text-slate-400 text-sm mt-1">
+                    <p className="text-[#505A69] text-xs sm:text-sm mt-0.5">
                       เรียนรู้จากคลิปผู้สอนจริง ครอบคลุมทั้งโต๊ะเทคนิค, แท็กติกโค้ช, ทักษะเยาวชน และวิทยาศาสตร์การกีฬา
                     </p>
                   </div>
@@ -169,7 +163,7 @@ export default function AcademyPage() {
                   <button
                     type="button"
                     onClick={() => setIsCreateCourseModalOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#AF101A] hover:bg-[#8F0D15] text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-lg shadow-red-950/40 shrink-0"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono text-xs font-semibold uppercase tracking-wider transition cursor-pointer shadow-xs shrink-0"
                   >
                     <PlusCircle className="w-4 h-4" />
                     <span>+ สร้างคอร์สใหม่ (Coach / Admin)</span>
@@ -177,9 +171,9 @@ export default function AcademyPage() {
                 </div>
 
                 {/* Filter Pills & Search */}
-                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pt-4 border-t border-slate-800">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-3 border-t border-[#DFE2EB]">
                   {/* Category Pills */}
-                  <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-mono">
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-mono">
                     {[
                       { id: "ALL" as const, label: "ทั้งหมด" },
                       { id: "TABLE_OFFICIALS" as const, label: "1. โต๊ะกรรมการ & สถิติ" },
@@ -196,18 +190,19 @@ export default function AcademyPage() {
                           key={cat.id}
                           type="button"
                           onClick={() => setSelectedCategory(cat.id)}
-                          className={`px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-2 whitespace-nowrap ${
+                          aria-pressed={selectedCategory === cat.id}
+                          className={`px-3 py-1.5 rounded-sm font-semibold transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                             selectedCategory === cat.id
-                              ? "bg-[#AF101A] text-white shadow-md shadow-red-950/40"
-                              : "bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white"
+                              ? "bg-[#0B1C30] text-white"
+                              : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                           }`}
                         >
                           <span>{cat.label}</span>
                           <span
-                            className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                            className={`text-[10px] px-1.5 py-0.2 rounded-sm ${
                               selectedCategory === cat.id
-                                ? "bg-red-950/80 text-white font-black border border-red-700/60"
-                                : "bg-slate-700 text-slate-300"
+                                ? "bg-white/20 text-white font-bold"
+                                : "bg-white border border-[#DFE2EB] text-[#505A69]"
                             }`}
                           >
                             {count}
@@ -219,54 +214,46 @@ export default function AcademyPage() {
 
                   {/* Search Box */}
                   <div className="relative shrink-0 md:w-72">
-                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <label htmlFor="course-search-input" className="sr-only">
+                      ค้นหาชื่อคอร์ส หรือผู้สอน
+                    </label>
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#505A69]" />
                     <input
+                      id="course-search-input"
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="ค้นหาชื่อคอร์ส หรือผู้สอน..."
-                      className="w-full bg-slate-800/90 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-red-500 transition"
+                      className="w-full bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm pl-9 pr-8 py-1.5 text-xs text-[#0B1C30] placeholder:text-[#505A69] focus:outline-none focus:border-[#AF101A] focus:bg-white transition"
                     />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchQuery("")}
+                        aria-label="ล้างคำค้นหา"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#505A69] hover:text-[#0B1C30]"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Video Course List (Image 3 card design) */}
+              {/* Video Course List */}
               <div className="space-y-4">
-                {videoCourses
-                  .filter((course) => {
-                    const matchCat =
-                      selectedCategory === "ALL" || course.category === selectedCategory;
-                    const matchSearch =
-                      searchQuery.trim() === "" ||
-                      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      course.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      course.instructorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      course.instructorTitle.toLowerCase().includes(searchQuery.toLowerCase());
-                    return matchCat && matchSearch;
-                  })
-                  .map((course) => (
-                    <AcademyCourseCard
-                      key={course.id}
-                      course={course}
-                      onSelectCourse={(c) => setSelectedCourse(c)}
-                    />
-                  ))}
+                {filteredCourses.map((course) => (
+                  <AcademyCourseCard
+                    key={course.id}
+                    course={course}
+                    onSelectCourse={(c) => setSelectedCourse(c)}
+                  />
+                ))}
 
-                {videoCourses.filter((course) => {
-                  const matchCat =
-                    selectedCategory === "ALL" || course.category === selectedCategory;
-                  const matchSearch =
-                    searchQuery.trim() === "" ||
-                    course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    course.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    course.instructorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    course.instructorTitle.toLowerCase().includes(searchQuery.toLowerCase());
-                  return matchCat && matchSearch;
-                }).length === 0 && (
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
-                    <BookOpen className="w-10 h-10 mx-auto mb-3 text-slate-600" />
-                    <div className="text-base font-bold text-white mb-1">
+                {filteredCourses.length === 0 && (
+                  <div className="bg-white border border-[#DFE2EB] rounded-lg p-12 text-center text-[#505A69] shadow-xs">
+                    <BookOpen className="w-10 h-10 mx-auto mb-3 text-slate-300" />
+                    <div className="text-base font-bold text-[#0B1C30] mb-1">
                       ไม่พบคอร์สที่ตรงกับเงื่อนไขการค้นหา
                     </div>
                     <div className="text-xs">
@@ -277,13 +264,13 @@ export default function AcademyPage() {
               </div>
 
               {/* Officials Marketplace Callout */}
-              <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-black text-white p-6 rounded-2xl border border-slate-700/60 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="bg-[#0B1C30] text-white p-6 rounded-lg border border-[#1E3A5F] flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
-                    <Users className="w-7 h-7" />
+                  <div className="w-12 h-12 rounded-sm bg-[#AF101A] flex items-center justify-center text-white shrink-0">
+                    <Users className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold uppercase tracking-wider text-red-300">
+                    <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-white">
                       ต้องการทีมงานกรรมการโต๊ะเทคนิคสำหรับทัวร์นาเมนต์ของคุณ?
                     </h3>
                     <p className="text-slate-300 text-xs mt-1">
@@ -294,7 +281,7 @@ export default function AcademyPage() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("OFFICIALS_MARKET")}
-                  className="px-6 py-3 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono text-xs font-bold uppercase tracking-wider transition shrink-0 shadow-lg shadow-red-950/40 cursor-pointer"
+                  className="px-5 py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono text-xs font-bold uppercase tracking-wider transition shrink-0 cursor-pointer shadow-xs"
                 >
                   ดูทำเนียบผู้ตัดสิน &rarr;
                 </button>
@@ -305,24 +292,20 @@ export default function AcademyPage() {
           {/* TAB 2: OFFICIALS MARKETPLACE & BOOKING */}
           {activeTab === "OFFICIALS_MARKET" && (
             <div className="space-y-6">
-              <div className="bg-[#0F172A] text-white p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-xs">
+              <div className="bg-white border border-[#DFE2EB] text-[#0B1C30] p-5 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-xs shadow-xs">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold uppercase text-[10px] mb-2">
-                    <span>[ รุ่นทดลอง / DEMO SIMULATION ]</span>
-                    <span>ระบบว่าจ้างอยู่ในระหว่างทดสอบ (ยังไม่มีการเบิกจ่ายเงินจริง)</span>
-                  </div>
-                  <span className="text-red-400 font-bold uppercase text-[10px] block">
+                  <span className="text-[#AF101A] font-bold uppercase text-[10px] block">
                     TOURNAMENT ORGANIZER RECRUITMENT MARKETPLACE
                   </span>
-                  <div className="font-bold text-white text-base sm:text-lg mt-0.5">
+                  <div className="font-bold text-[#0B1C30] text-base sm:text-lg mt-0.5">
                     ว่าจ้างทีมงานกรรมการโต๊ะเทคนิคที่ผ่านการรับรอง FIBA
                   </div>
-                  <p className="text-slate-400 text-xs mt-0.5">
+                  <p className="text-[#505A69] text-xs mt-0.5 font-sans">
                     การันตีความถูกต้องของสถิติสดและอุปกรณ์โต๊ะเทคนิคพร้อมใช้งานในทุกแมตช์
                   </p>
                 </div>
 
-                <div className="text-slate-300 font-bold text-sm bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
+                <div className="text-[#0B1C30] font-bold text-xs bg-[#F8F9FF] px-3 py-1.5 rounded-sm border border-[#DFE2EB] shrink-0">
                   มีกรรมการพร้อมปฏิบัติหน้าที่ 40+ คนทั่วประเทศ
                 </div>
               </div>
@@ -330,50 +313,50 @@ export default function AcademyPage() {
               {/* Officials Roster Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
                 {mockOfficialsRoster.map((off) => (
-                  <div
+                  <article
                     key={off.id}
-                    className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md transition space-y-3 flex flex-col justify-between"
+                    className="bg-white border border-[#DFE2EB] rounded-lg p-5 hover:border-[#7F8A9E] transition-colors space-y-3 flex flex-col justify-between shadow-xs"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="px-2.5 py-0.5 rounded bg-red-100 text-red-800 text-[10px] font-bold uppercase">
+                        <span className="px-2 py-0.5 rounded-sm bg-[#AF101A]/10 text-[#AF101A] border border-[#AF101A]/30 text-[10px] font-bold uppercase">
                           {off.tier.replace("_", " ")}
                         </span>
-                        <span className="text-slate-900 font-bold flex items-center gap-1 font-mono">
+                        <span className="text-[#0B1C30] font-bold flex items-center gap-1 font-mono">
                           <ShieldCheck className="w-3.5 h-3.5 text-[#AF101A]" />
                           <span>{off.rating} / 5.0 Rating</span>
                         </span>
                       </div>
 
                       <div className="space-y-0.5">
-                        <h4 className="font-bold text-slate-900 text-base">
+                        <h4 className="font-bold text-[#0B1C30] text-base font-sans">
                           {off.name}
                         </h4>
-                        <div className="text-slate-500 text-[11px]">
+                        <div className="text-[#505A69] text-[11px]">
                           {off.licenseNumber} • {off.province}
                         </div>
                       </div>
 
-                      <p className="text-slate-600 text-[11px] font-sans">
+                      <p className="text-[#505A69] text-[11px] font-sans">
                         ความเชี่ยวชาญ: {off.specialization}
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <div className="pt-3 border-t border-[#DFE2EB] flex items-center justify-between">
                       <div>
-                        <span className="text-slate-400 uppercase text-[10px] block">อัตราค่าเหนื่อย</span>
-                        <span className="font-bold text-slate-900 text-sm">{off.dailyRateThb} THB / วัน</span>
+                        <span className="text-[#505A69] uppercase text-[10px] font-semibold block">อัตราค่าเหนื่อย</span>
+                        <span className="font-bold text-[#0B1C30] text-sm tabular-nums">{off.dailyRateThb} THB / วัน</span>
                       </div>
 
                       <button
                         type="button"
                         onClick={() => alert(`ส่งคำขอว่าจ้าง ${off.name} เรียบร้อยแล้ว ทีมงานจะประสานงานกลับใน 2 ชั่วโมง`)}
-                        className="px-4 py-2 rounded bg-slate-900 hover:bg-[#AF101A] text-white font-bold uppercase transition"
+                        className="px-4 py-2 rounded-sm bg-[#0B1C30] hover:bg-[#142338] text-white font-semibold uppercase transition cursor-pointer shadow-xs"
                       >
                         ว่าจ้างลงแมตช์
                       </button>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             </div>
@@ -386,7 +369,7 @@ export default function AcademyPage() {
           onClose={() => setIsCameraModalOpen(false)}
         />
 
-        {/* Video Course Player Modal (Image 3) */}
+        {/* Video Course Player Modal */}
         <CoursePlayerModal
           isOpen={Boolean(selectedCourse)}
           onClose={() => setSelectedCourse(null)}

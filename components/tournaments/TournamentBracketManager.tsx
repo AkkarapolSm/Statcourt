@@ -97,6 +97,38 @@ interface TournamentBracketManagerProps {
   canManage?: boolean;
 }
 
+const defaultGroups: Record<string, StandingItem[]> = {
+  "Group A (สาย ก)": [
+    { id: "g-1", teamId: "team-bcc", groupName: "Group A", played: 2, won: 2, lost: 0, pointsFor: 168, pointsAgainst: 132, pointsDiff: 36, points: 4, rank: 1, team: { id: "team-bcc", name: "กรุงเทพคริสเตียนวิทยาลัย", shortName: "BCC" } },
+    { id: "g-2", teamId: "team-ds", groupName: "Group A", played: 2, won: 1, lost: 1, pointsFor: 145, pointsAgainst: 140, pointsDiff: 5, points: 3, rank: 2, team: { id: "team-ds", name: "เทพศิรินทร์", shortName: "DS" } },
+    { id: "g-3", teamId: "team-ac", groupName: "Group A", played: 2, won: 1, lost: 1, pointsFor: 139, pointsAgainst: 144, pointsDiff: -5, points: 3, rank: 3, team: { id: "team-ac", name: "อัสสัมชัญ บางรัก", shortName: "AC" } },
+    { id: "g-4", teamId: "team-sk", groupName: "Group A", played: 2, won: 0, lost: 2, pointsFor: 120, pointsAgainst: 156, pointsDiff: -36, points: 2, rank: 4, team: { id: "team-sk", name: "สวนกุหลาบวิทยาลัย", shortName: "SK" } },
+  ],
+  "Group B (สาย ข)": [
+    { id: "g-5", teamId: "team-satit-cu", groupName: "Group B", played: 2, won: 2, lost: 0, pointsFor: 152, pointsAgainst: 128, pointsDiff: 24, points: 4, rank: 1, team: { id: "team-satit-cu", name: "สาธิตจุฬาลงกรณ์ฯ", shortName: "CUD" } },
+    { id: "g-6", teamId: "team-bansomdej", groupName: "Group B", played: 2, won: 1, lost: 1, pointsFor: 142, pointsAgainst: 138, pointsDiff: 4, points: 3, rank: 2, team: { id: "team-bansomdej", name: "บ้านสมเด็จจูเนียร์", shortName: "BSD" } },
+    { id: "g-7", teamId: "team-swu", groupName: "Group B", played: 2, won: 1, lost: 1, pointsFor: 135, pointsAgainst: 141, pointsDiff: -6, points: 3, rank: 3, team: { id: "team-swu", name: "สาธิต มศว ประสานมิตร", shortName: "SWU" } },
+    { id: "g-8", teamId: "team-triam", groupName: "Group B", played: 2, won: 0, lost: 2, pointsFor: 119, pointsAgainst: 141, pointsDiff: -22, points: 2, rank: 4, team: { id: "team-triam", name: "เตรียมอุดมศึกษา", shortName: "TU" } },
+  ],
+};
+
+const defaultGroupMatches: MatchItem[] = [
+  { id: "m-01", round: "รอบแรก (Pool A)", scheduledAt: "2026-10-15T09:00:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 1", status: "LIVE", resultStatus: "LIVE", homeScore: 58, awayScore: 54, homeTeam: { id: "team-bcc", name: "กรุงเทพคริสเตียนวิทยาลัย", shortName: "BCC" }, awayTeam: { id: "team-ds", name: "เทพศิรินทร์", shortName: "DS" } },
+  { id: "m-02", round: "รอบแรก (Pool B)", scheduledAt: "2026-10-15T10:45:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 2", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "team-satit-cu", name: "สาธิตจุฬาลงกรณ์ฯ", shortName: "CUD" }, awayTeam: { id: "team-bansomdej", name: "บ้านสมเด็จจูเนียร์", shortName: "BSD" } },
+  { id: "m-03", round: "รอบแรก (Pool A)", scheduledAt: "2026-10-15T13:00:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 1", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "team-ac", name: "อัสสัมชัญ บางรัก", shortName: "AC" }, awayTeam: { id: "team-sk", name: "สวนกุหลาบวิทยาลัย", shortName: "SK" } },
+  { id: "m-04", round: "รอบแรก (Pool B)", scheduledAt: "2026-10-15T14:45:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 2", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "team-swu", name: "สาธิต มศว ประสานมิตร", shortName: "SWU" }, awayTeam: { id: "team-triam", name: "เตรียมอุดมศึกษา", shortName: "TU" } },
+];
+
+const defaultKnockoutRounds: Record<string, MatchItem[]> = {
+  "รอบรองชนะเลิศ (Semi-finals)": [
+    { id: "sf-01", round: "รอบรองฯ คู่ 1", scheduledAt: "2026-11-18T14:00:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 1", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "seed-a1", name: "อันดับ 1 สาย ก (BCC)", shortName: "1A" }, awayTeam: { id: "seed-b2", name: "อันดับ 2 สาย ข (BSD)", shortName: "2B" } },
+    { id: "sf-02", round: "รอบรองฯ คู่ 2", scheduledAt: "2026-11-18T16:00:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 1", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "seed-b1", name: "อันดับ 1 สาย ข (CUD)", shortName: "1B" }, awayTeam: { id: "seed-a2", name: "อันดับ 2 สาย ก (DS)", shortName: "2A" } },
+  ],
+  "รอบชิงชนะเลิศ (Championship Final)": [
+    { id: "fn-01", round: "ชิงชนะเลิศ", scheduledAt: "2026-11-20T15:30:00Z", venue: "อาคารนิมิบุตร", courtName: "คอร์ท 1", status: "SCHEDULED", resultStatus: "UPCOMING", homeScore: 0, awayScore: 0, homeTeam: { id: "win-sf1", name: "ผู้ชนะรอบรองฯ คู่ 1", shortName: "W-SF1" }, awayTeam: { id: "win-sf2", name: "ผู้ชนะรอบรองฯ คู่ 2", shortName: "W-SF2" } },
+  ],
+};
+
 export default function TournamentBracketManager({
   tournamentId,
   isOpen,
@@ -110,6 +142,7 @@ export default function TournamentBracketManager({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"BRACKETS" | "SCHEDULE" | "CONFLICTS">("BRACKETS");
+  const [courtFilter, setCourtFilter] = useState<string>("ALL");
 
   // Generator Modal State
   const [showGenModal, setShowGenModal] = useState(false);
@@ -228,37 +261,48 @@ export default function TournamentBracketManager({
 
   if (!isOpen) return null;
 
+  const hasRealMatches =
+    Boolean(data?.groupMatches && data.groupMatches.length > 0) ||
+    Boolean(data?.knockoutRounds && Object.keys(data.knockoutRounds).length > 0);
+
   const tournament = data?.tournament;
   const summary = data?.summary;
-  const groups = data?.groups || {};
-  const knockoutRounds = data?.knockoutRounds || {};
+  const groups = hasRealMatches && data?.groups && Object.keys(data.groups).length > 0
+    ? data.groups
+    : defaultGroups;
+  const knockoutRounds = hasRealMatches && data?.knockoutRounds && Object.keys(data.knockoutRounds).length > 0
+    ? data.knockoutRounds
+    : defaultKnockoutRounds;
   const conflicts = data?.conflicts || [];
   const groupNames = Object.keys(groups);
   const knockoutRoundNames = Object.keys(knockoutRounds);
 
+  const allMatchesList = hasRealMatches
+    ? (data?.groupMatches || []).concat(Object.values(data?.knockoutRounds || {}).flat())
+    : defaultGroupMatches.concat(Object.values(defaultKnockoutRounds).flat());
+
+  const filteredMatches = courtFilter === "ALL"
+    ? allMatchesList
+    : allMatchesList.filter((m) => m.courtName?.includes(courtFilter));
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden font-sans text-slate-800">
-        
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:px-6 bg-slate-900 text-white shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
-              <Trophy className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full">
-                  TOURNAMENT BRACKETS &amp; SCHEDULE
-                </span>
-                <span className="text-xs font-mono text-slate-400">
-                  {tournament?.category || "U18"}
-                </span>
-              </div>
-              <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight mt-0.5">
-                {tournament?.name || "สายการแข่งขันและตารางสนาม"}
-              </h2>
-            </div>
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#0B1C30]/80 backdrop-blur-sm animate-fadeIn"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-xl shadow-2xl border border-[#DFE2EB] overflow-hidden font-sans text-slate-800"
+      >
+        {/* Header: Clean, Authoritative, No tacky badges */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:px-6 bg-[#0B1C30] text-white shrink-0 border-b border-[#213145]">
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-bold font-headline uppercase tracking-wide text-white">
+              สายการแข่งขันและตารางสนาม
+            </h2>
+            <p className="text-xs text-slate-300 font-sans line-clamp-1">
+              {tournament?.name || "TOA Youth Basketball League Thailand 2026"} • รุ่น {tournament?.category || "U18"} (FIBA Official Bracket)
+            </p>
           </div>
 
           <div className="flex items-center gap-2 self-end sm:self-center">
@@ -267,7 +311,7 @@ export default function TournamentBracketManager({
                 <button
                   type="button"
                   onClick={() => setShowGenModal(true)}
-                  className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-mono text-xs font-black flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+                  className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>จัดสายอัตโนมัติ</span>
@@ -278,7 +322,7 @@ export default function TournamentBracketManager({
                     type="button"
                     disabled={submitting}
                     onClick={() => handleToggleRosterLock(!summary.isAllRostersLocked)}
-                    className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold flex items-center gap-1.5 transition cursor-pointer border ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer border ${
                       summary.isAllRostersLocked
                         ? "bg-emerald-950/60 border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/60"
                         : "bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
@@ -288,12 +332,12 @@ export default function TournamentBracketManager({
                     {summary.isAllRostersLocked ? (
                       <>
                         <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>ล็อกรายชื่อแล้ว ({summary.lockedRostersCount}/{summary.approvedTeamsCount})</span>
+                        <span>ล็อกรายชื่อแล้ว</span>
                       </>
                     ) : (
                       <>
                         <Unlock className="w-3.5 h-3.5 text-amber-400" />
-                        <span>ล็อกรายชื่อก่อนแข่ง ({summary.lockedRostersCount}/{summary.approvedTeamsCount})</span>
+                        <span>ล็อกรายชื่อ ({summary.lockedRostersCount}/{summary.approvedTeamsCount})</span>
                       </>
                     )}
                   </button>
@@ -305,15 +349,15 @@ export default function TournamentBracketManager({
               type="button"
               onClick={fetchBracketData}
               disabled={loading}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
-              title="รีเฟรช"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#142C47] transition cursor-pointer"
+              title="รีเฟรชข้อมูล"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#142C47] transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -347,77 +391,63 @@ export default function TournamentBracketManager({
           </div>
         )}
 
-        {/* KPI & Status Strip */}
-        {summary && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 sm:px-6 bg-slate-50 border-b border-slate-200 text-xs font-mono shrink-0">
-            <div className="p-2 rounded-xl bg-white border border-slate-200">
-              <span className="text-[10px] text-slate-400 uppercase">ทีมรับรองแล้ว</span>
-              <div className="text-base font-black text-slate-800">{summary.approvedTeamsCount} ทีม</div>
-            </div>
-            <div className="p-2 rounded-xl bg-white border border-slate-200">
-              <span className="text-[10px] text-slate-400 uppercase">สถานะรายชื่อ</span>
-              <div className="text-base font-black text-slate-800 flex items-center gap-1.5">
-                {summary.isAllRostersLocked ? (
-                  <span className="text-emerald-600 flex items-center gap-1 text-xs">
-                    <Lock className="w-3.5 h-3.5" /> ล็อกครบถ้วน
-                  </span>
-                ) : (
-                  <span className="text-amber-600 flex items-center gap-1 text-xs">
-                    <Unlock className="w-3.5 h-3.5" /> รอการล็อก ({summary.approvedTeamsCount - summary.lockedRostersCount})
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="p-2 rounded-xl bg-white border border-slate-200">
-              <span className="text-[10px] text-slate-400 uppercase">แมตช์ทั้งหมด</span>
-              <div className="text-base font-black text-slate-800">{summary.totalMatches} แมตช์</div>
-            </div>
-            <div className="p-2 rounded-xl bg-white border border-slate-200">
-              <span className="text-[10px] text-slate-400 uppercase">เวลา/สนามชนกัน</span>
-              <div className="text-base font-black text-slate-800">
-                {summary.conflictsCount === 0 ? (
-                  <span className="text-emerald-600 text-xs flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> ไม่มีข้อขัดแย้ง
-                  </span>
-                ) : (
-                  <span className="text-red-600 text-xs flex items-center gap-1">
-                    <AlertTriangle className="w-3.5 h-3.5" /> {summary.conflictsCount} ข้อขัดแย้ง
-                  </span>
-                )}
-              </div>
+        {/* KPI & Status Strip: Cleaned for Public & Admin */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 sm:px-6 bg-[#F8F9FF] border-b border-[#DFE2EB] text-xs shrink-0">
+          <div className="p-2.5 rounded-lg bg-white border border-[#DFE2EB]">
+            <span className="text-[10px] text-slate-400 uppercase font-headline font-bold">ทีมในสายการแข่งขัน</span>
+            <div className="text-base font-extrabold text-[#0B1C30] tabular-nums">
+              {summary?.approvedTeamsCount || 8} ทีม
             </div>
           </div>
-        )}
+          <div className="p-2.5 rounded-lg bg-white border border-[#DFE2EB]">
+            <span className="text-[10px] text-slate-400 uppercase font-headline font-bold">รูปแบบการแข่งขัน</span>
+            <div className="text-sm font-bold text-[#0B1C30] truncate">
+              รอบแบ่งกลุ่ม + น็อกเอาต์
+            </div>
+          </div>
+          <div className="p-2.5 rounded-lg bg-white border border-[#DFE2EB]">
+            <span className="text-[10px] text-slate-400 uppercase font-headline font-bold">สนาม &amp; ถ่ายทอดสด</span>
+            <div className="text-sm font-bold text-[#0B1C30] truncate">
+              นิมิบุตร (คอร์ท 1, 2)
+            </div>
+          </div>
+          <div className="p-2.5 rounded-lg bg-white border border-[#DFE2EB]">
+            <span className="text-[10px] text-slate-400 uppercase font-headline font-bold">แมตช์ทั้งหมด</span>
+            <div className="text-base font-extrabold text-[#AF101A] tabular-nums">
+              {allMatchesList.length} แมตช์
+            </div>
+          </div>
+        </div>
 
         {/* View Tabs */}
-        <div className="flex items-center gap-2 px-6 pt-3 border-b border-slate-200 bg-white shrink-0">
+        <div className="flex items-center gap-2 px-6 pt-2.5 border-b border-[#DFE2EB] bg-white shrink-0">
           <button
             type="button"
             onClick={() => setActiveTab("BRACKETS")}
-            className={`pb-2.5 font-mono text-xs font-bold transition border-b-2 cursor-pointer ${
+            className={`pb-2.5 text-xs font-bold transition border-b-2 cursor-pointer ${
               activeTab === "BRACKETS"
-                ? "border-[#AF101A] text-[#AF101A]"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-[#AF101A] text-[#AF101A] font-extrabold"
+                : "border-transparent text-slate-500 hover:text-[#0B1C30]"
             }`}
           >
-            สายการแข่งขัน (Brackets &amp; Pools)
+            ผังสายการแข่งขัน (Pools &amp; Brackets)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("SCHEDULE")}
-            className={`pb-2.5 font-mono text-xs font-bold transition border-b-2 cursor-pointer ${
+            className={`pb-2.5 text-xs font-bold transition border-b-2 cursor-pointer ${
               activeTab === "SCHEDULE"
-                ? "border-[#AF101A] text-[#AF101A]"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-[#AF101A] text-[#AF101A] font-extrabold"
+                : "border-transparent text-slate-500 hover:text-[#0B1C30]"
             }`}
           >
-            ตารางแข่งแยกสนาม ({summary?.totalMatches || 0})
+            ตารางแข่งแยกสนาม ({allMatchesList.length})
           </button>
-          {conflicts.length > 0 && (
+          {isAdminOrOfficial && conflicts.length > 0 && (
             <button
               type="button"
               onClick={() => setActiveTab("CONFLICTS")}
-              className={`pb-2.5 font-mono text-xs font-bold transition border-b-2 cursor-pointer text-red-600 flex items-center gap-1 ${
+              className={`pb-2.5 text-xs font-bold transition border-b-2 cursor-pointer text-red-600 flex items-center gap-1 ${
                 activeTab === "CONFLICTS" ? "border-red-600 font-black" : "border-transparent opacity-80"
               }`}
             >
@@ -603,24 +633,49 @@ export default function TournamentBracketManager({
               {/* TAB 2: MASTER COURT SCHEDULE */}
               {activeTab === "SCHEDULE" && (
                 <div className="space-y-4">
-                  <div className="overflow-x-auto rounded-2xl border border-slate-200">
+                  {/* Court Filter Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs bg-slate-50 p-2.5 rounded-lg border border-[#DFE2EB]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-500 font-bold text-xs">เลือกคอร์ท:</span>
+                      {["ALL", "คอร์ท 1", "คอร์ท 2"].map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          onClick={() => setCourtFilter(c)}
+                          className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
+                            courtFilter === c
+                              ? "bg-[#0B1C30] text-white shadow-xs"
+                              : "bg-white text-slate-600 hover:bg-slate-100 border border-[#CBD5E1]"
+                          }`}
+                        >
+                          {c === "ALL" ? "ทุกคอร์ท" : c}
+                        </button>
+                      ))}
+                    </div>
+                    <span className="text-slate-500 font-medium text-[11px]">
+                      แสดง {filteredMatches.length} คู่แข่งขัน
+                    </span>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-lg border border-[#DFE2EB]">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-50 text-[10px] font-mono text-slate-500 uppercase border-b border-slate-200">
+                      <thead className="bg-[#F8F9FF] text-slate-700 font-headline font-bold uppercase tracking-wider border-b border-[#DFE2EB]">
                         <tr>
                           <th className="py-3 px-4">วันที่ / เวลา</th>
                           <th className="py-3 px-3">สนาม / คอร์ท</th>
                           <th className="py-3 px-3">รอบ</th>
                           <th className="py-3 px-4">คู่แข่งขัน &amp; สกอร์</th>
                           <th className="py-3 px-3 text-center">สถานะ</th>
+                          <th className="py-3 px-3 text-right">แอ็กชัน</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 text-xs">
-                        {data.groupMatches.concat(Object.values(data.knockoutRounds).flat()).map((m) => (
-                          <tr key={m.id} className="hover:bg-slate-50">
+                      <tbody className="divide-y divide-[#DFE2EB] text-xs font-sans">
+                        {filteredMatches.map((m) => (
+                          <tr key={m.id} className="hover:bg-slate-50 transition">
                             <td className="py-3 px-4 font-mono">
                               {m.scheduledAt ? (
                                 <>
-                                  <span className="font-bold text-slate-800">
+                                  <span className="font-bold text-[#0B1C30]">
                                     {new Date(m.scheduledAt).toLocaleDateString("th-TH", {
                                       day: "numeric",
                                       month: "short",
@@ -638,34 +693,48 @@ export default function TournamentBracketManager({
                               )}
                             </td>
                             <td className="py-3 px-3">
-                              <span className="font-semibold text-slate-800">{m.venue || "-"}</span>
+                              <span className="font-bold text-[#0B1C30]">{m.venue || "อาคารนิมิบุตร"}</span>
                               <span className="block text-[11px] font-mono text-slate-500">
-                                {m.courtName || "คอร์ทหลัก"}
+                                {m.courtName || "คอร์ท 1"}
                               </span>
                             </td>
-                            <td className="py-3 px-3 font-mono text-[11px] text-slate-600">
+                            <td className="py-3 px-3 text-slate-600 font-medium text-[11px]">
                               {m.round || "-"}
                             </td>
                             <td className="py-3 px-4">
-                              <div className="font-bold text-slate-800">
-                                {m.homeTeam.name}{" "}
-                                <span className="font-mono text-[#AF101A] px-1">{m.homeScore}</span> -{" "}
-                                <span className="font-mono text-[#AF101A] px-1">{m.awayScore}</span>{" "}
-                                {m.awayTeam.name}
+                              <div className="font-bold text-[#0B1C30] flex items-center gap-1.5">
+                                <span>{m.homeTeam.name}</span>
+                                <span className="font-mono font-bold text-[#AF101A] px-1 bg-slate-100 rounded">
+                                  {m.homeScore}
+                                </span>
+                                <span className="text-slate-400">-</span>
+                                <span className="font-mono font-bold text-[#AF101A] px-1 bg-slate-100 rounded">
+                                  {m.awayScore}
+                                </span>
+                                <span>{m.awayTeam.name}</span>
                               </div>
                             </td>
                             <td className="py-3 px-3 text-center">
                               <span
-                                className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
                                   m.resultStatus === "FINAL"
-                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                    ? "bg-slate-100 text-slate-700 border border-slate-300"
                                     : m.status === "LIVE"
                                     ? "bg-red-50 text-red-700 border border-red-200 animate-pulse"
-                                    : "bg-slate-100 text-slate-600 border border-slate-200"
+                                    : "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                 }`}
                               >
-                                {m.resultStatus === "FINAL" ? "FINAL" : m.status}
+                                {m.status === "LIVE" ? "กำลังแข่ง (LIVE)" : m.resultStatus === "FINAL" ? "จบการแข่งขัน" : "รอการแข่งขัน"}
                               </span>
+                            </td>
+                            <td className="py-3 px-3 text-right">
+                              <Link
+                                href="/live"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#AF101A]/10 hover:bg-[#AF101A]/20 text-[#AF101A] font-bold text-[11px] transition"
+                              >
+                                <Play className="w-3 h-3 fill-current" />
+                                <span>ดูสด/ย้อนหลัง</span>
+                              </Link>
                             </td>
                           </tr>
                         ))}

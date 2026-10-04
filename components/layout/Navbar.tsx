@@ -24,6 +24,9 @@ import {
   Sparkles,
   Radio,
   Newspaper,
+  Zap,
+  ChevronRight,
+  ShieldAlert,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import {
@@ -65,6 +68,9 @@ export default function Navbar() {
   const navContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { currentUser } = useAuthStore();
+  const isDev =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ENABLE_DEV_ROLE_SWITCHER === "true";
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,10 +161,10 @@ export default function Navbar() {
         };
       case "ADMIN":
         return {
-          href: "/solutions",
+          href: "/admin",
           label: "Admin Hub",
           desc: "ศูนย์บริหารจัดการทัวร์นาเมนต์ และระบบองค์กรกีฬา",
-          icon: Sparkles,
+          icon: ShieldAlert,
           badge: "Admin",
         };
       case "PUBLIC":
@@ -324,26 +330,33 @@ export default function Navbar() {
         <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Left: Logo & Search */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-2 group shrink-0">
-              <div className="w-8 h-8 bg-primary flex items-center justify-center rounded-sm text-white font-black text-sm tracking-tight shadow-xs group-hover:scale-105 transition-transform">
-                SC
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link href="/" className="flex items-center gap-2 group shrink-0" aria-label="StatCourt Thailand">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-[#AF101A] transition-transform group-hover:scale-105" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="2" y="11" width="4" height="11" rx="1" />
+                <rect x="9.5" y="6" width="4" height="16" rx="1" />
+                <rect x="17" y="2" width="4" height="20" rx="1" />
+              </svg>
+              <div className="flex items-baseline font-headline-lg tracking-normal leading-none select-none">
+                <span className="font-bold text-xl sm:text-2xl text-[#0B1C30]">STATCOURT</span>
+                <span className="font-bold text-xs sm:text-sm text-[#AF101A] ml-0.5">.TH</span>
               </div>
-              <span className="font-headline-lg uppercase tracking-wider text-primary font-black text-base sm:text-lg pl-0.5">
-                STATCOURT.TH
-              </span>
+            </Link>
+
+            <Link href="/search" aria-label="ค้นหานักกีฬาและทีม" className="hidden min-[1440px]:inline-flex min-[1800px]:hidden min-w-[44px] min-h-[44px] items-center justify-center rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary">
+              <Search className="w-4 h-4" />
             </Link>
 
             {/* Compact Search Bar */}
             <form
               onSubmit={handleSearchSubmit}
-              className="hidden lg:flex items-center bg-[#f8f9fc] border border-outline-variant rounded-sm px-2.5 py-1.5 w-40 xl:w-52 focus-within:w-60 focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200"
+              className="hidden min-[1800px]:flex items-center bg-[#f8f9fc] border border-outline-variant rounded-sm px-2.5 py-1.5 w-40 focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200"
             >
-              <Search className="w-3.5 h-3.5 text-slate-400 mr-2 shrink-0" />
+              <Search className="w-3.5 h-3.5 text-slate-500 mr-2 shrink-0" />
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-400 w-full outline-none"
+                className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-500 w-full outline-none"
                 placeholder="Search athletes, teams..."
                 type="text"
               />
@@ -353,7 +366,7 @@ export default function Navbar() {
           {/* Center: Categorized Desktop Navigation */}
           <nav
             ref={navContainerRef}
-            className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0 relative"
+            className="hidden min-[1440px]:flex items-center gap-0 shrink-0 relative"
           >
             {/* 1. Home Direct Link */}
             <Link
@@ -425,7 +438,7 @@ export default function Navbar() {
                       <div className="bg-white rounded-xl shadow-xl border border-slate-200/90 p-2.5 backdrop-blur-md">
                         {/* Section Header Hint */}
                         <div className="px-2.5 py-1 mb-1.5 flex items-center justify-between border-b border-slate-100">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-[#5B6574]">
                             {group.label}
                           </span>
                           {group.subLabel && (
@@ -502,14 +515,27 @@ export default function Navbar() {
 
           {/* Right: Actions Cluster */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Interactive Developer Role Switcher (Switch role on 1 click) */}
-            <NavbarRoleSwitcher />
+            {/* Interactive Developer Role Switcher & Demo Hub */}
+            {isDev && (
+              <>
+                <Link
+                  href="/demo"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/90 border border-emerald-400 text-emerald-300 hover:bg-emerald-900 font-mono text-xs font-black transition shadow-sm"
+                  title="ศูนย์รวมทางลัดทดสอบระบบ (Demo Hub 15 หน้า)"
+                >
+                  <Zap className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400 animate-pulse" />
+                  <span>DEMO HUB</span>
+                </Link>
+                <div className="hidden md:block"><NavbarRoleSwitcher /></div>
+              </>
+            )}
 
             {/* User Profile, Role Badge & Auth */}
-            <UserRoleProfileMenu />
+            <div className={currentUser.role === "PUBLIC" ? "hidden sm:block" : ""}><UserRoleProfileMenu /></div>
+            {currentUser.role === "PUBLIC" && <Link href="/auth/login" className="sm:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-outline-variant" aria-label="เข้าสู่ระบบ"><UserCheck className="w-5 h-5" /></Link>}
 
             {/* Utility Icons: Notification Center & Globe */}
-            <div className="flex items-center gap-1 pl-2 border-l border-outline-variant text-slate-500">
+            <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-outline-variant text-slate-500">
               <NotificationCenter />
               <button
                 className="hidden sm:inline-flex hover:text-primary hover:bg-slate-100 p-1.5 rounded-lg transition"
@@ -520,11 +546,12 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile Hamburger Menu Button */}
+            {/* Mobile Hamburger Menu Button (44x44px Courtside Touch Target) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 rounded-lg border border-outline-variant text-slate-700 hover:bg-slate-50 transition"
+              className="min-[1440px]:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-outline-variant text-slate-700 hover:bg-slate-50 transition"
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -533,7 +560,8 @@ export default function Navbar() {
 
         {/* Mobile / Tablet Accordion Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-outline-variant px-4 py-3 space-y-3 animate-in fade-in max-h-[85vh] overflow-y-auto">
+          <div className="min-[1440px]:hidden bg-white border-b border-outline-variant px-4 py-3 space-y-3 animate-in fade-in max-h-[85vh] overflow-y-auto">
+            {currentUser.role === "PUBLIC" && <UserRoleProfileMenu />}
             {/* Mobile User Profile Card & Role Switcher */}
             <div className="p-3 bg-slate-900 text-white rounded-xl shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
@@ -543,7 +571,7 @@ export default function Navbar() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-bold truncate">{currentUser.name || "Guest Spectator"}</p>
-                    <span className="text-[9px] font-mono font-bold bg-white/20 px-1.5 py-0.2 rounded">
+                    <span className="text-[9px] font-mono font-bold bg-white/20 px-1.5 py-0.5 rounded">
                       {currentUser.role}
                     </span>
                   </div>
@@ -551,18 +579,33 @@ export default function Navbar() {
                 <span className="text-xs text-slate-300">{currentUser.role}</span>
               </div>
 
-              {/* Mobile Role Switcher Trigger */}
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-[11px] font-mono text-slate-400">สลับสิทธิ์ทดสอบ:</span>
-                <NavbarRoleSwitcher />
-              </div>
+              {/* Mobile Role Switcher Trigger & Demo Hub */}
+              {isDev && (
+                <div className="pt-2 border-t border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono text-slate-400">สลับสิทธิ์ทดสอบ:</span>
+                    <NavbarRoleSwitcher />
+                  </div>
+                  <Link
+                    href="/demo"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2 px-3 rounded-lg bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 font-mono text-xs font-bold flex items-center justify-between transition hover:bg-emerald-900"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>ศูนย์รวมทางลัดทดสอบระบบ (Demo Hub)</span>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Search Input for Mobile/Tablet */}
             <form onSubmit={handleSearchSubmit} className="flex items-center bg-[#f8f9fc] border border-outline-variant rounded-lg px-2.5 py-1.5 w-full">
-              <Search className="w-3.5 h-3.5 text-slate-400 mr-2 shrink-0" />
+              <Search className="w-3.5 h-3.5 text-slate-500 mr-2 shrink-0" />
               <input
-                className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-400 w-full outline-none"
+                className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-500 w-full outline-none"
                 placeholder="ค้นหานักกีฬา, ทีม, ทัวร์นาเมนต์..."
                 type="text"
                 value={searchQuery}
@@ -633,7 +676,7 @@ export default function Navbar() {
                       <div className="flex items-center gap-2">
                         <span>{group.label}</span>
                         {group.subLabel && (
-                          <span className="text-[10px] text-slate-400 font-normal">
+                          <span className="text-[10px] text-[#5B6574] font-normal">
                             ({group.subLabel})
                           </span>
                         )}
@@ -680,7 +723,7 @@ export default function Navbar() {
                                     {item.label}
                                   </span>
                                   {item.badge && (
-                                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-600">
+                                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
                                       {item.badge}
                                     </span>
                                   )}

@@ -91,32 +91,32 @@ export default function ShotChartComparison() {
   ];
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs flex flex-col text-slate-900">
+    <div className="bg-white border border-[#DFE2EB] rounded-lg overflow-hidden shadow-xs flex flex-col text-slate-900">
       {/* Header */}
-      <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <div className="px-6 py-4 bg-[#F8F9FF] border-b border-[#DFE2EB] flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#AF101A] flex items-center justify-center font-bold text-white shadow-xs">
+          <div className="w-9 h-9 rounded-sm bg-[#AF101A] flex items-center justify-center font-bold text-white shadow-xs">
             <Crosshair className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-slate-900 font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal flex items-center gap-2">
+            <h3 className="text-[#0B1C30] font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal flex items-center gap-2">
               <span>Head-to-Head Shot Chart Comparison</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-50 text-[#AF101A] border border-red-200 font-bold uppercase">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-red-50 text-[#AF101A] border border-red-200 font-bold uppercase">
                 TACTICAL HEATMAP
               </span>
             </h3>
-            <p className="text-xs text-slate-500 font-mono">
+            <p className="text-xs text-[#505A69] font-mono">
               Bangkok Christian College (BCC) vs Debsirin School (DS)
             </p>
           </div>
         </div>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg font-mono text-xs border border-slate-200">
+        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-sm font-mono text-xs border border-[#DFE2EB]">
           <button
             type="button"
             onClick={() => setViewMode("SIDE_BY_SIDE")}
-            className={`px-3 py-1.5 rounded font-bold transition flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-sm font-bold transition flex items-center gap-1.5 cursor-pointer ${
               viewMode === "SIDE_BY_SIDE"
                 ? "bg-[#AF101A] text-white shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -128,7 +128,7 @@ export default function ShotChartComparison() {
           <button
             type="button"
             onClick={() => setViewMode("OVERLAY")}
-            className={`px-3 py-1.5 rounded font-bold transition flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-sm font-bold transition flex items-center gap-1.5 cursor-pointer ${
               viewMode === "OVERLAY"
                 ? "bg-[#AF101A] text-white shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -148,16 +148,16 @@ export default function ShotChartComparison() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* BCC Shot Profile */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <div className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-[#DFE2EB]">
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#DC2626]" />
-                  <span className="font-bold text-sm text-slate-900 font-mono uppercase">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-[#AF101A]" />
+                  <span className="font-bold text-sm text-[#0B1C30] font-mono uppercase">
                     Bangkok Christian College (ทีมเรา)
                   </span>
                 </div>
-                <span className="text-xs font-mono text-slate-500 font-bold">
-                  eFG%: <span className="text-[#DC2626]">57.2%</span> • TS%: <span className="text-slate-900">61.4%</span>
+                <span className="text-xs font-mono text-[#505A69] font-bold">
+                  eFG%: <span className="text-[#AF101A] tabular-nums">57.2%</span> • TS%: <span className="text-[#0B1C30] tabular-nums">61.4%</span>
                 </span>
               </div>
 
@@ -166,48 +166,48 @@ export default function ShotChartComparison() {
                 <div>
                   <div className="flex justify-between text-[11px] text-slate-700 pb-1">
                     <span className="font-bold">ใต้แป้น (Rim / Paint): 18/28 (64.2%)</span>
-                    <span className="text-[#DC2626] font-bold inline-flex items-center gap-1">
+                    <span className="text-[#AF101A] font-bold inline-flex items-center gap-1">
                       <Flame className="w-3 h-3" /> HIGH EFFICIENCY
                     </span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-[#DC2626] h-full rounded-full" style={{ width: "64.2%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-[#AF101A] h-full rounded-sm" style={{ width: "64.2%" }} />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-[11px] text-slate-700 pb-1">
                     <span className="font-bold">3 แต้มมุมซ้าย (Left Corner): 5/12 (41.7%)</span>
-                    <span className="text-[#DC2626] font-bold">HOT ZONE</span>
+                    <span className="text-[#AF101A] font-bold">HOT ZONE</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-[#DC2626] h-full rounded-full" style={{ width: "41.7%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-[#AF101A] h-full rounded-sm" style={{ width: "41.7%" }} />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-[11px] text-slate-700 pb-1">
                     <span className="font-bold">3 แต้มหัวกะโหลก (Above-the-Break): 7/19 (36.8%)</span>
-                    <span className="text-slate-500">AVERAGE</span>
+                    <span className="text-[#505A69]">AVERAGE</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-slate-400 h-full rounded-full" style={{ width: "36.8%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-slate-400 h-full rounded-sm" style={{ width: "36.8%" }} />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Debsirin Shot Profile */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <div className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-[#DFE2EB]">
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-slate-600" />
-                  <span className="font-bold text-sm text-slate-900 font-mono uppercase">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-[#0B1C30]" />
+                  <span className="font-bold text-sm text-[#0B1C30] font-mono uppercase">
                     Debsirin School (คู่แข่ง)
                   </span>
                 </div>
-                <span className="text-xs font-mono text-slate-500 font-bold">
-                  eFG%: <span className="text-slate-900">49.8%</span> • TS%: <span className="text-slate-900">53.2%</span>
+                <span className="text-xs font-mono text-[#505A69] font-bold">
+                  eFG%: <span className="text-[#0B1C30] tabular-nums">49.8%</span> • TS%: <span className="text-[#0B1C30] tabular-nums">53.2%</span>
                 </span>
               </div>
 
@@ -218,18 +218,18 @@ export default function ShotChartComparison() {
                     <span className="font-bold">ระยะกลาง (Mid-Range Key): 11/25 (44.0%)</span>
                     <span className="text-amber-700 font-bold">HIGH VOLUME</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-amber-600 h-full rounded-full" style={{ width: "44.0%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-amber-600 h-full rounded-sm" style={{ width: "44.0%" }} />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-[11px] text-slate-700 pb-1">
                     <span className="font-bold">ใต้แป้น (Rim / Paint): 16/33 (48.5%)</span>
-                    <span className="text-slate-500 font-bold">LOW FINISH</span>
+                    <span className="text-[#505A69] font-bold">LOW FINISH</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-slate-400 h-full rounded-full" style={{ width: "48.5%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-slate-400 h-full rounded-sm" style={{ width: "48.5%" }} />
                   </div>
                 </div>
 
@@ -238,8 +238,8 @@ export default function ShotChartComparison() {
                     <span className="font-bold">3 แต้มมุมขวา (Right Corner): 3/7 (42.9%)</span>
                     <span className="text-[#AF101A] font-bold">DANGER ZONE</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-[#AF101A] h-full rounded-full" style={{ width: "42.9%" }} />
+                  <div className="w-full bg-slate-200 h-2.5 rounded-sm overflow-hidden">
+                    <div className="bg-[#AF101A] h-full rounded-sm" style={{ width: "42.9%" }} />
                   </div>
                 </div>
               </div>
@@ -248,27 +248,27 @@ export default function ShotChartComparison() {
           </div>
         ) : (
           /* Overlay Comparative Mode: Single Card with Dual Bars */
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
-              <span className="font-bold text-sm text-slate-900 font-mono uppercase">
+          <div className="bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#DFE2EB]">
+              <span className="font-bold text-sm text-[#0B1C30] font-mono uppercase">
                 OVERLAY COMPARISON: โซนการยิงประกบคู่ (BCC vs DEBSIRIN)
               </span>
               <div className="flex items-center gap-4 text-xs font-mono">
-                <span className="flex items-center gap-1.5 font-bold text-[#DC2626]">
-                  <span className="w-3 h-3 rounded-full bg-[#DC2626]" /> BCC (ทีมเรา)
+                <span className="flex items-center gap-1.5 font-bold text-[#AF101A]">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-[#AF101A]" /> BCC (ทีมเรา)
                 </span>
-                <span className="flex items-center gap-1.5 font-bold text-slate-600">
-                  <span className="w-3 h-3 rounded-full bg-slate-500" /> เทพศิรินทร์
+                <span className="flex items-center gap-1.5 font-bold text-[#0B1C30]">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-[#0B1C30]" /> เทพศิรินทร์
                 </span>
               </div>
             </div>
 
             <div className="space-y-4 font-mono text-xs">
               {zones.map((z) => (
-                <div key={z.zoneCode} className="space-y-1.5 p-3 rounded-lg bg-white border border-slate-200 shadow-2xs">
+                <div key={z.zoneCode} className="space-y-1.5 p-3 rounded-lg bg-white border border-[#DFE2EB]">
                   <div className="flex justify-between text-xs font-bold text-slate-900">
                     <span>{z.zoneName}</span>
-                    <span className={z.tacticalAdvantage === "HOME" ? "text-[#DC2626]" : "text-slate-600"}>
+                    <span className={z.tacticalAdvantage === "HOME" ? "text-[#AF101A]" : "text-[#0B1C30]"}>
                       {z.tacticalAdvantage === "HOME" ? "BCC ได้เปรียบ" : "คู่แข่งได้เปรียบ"}
                     </span>
                   </div>
@@ -277,8 +277,8 @@ export default function ShotChartComparison() {
                     <div className="flex justify-between text-[11px] text-slate-600">
                       <span>BCC: {z.homeMade}/{z.homeAttempts} ({z.homeFgPct}%)</span>
                     </div>
-                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                      <div className="bg-[#DC2626] h-full rounded-full" style={{ width: `${z.homeFgPct}%` }} />
+                    <div className="w-full bg-slate-100 h-2 rounded-sm overflow-hidden">
+                      <div className="bg-[#AF101A] h-full rounded-sm" style={{ width: `${z.homeFgPct}%` }} />
                     </div>
                   </div>
                   {/* DS Bar */}
@@ -286,8 +286,8 @@ export default function ShotChartComparison() {
                     <div className="flex justify-between text-[11px] text-slate-600">
                       <span>DS: {z.awayMade}/{z.awayAttempts} ({z.awayFgPct}%)</span>
                     </div>
-                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                      <div className="bg-slate-500 h-full rounded-full" style={{ width: `${z.awayFgPct}%` }} />
+                    <div className="w-full bg-slate-100 h-2 rounded-sm overflow-hidden">
+                      <div className="bg-[#0B1C30] h-full rounded-sm" style={{ width: `${z.awayFgPct}%` }} />
                     </div>
                   </div>
                 </div>
@@ -297,43 +297,43 @@ export default function ShotChartComparison() {
         )}
 
         {/* Tactical Breakdown Table */}
-        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white font-mono text-xs shadow-xs">
+        <div className="border border-[#DFE2EB] rounded-lg overflow-hidden bg-white font-mono text-xs shadow-xs">
           <table className="w-full text-left">
-            <thead className="bg-slate-100 border-b border-slate-200 text-slate-600 uppercase text-[11px]">
+            <thead className="bg-[#F8F9FF] border-b border-[#DFE2EB] text-[#505A69] uppercase text-[11px]">
               <tr>
                 <th className="py-3 px-4">โซนการยิง (COURT ZONE)</th>
-                <th className="py-3 px-4 text-center text-slate-900 font-bold">BCC (ทีมเรา)</th>
+                <th className="py-3 px-4 text-center text-[#0B1C30] font-bold">BCC (ทีมเรา)</th>
                 <th className="py-3 px-4 text-center text-slate-700 font-bold">เทพศิรินทร์ (คู่แข่ง)</th>
                 <th className="py-3 px-4 text-center">ความได้เปรียบ</th>
                 <th className="py-3 px-4">ข้อเสนอแนะเชิงแท็กติก (COACHING INSIGHT)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#DFE2EB]/60">
               {zones.map((z) => (
-                <tr key={z.zoneCode} className="hover:bg-slate-50 transition">
+                <tr key={z.zoneCode} className="hover:bg-[#F8F9FF] transition">
                   <td className="py-3.5 px-4 font-bold text-slate-900">
                     {z.zoneName}
                   </td>
-                  <td className="py-3.5 px-4 text-center font-bold text-[#DC2626]">
+                  <td className="py-3.5 px-4 text-center font-bold text-[#AF101A] tabular-nums">
                     {(z.homeFgPct ?? 0).toFixed(1)}% ({z.homeMade ?? 0}/{z.homeAttempts ?? 0})
                   </td>
-                  <td className="py-3.5 px-4 text-center font-bold text-slate-700">
+                  <td className="py-3.5 px-4 text-center font-bold text-[#0B1C30] tabular-nums">
                     {(z.awayFgPct ?? 0).toFixed(1)}% ({z.awayMade ?? 0}/{z.awayAttempts ?? 0})
                   </td>
                   <td className="py-3.5 px-4 text-center">
                     {z.tacticalAdvantage === "HOME" ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
-                        <TrendingUp className="w-3 h-3 text-[#DC2626]" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-sm bg-red-50 text-[#AF101A] border border-red-200">
+                        <TrendingUp className="w-3 h-3 text-[#AF101A]" />
                         <span>BCC +{((z.homeFgPct ?? 0) - (z.awayFgPct ?? 0)).toFixed(1)}%</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-sm bg-slate-100 text-slate-700 border border-[#DFE2EB]">
                         <AlertTriangle className="w-3 h-3 text-slate-500" />
                         <span>DS +{((z.awayFgPct ?? 0) - (z.homeFgPct ?? 0)).toFixed(1)}%</span>
                       </span>
                     )}
                   </td>
-                  <td className="py-3.5 px-4 text-slate-600 text-[11px]">
+                  <td className="py-3.5 px-4 text-[#505A69] text-[11px] font-sans">
                     {z.tacticalNote}
                   </td>
                 </tr>
@@ -343,7 +343,7 @@ export default function ShotChartComparison() {
         </div>
 
         {/* Bottom Tactical Gameplan Callout */}
-        <div className="bg-red-50/60 border border-red-200 border-l-4 border-l-[#AF101A] rounded-xl p-4 flex items-start gap-3 text-xs font-mono shadow-xs">
+        <div className="bg-red-50/60 border border-red-200 border-l-4 border-l-[#AF101A] rounded-lg p-4 flex items-start gap-3 text-xs font-mono shadow-xs">
           <ShieldAlert className="w-5 h-5 text-[#AF101A] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <span className="font-bold text-[#AF101A] uppercase text-[11px] block">

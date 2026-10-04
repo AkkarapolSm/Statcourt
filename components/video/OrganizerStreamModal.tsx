@@ -392,7 +392,7 @@ export default function OrganizerStreamModal({
                 </button>
                 <button
                   type="submit"
-                  className="bg-brand-primary hover:bg-red-700 text-white font-bold text-xs px-5 py-2 rounded-lg shadow flex items-center gap-1.5 transition"
+                  className="bg-brand-primary hover:bg-brand-crimson text-white font-bold text-xs px-5 py-2 rounded-lg shadow flex items-center gap-1.5 transition"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   {activeStreamToEdit ? "บันทึกการแก้ไข" : "นำขึ้นถ่ายทอดสดทันที"}

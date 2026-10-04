@@ -28,10 +28,10 @@ export default function B2BLeadSection() {
           
           {/* Left Column: Heading & Value */}
           <div className="lg:col-span-5 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#DC2626]/20 border border-[#DC2626]/40 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-200 text-xs font-mono font-bold tracking-widest uppercase">
               READY TO ELEVATE
             </div>
-            <h2 className="font-headline-xl text-white uppercase tracking-normal text-3xl sm:text-4xl font-normal leading-snug">
+            <h2 className="font-sans font-bold text-white text-2xl sm:text-3xl lg:text-4xl leading-snug">
               พร้อมยกระดับการแข่งขันของคุณสู่มาตรฐานระดับอาชีพ
             </h2>
             <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
@@ -40,15 +40,15 @@ export default function B2BLeadSection() {
             </p>
             <div className="space-y-2.5 pt-1 text-xs font-mono text-slate-400">
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>บริการสาธิตระบบฟรีผ่านออนไลน์ (Zoom) หรือ On-Site ณ สถานที่จัดการแข่งขัน</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>จัดเตรียมสเปกแท็บเล็ตและอุปกรณ์สำหรับโต๊ะเทคนิคภาคสนามพร้อมใช้งาน</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>เอกสารสัญญาและใบกำกับภาษีถูกต้องตามระเบียบพัสดุและเบิกจ่ายของหน่วยงาน</span>
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function B2BLeadSection() {
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         placeholder="เช่น ดร.ไชยปรีชา วัฒนพันธ์ (ผอ.จัดการแข่งขัน)"
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
 
@@ -103,7 +103,7 @@ export default function B2BLeadSection() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="08X-XXX-XXXX"
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
                   </div>
@@ -119,7 +119,7 @@ export default function B2BLeadSection() {
                         value={organization}
                         onChange={(e) => setOrganization(e.target.value)}
                         placeholder="เช่น Thailand Youth Basketball League 2026"
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
 
@@ -133,7 +133,7 @@ export default function B2BLeadSection() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="tournament@organization.org"
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
                   </div>
@@ -146,7 +146,7 @@ export default function B2BLeadSection() {
                       <select
                         value={orgType}
                         onChange={(e) => setOrgType(e.target.value as any)}
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-[#AF101A]"
                       >
                         <option value="TOURNAMENT">ผู้จัดทัวร์นาเมนต์ / ฝ่ายจัดการแข่งขันลีก</option>
                         <option value="SCHOOL">สถานศึกษา / สโมสรบาสเกตบอลเยาวชน</option>
@@ -161,7 +161,7 @@ export default function B2BLeadSection() {
                       <select
                         value={teamCount}
                         onChange={(e) => setTeamCount(e.target.value)}
-                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-[#DC2626]"
+                        className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-[#AF101A]"
                       >
                         <option value="8">8 ทีม (มินิลีก / 1 สนามแข่งขัน)</option>
                         <option value="16">16 ทีม (ทัวร์นาเมนต์มาตรฐาน / 1-2 สนาม)</option>
@@ -180,13 +180,13 @@ export default function B2BLeadSection() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="ระบุสถานที่จัดการแข่งขัน วันที่เริ่ม หรือความประสงค์เฉพาะ เช่น ต้องการทีมงานโต๊ะเทคนิคพร้อมอุปกรณ์"
-                      className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#DC2626]"
+                      className="w-full px-3.5 py-2 rounded bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-[#AF101A]"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3 rounded bg-[#DC2626] hover:bg-[#B91C1C] text-white font-mono font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-red-950/40 flex items-center justify-center gap-2 mt-2 cursor-pointer"
+                    className="w-full py-3 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono font-bold text-xs tracking-wider uppercase transition shadow-lg shadow-red-950/40 flex items-center justify-center gap-2 mt-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     <span>ส่งข้อมูลเพื่อขอรับข้อเสนอทางการ</span>

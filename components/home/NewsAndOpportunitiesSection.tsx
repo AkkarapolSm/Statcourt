@@ -31,7 +31,7 @@ export default function NewsAndOpportunitiesSection() {
       category: "SCOUT REPORT",
       time: "5 ชั่วโมงที่แล้ว",
       readTime: "อ่าน 4 นาที",
-      imageUrl: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80",
+      imageUrl: "/images/home/basketball-athlete.png",
     },
     {
       id: "news-03",
@@ -39,14 +39,14 @@ export default function NewsAndOpportunitiesSection() {
       category: "FIBA ACADEMY",
       time: "1 วันที่แล้ว",
       readTime: "อ่าน 2 นาที",
-      imageUrl: "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=600&q=80",
+      imageUrl: "/images/court/hardwood-court.jpg",
     },
   ];
 
   const topOpportunities = mockOpportunities.slice(0, 3);
 
   return (
-    <section className="py-12 bg-white border-b border-slate-200">
+    <section className="py-12 bg-white border-b border-borderNeutral">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
@@ -56,18 +56,15 @@ export default function NewsAndOpportunitiesSection() {
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#AF101A] uppercase">
-                  <Newspaper className="w-4 h-4" />
-                  <span>THAILAND BASKETBALL NEWS &amp; HIGHLIGHTS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-[#0B1C30] uppercase">
+                <span className="text-xs text-slate-500 font-sans block">รายงานสนามและบทวิเคราะห์</span>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#0B1C30] font-sans">
                   ข่าวสารและไฮไลต์การแข่งขัน
                 </h3>
               </div>
 
               <Link
                 href="/news"
-                className="text-xs font-mono font-bold text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition"
+                className="text-xs font-sans font-medium text-slate-500 hover:text-[#AF101A] flex items-center gap-1 transition-colors"
               >
                 <span>ดูข่าวทั้งหมด</span>
                 <ChevronRight className="w-4 h-4" />
@@ -79,25 +76,31 @@ export default function NewsAndOpportunitiesSection() {
                 <Link
                   key={news.id}
                   href="/news"
-                  className="group rounded-2xl border border-slate-200 overflow-hidden hover:border-slate-300 hover:shadow-md transition flex flex-col justify-between"
+                  className="group rounded-xl border border-borderNeutral overflow-hidden hover:border-slate-400 transition-colors flex flex-col justify-between"
                 >
                   <div className="aspect-[16/10] bg-slate-900 relative overflow-hidden">
                     <img
                       src={news.imageUrl}
                       alt={news.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300 opacity-90"
+                      onError={(event) => {
+                        const image = event.currentTarget;
+                        if (!image.src.endsWith("/images/court/hardwood-court.jpg")) {
+                          image.src = "/images/court/hardwood-court.jpg";
+                        }
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300 opacity-90"
                     />
-                    <span className="absolute top-2 left-2 bg-[#AF101A] text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded shadow">
+                    <span className="absolute top-2 left-2 bg-[#AF101A] text-white text-[10px] font-sans font-semibold px-2 py-0.5 rounded">
                       {news.category}
                     </span>
                   </div>
 
-                  <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
-                    <h4 className="font-bold text-xs sm:text-sm text-[#0B1C30] group-hover:text-[#AF101A] transition line-clamp-2 leading-snug">
+                  <div className="p-3.5 space-y-2 flex-1 flex flex-col justify-between font-sans">
+                    <h4 className="font-semibold text-xs sm:text-sm text-[#0B1C30] group-hover:text-[#AF101A] transition-colors line-clamp-2 leading-snug">
                       {news.title}
                     </h4>
 
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-2 border-t border-slate-100">
+                    <div className="flex items-center justify-between text-[11px] text-[#5B6574] pt-2 border-t border-slate-100">
                       <span>{news.time}</span>
                       <span>{news.readTime}</span>
                     </div>
@@ -110,21 +113,18 @@ export default function NewsAndOpportunitiesSection() {
           {/* ========================================================= */}
           {/* RIGHT: SCHOLARSHIPS & TCAS QUOTA (5 COLS)                 */}
           {/* ========================================================= */}
-          <div className="lg:col-span-5 bg-[#0B1C30] text-white rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-4">
+          <div className="lg:col-span-5 bg-[#0B1C30] text-white rounded-xl p-5 sm:p-6 shadow-md flex flex-col justify-between space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-400 uppercase">
-                  <GraduationCap className="w-4 h-4" />
-                  <span>ATHLETE PATHWAYS &amp; SCHOLARSHIPS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white uppercase">
+                <span className="text-xs text-slate-400 font-sans block">เส้นทางนักกีฬาเยาวชน</span>
+                <h3 className="text-xl sm:text-2xl font-bold text-white font-sans">
                   โอกาสและทุนการศึกษา TCAS
                 </h3>
               </div>
 
               <Link
                 href="/opportunities"
-                className="text-xs font-mono font-bold text-slate-400 hover:text-white flex items-center gap-1 transition"
+                className="text-xs font-sans font-medium text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
               >
                 <span>ดูทุกทุน</span>
                 <ChevronRight className="w-4 h-4" />
@@ -136,28 +136,28 @@ export default function NewsAndOpportunitiesSection() {
                 <Link
                   key={opp.id}
                   href="/opportunities"
-                  className="block p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition group space-y-1.5"
+                  className="block p-3 rounded-lg bg-white/5 border border-slate-700/60 hover:border-slate-500 transition-colors group space-y-1"
                 >
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-red-400 font-bold uppercase text-[10px]">
-                      {opp.level} • {opp.scholarshipDisplay}
+                  <div className="flex items-center justify-between text-xs font-sans">
+                    <span className="text-[#FF7A7A] font-semibold text-[11px]">
+                      {opp.level} · {opp.scholarshipDisplay}
                     </span>
-                    <span className="text-slate-400 text-[10px]">
+                    <span className="text-slate-400 text-[11px]">
                       ปิดรับ {new Date(opp.deadline).toLocaleDateString("th-TH")}
                     </span>
                   </div>
 
-                  <h4 className="font-bold text-sm text-white group-hover:text-red-300 transition line-clamp-1 font-sans">
+                  <h4 className="font-semibold text-sm text-white group-hover:text-red-200 transition-colors line-clamp-1 font-sans">
                     {opp.title}
                   </h4>
 
-                  <div className="text-[11px] text-slate-400 font-mono flex items-center gap-3">
+                  <div className="text-[11px] text-slate-400 font-sans flex items-center gap-2 pt-0.5">
                     <span className="flex items-center gap-1">
-                      <Building2 className="w-3 h-3 text-slate-500" />
+                      <Building2 className="w-3 h-3 text-slate-400" />
                       <span>{opp.institution}</span>
                     </span>
-                    <span>•</span>
-                    <span>เกรดขั้นต่ำ {opp.minGpax ? opp.minGpax.toFixed(2) : "2.00"}</span>
+                    <span>·</span>
+                    <span>เกรดเฉลี่ย {opp.minGpax ? opp.minGpax.toFixed(2) : "2.00"}</span>
                   </div>
                 </Link>
               ))}

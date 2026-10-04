@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { canEditAthleteProfile, canViewAthletePrivateData } from "@/lib/auth/rbac";
 import AthleteActivityIndex from "@/components/athlete/AthleteActivityIndex";
-import NbaAthleteHero from "@/components/athlete/NbaAthleteHero";
+import AthleteEditorialHero from "@/components/athlete/AthleteEditorialHero";
 import AthleteOverview from "@/components/athlete/AthleteOverview";
 import AthleteEffTrend from "@/components/athlete/AthleteEffTrend";
 import AthleteCareerStats from "@/components/athlete/AthleteCareerStats";
@@ -57,7 +57,7 @@ export default function AthleteProfilePage({
   params: { id: string };
   searchParams?: { tab?: string };
 }) {
-  const athleteId = params.id;
+  const athleteId = params.id === "ath-01" ? "ath-1" : params.id;
   const initialProfile = mockAthleteProfiles[athleteId];
 
   if (!initialProfile) {
@@ -306,12 +306,14 @@ export default function AthleteProfilePage({
       {/* MAIN CANVAS */}
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 md:px-gutter-desktop py-4 md:py-space-md">
         {/* TOP ACTION SUB-BAR & ATHLETE HERO BANNER */}
-        <NbaAthleteHero
+        <AthleteEditorialHero
           athlete={athlete}
           stats={stats}
+          seasonLabel={selectedSeason}
           onOpenEditProfile={canEdit ? () => setIsEditModalOpen(true) : undefined}
         />
 
+        <div id="athlete-details" className="scroll-mt-20" />
         {/* ROLE-AWARE ACTION STRIP */}
         <div className="bg-[#0F172A] border border-slate-800 rounded-xl p-2.5 sm:px-4 sm:py-2.5 mb-5 text-white flex items-center justify-between gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar whitespace-nowrap shadow-md font-mono text-xs">
           <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300 uppercase tracking-wider shrink-0 pr-0.5">

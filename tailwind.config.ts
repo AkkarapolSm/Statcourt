@@ -9,23 +9,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Brand tokens: see docs/STATCOURT_BRAND_DIRECTION.md
         brand: {
-          primary: "#DC2626", // Red 600
-          crimson: "#991B1B", // Red 800
-          subtle: "#FEE2E2",  // Red 100
-          glow: "#EF4444",    // Red 500
+          primary: "#AF101A", // Crimson (white text 7.21:1)
+          crimson: "#8E0D15", // Crimson pressed / hover
+          subtle: "#FFDAD6",  // Primary fixed (Crimson on it 5.58:1)
+          signal: "#FF7A7A",  // Signal Red: text/icons on Court Ink only (6.80:1)
         },
         surface: {
-          base: "#F8FAFC",      // Slate 50
+          base: "#F8F9FF",      // Ice
           container: "#FFFFFF", // Pure White
           muted: "#F1F5F9",     // Slate 100
-          dark: "#0F172A",      // Slate 900
+          dark: "#0B1C30",      // Court Ink
           card: "#FFFFFF",
         },
-        borderNeutral: "#E2E8F0", // Slate 200
-        textHeading: "#0F172A",   // Slate 900
-        textSecondary: "#475569", // Slate 600
-        textMuted: "#94A3B8",     // Slate 400
+        borderNeutral: "#DFE2EB", // Line (decorative dividers only)
+        borderStrong: "#7F8A9E",  // Border Strong (controls, >= 3:1)
+        textHeading: "#0B1C30",   // Court Ink
+        textSecondary: "#5B6574", // Secondary text (5.62:1 on Ice)
+        textMuted: "#94A3B8",     // Slate 400 (decorative only, fails 4.5:1 as text)
+        mutedOnInk: "#A9B6C8",    // Secondary text on Court Ink (8.35:1)
         verifiedGreen: {
           DEFAULT: "#15803D", // Green 700
           light: "#DCFCE7",
@@ -37,9 +40,9 @@ const config: Config = {
         // Design System Tokens from User Mockup
         primary: "#af101a",
         "on-primary": "#ffffff",
-        secondary: "#5b5e66",
-        outline: "#8f6f6c",
-        "primary-container": "#d32f2f",
+        secondary: "#5b6574",
+        outline: "#7f8a9e",
+        "primary-container": "#af101a",
         "on-primary-container": "#fff2f0",
         "primary-fixed": "#ffdad6",
         "primary-fixed-dim": "#ffb3ac",
@@ -64,15 +67,17 @@ const config: Config = {
         "secondary-fixed-dim": "#c3c6cf",
         "secondary-container": "#dfe2eb",
         "on-secondary-container": "#61646c",
-        "outline-variant": "#e4beba",
+        "outline-variant": "#dfe2eb",
         background: "#f8f9ff",
         "on-background": "#0b1c30",
         "on-surface": "#0b1c30",
-        "on-surface-variant": "#5b403d",
+        "on-surface-variant": "#5b6574",
       },
       fontFamily: {
-        bebas: ["var(--font-bebas)", "Bebas Neue", "sans-serif"],
-        barlow: ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
+        // Two families only: Barlow Condensed (Latin display/numerals) and Noto Sans Thai (content).
+        // Barlow Condensed has no Thai glyphs, so Noto Sans Thai is always the fallback.
+        barlow: ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        thai: ["Noto Sans Thai", "sans-serif"],
         mono: [
           "ui-monospace",
           "SFMono-Regular",
@@ -81,16 +86,16 @@ const config: Config = {
           "Consolas",
           "monospace",
         ],
-        "headline-xl": ["var(--font-bebas)", "Bebas Neue", "sans-serif"],
-        "headline-lg": ["var(--font-bebas)", "Bebas Neue", "sans-serif"],
-        "headline-md": ["var(--font-bebas)", "Bebas Neue", "sans-serif"],
-        "headline-sm": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
-        "title-stat": ["var(--font-bebas)", "Bebas Neue", "sans-serif"],
-        "body-lg": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
-        "body-md": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
-        "body-sm": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
-        "label-caps": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
-        "label-badge": ["var(--font-barlow)", "Barlow Condensed", "sans-serif"],
+        "headline-xl": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "headline-lg": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "headline-md": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "headline-sm": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "title-stat": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "body-lg": ["Noto Sans Thai", "sans-serif"],
+        "body-md": ["Noto Sans Thai", "sans-serif"],
+        "body-sm": ["Noto Sans Thai", "sans-serif"],
+        "label-caps": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
+        "label-badge": ["Barlow Condensed", "Noto Sans Thai", "sans-serif"],
       },
       spacing: {
         "gutter-desktop": "1.5rem",
