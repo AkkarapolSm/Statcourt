@@ -118,7 +118,7 @@ export default function NbaAthleteHero({
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <Link
           href="/leaderboard"
-          className="inline-flex items-center gap-1.5 px-3 py-1 bg-inverse-surface text-surface-bright rounded text-label-caps font-label-caps tracking-wider hover:bg-on-surface transition-colors border border-outline"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-inverse-surface text-surface-bright rounded-xl text-label-caps font-label-caps tracking-wider hover:bg-on-surface transition-colors border border-outline"
         >
           <span className="material-symbols-outlined text-sm">arrow_back</span>
           <span>LEADERBOARD</span>
@@ -129,7 +129,7 @@ export default function NbaAthleteHero({
           {onOpenEditProfile && (
             <button
               onClick={onOpenEditProfile}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-950/80 hover:bg-red-900 text-red-200 border border-red-800 rounded text-label-caps font-label-caps tracking-wider transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-red-950/80 hover:bg-red-900 text-red-200 border border-red-800 rounded-xl text-label-caps font-label-caps tracking-wider transition-colors cursor-pointer"
               title="แก้ไขข้อมูลสรีระ (Height, Weight, Wingspan)"
             >
               <span className="material-symbols-outlined text-sm">straighten</span>
@@ -139,7 +139,7 @@ export default function NbaAthleteHero({
 
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-1 px-3 py-1 bg-inverse-surface text-surface-bright rounded text-label-caps font-label-caps border border-outline hover:bg-secondary transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-inverse-surface text-surface-bright rounded-xl text-label-caps font-label-caps border border-outline hover:bg-secondary transition-colors cursor-pointer"
             title="Share Athlete Profile"
           >
             {copiedLink ? (
@@ -155,7 +155,7 @@ export default function NbaAthleteHero({
             )}
           </button>
 
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#AF101A] text-white border border-red-700 rounded text-label-caps font-label-caps tracking-wider font-bold shadow-xs">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#AF101A] text-white border border-red-700 rounded-full text-label-caps font-label-caps tracking-wider font-bold shadow-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-white" />
             <span>FIBA OFFICIAL</span>
           </span>
@@ -163,23 +163,23 @@ export default function NbaAthleteHero({
       </div>
 
       {/* ATHLETE HERO BANNER (Stadium Carbon Backdrop + Portrait + Bio Metrics) */}
-      <section className="bg-inverse-surface text-surface-bright rounded-xl overflow-hidden shadow-lg border border-outline relative">
+      <section className="bg-inverse-surface text-surface-bright rounded-2xl overflow-hidden shadow-lg border border-outline relative">
         <div className="grid grid-cols-1 md:grid-cols-12">
           {/* Left Column: Headshot & University Shield */}
           <div className="md:col-span-4 lg:col-span-3 bg-gradient-to-t from-black via-inverse-surface to-slate-900 p-4 flex flex-col items-center justify-center relative border-b md:border-b-0 md:border-r border-outline">
-            <div className="relative w-44 h-48 md:w-48 md:h-52 rounded-lg overflow-hidden border-2 border-primary-container shadow-2xl">
+            <div className="relative w-44 h-48 md:w-48 md:h-52 rounded-xl overflow-hidden border-2 border-primary-container shadow-2xl">
               <img
                 src={headshotSrc}
                 alt={`${athlete.firstName} ${athlete.lastName}`}
                 className="w-full h-full object-cover object-top"
               />
-              <span className="absolute bottom-2 left-2 bg-primary-container text-on-primary font-headline-sm text-headline-sm px-2 py-0.5 rounded shadow">
+              <span className="absolute bottom-2 left-2 bg-[#AF101A] text-white font-headline-sm text-headline-sm px-2.5 py-0.5 rounded-md shadow font-mono font-bold">
                 #{jerseyNum}
               </span>
             </div>
 
             {/* University Stamp Badge */}
-            <div className="mt-3 flex items-center gap-2 bg-surface-container-lowest/10 backdrop-blur px-3 py-1.5 rounded border border-outline w-full justify-center text-center">
+            <div className="mt-3 flex items-center gap-2 bg-surface-container-lowest/10 backdrop-blur px-3 py-2 rounded-xl border border-outline w-full justify-center text-center">
               <span className="material-symbols-outlined text-tertiary-fixed-dim text-lg">school</span>
               <div className="text-left">
                 <div className="font-label-caps text-label-caps text-tertiary-fixed tracking-widest leading-none uppercase">
@@ -201,14 +201,14 @@ export default function NbaAthleteHero({
                     {schoolName}
                   </span>
                   <span className="text-surface-dim text-xs">•</span>
-                  <span className="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-0.5 rounded uppercase font-bold">
+                  <span className="bg-primary text-on-primary font-label-caps text-label-caps px-2.5 py-0.5 rounded-md uppercase font-bold">
                     #{jerseyNum} {posInfo.role}
                   </span>
                 </div>
 
                 <button
                   onClick={() => setIsFollowing(!isFollowing)}
-                  className={`inline-flex items-center gap-1 text-surface-bright hover:text-primary-fixed text-label-caps font-label-caps uppercase border border-outline px-3 py-1 rounded bg-surface-container-lowest/5 transition-colors ${
+                  className={`inline-flex items-center gap-1.5 text-surface-bright hover:text-primary-fixed text-label-caps font-label-caps uppercase border border-outline px-3.5 py-1.5 rounded-xl bg-surface-container-lowest/5 transition-colors cursor-pointer ${
                     isFollowing ? "bg-primary/30 text-primary-fixed border-primary" : ""
                   }`}
                 >
@@ -222,12 +222,12 @@ export default function NbaAthleteHero({
                 </button>
               </div>
 
-              <h1 className="font-headline-xl text-headline-xl uppercase tracking-wider text-surface-bright leading-none mb-3">
+              <h1 className="font-headline-xl text-headline-xl uppercase tracking-wider text-surface-bright leading-none mb-3 font-bold">
                 {athlete.firstName} {athlete.lastName}
               </h1>
 
               <div className="flex flex-wrap items-center gap-2 mb-6">
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps font-bold tracking-wider">
+                <span className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps font-bold tracking-wider">
                   <span
                     className="material-symbols-outlined text-xs"
                     style={{ fontVariationSettings: "'FILL' 1" }}
@@ -237,57 +237,57 @@ export default function NbaAthleteHero({
                   TCAS Verified Elite
                 </span>
 
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-surface-container-highest/20 text-surface-bright font-label-caps text-label-caps">
+                <span className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-surface-container-highest/20 text-surface-bright font-label-caps text-label-caps">
                   <span className="material-symbols-outlined text-xs">workspace_premium</span>
                   FIBA {ageCategory} National Pool
                 </span>
 
-                <span className="text-surface-dim font-body-sm text-body-sm">
-                  DOB: {birthDateFormatted} (Age {age}) • Class 2026
+                <span className="text-surface-dim font-body-sm text-body-sm font-mono">
+                  <span className="font-sans">DOB: </span>{birthDateFormatted} (Age {age}) • Class 2026
                 </span>
               </div>
             </div>
 
             {/* Bottom Stat Strip: PPG / RPG / APG / EFF + Measurables */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 pt-4 border-t border-outline/70 bg-surface-container-lowest/5 p-3 rounded-lg">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 pt-4 border-t border-outline/70 bg-surface-container-lowest/5 p-3.5 rounded-xl">
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">PPG</div>
-                <div className="font-title-stat text-title-stat text-primary-fixed leading-none">
+                <div className="font-title-stat text-title-stat text-primary-fixed leading-none font-mono tabular-nums font-bold">
                   {ppgDisplay}
                 </div>
               </div>
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">RPG</div>
-                <div className="font-title-stat text-title-stat text-surface-bright leading-none">
+                <div className="font-title-stat text-title-stat text-surface-bright leading-none font-mono tabular-nums font-bold">
                   {rpgDisplay}
                 </div>
               </div>
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">APG</div>
-                <div className="font-title-stat text-title-stat text-surface-bright leading-none">
+                <div className="font-title-stat text-title-stat text-surface-bright leading-none font-mono tabular-nums font-bold">
                   {apgDisplay}
                 </div>
               </div>
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-tertiary-fixed-dim">EFF/G</div>
-                <div className="font-title-stat text-title-stat text-tertiary-fixed-dim leading-none">
+                <div className="font-title-stat text-title-stat text-tertiary-fixed-dim leading-none font-mono tabular-nums font-bold">
                   {effDisplay}
                 </div>
               </div>
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">HEIGHT</div>
-                <div className="font-body-lg text-body-lg text-surface-bright font-bold">
+                <div className="font-body-lg text-body-lg text-surface-bright font-bold font-mono">
                   {heightInfo.imperial} <span className="text-surface-dim font-normal text-xs">({heightInfo.metric})</span>
                 </div>
               </div>
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">WEIGHT</div>
-                <div className="font-body-lg text-body-lg text-surface-bright font-bold">
+                <div className="font-body-lg text-body-lg text-surface-bright font-bold font-mono">
                   {weightInfo.lbs} <span className="text-surface-dim font-normal text-xs">({weightInfo.kg})</span>
                 </div>
               </div>
@@ -301,8 +301,8 @@ export default function NbaAthleteHero({
 
               <div className="text-center lg:text-left">
                 <div className="font-label-caps text-label-caps uppercase text-surface-dim">EXPERIENCE</div>
-                <div className="font-body-lg text-body-lg text-surface-bright font-bold">
-                  {gamesDisplay} <span className="text-surface-dim font-normal text-xs">{ageCategory}</span>
+                <div className="font-body-lg text-body-lg text-surface-bright font-bold font-mono">
+                  {gamesDisplay} <span className="text-surface-dim font-normal text-xs font-sans">{ageCategory}</span>
                 </div>
               </div>
             </div>

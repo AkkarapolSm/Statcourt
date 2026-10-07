@@ -56,7 +56,7 @@ export async function requireOfficial(request: NextRequest | any, matchId?: stri
       official: {
         officialId: "off-admin-super",
         licenseNumber: "FIBA-COMMISSIONER",
-        name: user.fullName || "FIBA Technical Commissioner",
+        name: user.displayName || user.officialProfile?.fullName || "FIBA Technical Commissioner",
         role: "ADMIN",
       },
     };
@@ -73,7 +73,6 @@ export async function requireOfficial(request: NextRequest | any, matchId?: stri
           data: {
             userId: user.id,
             matchId,
-            role: "TABLE_OFFICIAL",
             status: "ACTIVE",
           },
         });

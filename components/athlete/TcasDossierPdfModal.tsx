@@ -18,8 +18,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { AthleteProfile, AthleteSeasonStats } from "@/lib/types";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 interface TcasDossierPdfModalProps {
   isOpen: boolean;
@@ -96,6 +94,8 @@ export default function TcasDossierPdfModal({
 
     try {
       const element = dossierRef.current;
+      const html2canvas = (await import("html2canvas")).default;
+      const { default: jsPDF } = await import("jspdf");
 
       // Render high-res canvas with 2x scale
       const canvas = await html2canvas(element, {
@@ -197,17 +197,17 @@ export default function TcasDossierPdfModal({
         }
       `}</style>
 
-      <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden my-4 text-slate-100 flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-4xl bg-[#0B1C30] border border-[#213145] rounded-2xl shadow-2xl overflow-hidden my-4 text-slate-100 flex flex-col max-h-[92vh] font-sans">
         {/* MODAL CONTROL HEADER */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-[#0F172A] shrink-0">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#213145] bg-[#071322] shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 flex items-center justify-center text-red-400">
+            <div className="w-8 h-8 rounded-xl bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-red-300">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-white flex items-center gap-2">
+              <h2 className="text-sm sm:text-base font-bold uppercase tracking-wide text-white flex items-center gap-2">
                 <span>TCAS SPORTS PORTFOLIO EXPORT (OFFICIAL PDF)</span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#0d223a] text-slate-300 border border-[#213145]">
                   A4 STANDARD
                 </span>
               </h2>
@@ -222,7 +222,7 @@ export default function TcasDossierPdfModal({
             <button
               onClick={handleBrowserPrint}
               type="button"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0d223a] hover:bg-[#142C47] text-slate-200 border border-[#213145] text-xs font-semibold transition cursor-pointer"
               title="สั่งพิมพ์หรือบันทึกเป็น PDF ผ่านเบราว์เซอร์"
             >
               <Printer className="w-3.5 h-3.5 text-slate-300" />
@@ -234,7 +234,7 @@ export default function TcasDossierPdfModal({
               onClick={handleDownloadPdf}
               disabled={isGenerating}
               type="button"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider shadow-md transition disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold uppercase tracking-wider shadow-md transition disabled:opacity-50 cursor-pointer"
             >
               {isGenerating ? (
                 <>
@@ -251,7 +251,7 @@ export default function TcasDossierPdfModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
               title="ปิด"
             >
               <X className="w-5 h-5" />
@@ -261,13 +261,13 @@ export default function TcasDossierPdfModal({
 
         {/* NOTIFICATION STATUS */}
         {downloadSuccess && (
-          <div className="bg-slate-900 border-b border-slate-800 text-white px-5 py-2.5 text-xs font-bold flex items-center gap-2 shrink-0">
-            <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0" />
+          <div className="bg-emerald-950/80 border-b border-emerald-800 text-emerald-200 px-5 py-2.5 text-xs font-semibold flex items-center gap-2 shrink-0">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>สร้างและดาวน์โหลดไฟล์ TCAS Portfolio PDF สำเร็จเรียบร้อย!</span>
           </div>
         )}
         {errorMessage && (
-          <div className="bg-red-950 border-b border-red-800 text-red-300 px-5 py-2.5 text-xs font-bold flex items-center gap-2 shrink-0">
+          <div className="bg-red-950/80 border-b border-red-800 text-red-200 px-5 py-2.5 text-xs font-semibold flex items-center gap-2 shrink-0">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             <span>{errorMessage}</span>
           </div>

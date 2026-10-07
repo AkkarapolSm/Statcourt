@@ -7,6 +7,9 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const teamId = searchParams.get("teamId");
+    const page = Math.max(1, Number(searchParams.get("page") || 1));
+    const limit = Math.min(100, Math.max(1, Number(searchParams.get("limit") || 50)));
+    const skip = (page - 1) * limit;
 
     const athletes = await prisma.athleteProfile.findMany({
       where: teamId
@@ -18,11 +21,18 @@ export async function GET(request: NextRequest) {
             },
           }
         : undefined,
+      take: limit,
+      skip,
       include: {
-        seasonStats: true,
+        seasonStats: {
+          take: 5,
+          orderBy: { season: "desc" },
+        },
         teamRosters: {
           include: {
-            team: true,
+            team: {
+              select: { id: true, name: true, shortName: true, logoUrl: true },
+            },
           },
         },
       },
@@ -31,18 +41,30 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      count: athletes.length,
-      data: athletes.map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
-      source: "PRISMA_SQLITE_PERSISTENT",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: athletes.length,
+        page,
+        limit,
+        data: athletes.map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
+        source: "PRISMA_SQLITE_PERSISTENT",
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+        },
+      }
+    );
   } catch (error) {
     console.warn("[API ATHLETES] Database query failed, using mock data fallback:", error);
     try {
       const { mockAthleteProfiles } = await import("@/lib/db/seed-data");
       const { searchParams } = new URL(request.url);
       const teamId = searchParams.get("teamId");
+      const page = Math.max(1, Number(searchParams.get("page") || 1));
+      const limit = Math.min(100, Math.max(1, Number(searchParams.get("limit") || 50)));
+      const skip = (page - 1) * limit;
 
       let fallbackList = Object.values(mockAthleteProfiles);
       if (teamId) {
@@ -52,12 +74,21 @@ export async function GET(request: NextRequest) {
         fallbackList = fallbackList.filter((a) => rosterIds.has(a.id));
       }
 
-      return NextResponse.json({
-        success: true,
-        count: fallbackList.length,
-        data: fallbackList.map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
-        source: "FALLBACK_MOCK",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          count: fallbackList.length,
+          page,
+          limit,
+          data: fallbackList.slice(skip, skip + limit).map(({ birthDate, tcasReferenceCode, userId, ...publicProfile }) => publicProfile),
+          source: "FALLBACK_MOCK",
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+          },
+        }
+      );
     } catch (fallbackError) {
       return NextResponse.json(
         {

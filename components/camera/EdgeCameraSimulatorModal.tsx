@@ -67,25 +67,25 @@ export default function EdgeCameraSimulatorModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-[#0B132B] border border-slate-700 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] text-white">
+      <div className="bg-[#0B1C30] border border-[#213145] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] text-white">
         
         {/* Top Header */}
-        <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-4 bg-[#071322] border-b border-[#213145] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-[#AF101A] flex items-center justify-center text-white">
-              <Camera className="w-4 h-4" />
+            <div className="w-9 h-9 rounded-xl bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-red-300">
+              <Camera className="w-5 h-5 text-[#AF101A]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal">
+                <h3 className="font-sans uppercase text-lg sm:text-xl tracking-tight font-bold text-white">
                   StatCourt Focus Mobile (Edge AI Camera)
                 </h3>
-                <span className="inline-flex items-center gap-1 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase">
+                <span className="inline-flex items-center gap-1 bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase">
                   <Radio className="w-3 h-3 animate-pulse text-emerald-400" />
                   <span>EDGE NEURAL ENGINE ACTIVE</span>
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-mono">
+              <p className="text-xs text-slate-400 font-sans mt-0.5">
                 {courtName} • โมเดล Computer Vision ตรวจจับลูกบาสและติดตามอัตโนมัติบนสมาร์ตโฟน
               </p>
             </div>
@@ -93,19 +93,19 @@ export default function EdgeCameraSimulatorModal({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-[#213145]/60 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Demo Simulation Notice */}
-        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs font-mono text-amber-300">
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs text-amber-300">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0">
+            <span className="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0">
               รุ่นทดลอง / DEMO SIMULATION
             </span>
-            <span>
+            <span className="font-sans">
               Canvas 2D Simulator: จำลองอัลกอริทึม Computer Vision และการแพนกล้องอัตโนมัติบนเบราว์เซอร์ เพื่อทดสอบ UX ก่อนเชื่อมต่อกล้องฮาร์ดแวร์จริง
             </span>
           </div>
@@ -115,11 +115,11 @@ export default function EdgeCameraSimulatorModal({
         <div className="p-6 overflow-y-auto space-y-4 flex-1">
           
           {/* Virtual Camera Feed Screen */}
-          <div className="relative aspect-video bg-black rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
+          <div className="relative aspect-video bg-black rounded-xl overflow-hidden border border-[#213145] shadow-2xl flex items-center justify-center">
             
             {/* Background Simulated Court Feed (Dynamic pan offset) */}
             <div
-              className="absolute inset-0 bg-gradient-to-b from-slate-900 via-[#1C2541] to-slate-950 transition-transform duration-500 ease-out"
+              className="absolute inset-0 bg-gradient-to-b from-[#071322] via-[#0B1C30] to-black transition-transform duration-500 ease-out"
               style={{
                 transform: `translateX(${-cameraPanOffset}%) scale(1.08)`,
               }}
@@ -138,7 +138,7 @@ export default function EdgeCameraSimulatorModal({
                   className="absolute transition-all duration-500 border border-red-500/80 bg-red-500/10 rounded px-1 flex flex-col items-center pointer-events-none"
                   style={{ left: `${ballPos.x - 4}%`, top: `${ballPos.y - 2}%`, width: "42px", height: "74px" }}
                 >
-                  <span className="text-[9px] font-mono font-bold bg-red-600 text-white px-1 rounded -mt-2.5">
+                  <span className="text-[9px] font-mono font-bold bg-[#AF101A] text-white px-1 rounded -mt-2.5">
                     #7 BCC (PG)
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export default function EdgeCameraSimulatorModal({
                   className="absolute transition-all duration-700 border border-red-500/80 bg-red-500/10 rounded px-1 flex flex-col items-center pointer-events-none"
                   style={{ left: `${ballPos.x + 18}%`, top: `${ballPos.y + 8}%`, width: "40px", height: "70px" }}
                 >
-                  <span className="text-[9px] font-mono font-bold bg-red-600 text-white px-1 rounded -mt-2.5">
+                  <span className="text-[9px] font-mono font-bold bg-[#AF101A] text-white px-1 rounded -mt-2.5">
                     #11 BCC (SG)
                   </span>
                 </div>
@@ -172,7 +172,7 @@ export default function EdgeCameraSimulatorModal({
               >
                 <div className="w-5 h-5 rounded-full border-2 border-amber-400 shadow-md animate-ping opacity-75" />
                 <div className="w-3.5 h-3.5 rounded-full bg-amber-400/90 border border-amber-900 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xs" />
-                <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[8px] font-mono bg-amber-950/80 text-amber-300 border border-amber-700 px-1 rounded whitespace-nowrap">
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[8px] font-mono tabular-nums bg-amber-950/80 text-amber-300 border border-amber-700 px-1 rounded whitespace-nowrap">
                   BALL (v: 4.8 m/s)
                 </span>
               </div>
@@ -180,15 +180,15 @@ export default function EdgeCameraSimulatorModal({
 
             {/* Camera Viewport Crosshairs & HUD Overlay */}
             <div className="absolute inset-0 p-4 flex flex-col justify-between pointer-events-none">
-              <div className="flex items-center justify-between font-mono text-[11px]">
-                <div className="flex items-center gap-2 bg-black/60 px-2.5 py-1 rounded backdrop-blur-xs border border-white/10">
+              <div className="flex items-center justify-between text-[11px]">
+                <div className="flex items-center gap-2 bg-black/60 px-2.5 py-1 rounded-xl backdrop-blur-xs border border-white/10 font-mono">
                   <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span className="text-red-400 font-bold">REC [LIVE 00:42:15]</span>
                   <span className="text-slate-400">|</span>
                   <span className="text-white font-bold">{selectedQuality}</span>
                 </div>
 
-                <div className="flex items-center gap-3 bg-black/60 px-3 py-1 rounded backdrop-blur-xs border border-white/10">
+                <div className="flex items-center gap-3 bg-black/60 px-3 py-1 rounded-xl backdrop-blur-xs border border-white/10 font-mono tabular-nums">
                   <span className="text-emerald-400 font-bold flex items-center gap-1">
                     <Activity className="w-3 h-3" />
                     <span>{fps} FPS</span>
@@ -205,10 +205,10 @@ export default function EdgeCameraSimulatorModal({
 
               {/* Bottom Target Bar */}
               <div className="flex items-center justify-between font-mono text-[10px] text-slate-400">
-                <span className="bg-black/60 px-2 py-0.5 rounded">
+                <span className="bg-black/60 px-2 py-0.5 rounded-md">
                   AUTO-TRACKING: PAN +{cameraPanOffset.toFixed(1)}°
                 </span>
-                <span className="bg-black/60 px-2 py-0.5 rounded text-emerald-400 font-bold">
+                <span className="bg-black/60 px-2 py-0.5 rounded-md text-emerald-400 font-bold">
                   ENCRYPTION: CLOUDFLARE STREAM R2 SECURE
                 </span>
               </div>
@@ -217,11 +217,11 @@ export default function EdgeCameraSimulatorModal({
           </div>
 
           {/* Controls & Metrics Panel */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-slate-900 border border-slate-800 rounded-xl font-mono text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-[#071322] border border-[#213145] rounded-xl text-xs font-sans">
             
             {/* Toggle Overlays */}
             <div className="space-y-2">
-              <span className="text-slate-400 uppercase font-bold text-[10px] block">
+              <span className="text-slate-400 uppercase font-bold text-[10px] block font-mono">
                 การแสดงผลระบบ AI (OVERLAYS)
               </span>
               <label className="flex items-center gap-2 cursor-pointer text-slate-300">
@@ -246,17 +246,17 @@ export default function EdgeCameraSimulatorModal({
 
             {/* Quality Selector */}
             <div className="space-y-1.5">
-              <span className="text-slate-400 uppercase font-bold text-[10px] block">
+              <span className="text-slate-400 uppercase font-bold text-[10px] block font-mono">
                 คุณภาพการสตรีม (RESOLUTION)
               </span>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setSelectedQuality("1080p60")}
-                  className={`flex-1 py-1.5 rounded font-bold transition text-xs border ${
+                  className={`flex-1 py-1.5 rounded-xl font-bold transition text-xs border ${
                     selectedQuality === "1080p60"
-                      ? "bg-[#AF101A] border-red-500 text-white"
-                      : "bg-slate-800 border-slate-700 text-slate-400"
+                      ? "bg-[#AF101A] border-[#AF101A] text-white"
+                      : "bg-[#0B1C30] border-[#213145] text-slate-400 hover:text-white"
                   }`}
                 >
                   1080p 60fps (Pro)
@@ -264,10 +264,10 @@ export default function EdgeCameraSimulatorModal({
                 <button
                   type="button"
                   onClick={() => setSelectedQuality("720p60")}
-                  className={`flex-1 py-1.5 rounded font-bold transition text-xs border ${
+                  className={`flex-1 py-1.5 rounded-xl font-bold transition text-xs border ${
                     selectedQuality === "720p60"
-                      ? "bg-[#AF101A] border-red-500 text-white"
-                      : "bg-slate-800 border-slate-700 text-slate-400"
+                      ? "bg-[#AF101A] border-[#AF101A] text-white"
+                      : "bg-[#0B1C30] border-[#213145] text-slate-400 hover:text-white"
                   }`}
                 >
                   720p 60fps (Lite)
@@ -277,14 +277,14 @@ export default function EdgeCameraSimulatorModal({
 
             {/* Hardware Status */}
             <div className="space-y-1">
-              <span className="text-slate-400 uppercase font-bold text-[10px] block">
+              <span className="text-slate-400 uppercase font-bold text-[10px] block font-mono">
                 สถานะฮาร์ดแวร์ประมวลผล
               </span>
               <div className="text-emerald-400 font-bold text-xs flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>On-Device Neural Inference 100%</span>
               </div>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-400 font-sans">
                 ประมวลผลบนชิปมือถือโดยตรง ไม่กินค่า Bandwidth Cloud สำหรับการตรวจจับ
               </p>
             </div>
@@ -294,14 +294,14 @@ export default function EdgeCameraSimulatorModal({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between font-mono text-xs">
+        <div className="px-6 py-4 bg-[#071322] border-t border-[#213145] flex items-center justify-between text-xs font-sans">
           <span className="text-slate-400">
             ระบบรองรับทั้งขาตั้งกล้องอัตโนมัติ (Gimbal) และสมาร์ตโฟนบนขาตั้งนิ่ง
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold transition"
+            className="px-5 py-2 rounded-xl bg-[#213145] hover:bg-[#2d425c] text-white font-bold transition"
           >
             ปิดหน้าต่าง
           </button>

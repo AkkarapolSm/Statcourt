@@ -13,6 +13,7 @@ export interface AuthUser {
   organization?: string;
   avatarUrl?: string;
   athleteId?: string;
+  tcasReferenceCode?: string;
   tier: SubscriptionTier;
 }
 

@@ -39,6 +39,8 @@ interface TeamItem {
 
 type TeamCategory = "ALL" | "HIGH_SCHOOL" | "COLLEGE" | "CLUB";
 
+import { fetchWithCache } from "@/lib/cache/clientCache";
+
 export default function TeamsDirectoryPage() {
   const [teams, setTeams] = useState<TeamItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,8 +58,7 @@ export default function TeamsDirectoryPage() {
       }
     } catch {}
 
-    fetch("/api/teams")
-      .then((res) => res.json())
+    fetchWithCache<{ success: boolean; data: TeamItem[] }>("/api/teams", 60000)
       .then((data) => {
         if (data.success && Array.isArray(data.data)) {
           setTeams(data.data);
@@ -397,7 +398,9 @@ export default function TeamsDirectoryPage() {
                         <span className="font-semibold text-[#0B1C30] flex items-center gap-1">
                           {team.coach.fullName}
                           {team.coach.isVerified && (
-                            <ShieldCheck className="w-3.5 h-3.5 text-[#15803D]" title="โค้ชผ่านการรับรอง" />
+                            <span title="โค้ชผ่านการรับรอง" className="inline-flex items-center">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#15803D]" />
+                            </span>
                           )}
                         </span>
                       </div>

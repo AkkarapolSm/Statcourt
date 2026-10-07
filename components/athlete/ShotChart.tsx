@@ -30,7 +30,7 @@ export default function ShotChart({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* SHOT CHART ANALYTICS CONTAINER */}
-      <div className="bg-surface-container-lowest rounded-lg border border-outline-variant p-4 md:p-6 shadow-sm space-y-5">
+      <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant p-4 md:p-6 shadow-sm space-y-5">
         {/* SECTION TITLE HEADER */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline-variant pb-3">
           <div>
@@ -39,7 +39,7 @@ export default function ShotChart({
               <h2 className="font-headline-md text-headline-md text-on-surface uppercase tracking-wide">
                 FIBA 5-ZONE SHOT CHART & SPATIAL ANALYTICS
               </h2>
-              <span className="bg-surface-container text-on-surface-variant text-label-badge font-label-badge px-2 py-0.5 rounded border border-outline-variant flex items-center gap-1">
+              <span className="bg-surface-container text-on-surface-variant text-label-badge font-label-badge px-2.5 py-0.5 rounded-full border border-outline-variant flex items-center gap-1">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
                 Courtside Table Sync
               </span>
@@ -48,15 +48,15 @@ export default function ShotChart({
               {athleteName} (#15) • วิเคราะห์พิกัดตำแหน่งการทำคะแนนจำแนกตามโซนสนามจริง และประสิทธิภาพการเข้าทำรายแมตช์
             </p>
           </div>
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-4 shrink-0 font-mono">
             <div className="text-right">
-              <span className="block font-label-caps text-label-caps text-secondary uppercase">2PT Field Goal</span>
+              <span className="block font-label-caps text-label-caps text-secondary uppercase font-sans">2PT Field Goal</span>
               <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
                 65.5% <span className="text-body-sm font-body-sm text-secondary font-normal">(36/55)</span>
               </span>
             </div>
             <div className="text-right">
-              <span className="block font-label-caps text-label-caps text-primary uppercase">3PT Field Goal</span>
+              <span className="block font-label-caps text-label-caps text-primary uppercase font-sans">3PT Field Goal</span>
               <span className="font-headline-sm text-headline-sm text-primary font-bold">
                 40.0% <span className="text-body-sm font-body-sm text-secondary font-normal">(8/20)</span>
               </span>
@@ -66,18 +66,18 @@ export default function ShotChart({
 
         {/* 1. TOURNAMENT SELECTOR */}
         <div className="space-y-1">
-          <label className="font-label-caps text-label-caps text-on-surface font-bold uppercase flex items-center justify-between">
+          <label className="text-xs font-bold text-on-surface flex items-center justify-between">
             <span className="flex items-center gap-1">
               <span className="material-symbols-outlined text-tertiary-container text-sm">emoji_events</span>
               1. รายการแข่งขันทางการ (Tournament / Competition)
             </span>
-            <span className="text-secondary font-normal">จำนวน 7 แมตช์ในรายการนี้</span>
+            <span className="text-secondary font-normal font-mono">จำนวน 7 แมตช์ในรายการนี้</span>
           </label>
           <div className="relative">
             <select
               value={selectedTournament}
               onChange={(e) => setSelectedTournament(e.target.value)}
-              className="w-full bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md rounded px-3 py-2 pr-8 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
+              className="w-full bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md rounded-xl px-3 py-2.5 pr-8 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
             >
               <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์, 75 ครั้ง)</option>
               <option value="STUDENT_LEAGUE">การแข่งขันบาสเกตบอลนักเรียนชิงชนะเลิศแห่งประเทศไทย U18 รอบชิงชนะเลิศ (4 แมตช์)</option>
@@ -88,8 +88,8 @@ export default function ShotChart({
 
         {/* 2. MATCH CHIPS CAROUSEL */}
         <div className="space-y-1">
-          <div className="flex justify-between items-center text-label-caps font-label-caps flex-wrap gap-1">
-            <span className="text-on-surface font-bold uppercase flex items-center gap-1">
+          <div className="flex justify-between items-center text-xs flex-wrap gap-1">
+            <span className="text-on-surface font-bold flex items-center gap-1">
               <span className="material-symbols-outlined text-primary text-sm">calendar_month</span>
               2. แมตช์การแข่งขันในรายการ (Matches in this tournament)
             </span>
@@ -102,7 +102,7 @@ export default function ShotChart({
             {/* All Matches Active Card */}
             <div
               onClick={() => setSelectedMatch("ALL")}
-              className={`p-2.5 rounded border-2 shadow-sm cursor-pointer relative overflow-hidden transition-all ${
+              className={`p-3 rounded-xl border-2 shadow-sm cursor-pointer relative overflow-hidden transition-all ${
                 selectedMatch === "ALL"
                   ? "bg-inverse-surface text-inverse-on-surface border-primary"
                   : "bg-surface-container-lowest border-outline-variant hover:border-primary/60"
@@ -120,127 +120,125 @@ export default function ShotChart({
                   </span>
                   รวมทุกแมตช์
                 </span>
-                <span className="bg-primary px-1.5 py-0.2 rounded font-label-badge text-label-badge text-white">
+                <span className="bg-primary px-1.5 py-0.5 rounded-md font-label-badge text-label-badge text-white font-mono">
                   7 แมตช์
                 </span>
               </div>
-              <div className={`font-headline-sm text-headline-sm tracking-tight leading-tight ${
+              <div className={`font-headline-sm text-sm font-bold tracking-tight leading-tight ${
                 selectedMatch === "ALL" ? "text-white" : "text-on-surface"
               }`}>
                 สถิติสะสมทุกรายการ
               </div>
-              <div className={`text-body-sm font-body-sm mt-1 ${
+              <div className={`text-body-sm text-xs mt-1 font-mono ${
                 selectedMatch === "ALL" ? "text-surface-dim" : "text-secondary"
               }`}>
-                ยิงรวม 75 ครั้ง • FG 44/75 (58.7%)
+                <span className="font-sans">ยิงรวม 75 ครั้ง • </span>FG 44/75 (58.7%)
               </div>
             </div>
 
             {/* Match 1 */}
             <div
               onClick={() => setSelectedMatch("match-1")}
-              className={`p-2.5 rounded border cursor-pointer transition-colors ${
+              className={`p-3 rounded-xl border cursor-pointer transition-colors ${
                 selectedMatch === "match-1"
                   ? "bg-inverse-surface text-white border-2 border-primary shadow-sm"
                   : "bg-surface-container-lowest border-outline-variant hover:border-primary/60"
               }`}
             >
               <div className="flex justify-between items-center mb-1">
-                <span className="text-body-sm font-body-sm text-secondary">20 ก.พ. 2026</span>
-                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1 rounded">
+                <span className="text-body-sm text-xs text-secondary font-mono">20 ก.พ. 2026</span>
+                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1.5 py-0.5 rounded-md font-mono font-bold">
                   78 - 75
                 </span>
               </div>
-              <div className="font-headline-sm text-headline-sm text-on-surface leading-tight">
+              <div className="font-headline-sm text-sm font-bold text-on-surface leading-tight">
                 vs เทพศิรินทร์ (Debsirin)
               </div>
-              <div className="text-body-sm font-body-sm text-secondary mt-1">
-                19 คะแนน (31 นาที) • FG 6/11 (55%)
+              <div className="text-body-sm text-xs text-secondary mt-1 font-mono">
+                <span className="font-sans">19 คะแนน (31 นาที) • </span>FG 6/11 (55%)
               </div>
             </div>
 
             {/* Match 2 */}
             <div
               onClick={() => setSelectedMatch("match-2")}
-              className={`p-2.5 rounded border cursor-pointer transition-colors ${
+              className={`p-3 rounded-xl border cursor-pointer transition-colors ${
                 selectedMatch === "match-2"
                   ? "bg-inverse-surface text-white border-2 border-primary shadow-sm"
                   : "bg-surface-container-lowest border-outline-variant hover:border-primary/60"
               }`}
             >
               <div className="flex justify-between items-center mb-1">
-                <span className="text-body-sm font-body-sm text-secondary">12 ก.พ. 2026</span>
-                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1 rounded">
+                <span className="text-body-sm text-xs text-secondary font-mono">12 ก.พ. 2026</span>
+                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1.5 py-0.5 rounded-md font-mono font-bold">
                   82 - 71
                 </span>
               </div>
-              <div className="font-headline-sm text-headline-sm text-on-surface leading-tight">
+              <div className="font-headline-sm text-sm font-bold text-on-surface leading-tight">
                 vs กรุงเทพคริสเตียน (BCC)
               </div>
-              <div className="text-body-sm font-body-sm text-secondary mt-1">
-                22 คะแนน (35 นาที) • FG 9/15 (60%)
+              <div className="text-body-sm text-xs text-secondary mt-1 font-mono">
+                <span className="font-sans">22 คะแนน (35 นาที) • </span>FG 9/15 (60%)
               </div>
             </div>
 
             {/* Match 3 */}
             <div
               onClick={() => setSelectedMatch("match-3")}
-              className={`p-2.5 rounded border cursor-pointer transition-colors ${
+              className={`p-3 rounded-xl border cursor-pointer transition-colors ${
                 selectedMatch === "match-3"
                   ? "bg-inverse-surface text-white border-2 border-primary shadow-sm"
                   : "bg-surface-container-lowest border-outline-variant hover:border-primary/60"
               }`}
             >
               <div className="flex justify-between items-center mb-1">
-                <span className="text-body-sm font-body-sm text-secondary">2 ก.พ. 2026</span>
-                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1 rounded">
+                <span className="text-body-sm text-xs text-secondary font-mono">2 ก.พ. 2026</span>
+                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1.5 py-0.5 rounded-md font-mono font-bold">
                   69 - 65
                 </span>
               </div>
-              <div className="font-headline-sm text-headline-sm text-on-surface leading-tight">
+              <div className="font-headline-sm text-sm font-bold text-on-surface leading-tight">
                 vs สวนกุหลาบ (Suankularb)
               </div>
-              <div className="text-body-sm font-body-sm text-secondary mt-1">
-                16 คะแนน (29 นาที) • FG 6/9 (67%)
+              <div className="text-body-sm text-xs text-secondary mt-1 font-mono">
+                <span className="font-sans">16 คะแนน (29 นาที) • </span>FG 6/9 (67%)
               </div>
             </div>
 
             {/* Match 4 */}
             <div
               onClick={() => setSelectedMatch("match-4")}
-              className={`p-2.5 rounded border cursor-pointer transition-colors ${
+              className={`p-3 rounded-xl border cursor-pointer transition-colors ${
                 selectedMatch === "match-4"
                   ? "bg-inverse-surface text-white border-2 border-primary shadow-sm"
                   : "bg-surface-container-lowest border-outline-variant hover:border-primary/60"
               }`}
             >
               <div className="flex justify-between items-center mb-1">
-                <span className="text-body-sm font-body-sm text-secondary">25 ม.ค. 2026</span>
-                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1 rounded">
+                <span className="text-body-sm text-xs text-secondary font-mono">25 ม.ค. 2026</span>
+                <span className="bg-surface-container text-on-surface-variant font-label-badge text-label-badge px-1.5 py-0.5 rounded-md font-mono font-bold">
                   85 - 80
                 </span>
               </div>
-              <div className="font-headline-sm text-headline-sm text-on-surface leading-tight">
+              <div className="font-headline-sm text-sm font-bold text-on-surface leading-tight">
                 vs อัสสัมชัญ (Assumption)
               </div>
-              <div className="text-body-sm font-body-sm text-secondary mt-1">
-                18 คะแนน (27 นาที) • FG 7/12 (58%)
+              <div className="text-body-sm text-xs text-secondary mt-1 font-mono">
+                <span className="font-sans">18 คะแนน (27 นาที) • </span>FG 7/12 (58%)
               </div>
             </div>
           </div>
         </div>
-
-        {/* FILTER CONTROLS BAR */}
-        <div className="bg-surface-container-low rounded p-2.5 flex flex-wrap items-center justify-between gap-3 border border-outline-variant">
+        <div className="bg-surface-container-low rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 border border-outline-variant">
           {/* Display Mode Toggle */}
           <div className="flex items-center gap-2">
-            <span className="text-label-caps font-label-caps uppercase text-secondary font-bold">
+            <span className="text-secondary font-bold text-xs">
               รูปแบบการแสดงผล:
             </span>
-            <div className="inline-flex rounded border border-outline-variant overflow-hidden bg-surface-container-lowest p-0.5">
+            <div className="inline-flex rounded-lg border border-outline-variant overflow-hidden bg-surface-container-lowest p-0.5">
               <button
                 onClick={() => setDisplayMode("SHOTS")}
-                className={`px-2.5 py-1 text-label-caps font-label-caps font-bold rounded-sm flex items-center gap-1 transition-colors ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-md flex items-center gap-1 transition-colors cursor-pointer ${
                   displayMode === "SHOTS"
                     ? "bg-inverse-surface text-inverse-on-surface shadow-sm"
                     : "text-secondary hover:text-on-surface"
@@ -250,7 +248,7 @@ export default function ShotChart({
               </button>
               <button
                 onClick={() => setDisplayMode("HEATMAP")}
-                className={`px-2.5 py-1 text-label-caps font-label-caps font-bold rounded-sm flex items-center gap-1 transition-colors ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-md flex items-center gap-1 transition-colors cursor-pointer ${
                   displayMode === "HEATMAP"
                     ? "bg-inverse-surface text-inverse-on-surface shadow-sm"
                     : "text-secondary hover:text-on-surface"
@@ -263,13 +261,13 @@ export default function ShotChart({
 
           {/* Quarter Filters */}
           <div className="flex items-center gap-2">
-            <span className="text-label-caps font-label-caps uppercase text-secondary font-bold">
+            <span className="text-secondary font-bold text-xs">
               จำแนกตามควอเตอร์:
             </span>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setQuarterFilter("ALL")}
-                className={`px-2.5 py-1 rounded font-label-badge text-label-badge font-bold transition-colors ${
+                className={`px-2.5 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer ${
                   quarterFilter === "ALL"
                     ? "bg-primary text-on-primary shadow-xs"
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
@@ -279,7 +277,7 @@ export default function ShotChart({
               </button>
               <button
                 onClick={() => setQuarterFilter("Q1")}
-                className={`px-2 py-1 rounded font-label-badge text-label-badge font-bold transition-colors ${
+                className={`px-2 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer ${
                   quarterFilter === "Q1"
                     ? "bg-primary text-on-primary shadow-xs"
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
@@ -289,7 +287,7 @@ export default function ShotChart({
               </button>
               <button
                 onClick={() => setQuarterFilter("Q2")}
-                className={`px-2 py-1 rounded font-label-badge text-label-badge font-bold transition-colors ${
+                className={`px-2 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer ${
                   quarterFilter === "Q2"
                     ? "bg-primary text-on-primary shadow-xs"
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
@@ -299,7 +297,7 @@ export default function ShotChart({
               </button>
               <button
                 onClick={() => setQuarterFilter("Q3")}
-                className={`px-2 py-1 rounded font-label-badge text-label-badge font-bold transition-colors ${
+                className={`px-2 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer ${
                   quarterFilter === "Q3"
                     ? "bg-primary text-on-primary shadow-xs"
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
@@ -309,7 +307,7 @@ export default function ShotChart({
               </button>
               <button
                 onClick={() => setQuarterFilter("Q4")}
-                className={`px-2 py-1 rounded font-label-badge text-label-badge font-bold transition-colors ${
+                className={`px-2 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer ${
                   quarterFilter === "Q4"
                     ? "bg-primary text-on-primary shadow-xs"
                     : "bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container"
@@ -328,27 +326,27 @@ export default function ShotChart({
             สถิติสะสมตลอดฤดูกาลแข่งขันทางการ (All Official Matches)
           </span>
           <div className="flex items-center gap-3">
-            <span className="text-secondary">
-              โอกาสยิงรวม: <strong className="text-primary font-headline-sm text-headline-sm">75</strong> ครั้ง
+            <span className="text-secondary font-mono">
+              <span className="font-sans">โอกาสยิงรวม: </span><strong className="text-primary font-headline-sm text-headline-sm">75</strong> ครั้ง
             </span>
-            <span className="bg-surface-container px-2 py-0.5 rounded text-on-surface-variant font-bold border border-outline-variant">
-              อัตราความแม่นยำ: <strong className="text-primary">58.7%</strong> (ลง 44/75)
+            <span className="bg-surface-container px-2.5 py-1 rounded-full text-on-surface-variant font-bold border border-outline-variant font-mono">
+              <span className="font-sans">อัตราความแม่นยำ: </span><strong className="text-primary">58.7%</strong> (ลง 44/75)
             </span>
           </div>
         </div>
 
         {/* BASKETBALL HALF-COURT SPATIAL VISUALIZATION */}
-        <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden border-2 border-outline/30 shadow-lg bg-surface-container-highest">
+        <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border-2 border-outline/30 shadow-lg bg-surface-container-highest">
           {/* Live Tracker Floating Header */}
-          <div className="absolute top-3 left-3 z-20 flex items-center gap-2 bg-on-surface/90 backdrop-blur-sm text-white px-2.5 py-1 rounded border border-outline-variant/40">
+          <div className="absolute top-3 left-3 z-20 flex items-center gap-2 bg-on-surface/90 backdrop-blur-sm text-white px-3 py-1 rounded-lg border border-outline-variant/40">
             <span className="inline-block w-2 h-2 rounded-full bg-primary animate-ping"></span>
             <span className="font-label-caps text-label-caps uppercase tracking-wider font-bold">
               FIBA LIVESTATS TRACKER
             </span>
           </div>
-          <div className="absolute top-3 right-3 z-20 bg-on-surface/90 backdrop-blur-sm text-white px-3 py-1 rounded border border-outline-variant/40 font-headline-sm text-headline-sm">
+          <div className="absolute top-3 right-3 z-20 bg-on-surface/90 backdrop-blur-sm text-white px-3 py-1 rounded-lg border border-outline-variant/40 font-headline-sm text-headline-sm font-mono">
             ACCURACY: <span className="text-tertiary-fixed-dim font-bold">58.7%</span>{" "}
-            <span className="text-xs text-surface-dim font-normal font-body-sm">(44/75)</span>
+            <span className="text-xs text-surface-dim font-normal font-body-sm font-sans">(44/75)</span>
           </div>
 
           {/* Hardwood Half-Court SVG Canvas */}
@@ -413,7 +411,7 @@ export default function ShotChart({
               {/* Three-Point Arc (FIBA 6.75m scaled) */}
               <line x1="30" y1="10" x2="30" y2="120" stroke="#ffffff" strokeWidth="3" />
               <line x1="470" y1="10" x2="470" y2="120" stroke="#ffffff" strokeWidth="3" />
-              <path d="M 30 120 A 225 225 0 0 0 470 120" fill="none" stroke="#ffffff" strokeWidth="3" />
+              <path d="M 30 120 A 225 225 0 0 0 470 120 L 490 460 L 10 460 Z" fill="none" stroke="#ffffff" strokeWidth="3" />
 
               {/* Center Court Semi-Circle at Baseline Bottom */}
               <path d="M 190 460 A 60 60 0 0 1 310 460" fill="none" stroke="#ffffff" strokeWidth="3" />
@@ -520,7 +518,7 @@ export default function ShotChart({
           </div>
 
           {/* Legend Bottom Ribbon */}
-          <div className="bg-inverse-surface/95 border-t border-outline-variant/30 p-2.5 text-white flex items-center justify-around text-label-caps font-label-caps flex-wrap gap-2">
+          <div className="bg-inverse-surface/95 border-t border-outline-variant/30 p-2.5 text-white flex items-center justify-around text-label-caps font-label-caps flex-wrap gap-2 font-mono">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-emerald-500 border border-white"></span>
               <span>MADE SHOTS (FGM: 44)</span>
@@ -529,7 +527,7 @@ export default function ShotChart({
               <span className="w-3 h-3 rounded-full bg-red-500 border border-white"></span>
               <span>MISSED ATTEMPTS (29)</span>
             </div>
-            <div className="flex items-center gap-1.5 text-tertiary-fixed-dim">
+            <div className="flex items-center gap-1.5 text-tertiary-fixed-dim font-sans">
               <span className="material-symbols-outlined text-xs">lightbulb</span>
               <span>RESTRICTED ZONE CONVERSION INDEX: ELITE TIER</span>
             </div>
@@ -540,21 +538,21 @@ export default function ShotChart({
         <div className="space-y-2 pt-2">
           <h3 className="font-headline-sm text-headline-sm text-on-surface uppercase tracking-wide flex items-center gap-1.5">
             <span className="material-symbols-outlined text-primary text-base">pie_chart</span>
-            5-Zone Precision Breakdown (วิเคราะห์ประสิทธิภาพการทำคะแนนจำแนก 5 โซน)
+            5-Zone Precision Breakdown <span className="text-secondary font-normal text-sm normal-case">(วิเคราะห์ประสิทธิภาพการทำคะแนนจำแนก 5 โซน)</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {/* Zone 1: Paint / Restricted */}
-            <div className="bg-surface-container-low p-3 rounded border border-outline-variant/70 relative">
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/70 relative">
               <div className="flex justify-between items-start mb-1">
                 <span className="font-label-caps text-label-caps font-bold text-on-surface uppercase truncate">
                   PAINT / RESTRICTED
                 </span>
-                <span className="bg-slate-900 text-white text-label-badge font-mono font-bold px-1.5 py-0.5 rounded">
+                <span className="bg-slate-900 text-white text-label-badge font-mono font-bold px-1.5 py-0.5 rounded-md">
                   71.9%
                 </span>
               </div>
-              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1">
-                23 <span className="text-body-sm font-body-sm font-normal text-secondary">/ 32 FGM</span>
+              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1 font-mono">
+                23 <span className="text-body-sm font-body-sm font-normal text-secondary font-sans">/ 32 FGM</span>
               </div>
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-[#AF101A] h-full rounded-full" style={{ width: "71.9%" }}></div>
@@ -563,17 +561,17 @@ export default function ShotChart({
             </div>
 
             {/* Zone 2: Mid-Range Paint & Key */}
-            <div className="bg-surface-container-low p-3 rounded border border-outline-variant/70 relative">
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/70 relative">
               <div className="flex justify-between items-start mb-1">
                 <span className="font-label-caps text-label-caps font-bold text-on-surface uppercase truncate">
                   MID-RANGE PAINT & KEY
                 </span>
-                <span className="bg-slate-900 text-white text-label-badge font-mono font-bold px-1.5 py-0.5 rounded">
+                <span className="bg-slate-900 text-white text-label-badge font-mono font-bold px-1.5 py-0.5 rounded-md">
                   56.5%
                 </span>
               </div>
-              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1">
-                13 <span className="text-body-sm font-body-sm font-normal text-secondary">/ 23 FGM</span>
+              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1 font-mono">
+                13 <span className="text-body-sm font-body-sm font-normal text-secondary font-sans">/ 23 FGM</span>
               </div>
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-[#AF101A] h-full rounded-full" style={{ width: "56.5%" }}></div>
@@ -582,17 +580,17 @@ export default function ShotChart({
             </div>
 
             {/* Zone 3: Left Corner 3 */}
-            <div className="bg-surface-container-low p-3 rounded border border-outline-variant/70 relative">
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/70 relative">
               <div className="flex justify-between items-start mb-1">
                 <span className="font-label-caps text-label-caps font-bold text-on-surface uppercase truncate">
                   LEFT CORNER 3
                 </span>
-                <span className="bg-slate-100 text-slate-800 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded border border-slate-300">
+                <span className="bg-slate-100 text-slate-800 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded-md border border-slate-300">
                   50.0%
                 </span>
               </div>
-              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1">
-                2 <span className="text-body-sm font-body-sm font-normal text-secondary">/ 4 FGM</span>
+              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1 font-mono">
+                2 <span className="text-body-sm font-body-sm font-normal text-secondary font-sans">/ 4 FGM</span>
               </div>
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-700 h-full rounded-full" style={{ width: "50%" }}></div>
@@ -601,17 +599,17 @@ export default function ShotChart({
             </div>
 
             {/* Zone 4: Right Corner 3 */}
-            <div className="bg-surface-container-low p-3 rounded border border-outline-variant/70 relative">
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/70 relative">
               <div className="flex justify-between items-start mb-1">
                 <span className="font-label-caps text-label-caps font-bold text-on-surface uppercase truncate">
                   RIGHT CORNER 3
                 </span>
-                <span className="bg-slate-100 text-slate-600 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded border border-slate-200">
+                <span className="bg-slate-100 text-slate-600 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded-md border border-slate-200">
                   33.3%
                 </span>
               </div>
-              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1">
-                1 <span className="text-body-sm font-body-sm font-normal text-secondary">/ 3 FGM</span>
+              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1 font-mono">
+                1 <span className="text-body-sm font-body-sm font-normal text-secondary font-sans">/ 3 FGM</span>
               </div>
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-400 h-full rounded-full" style={{ width: "33.3%" }}></div>
@@ -620,17 +618,17 @@ export default function ShotChart({
             </div>
 
             {/* Zone 5: Above The Break 3 */}
-            <div className="bg-surface-container-low p-3 rounded border border-outline-variant/70 relative">
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/70 relative">
               <div className="flex justify-between items-start mb-1">
                 <span className="font-label-caps text-label-caps font-bold text-on-surface uppercase truncate">
                   ABOVE THE BREAK 3
                 </span>
-                <span className="bg-slate-100 text-slate-800 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded border border-slate-300">
+                <span className="bg-slate-100 text-slate-800 text-label-badge font-mono font-bold px-1.5 py-0.5 rounded-md border border-slate-300">
                   45.5%
                 </span>
               </div>
-              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1">
-                5 <span className="text-body-sm font-body-sm font-normal text-secondary">/ 11 FGM</span>
+              <div className="font-headline-md text-headline-md text-on-surface leading-tight mt-1 font-mono">
+                5 <span className="text-body-sm font-body-sm font-normal text-secondary font-sans">/ 11 FGM</span>
               </div>
               <div className="w-full bg-slate-200 h-1.5 rounded-full mt-2 overflow-hidden">
                 <div className="bg-slate-700 h-full rounded-full" style={{ width: "45.5%" }}></div>
@@ -641,7 +639,7 @@ export default function ShotChart({
         </div>
 
         {/* FIBA SCOUT SUMMARY AUDIT */}
-        <div className="bg-surface-container rounded p-4 border border-outline-variant flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div className="bg-surface-container rounded-xl p-4 border border-outline-variant flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
           <div className="flex items-start gap-3">
             <span
               className="material-symbols-outlined text-primary text-2xl mt-0.5"
@@ -660,7 +658,7 @@ export default function ShotChart({
           </div>
           <button
             onClick={handleDownloadPdf}
-            className="bg-on-surface text-inverse-on-surface hover:bg-inverse-surface px-4 py-1.5 rounded font-headline-sm text-headline-sm uppercase tracking-wider shrink-0 transition-colors cursor-pointer"
+            className="bg-[#AF101A] text-white hover:bg-[#8E0D15] px-4 py-2 rounded-xl font-headline-sm text-headline-sm shrink-0 transition-colors cursor-pointer font-bold shadow-sm"
           >
             {pdfDownloaded ? "ดาวน์โหลดเรียบร้อย" : "ดาวน์โหลดรายงานสถิติ (PDF)"}
           </button>

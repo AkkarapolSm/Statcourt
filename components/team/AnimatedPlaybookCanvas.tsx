@@ -93,11 +93,11 @@ export default function AnimatedPlaybookCanvas({
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col text-white">
+    <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl overflow-hidden shadow-2xl flex flex-col text-white">
       {/* Top Playbook Header & Play Selector */}
-      <div className="px-6 py-4 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+      <div className="px-6 py-4 bg-[#071322] border-b border-[#213145] flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-[#AF101A] flex items-center justify-center font-bold text-white shadow-xs">
+          <div className="w-9 h-9 rounded-xl bg-[#AF101A] flex items-center justify-center font-bold text-white shadow-xs">
             <Zap className="w-5 h-5" />
           </div>
           <div>
@@ -105,7 +105,7 @@ export default function AnimatedPlaybookCanvas({
               <span className="text-white font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal">
                 {activePlay.title}
               </span>
-              <span className="bg-red-950 text-red-300 border border-red-800 text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase">
+              <span className="bg-[#AF101A]/20 text-rose-300 border border-[#AF101A]/40 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase">
                 {activePlay.category}
               </span>
             </div>
@@ -116,7 +116,7 @@ export default function AnimatedPlaybookCanvas({
         </div>
 
         {/* Play Selector Dropdown & Mobile Push Button */}
-        <div className="flex items-center gap-2.5 font-mono text-xs">
+        <div className="flex items-center gap-2.5 text-xs">
           <select
             value={selectedPlayId}
             onChange={(e) => {
@@ -124,7 +124,7 @@ export default function AnimatedPlaybookCanvas({
               setCurrentStepIndex(0);
               setIsPlaying(false);
             }}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-bold focus:outline-none focus:border-red-500"
+            className="bg-[#0d223a] border border-[#213145] rounded-xl px-3 py-2 text-white font-bold focus:outline-none focus:border-[#AF101A]"
           >
             {plays.map((p) => (
               <option key={p.id} value={p.id}>
@@ -136,7 +136,7 @@ export default function AnimatedPlaybookCanvas({
           <button
             type="button"
             onClick={handleShareMobile}
-            className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 transition"
+            className="px-3.5 py-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-slate-200 border border-[#213145] font-bold flex items-center gap-1.5 transition"
           >
             <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
             <span>{copiedLink ? "คัดลอกลิงก์แล้ว!" : "ส่งเข้ามือถือนักกีฬา"}</span>
@@ -149,7 +149,7 @@ export default function AnimatedPlaybookCanvas({
         
         {/* Left Side: 2D Animated Basketball Half-Court */}
         <div className="lg:col-span-8 flex flex-col items-center">
-          <div className="relative w-full aspect-[14/11] max-w-[620px] bg-[#0B1528] border-2 border-slate-700 rounded-xl overflow-hidden shadow-inner select-none p-4">
+          <div className="relative w-full aspect-[14/11] max-w-[620px] bg-[#071322] border border-[#213145] rounded-2xl overflow-hidden shadow-inner select-none p-4">
             
             {/* Basketball Court Markings (Half Court SVG) */}
             <svg
@@ -173,7 +173,7 @@ export default function AnimatedPlaybookCanvas({
               <path d="M 44 8 A 6 6 0 0 0 56 8" />
               {/* Backboard & Rim */}
               <line x1="42" y1="4" x2="58" y2="4" strokeWidth="1.5" stroke="#FFF" />
-              <circle cx="50" cy="8" r="3" stroke="#DC2626" strokeWidth="1.5" />
+              <circle cx="50" cy="8" r="3" stroke="#AF101A" strokeWidth="1.5" />
 
               {/* 3-Point Line */}
               <line x1="8" y1="0" x2="8" y2="28" />
@@ -260,9 +260,9 @@ export default function AnimatedPlaybookCanvas({
                 >
                   {/* Player Token */}
                   <div
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-black text-xs font-mono shadow-lg transition-transform ${
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-black text-xs font-mono tabular-nums shadow-lg transition-transform ${
                       player.isOffense
-                        ? "bg-[#DC2626] text-white ring-2 ring-white/60"
+                        ? "bg-[#AF101A] text-white ring-2 ring-white/60"
                         : "bg-slate-700 text-slate-200 border border-slate-500"
                     } ${isBallCarrier ? "scale-110 ring-4 ring-amber-400" : ""}`}
                   >
@@ -284,12 +284,12 @@ export default function AnimatedPlaybookCanvas({
           </div>
 
           {/* Control Bar: Play / Pause, Prev, Next, Speed */}
-          <div className="w-full max-w-[620px] mt-4 p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between font-mono text-xs">
+          <div className="w-full max-w-[620px] mt-4 p-3 bg-[#071322] border border-[#213145] rounded-xl flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="w-8 h-8 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white flex items-center justify-center transition"
+                className="w-8 h-8 rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] text-white flex items-center justify-center transition"
                 title={isPlaying ? "Pause" : "Play Animation"}
               >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
@@ -298,32 +298,33 @@ export default function AnimatedPlaybookCanvas({
               <button
                 type="button"
                 onClick={handleReset}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                className="p-2 rounded-lg bg-[#0d223a] hover:bg-[#142e4e] text-slate-300 transition"
                 title="Reset to Step 1"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
 
-              <div className="h-5 w-px bg-slate-800 mx-1" />
+              <div className="h-5 w-px bg-[#213145] mx-1" />
 
               <button
                 type="button"
                 disabled={currentStepIndex === 0}
                 onClick={handlePrevStep}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 transition"
+                className="p-2 rounded-lg bg-[#0d223a] hover:bg-[#142e4e] disabled:opacity-30 text-slate-300 transition"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              <span className="text-slate-300 font-bold px-1">
-                เฟรม {currentStepIndex + 1} / {steps.length}
+              <span className="text-slate-300 font-bold px-1 flex items-center gap-1">
+                <span>เฟรม</span>
+                <span className="font-mono tabular-nums">{currentStepIndex + 1} / {steps.length}</span>
               </span>
 
               <button
                 type="button"
                 disabled={currentStepIndex === steps.length - 1}
                 onClick={handleNextStep}
-                className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300 transition"
+                className="p-2 rounded-lg bg-[#0d223a] hover:bg-[#142e4e] disabled:opacity-30 text-slate-300 transition"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -335,7 +336,7 @@ export default function AnimatedPlaybookCanvas({
               <button
                 type="button"
                 onClick={() => setPlaybackSpeed(playbackSpeed === 1 ? 0.5 : 1)}
-                className="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-white font-bold text-[11px]"
+                className="px-2 py-1 rounded bg-[#0d223a] border border-[#213145] text-white font-bold font-mono tabular-nums text-[11px]"
               >
                 {playbackSpeed}x
               </button>
@@ -347,14 +348,14 @@ export default function AnimatedPlaybookCanvas({
         <div className="lg:col-span-4 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
             {/* Step Card */}
-            <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-red-400 font-bold uppercase flex items-center gap-1.5">
+            <div className="bg-[#071322] border border-[#213145] rounded-xl p-4 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-rose-400 font-bold uppercase flex items-center gap-1.5 font-mono">
                   <Layers className="w-3.5 h-3.5" />
                   <span>STEP {currentStep.stepIndex}: {currentStep.title}</span>
                 </span>
-                <span className="text-[10px] text-slate-500 font-bold">
-                  บอลอยู่ที่: #{currentStep.ballCarrierId}
+                <span className="text-[10px] text-slate-400 font-bold">
+                  บอลอยู่ที่: <span className="font-mono tabular-nums">#{currentStep.ballCarrierId}</span>
                 </span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed font-sans">
@@ -364,7 +365,7 @@ export default function AnimatedPlaybookCanvas({
 
             {/* Step Indicators Selector */}
             <div className="space-y-1.5">
-              <span className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
+              <span className="text-[11px] font-headline-sm uppercase text-slate-400 font-bold block">
                 ลำดับขั้นตอนการเคลื่อนที่ (PLAY PHASES)
               </span>
               <div className="space-y-2">
@@ -376,15 +377,15 @@ export default function AnimatedPlaybookCanvas({
                       setCurrentStepIndex(idx);
                       setIsPlaying(false);
                     }}
-                    className={`w-full p-2.5 rounded-lg border text-left font-mono text-xs transition flex items-center justify-between ${
+                    className={`w-full p-2.5 rounded-xl border text-left text-xs transition flex items-center justify-between ${
                       idx === currentStepIndex
-                        ? "bg-[#AF101A]/20 border-red-600 text-white"
-                        : "bg-slate-950/60 border-slate-800 text-slate-400 hover:bg-slate-800/40"
+                        ? "bg-[#AF101A]/20 border-[#AF101A] text-white font-medium"
+                        : "bg-[#071322]/80 border-[#213145] text-slate-400 hover:bg-[#0d223a]"
                     }`}
                   >
-                    <span>เฟรม {st.stepIndex}: {st.title}</span>
+                    <span>เฟรม <span className="font-mono tabular-nums">{st.stepIndex}</span>: {st.title}</span>
                     {idx === currentStepIndex && (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                     )}
                   </button>
                 ))}
@@ -392,9 +393,9 @@ export default function AnimatedPlaybookCanvas({
             </div>
 
             {/* Key Coaching Point */}
-            <div className="bg-red-950/30 border border-red-900/40 rounded-xl p-3.5 space-y-1 text-xs">
-              <div className="flex items-center gap-1.5 text-red-300 font-mono font-bold uppercase text-[11px]">
-                <Info className="w-3.5 h-3.5 text-red-400" />
+            <div className="bg-[#AF101A]/10 border border-[#AF101A]/30 rounded-xl p-3.5 space-y-1 text-xs">
+              <div className="flex items-center gap-1.5 text-rose-300 font-bold uppercase text-[11px]">
+                <Info className="w-3.5 h-3.5 text-rose-400" />
                 <span>COACHING KEYS (หัวใจสำคัญของแผน)</span>
               </div>
               <p className="text-slate-300 text-[11px] leading-relaxed">
@@ -404,7 +405,7 @@ export default function AnimatedPlaybookCanvas({
           </div>
 
           {/* Quick Push Status */}
-          <div className="pt-2 text-[11px] font-mono text-slate-500 flex items-center gap-2">
+          <div className="pt-2 text-[11px] text-slate-400 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>ซิงค์แผนการเล่นตรงกับแอปพลิเคชันมือถือของนักกีฬาในทีม BCC</span>
           </div>

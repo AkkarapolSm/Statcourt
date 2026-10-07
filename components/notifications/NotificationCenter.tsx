@@ -210,14 +210,14 @@ export default function NotificationCenter() {
         <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-h-[85vh] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150 font-sans text-slate-800">
           
           {/* Header */}
-          <div className="p-3.5 bg-slate-900 text-white flex items-center justify-between shrink-0">
+          <div className="p-3.5 bg-[#071322] border-b border-[#213145] text-white flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <Bell className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider">
+              <h3 className="text-xs font-bold">
                 ศูนย์การแจ้งเตือน
               </h3>
               {unreadCount > 0 && (
-                <span className="bg-[#AF101A] text-white text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-full">
+                <span className="bg-[#AF101A] text-white text-[10px] font-mono tabular-nums font-bold px-2 py-0.5 rounded-full">
                   {unreadCount} ใหม่
                 </span>
               )}
@@ -229,7 +229,7 @@ export default function NotificationCenter() {
                 onClick={fetchNotifications}
                 disabled={loading}
                 title="รีเฟรชข้อมูล"
-                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#0d223a] transition cursor-pointer"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
               </button>
@@ -238,7 +238,7 @@ export default function NotificationCenter() {
                   type="button"
                   onClick={handleMarkAllAsRead}
                   title="ทำเครื่องหมายอ่านแล้วทั้งหมด"
-                  className="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[10px] font-mono text-slate-200 transition flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg bg-[#0d223a] hover:bg-[#142e4e] text-[10px] font-medium text-slate-200 transition flex items-center gap-1 cursor-pointer border border-[#213145]"
                 >
                   <CheckCheck className="w-3 h-3 text-emerald-400" />
                   <span>อ่านทั้งหมด</span>
@@ -247,7 +247,7 @@ export default function NotificationCenter() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#0d223a] transition cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -255,7 +255,7 @@ export default function NotificationCenter() {
           </div>
 
           {/* Quick Filter Bar */}
-          <div className="px-3 py-2 bg-slate-50 border-b border-slate-200/80 flex items-center gap-1.5 overflow-x-auto text-[11px] font-mono shrink-0">
+          <div className="px-3 py-2 bg-slate-50 border-b border-slate-200/80 flex items-center gap-1.5 overflow-x-auto text-[11px] shrink-0">
             {[
               { id: "ALL", label: "ทั้งหมด" },
               { id: "SCHEDULE_CHANGE", label: "ตารางแข่ง" },
@@ -267,7 +267,7 @@ export default function NotificationCenter() {
                 key={f.id}
                 type="button"
                 onClick={() => setFilterType(f.id)}
-                className={`px-2 py-0.5 rounded-md whitespace-nowrap transition cursor-pointer ${
+                className={`px-2.5 py-0.5 rounded-full whitespace-nowrap transition cursor-pointer ${
                   filterType === f.id
                     ? "bg-[#0B1C30] text-white font-bold"
                     : "text-slate-600 hover:bg-slate-200"
@@ -280,7 +280,7 @@ export default function NotificationCenter() {
             <button
               type="button"
               onClick={() => setOnlyUnread(!onlyUnread)}
-              className={`ml-auto px-2 py-0.5 rounded-md whitespace-nowrap text-[10px] transition cursor-pointer ${
+              className={`ml-auto px-2.5 py-0.5 rounded-full whitespace-nowrap text-[10px] transition cursor-pointer ${
                 onlyUnread
                   ? "bg-[#AF101A] text-white font-bold"
                   : "text-slate-500 hover:bg-slate-200"
@@ -396,7 +396,7 @@ export default function NotificationCenter() {
           </div>
 
           {/* Footer note */}
-          <div className="p-2.5 bg-slate-50 border-t border-slate-200/80 text-center text-[10px] font-mono text-slate-400 shrink-0">
+          <div className="p-2.5 bg-slate-50 border-t border-slate-200/80 text-center text-[10px] text-slate-500 shrink-0">
             ระบบแจ้งเตือนสหพันธ์บาสเกตบอล StatCourtTH
           </div>
         </div>

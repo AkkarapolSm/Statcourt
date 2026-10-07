@@ -108,11 +108,11 @@ export default function QuickTestFloatingWidget() {
           </span>
           <Zap className="w-4 h-4 text-emerald-400 fill-emerald-400" />
           <div className="flex flex-col text-left">
-            <span className="text-xs font-black tracking-wide text-emerald-300">
+            <span className="text-xs font-black tracking-wide text-emerald-300 font-sans">
               ⚡ ทดสอบสิทธิ์ (Demo Roles)
             </span>
-            <span className="text-[10px] text-slate-300 font-mono">
-              สิทธิ์ปัจจุบัน: <b className="text-white underline">{currentUser.role}</b>
+            <span className="text-[10px] text-slate-300 font-sans">
+              สิทธิ์ปัจจุบัน: <b className="text-white underline font-mono">{currentUser.role}</b>
             </span>
           </div>
           <ChevronUp className="w-4 h-4 text-slate-400 group-hover:text-white transition" />
@@ -127,17 +127,17 @@ export default function QuickTestFloatingWidget() {
                 <Zap className="w-4 h-4 fill-emerald-400" />
               </div>
               <div>
-                <h3 className="text-xs font-black tracking-wide text-white">
+                <h3 className="text-xs font-black tracking-wide text-white font-sans">
                   ⚡ ทางลัดทดสอบระบบ (Quick Switcher)
                 </h3>
-                <p className="text-[10px] text-emerald-300 font-mono">
+                <p className="text-[10px] text-emerald-300 font-sans">
                   ไม่ต้องสมัครสมาชิก • สลับสิทธิ์ในคลิกเดียว
                 </p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition"
+              className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition cursor-pointer"
               aria-label="ปิดเมนูทดสอบ"
             >
               <X className="w-4 h-4" />
@@ -147,7 +147,7 @@ export default function QuickTestFloatingWidget() {
           {/* Current State & Tier Selector */}
           <div className="my-3 p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 flex items-center justify-between">
             <div>
-              <span className="text-[10px] text-slate-400 block">สิทธิ์ปัจจุบันของคุณ:</span>
+              <span className="text-[10px] text-slate-400 block font-sans">สิทธิ์ปัจจุบันของคุณ:</span>
               <span className="text-xs font-mono font-bold text-emerald-400">
                 {currentUser.role} ({currentUser.tier})
               </span>
@@ -156,7 +156,7 @@ export default function QuickTestFloatingWidget() {
               <button
                 type="button"
                 onClick={() => setTier("FREE")}
-                className={`text-[10px] font-bold px-2 py-1 rounded transition ${
+                className={`text-[10px] font-bold px-2 py-1 rounded-md font-mono transition cursor-pointer ${
                   tier === "FREE"
                     ? "bg-slate-600 text-white"
                     : "text-slate-400 hover:text-slate-200"
@@ -167,7 +167,7 @@ export default function QuickTestFloatingWidget() {
               <button
                 type="button"
                 onClick={() => setTier("PRO")}
-                className={`text-[10px] font-bold px-2 py-1 rounded transition ${
+                className={`text-[10px] font-bold px-2 py-1 rounded-md font-mono transition flex items-center gap-1 cursor-pointer ${
                   tier === "PRO"
                     ? "bg-amber-500 text-slate-950 font-black"
                     : "text-slate-400 hover:text-slate-200"
@@ -180,7 +180,7 @@ export default function QuickTestFloatingWidget() {
 
           {/* 1-Click Role Switch Buttons */}
           <div className="space-y-1.5 my-2">
-            <span className="text-[10px] font-mono text-slate-400 block px-1">
+            <span className="text-[10px] text-slate-400 block px-1 font-sans">
               คลิกเพื่อสวมสิทธิ์ & ไปยังหน้าทำงาน:
             </span>
             {ROLES.map((r) => {
@@ -193,7 +193,7 @@ export default function QuickTestFloatingWidget() {
                   key={r.role}
                   onClick={() => handleQuickSwitch(r)}
                   disabled={!!loadingRole}
-                  className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition ${
+                  className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition cursor-pointer ${
                     isCurrent
                       ? "bg-emerald-950/60 border-emerald-400 text-white"
                       : "bg-slate-800/80 border-slate-700/80 hover:bg-slate-700/80 hover:border-slate-500 text-slate-200"
@@ -208,16 +208,16 @@ export default function QuickTestFloatingWidget() {
                       )}
                     </div>
                     <div className="truncate">
-                      <p className="text-xs font-bold leading-tight truncate">
+                      <p className="text-xs font-bold leading-tight truncate font-sans">
                         {r.label}
                       </p>
-                      <p className="text-[10px] text-slate-400 leading-tight truncate">
+                      <p className="text-[10px] text-slate-400 leading-tight truncate font-sans">
                         {r.sub}
                       </p>
                     </div>
                   </div>
                   {isCurrent && (
-                    <span className="text-[9px] font-bold font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
+                    <span className="text-[9px] font-bold font-sans px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
                       ใช้งานอยู่
                     </span>
                   )}

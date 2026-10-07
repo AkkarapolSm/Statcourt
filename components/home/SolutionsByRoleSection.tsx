@@ -13,7 +13,7 @@ export default function SolutionsByRoleSection({
   onSelectTab,
 }: SolutionsByRoleSectionProps) {
   return (
-    <section id="solutions" className="py-16 bg-[#0F172A] text-white border-y border-slate-800 scroll-mt-16">
+    <section id="solutions" className="py-16 bg-[#071322] text-white border-y border-[#213145] scroll-mt-16">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
           <span className="text-xs font-mono font-bold tracking-widest text-red-400 uppercase">
@@ -32,10 +32,10 @@ export default function SolutionsByRoleSection({
           <button
             type="button"
             onClick={() => onSelectTab("ORGANIZER")}
-            className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition border cursor-pointer ${
               activeTab === "ORGANIZER"
                 ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
-                : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
+                : "bg-[#0B1C30] border-[#213145] text-slate-300 hover:text-white hover:bg-[#0d223a]"
             }`}
           >
             1. ฝ่ายจัดการแข่งขันและลีก (Tournament Organizers)
@@ -43,10 +43,10 @@ export default function SolutionsByRoleSection({
           <button
             type="button"
             onClick={() => onSelectTab("SCHOOL")}
-            className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition border cursor-pointer ${
               activeTab === "SCHOOL"
                 ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
-                : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
+                : "bg-[#0B1C30] border-[#213145] text-slate-300 hover:text-white hover:bg-[#0d223a]"
             }`}
           >
             2. สถานศึกษาและอะคาเดมี (Schools &amp; Basketball Clubs)
@@ -54,10 +54,10 @@ export default function SolutionsByRoleSection({
           <button
             type="button"
             onClick={() => onSelectTab("SCOUT")}
-            className={`px-5 py-2.5 rounded text-xs font-mono font-bold uppercase tracking-wider transition border cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-xs font-semibold transition border cursor-pointer ${
               activeTab === "SCOUT"
                 ? "bg-[#AF101A] border-[#AF101A] text-white shadow-lg shadow-red-950/50"
-                : "bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white"
+                : "bg-[#0B1C30] border-[#213145] text-slate-300 hover:text-white hover:bg-[#0d223a]"
             }`}
           >
             3. ผู้ฝึกสอนระดับอุดมศึกษาและแมวมอง (Colleges &amp; Pro Scouts)
@@ -65,7 +65,7 @@ export default function SolutionsByRoleSection({
         </div>
 
         {/* Tab Content Display */}
-        <div className="bg-slate-800/60 border border-slate-700 rounded-lg p-6 sm:p-8">
+        <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl p-6 sm:p-8">
           {activeTab === "ORGANIZER" && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-5">
@@ -81,7 +81,7 @@ export default function SolutionsByRoleSection({
                 </p>
                 <div className="space-y-2.5 pt-1 text-xs">
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -90,7 +90,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -99,7 +99,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -109,10 +109,10 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-slate-400">TOURNAMENT PACKAGE</span>
-                  <span className="text-white font-bold text-sm">฿3,000 – 15,000 / รายการ</span>
+              <div className="lg:col-span-5 bg-[#071322] border border-[#213145] rounded-xl p-6 text-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#213145]">
+                  <span className="text-slate-400 font-mono text-[11px]">TOURNAMENT PACKAGE</span>
+                  <span className="text-white font-bold text-sm font-mono tabular-nums">฿3,000 – 15,000 / รายการ</span>
                 </div>
                 <div className="space-y-2 text-slate-300">
                   <p className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /><span>รองรับการแข่งขันไม่จำกัดจำนวนคู่ตลอดทัวร์นาเมนต์</span></p>
@@ -123,7 +123,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-3 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-center font-semibold text-white text-xs transition shadow-md shadow-red-950/30"
                 >
                   ติดต่อขอรับข้อเสนอสำหรับรายการแข่งขัน
                 </a>
@@ -146,7 +146,7 @@ export default function SolutionsByRoleSection({
                 </p>
                 <div className="space-y-2.5 pt-1 text-xs">
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -155,7 +155,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -164,7 +164,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -174,10 +174,10 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-slate-400">ACADEMY LICENSE</span>
-                  <span className="text-white font-bold text-sm">฿1,500 – 3,500 / เดือน</span>
+              <div className="lg:col-span-5 bg-[#071322] border border-[#213145] rounded-xl p-6 text-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#213145]">
+                  <span className="text-slate-400 font-mono text-[11px]">ACADEMY LICENSE</span>
+                  <span className="text-white font-bold text-sm font-mono tabular-nums">฿1,500 – 3,500 / เดือน</span>
                 </div>
                 <div className="space-y-2 text-slate-300">
                   <p className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /><span>บริหารจัดการทีมได้สูงสุด 5 รุ่นอายุ (U12 – Open Division)</span></p>
@@ -187,7 +187,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-3 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-center font-semibold text-white text-xs transition shadow-md shadow-red-950/30"
                 >
                   ติดต่อขอรับสิทธิ์สำหรับสถานศึกษา
                 </a>
@@ -209,7 +209,7 @@ export default function SolutionsByRoleSection({
                 </p>
                 <div className="space-y-2.5 pt-1 text-xs">
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -218,7 +218,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -227,7 +227,7 @@ export default function SolutionsByRoleSection({
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5" />
                     </div>
                     <div>
@@ -237,10 +237,10 @@ export default function SolutionsByRoleSection({
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-lg p-6 text-xs font-mono space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <span className="text-slate-400">SCOUT PRO PASS</span>
-                  <span className="text-white font-bold text-sm">฿890 – 1,500 / เดือน</span>
+              <div className="lg:col-span-5 bg-[#071322] border border-[#213145] rounded-xl p-6 text-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#213145]">
+                  <span className="text-slate-400 font-mono text-[11px]">SCOUT PRO PASS</span>
+                  <span className="text-white font-bold text-sm font-mono tabular-nums">฿890 – 1,500 / เดือน</span>
                 </div>
                 <div className="space-y-2 text-slate-300">
                   <p className="flex items-center gap-2"><Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /><span>สิทธิ์เข้าถึงฐานข้อมูลและคัดกรองนักกีฬาทั่วประเทศไม่จำกัด</span></p>
@@ -250,7 +250,7 @@ export default function SolutionsByRoleSection({
                 </div>
                 <a
                   href="#contact-form"
-                  className="block w-full py-2.5 rounded bg-[#AF101A] hover:bg-[#8E0D15] text-center font-bold text-white uppercase tracking-wider transition"
+                  className="block w-full py-3 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-center font-semibold text-white text-xs transition shadow-md shadow-red-950/30"
                 >
                   สมัครสมาชิกสิทธิ์ Scout Intelligence Pass
                 </a>

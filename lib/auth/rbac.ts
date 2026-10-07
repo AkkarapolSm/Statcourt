@@ -163,7 +163,7 @@ export function canManageTeamLineup(
   teamId?: string
 ): boolean {
   if (!user) return false;
-  return user.role === "COACH" || user.role === "ADMIN";
+  return user.role === "COACH";
 }
 
 /**

@@ -21,12 +21,16 @@ import {
   mockOfficialsRoster,
 } from "@/lib/db/phase4-data";
 import { mockAcademyVideoCourses } from "@/lib/db/academy-courses-data";
+import { useAuthStore } from "@/lib/auth/useAuthStore";
 import {
   AcademyVideoCourse,
   CourseCategory,
 } from "@/lib/types";
 
 export default function AcademyPage() {
+  const { currentUser } = useAuthStore();
+  const canCreateCourse = currentUser?.role === "COACH" || currentUser?.role === "ADMIN";
+
   const [activeTab, setActiveTab] = useState<"COURSES" | "OFFICIALS_MARKET">("COURSES");
 
   // Video Courses State
@@ -106,26 +110,26 @@ export default function AcademyPage() {
         {/* Tab Navigation */}
         <section className="bg-white border-b border-[#DFE2EB] sticky top-14 z-30 shadow-xs">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-            <div className="flex items-center gap-2 overflow-x-auto font-mono text-xs no-scrollbar">
+            <div className="flex items-center gap-2 overflow-x-auto text-xs no-scrollbar">
               <button
                 type="button"
                 onClick={() => setActiveTab("COURSES")}
                 aria-pressed={activeTab === "COURSES"}
-                className={`px-4 py-2 rounded-sm font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                className={`px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                   activeTab === "COURSES"
                     ? "bg-[#0B1C30] text-white shadow-xs"
                     : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>หลักสูตรอบรม (COURSES)</span>
+                <span>หลักสูตรอบรม (Courses)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab("OFFICIALS_MARKET")}
                 aria-pressed={activeTab === "OFFICIALS_MARKET"}
-                className={`px-4 py-2 rounded-sm font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                className={`px-4 py-2 rounded-lg font-bold transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                   activeTab === "OFFICIALS_MARKET"
                     ? "bg-[#0B1C30] text-white shadow-xs"
                     : "bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] hover:text-[#0B1C30] hover:bg-[#EEF1F8]"
@@ -144,14 +148,14 @@ export default function AcademyPage() {
           {activeTab === "COURSES" && (
             <div className="space-y-6">
               {/* Category Selector & Action Bar */}
-              <div className="bg-white text-[#0B1C30] rounded-lg p-5 border border-[#DFE2EB] shadow-xs space-y-4">
+              <div className="bg-white text-[#0B1C30] rounded-xl p-5 border border-[#DFE2EB] shadow-xs space-y-4">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div>
-                    <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-sm bg-[#AF101A]/10 text-[#AF101A] border border-[#AF101A]/30 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#AF101A]/10 text-[#AF101A] border border-[#AF101A]/20 text-xs font-semibold mb-2">
                       <GraduationCap className="w-3.5 h-3.5" />
                       <span>กฎกติกา &amp; วิดีโอหลักสูตรมาตรฐาน FIBA</span>
                     </div>
-                    <h2 className="text-xl font-bold tracking-wide uppercase text-[#0B1C30]">
+                    <h2 className="text-xl font-bold tracking-wide text-[#0B1C30]">
                       คอร์สอบรมออนไลน์และคลินิกวิดีโอ (Video Courses)
                     </h2>
                     <p className="text-[#505A69] text-xs sm:text-sm mt-0.5">
@@ -159,21 +163,23 @@ export default function AcademyPage() {
                     </p>
                   </div>
 
-                  {/* Coach / Admin Add Course Action */}
-                  <button
-                    type="button"
-                    onClick={() => setIsCreateCourseModalOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono text-xs font-semibold uppercase tracking-wider transition cursor-pointer shadow-xs shrink-0"
-                  >
-                    <PlusCircle className="w-4 h-4" />
-                    <span>+ สร้างคอร์สใหม่ (Coach / Admin)</span>
-                  </button>
+                  {/* Coach / Admin Add Course Action - Only visible to COACH or ADMIN */}
+                  {canCreateCourse && (
+                    <button
+                      type="button"
+                      onClick={() => setIsCreateCourseModalOpen(true)}
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#AF101A] to-[#8E0D15] hover:from-[#C71520] hover:to-[#9F1018] text-white text-xs font-semibold transition-all shadow-md hover:shadow-red-900/20 cursor-pointer shrink-0"
+                    >
+                      <PlusCircle className="w-4 h-4" />
+                      <span>+ สร้างคอร์สใหม่</span>
+                    </button>
+                  )}
                 </div>
 
                 {/* Filter Pills & Search */}
                 <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-3 border-t border-[#DFE2EB]">
                   {/* Category Pills */}
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs font-mono">
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
                     {[
                       { id: "ALL" as const, label: "ทั้งหมด" },
                       { id: "TABLE_OFFICIALS" as const, label: "1. โต๊ะกรรมการ & สถิติ" },
@@ -377,13 +383,15 @@ export default function AcademyPage() {
         />
 
         {/* Create Course Modal for Coaches & Admins */}
-        <CreateCourseModal
-          isOpen={isCreateCourseModalOpen}
-          onClose={() => setIsCreateCourseModalOpen(false)}
-          onCourseCreated={(newCourse) => {
-            setVideoCourses([newCourse, ...videoCourses]);
-          }}
-        />
+        {canCreateCourse && (
+          <CreateCourseModal
+            isOpen={isCreateCourseModalOpen}
+            onClose={() => setIsCreateCourseModalOpen(false)}
+            onCourseCreated={(newCourse) => {
+              setVideoCourses([newCourse, ...videoCourses]);
+            }}
+          />
+        )}
       </main>
 
       <Footer />

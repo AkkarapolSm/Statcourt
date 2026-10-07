@@ -36,7 +36,6 @@ import {
 } from "@/lib/auth/rbac";
 import PricingModal from "@/components/premium/PricingModal";
 import UserRoleProfileMenu from "./UserRoleProfileMenu";
-import NavbarRoleSwitcher from "./NavbarRoleSwitcher";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
 
 interface SubNavItem {
@@ -68,9 +67,6 @@ export default function Navbar() {
   const navContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { currentUser } = useAuthStore();
-  const isDev =
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ENABLE_DEV_ROLE_SWITCHER === "true";
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,10 +142,10 @@ export default function Navbar() {
       case "COACH":
         return {
           href: "/scout",
-          label: "Coach Hub",
-          desc: "ศูนย์ผู้ฝึกสอน ค้นหาดาวรุ่ง และวิเคราะห์ศักยภาพ",
+          label: "Scout Hub",
+          desc: "ศูนย์ค้นหาดาวรุ่ง คลังคลิป และรายงานเชิงลึก",
           icon: Compass,
-          badge: "Coach",
+          badge: "Scout",
         };
       case "OFFICIAL":
         return {
@@ -236,33 +232,12 @@ export default function Navbar() {
               },
             ]
           : []),
-        ...(currentUser.role === "PUBLIC" || currentUser.role === "FAN"
-          ? [
-              {
-                href: "/teams",
-                label: "Clubs & Teams",
-                desc: "ทำเนียบสโมสรและทีมที่เข้าร่วมการแข่งขัน",
-                icon: Trophy,
-              },
-              {
-                href: "/leaderboard",
-                label: "Player Directory",
-                desc: "ทำเนียบนักกีฬา สถิติ และอันดับผลงานการแข่งขัน",
-                icon: Award,
-                badge: "Top 50",
-              },
-            ]
-          : []),
-        ...(currentUser.role === "ATHLETE" || currentUser.role === "OFFICIAL" || currentUser.role === "ADMIN"
-          ? [
-              {
-                href: "/teams",
-                label: "Clubs & Teams",
-                desc: "ทำเนียบสโมสร รายชื่อผู้เล่น และตารางแข่งขัน",
-                icon: Trophy,
-              },
-            ]
-          : []),
+        {
+          href: "/teams",
+          label: "Clubs & Teams",
+          desc: "ทำเนียบสโมสร รายชื่อผู้เล่น และตารางแข่งขัน",
+          icon: Trophy,
+        },
         ...(currentUser.role !== "COACH" && currentUser.role !== "PUBLIC" && currentUser.role !== "FAN"
           ? [
               {
@@ -312,16 +287,20 @@ export default function Navbar() {
     }))
     .filter((group) => group.items.length > 0);
 
+  // Helper to check if a link is active (exact match or proper sub-path with /)
+  const isItemActive = (href: string) => {
+    if (!pathname) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   // Helper to check if any child link in a group is active
   const isGroupActive = (group: NavGroupItem) => {
-    return group.items.some((item) => {
-      const base = item.href.split("/")[1];
-      return base ? pathname.startsWith(`/${base}`) : pathname === item.href;
-    });
+    return group.items.some((item) => isItemActive(item.href));
   };
 
   const isLinkActive = (href: string) => {
-    return href === "/" ? pathname === "/" : pathname === href || pathname?.startsWith(href);
+    return isItemActive(href);
   };
 
   return (
@@ -350,7 +329,7 @@ export default function Navbar() {
             {/* Compact Search Bar */}
             <form
               onSubmit={handleSearchSubmit}
-              className="hidden min-[1800px]:flex items-center bg-[#f8f9fc] border border-outline-variant rounded-sm px-2.5 py-1.5 w-40 focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200"
+              className="hidden min-[1800px]:flex items-center bg-[#f8f9fc] border border-outline-variant rounded-xl px-2.5 py-1.5 w-44 focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200"
             >
               <Search className="w-3.5 h-3.5 text-slate-500 mr-2 shrink-0" />
               <input
@@ -371,7 +350,7 @@ export default function Navbar() {
             {/* 1. Home Direct Link */}
             <Link
               href="/"
-              className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1.5 ${
                 isLinkActive("/")
                   ? "text-primary border-b-2 border-primary font-black pb-0.5"
                   : "text-slate-600 hover:text-primary hover:bg-slate-50"
@@ -383,7 +362,7 @@ export default function Navbar() {
             {/* 2. Live Stream Direct Link (High Priority with animated beacon) */}
             <Link
               href="/live"
-              className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1.5 ${
                 isLinkActive("/live")
                   ? "text-primary border-b-2 border-primary font-black pb-0.5"
                   : "text-slate-600 hover:text-primary hover:bg-slate-50"
@@ -413,7 +392,7 @@ export default function Navbar() {
                     onClick={() =>
                       setActiveDropdown(isOpen ? null : group.id)
                     }
-                    className={`px-2.5 py-1 rounded-sm text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1 cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all flex items-center gap-1 cursor-pointer ${
                       active
                         ? "text-primary border-b-2 border-primary font-black pb-0.5"
                         : "text-slate-600 hover:text-primary hover:bg-slate-50"
@@ -435,7 +414,7 @@ export default function Navbar() {
                       onMouseEnter={() => handleMouseEnter(group.id)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <div className="bg-white rounded-xl shadow-xl border border-slate-200/90 p-2.5 backdrop-blur-md">
+                      <div className="bg-white rounded-2xl shadow-xl border border-slate-200/90 p-3 backdrop-blur-md">
                         {/* Section Header Hint */}
                         <div className="px-2.5 py-1 mb-1.5 flex items-center justify-between border-b border-slate-100">
                           <span className="text-[10px] font-black uppercase tracking-wider text-[#5B6574]">
@@ -451,7 +430,7 @@ export default function Navbar() {
                         {/* Dropdown List Items */}
                         <div className="space-y-1">
                           {group.items.map((item) => {
-                            const isCurrent = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+                            const isCurrent = isItemActive(item.href);
                             const IconComponent = item.icon;
 
                             return (
@@ -459,14 +438,14 @@ export default function Navbar() {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setActiveDropdown(null)}
-                                className={`flex items-start gap-3 p-2 rounded-lg transition-all group ${
+                                className={`flex items-start gap-3 p-2 rounded-xl transition-all group ${
                                   isCurrent
                                     ? "bg-red-50/80 text-primary"
                                     : "hover:bg-slate-50 text-slate-700 hover:text-slate-950"
                                 }`}
                               >
                                 <div
-                                  className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                                  className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                                     isCurrent
                                       ? "bg-primary text-white"
                                       : "bg-slate-100 text-slate-600 group-hover:bg-primary group-hover:text-white"
@@ -480,7 +459,7 @@ export default function Navbar() {
                                       {item.label}
                                     </span>
                                     {item.badge && (
-                                      <span className="text-[9px] font-bold font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 group-hover:bg-red-100 group-hover:text-primary transition-colors">
+                                      <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover:bg-red-100 group-hover:text-primary transition-colors">
                                         {item.badge}
                                       </span>
                                     )}
@@ -515,20 +494,7 @@ export default function Navbar() {
 
           {/* Right: Actions Cluster */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Interactive Developer Role Switcher & Demo Hub */}
-            {isDev && (
-              <>
-                <Link
-                  href="/demo"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/90 border border-emerald-400 text-emerald-300 hover:bg-emerald-900 font-mono text-xs font-black transition shadow-sm"
-                  title="ศูนย์รวมทางลัดทดสอบระบบ (Demo Hub 15 หน้า)"
-                >
-                  <Zap className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400 animate-pulse" />
-                  <span>DEMO HUB</span>
-                </Link>
-                <div className="hidden md:block"><NavbarRoleSwitcher /></div>
-              </>
-            )}
+
 
             {/* User Profile, Role Badge & Auth */}
             <div className={currentUser.role === "PUBLIC" ? "hidden sm:block" : ""}><UserRoleProfileMenu /></div>
@@ -563,7 +529,7 @@ export default function Navbar() {
           <div className="min-[1440px]:hidden bg-white border-b border-outline-variant px-4 py-3 space-y-3 animate-in fade-in max-h-[85vh] overflow-y-auto">
             {currentUser.role === "PUBLIC" && <UserRoleProfileMenu />}
             {/* Mobile User Profile Card & Role Switcher */}
-            <div className="p-3 bg-slate-900 text-white rounded-xl shadow-xs space-y-2.5">
+            <div className="p-3 bg-slate-900 text-white rounded-2xl shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs shrink-0 border border-white/20">
@@ -571,7 +537,7 @@ export default function Navbar() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-bold truncate">{currentUser.name || "Guest Spectator"}</p>
-                    <span className="text-[9px] font-mono font-bold bg-white/20 px-1.5 py-0.5 rounded">
+                    <span className="text-[9px] font-mono font-bold bg-white/20 px-2 py-0.5 rounded-full">
                       {currentUser.role}
                     </span>
                   </div>
@@ -579,30 +545,11 @@ export default function Navbar() {
                 <span className="text-xs text-slate-300">{currentUser.role}</span>
               </div>
 
-              {/* Mobile Role Switcher Trigger & Demo Hub */}
-              {isDev && (
-                <div className="pt-2 border-t border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-mono text-slate-400">สลับสิทธิ์ทดสอบ:</span>
-                    <NavbarRoleSwitcher />
-                  </div>
-                  <Link
-                    href="/demo"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="w-full py-2 px-3 rounded-lg bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 font-mono text-xs font-bold flex items-center justify-between transition hover:bg-emerald-900"
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>ศูนย์รวมทางลัดทดสอบระบบ (Demo Hub)</span>
-                    </div>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              )}
+
             </div>
 
             {/* Search Input for Mobile/Tablet */}
-            <form onSubmit={handleSearchSubmit} className="flex items-center bg-[#f8f9fc] border border-outline-variant rounded-lg px-2.5 py-1.5 w-full">
+            <form onSubmit={handleSearchSubmit} className="flex items-center bg-[#f8f9fc] border border-outline-variant rounded-xl px-2.5 py-1.5 w-full">
               <Search className="w-3.5 h-3.5 text-slate-500 mr-2 shrink-0" />
               <input
                 className="bg-transparent border-0 p-0 text-xs font-medium text-slate-800 placeholder:text-slate-500 w-full outline-none"
@@ -618,7 +565,7 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition ${
+                className={`flex items-center justify-between py-2 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition ${
                   pathname === "/"
                     ? "bg-red-50 text-primary font-black"
                     : "text-slate-700 hover:bg-slate-50"
@@ -630,7 +577,7 @@ export default function Navbar() {
               <Link
                 href="/live"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition ${
+                className={`flex items-center justify-between py-2 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition ${
                   pathname === "/live"
                     ? "bg-red-50 text-primary font-black"
                     : "text-slate-700 hover:bg-slate-50"
@@ -643,7 +590,7 @@ export default function Navbar() {
                   </span>
                   <span>Live Match Hub</span>
                 </div>
-                <span className="text-[10px] font-mono bg-red-100 text-red-700 font-bold px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full">
                   LIVE
                 </span>
               </Link>
@@ -660,7 +607,7 @@ export default function Navbar() {
                 return (
                   <div
                     key={group.id}
-                    className="border border-slate-200/80 rounded-xl overflow-hidden"
+                    className="border border-slate-200/80 rounded-2xl overflow-hidden"
                   >
                     {/* Accordion Header */}
                     <button
@@ -690,11 +637,9 @@ export default function Navbar() {
 
                     {/* Accordion Sub-items */}
                     {isExpanded && (
-                      <div className="bg-slate-50/60 p-1.5 space-y-1 border-t border-slate-100">
+                      <div className="bg-slate-50/60 p-2 space-y-1 border-t border-slate-100">
                         {group.items.map((item) => {
-                          const isCurrent =
-                            pathname === item.href ||
-                            (item.href !== "/" && pathname?.startsWith(item.href));
+                          const isCurrent = isItemActive(item.href);
                           const IconComp = item.icon;
 
                           return (
@@ -702,20 +647,20 @@ export default function Navbar() {
                               key={item.href}
                               href={item.href}
                               onClick={() => setMobileMenuOpen(false)}
-                              className={`flex items-start gap-2.5 p-2 rounded-lg transition ${
+                              className={`flex items-start gap-2.5 p-2 rounded-xl transition ${
                                 isCurrent
                                   ? "bg-red-50 text-primary font-bold"
                                   : "bg-white hover:bg-slate-100 text-slate-700"
                               }`}
                             >
                               <div
-                                className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${
+                                className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                                   isCurrent
                                     ? "bg-primary text-white"
                                     : "bg-slate-100 text-slate-600"
                                 }`}
                               >
-                                <IconComp className="w-3.5 h-3.5" />
+                                <IconComp className="w-4 h-4" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between">
@@ -723,7 +668,7 @@ export default function Navbar() {
                                     {item.label}
                                   </span>
                                   {item.badge && (
-                                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                                    <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
                                       {item.badge}
                                     </span>
                                   )}
@@ -747,7 +692,7 @@ export default function Navbar() {
               <Link
                 href="/news"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition ${
+                className={`block py-2 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition ${
                   pathname === "/news"
                     ? "bg-red-50 text-primary font-black"
                     : "text-slate-700 hover:bg-slate-50"
@@ -778,14 +723,24 @@ export default function Navbar() {
                   <span>My Athlete Hub</span>
                 </Link>
               ) : currentUser.role === "COACH" ? (
-                <Link
-                  href="/scout"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1.5"
-                >
-                  <Compass className="w-4 h-4 text-emerald-600" />
-                  <span>Coach Hub</span>
-                </Link>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href="/scout"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1.5"
+                  >
+                    <Compass className="w-4 h-4 text-emerald-600" />
+                    <span>Scout Hub</span>
+                  </Link>
+                  <Link
+                    href="/team"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1.5"
+                  >
+                    <Users className="w-4 h-4 text-slate-600" />
+                    <span>Team Hub</span>
+                  </Link>
+                </div>
               ) : (
                 <Link
                   href="/tournaments"

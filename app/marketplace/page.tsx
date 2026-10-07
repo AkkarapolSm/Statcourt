@@ -10,6 +10,7 @@ import { MarketplaceItem } from "@/lib/types";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import PricingModal from "@/components/premium/PricingModal";
 import { getMaxMarketplaceItems } from "@/lib/permissions";
+import { X, Send, ShieldCheck, CheckCircle2, ChevronDown } from "lucide-react";
 
 export default function MarketplacePage() {
   const { currentUser, toggleSubscriptionTier } = useAuthStore();
@@ -129,7 +130,7 @@ export default function MarketplacePage() {
     setActiveInquiryItem(item);
     setInquirySent(false);
     setInquiryMessage(
-      `Hello ${item.sellerName}, I am interested in purchasing your ${item.title} (Size: ${item.size}). Is it still available for direct inspection/escrow pickup?`
+      `สวัสดีครับคุณ ${item.sellerName}, สนใจสั่งซื้อ ${item.title} (ไซส์ ${item.size}, สภาพ ${item.condition}) ยังมีสินค้าพร้อมนัดรับ/จัดส่งอยู่ไหมครับ?`
     );
   };
 
@@ -286,127 +287,171 @@ export default function MarketplacePage() {
 
       {/* Direct Inquiry Modal */}
       {activeInquiryItem && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-outline-variant">
+        <div
+          className="fixed inset-0 z-50 bg-[#0B1C30]/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200 font-thai"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="bg-white rounded-2xl border border-slate-200 max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 text-[#0B1C30] max-h-[92vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between pb-3.5 border-b border-slate-100">
               <div>
-                <span className="bg-primary text-on-primary px-2 py-0.5 rounded font-label-badge text-label-badge uppercase font-bold tracking-wider">
-                  DIRECT ATHLETE INQUIRY
-                </span>
-                <h3 className="font-headline-md text-headline-md uppercase text-on-surface mt-1">
-                  Contact {activeInquiryItem.sellerName}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 text-[#AF101A] border border-red-200 text-[11px] font-semibold mb-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>ติดต่อซื้อสินค้าจากนักกีฬาโดยตรง</span>
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-[#0B1C30] flex items-center gap-1.5 flex-wrap">
+                  <span>ส่งข้อความถึง {activeInquiryItem.sellerName}</span>
+                  {activeInquiryItem.isSellerVerified && (
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-full font-medium">
+                      ยืนยันตัวตนแล้ว
+                    </span>
+                  )}
                 </h3>
               </div>
               <button
+                type="button"
                 onClick={() => setActiveInquiryItem(null)}
-                className="text-secondary hover:text-on-surface"
+                className="p-1 rounded-lg text-slate-400 hover:text-[#0B1C30] hover:bg-slate-100 transition"
+                aria-label="ปิดหน้าต่าง"
               >
-                <span className="material-symbols-outlined text-xl">close</span>
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             {inquirySent ? (
-              <div className="py-8 text-center space-y-2">
-                <span
-                  className="material-symbols-outlined text-primary text-5xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  check_circle
-                </span>
-                <h4 className="font-headline-md text-headline-md uppercase text-on-surface">
-                  Inquiry Transmitted Successfully!
+              <div className="py-8 text-center space-y-3">
+                <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-xs">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h4 className="text-base font-bold text-[#0B1C30]">
+                  ส่งข้อความถึงนักกีฬาเรียบร้อยแล้ว!
                 </h4>
-                <p className="text-body-sm text-secondary">
-                  Athlete will receive courtside dispatch notification via SMS / Line.
+                <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                  ระบบได้ส่งการแจ้งเตือนไปยัง SMS / LINE ของนักกีฬาเรียบร้อยแล้ว นักกีฬาจะติดต่อกลับตามข้อมูลที่คุณระบุไว้
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSendInquiry} className="space-y-3.5">
-                <div className="p-3 bg-surface-container-low rounded border border-outline-variant/60 flex items-center justify-between text-body-sm">
-                  <span className="text-secondary truncate max-w-[240px] font-semibold">
-                    {activeInquiryItem.title}
-                  </span>
-                  <span className="font-title-stat text-lg text-primary font-bold">
-                    ฿{activeInquiryItem.priceThb.toLocaleString()} THB
-                  </span>
+              <form onSubmit={handleSendInquiry} className="space-y-4">
+                {/* Product Dossier Card */}
+                <div className="p-3 bg-[#F8F9FF] rounded-xl border border-[#DFE2EB] flex items-center gap-3">
+                  {activeInquiryItem.imageUrls?.[0] ? (
+                    <img
+                      src={activeInquiryItem.imageUrls[0]}
+                      alt={activeInquiryItem.title}
+                      className="w-14 h-14 rounded-lg object-cover border border-slate-200 shrink-0 bg-white"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-lg bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center text-slate-400 text-xs">
+                      No Img
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-xs sm:text-sm text-[#0B1C30] truncate">
+                      {activeInquiryItem.title}
+                    </h4>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-semibold text-slate-600">
+                        ไซส์ {activeInquiryItem.size}
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-semibold text-slate-600">
+                        {activeInquiryItem.condition}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-[11px] text-slate-400 font-medium">ราคาเสนอขาย</div>
+                    <div className="text-base sm:text-lg font-bold text-[#AF101A] tabular-nums">
+                      ฿{activeInquiryItem.priceThb.toLocaleString()}
+                    </div>
+                  </div>
                 </div>
 
+                {/* Form Fields */}
                 <div>
-                  <label className="font-label-caps uppercase text-secondary font-bold block mb-1">
-                    Your Full Name *
+                  <label htmlFor="inquiry-buyer-name" className="text-xs font-semibold text-[#0B1C30] block mb-1.5">
+                    ชื่อ-นามสกุล ของคุณ <span className="text-[#AF101A]">*</span>
                   </label>
                   <input
+                    id="inquiry-buyer-name"
                     type="text"
                     required
                     value={buyerName}
                     onChange={(e) => setBuyerName(e.target.value)}
-                    placeholder="e.g. Somchai Srivichai"
-                    className="w-full text-body-md p-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                    placeholder="เช่น สมชาย ศรีวิชัย"
+                    className="w-full text-xs sm:text-sm h-11 px-3.5 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] transition-all text-[#0B1C30]"
                   />
                 </div>
 
                 <div>
-                  <label className="font-label-caps uppercase text-secondary font-bold block mb-1">
-                    Contact Phone / Line ID *
+                  <label htmlFor="inquiry-buyer-contact" className="text-xs font-semibold text-[#0B1C30] block mb-1.5">
+                    เบอร์โทรศัพท์ หรือ LINE ID <span className="text-[#AF101A]">*</span>
                   </label>
                   <input
+                    id="inquiry-buyer-contact"
                     type="text"
                     required
                     value={buyerContact}
                     onChange={(e) => setBuyerContact(e.target.value)}
-                    placeholder="e.g. 081-234-5678 or LineID: athlete_th"
-                    className="w-full text-body-md p-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                    placeholder="เช่น 081-234-5678 หรือ Line ID: somchai_bball"
+                    className="w-full text-xs sm:text-sm h-11 px-3.5 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] transition-all text-[#0B1C30]"
                   />
                 </div>
 
                 <div>
-                  <label className="font-label-caps uppercase text-secondary font-bold block mb-1">
-                    Proposed Pickup / Delivery Method
+                  <label htmlFor="inquiry-pickup-location" className="text-xs font-semibold text-[#0B1C30] block mb-1.5">
+                    รูปแบบการรับสินค้า / สถานที่นัดรับ
                   </label>
-                  <select
-                    value={pickupLocation}
-                    onChange={(e) => setPickupLocation(e.target.value)}
-                    className="w-full text-body-md p-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary"
-                  >
-                    <option value="Siam Square / BTS Siam">
-                      In-Person: Siam Square / BTS Siam (Bangkok)
-                    </option>
-                    <option value="Mega Bangna">In-Person: Mega Bangna</option>
-                    <option value="Nimibutr Stadium">
-                      In-Person: Nimibutr Stadium (Tournament Venue)
-                    </option>
-                    <option value="Kerry Express / Flash Express">
-                      Postal: Kerry Express / Flash Express
-                    </option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      id="inquiry-pickup-location"
+                      value={pickupLocation}
+                      onChange={(e) => setPickupLocation(e.target.value)}
+                      className="w-full text-xs sm:text-sm h-11 px-3.5 pr-9 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] transition-all text-[#0B1C30] appearance-none cursor-pointer"
+                    >
+                      <option value="Siam Square / BTS Siam">นัดรับด้วยตัวเอง: สยามสแควร์ / BTS สยาม (กรุงเทพฯ)</option>
+                      <option value="Mega Bangna">นัดรับด้วยตัวเอง: เมกาบางนา (Mega Bangna)</option>
+                      <option value="Nimibutr Stadium">นัดรับที่สนามแข่งขัน: อาคารนิมิบุตร (สนามทัวร์นาเมนต์)</option>
+                      <option value="Kerry Express / Flash Express">จัดส่งพัสดุ: Kerry Express / Flash Express (มีค่าส่ง)</option>
+                    </select>
+                    <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="font-label-caps uppercase text-secondary font-bold block mb-1">
-                    Message
+                  <label htmlFor="inquiry-message" className="text-xs font-semibold text-[#0B1C30] block mb-1.5">
+                    ข้อความถึงนักกีฬา
                   </label>
                   <textarea
+                    id="inquiry-message"
                     rows={3}
                     value={inquiryMessage}
                     onChange={(e) => setInquiryMessage(e.target.value)}
-                    className="w-full text-body-md p-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                    className="w-full text-xs sm:text-sm p-3 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] transition-all text-[#0B1C30] resize-none leading-relaxed"
                   />
                 </div>
 
-                <div className="pt-2 flex items-center justify-end gap-2">
+                {/* Trust Banner */}
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center gap-2 text-[11px] text-slate-500">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>ระบบจะส่งข้อความแจ้งเตือนผ่าน SMS / LINE ของนักกีฬา ข้อมูลของคุณจะถูกเก็บเป็นความลับ</span>
+                </div>
+
+                {/* Modal Actions */}
+                <div className="pt-2 flex items-center justify-end gap-2.5">
                   <button
                     type="button"
                     onClick={() => setActiveInquiryItem(null)}
-                    className="px-4 py-2 rounded text-body-sm font-semibold text-secondary hover:bg-surface-container"
+                    className="px-4 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:text-[#0B1C30] hover:bg-slate-100 transition cursor-pointer"
                   >
-                    Cancel
+                    ยกเลิก
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded font-headline-sm uppercase font-bold bg-primary hover:bg-primary-container text-on-primary flex items-center gap-1.5 shadow"
+                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#AF101A] to-[#8E0D15] hover:from-[#C71520] hover:to-[#9F1018] text-white text-xs font-semibold flex items-center gap-2 shadow-md hover:shadow-red-900/20 transition-all cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-base">send</span>
-                    <span>SEND INQUIRY</span>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>ส่งข้อความถึงนักกีฬา</span>
                   </button>
                 </div>
               </form>

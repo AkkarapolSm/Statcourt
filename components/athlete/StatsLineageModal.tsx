@@ -121,23 +121,23 @@ export default function StatsLineageModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-[#0B1C30]/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="stats-lineage-title"
-        className="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-900"
+        className="bg-white border border-[#DFE2EB] rounded-2xl shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-900"
       >
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-slate-950 via-[#0B1C30] to-slate-950 text-white p-5 sm:p-6 border-b border-slate-800 flex items-start justify-between gap-4">
+        <div className="bg-[#0B1C30] text-white p-5 sm:p-6 border-b border-[#213145] flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono font-bold uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>FEDERATION STATS LINEAGE &amp; PROVENANCE (3.6)</span>
             </div>
-            <h2 id="stats-lineage-title" className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2.5">
+            <h2 id="stats-lineage-title" className="text-xl sm:text-2xl font-bold font-headline text-white flex items-center gap-2.5">
               <span>ประวัติและที่มาของสถิติ:</span>
-              <span className="text-amber-400 font-sans font-bold">
+              <span className="text-amber-400 font-headline font-bold">
                 {data?.athlete?.fullName || "นักกีฬา"}
               </span>
             </h2>
@@ -150,27 +150,27 @@ export default function StatsLineageModal({
             type="button"
             onClick={onClose}
             aria-label="ปิดหน้าต่างประวัติสถิติ"
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white transition cursor-pointer shrink-0"
+            className="p-2 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-300 hover:text-white transition cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-[#F8FAFC]">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-[#F8F9FF]">
           {loading ? (
             <div className="py-20 text-center space-y-3">
               <div className="w-10 h-10 border-4 border-[#AF101A] border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-xs font-mono font-bold text-slate-600">กำลังตรวจสอบสายสัมพันธ์สถิติจากใบบันทึกคะแนน (Loading Lineage Ledger)...</p>
+              <p className="text-xs font-sans font-medium text-slate-600">กำลังตรวจสอบสายสัมพันธ์สถิติจากใบบันทึกคะแนน (Loading Lineage Ledger)...</p>
             </div>
           ) : error ? (
-            <div className="p-8 text-center bg-red-50 border border-red-200 rounded-2xl space-y-3">
+            <div className="p-8 text-center bg-red-50 border border-red-200 rounded-2xl space-y-3 font-sans">
               <ShieldAlert className="w-10 h-10 text-red-500 mx-auto" />
               <p className="text-sm font-bold text-red-800">{error}</p>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl bg-[#0B1C30] text-white text-xs font-mono font-bold hover:bg-slate-800 transition"
+                className="px-4 py-2 rounded-xl bg-[#0B1C30] text-white text-xs font-bold hover:bg-[#142C47] transition cursor-pointer"
               >
                 ปิดหน้าต่าง
               </button>
@@ -178,53 +178,53 @@ export default function StatsLineageModal({
           ) : data ? (
             <>
               {/* Summary Badges & Integrity Proof Card */}
-              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="bg-white border border-[#DFE2EB] rounded-2xl p-5 shadow-xs space-y-4">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-mono font-bold text-slate-500 uppercase block">ระดับความน่าเชื่อถือ</span>
+                    <span className="text-[11px] font-sans font-medium text-slate-500 block">ระดับความน่าเชื่อถือ</span>
                     <div className="flex items-center gap-1.5 text-emerald-600 font-bold text-sm">
                       <ShieldCheck className="w-4 h-4 shrink-0" />
-                      <span>{data.summary.trustScorePct}% FIBA CERTIFIED</span>
+                      <span className="font-mono tabular-nums">{data.summary.trustScorePct}% FIBA CERTIFIED</span>
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono">รับรองโดยสมาคมบาสเกตบอล</span>
+                    <span className="text-[10px] text-slate-400 font-sans">รับรองโดยสมาคมบาสเกตบอล</span>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-mono font-bold text-slate-500 uppercase block">แมตช์ที่นำมาคำนวณ</span>
-                    <div className="text-base font-black font-mono text-slate-900">
+                    <span className="text-[11px] font-sans font-medium text-slate-500 block">แมตช์ที่นำมาคำนวณ</span>
+                    <div className="text-base font-bold font-sans text-slate-900 tabular-nums">
                       {data.summary.certifiedGames} / {data.summary.totalGames} <span className="text-xs font-normal text-slate-500">เกม</span>
                     </div>
-                    <span className="text-[10px] text-emerald-600 font-mono font-bold">
+                    <span className="text-[10px] text-emerald-600 font-sans font-medium">
                       {data.summary.provisionalGames === 0 ? "● ทั้งหมดรับรองทางการแล้ว" : `● ${data.summary.provisionalGames} เกมรอรับรอง`}
                     </span>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-mono font-bold text-slate-500 uppercase block">สถิติสะสมที่ผ่านการตรวจ</span>
-                    <div className="text-base font-black font-mono text-[#AF101A]">
+                    <span className="text-[11px] font-sans font-medium text-slate-500 block">สถิติสะสมที่ผ่านการตรวจ</span>
+                    <div className="text-base font-bold font-sans text-[#AF101A] tabular-nums">
                       {data.summary.totalPoints} PTS • {data.summary.ppg} PPG
                     </div>
-                    <span className="text-[10px] text-slate-500 font-mono">
+                    <span className="text-[10px] text-slate-500 font-sans tabular-nums">
                       {data.summary.rpg} RPG • {data.summary.apg} APG • {data.summary.effPerGame} EFF
                     </span>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                    <span className="text-[11px] font-mono font-bold text-slate-500 uppercase block">สังกัดสโมสร / โรงเรียน</span>
-                    <div className="text-xs font-bold text-slate-900 truncate">
+                    <span className="text-[11px] font-sans font-medium text-slate-500 block">สังกัดสโมสร / โรงเรียน</span>
+                    <div className="text-xs font-bold text-slate-900 truncate font-sans">
                       {data.athlete.schoolOrClub || "ไม่ระบุสังกัด"}
                     </div>
-                    <span className="text-[10px] text-slate-500 font-mono">
+                    <span className="text-[10px] text-slate-500 font-sans">
                       #{data.athlete.jerseyNumber || "0"} • {data.athlete.primaryPosition}
                     </span>
                   </div>
                 </div>
 
                 {/* Cryptographic Seal & Verification Fingerprint */}
-                <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/80 p-3 rounded-xl border border-slate-200">
+                <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/80 p-3 rounded-xl border border-slate-200 font-sans">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-                      <FileCheck2 className="w-3.5 h-3.5 text-indigo-600" />
+                      <FileCheck2 className="w-3.5 h-3.5 text-[#AF101A]" />
                       <span>ลายเซ็นดิจิทัลรับรองสถิติ (Deterministic Cryptographic Seal)</span>
                     </div>
                     <p className="text-[11px] font-mono text-slate-500 break-all">
@@ -235,7 +235,7 @@ export default function StatsLineageModal({
                   <button
                     type="button"
                     onClick={handleCopyHash}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-xs font-mono font-bold text-slate-700 transition shadow-2xs cursor-pointer shrink-0 self-start sm:self-auto"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-medium text-slate-700 transition shadow-2xs cursor-pointer shrink-0 self-start sm:self-auto"
                   >
                     {copiedHash ? (
                       <>
@@ -253,15 +253,15 @@ export default function StatsLineageModal({
               </div>
 
               {/* View Tabs & Filters */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#DFE2EB]">
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setActiveTab("MATCHES")}
-                    className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer font-sans ${
                       activeTab === "MATCHES"
                         ? "bg-[#0B1C30] text-white shadow-xs"
-                        : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                        : "bg-white text-slate-600 border border-[#DFE2EB] hover:bg-slate-100"
                     }`}
                   >
                     <Layers className="w-3.5 h-3.5" />
@@ -271,10 +271,10 @@ export default function StatsLineageModal({
                   <button
                     type="button"
                     onClick={() => setActiveTab("TIMELINE")}
-                    className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer font-sans ${
                       activeTab === "TIMELINE"
                         ? "bg-[#0B1C30] text-white shadow-xs"
-                        : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                        : "bg-white text-slate-600 border border-[#DFE2EB] hover:bg-slate-100"
                     }`}
                   >
                     <History className="w-3.5 h-3.5" />
@@ -283,17 +283,17 @@ export default function StatsLineageModal({
                 </div>
 
                 {activeTab === "MATCHES" && (
-                  <div className="flex items-center gap-1.5 overflow-x-auto text-xs font-mono">
-                    <span className="text-slate-400 font-bold text-[11px] mr-1">สถานะ:</span>
+                  <div className="flex items-center gap-1.5 overflow-x-auto text-xs font-sans">
+                    <span className="text-slate-400 font-medium text-[11px] mr-1">สถานะ:</span>
                     {(["ALL", "CERTIFIED", "PROVISIONAL", "DISPUTED"] as const).map((st) => (
                       <button
                         key={st}
                         type="button"
                         onClick={() => setStatusFilter(st)}
-                        className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                        className={`px-2.5 py-1 rounded-xl text-[11px] font-medium transition cursor-pointer ${
                           statusFilter === st
-                            ? "bg-[#AF101A] text-white"
-                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                            ? "bg-[#AF101A] text-white font-bold"
+                            : "bg-white text-slate-600 border border-[#DFE2EB] hover:bg-slate-100"
                         }`}
                       >
                         {st === "ALL"
@@ -360,19 +360,19 @@ export default function StatsLineageModal({
                                   )}
                                 </span>
 
-                                <span className="text-xs font-mono text-slate-500">
+                                <span className="text-xs text-slate-500 font-sans">
                                   {m.scheduledAt ? new Date(m.scheduledAt).toLocaleDateString("th-TH") : "ไม่ระบุวัน"} • {m.venue}
                                 </span>
                               </div>
 
-                              <div className="text-sm font-bold text-slate-900">
+                              <div className="text-sm font-bold text-slate-900 font-sans">
                                 <span>{m.tournamentName}</span>
-                                <span className="text-xs text-slate-500 font-mono ml-2">({m.tournamentCategory})</span>
+                                <span className="text-xs text-slate-500 ml-2 font-mono">({m.tournamentCategory})</span>
                               </div>
 
-                              <div className="text-xs font-mono text-slate-600">
-                                คู่แข่งขัน: <span className="font-bold text-slate-900">{m.homeTeamName}</span> {m.homeScore} - {m.awayScore} <span className="font-bold text-slate-900">{m.awayTeamName}</span>
-                                <span className={`ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold ${m.isWin ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
+                              <div className="text-xs text-slate-600 font-sans">
+                                คู่แข่งขัน: <span className="font-bold text-slate-900">{m.homeTeamName}</span> <span className="tabular-nums font-mono">{m.homeScore} - {m.awayScore}</span> <span className="font-bold text-slate-900">{m.awayTeamName}</span>
+                                <span className={`ml-2 px-2 py-0.5 rounded-full text-[10px] font-bold ${m.isWin ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
                                   {m.isWin ? "WIN (ชนะ)" : "LOSS (แพ้)"}
                                 </span>
                               </div>
@@ -381,10 +381,10 @@ export default function StatsLineageModal({
                             {/* Performance in this match */}
                             <div className="flex items-center gap-4 sm:gap-6 self-start lg:self-auto">
                               <div className="text-right">
-                                <div className="text-lg font-black font-mono text-[#AF101A]">
+                                <div className="text-lg font-black font-sans text-[#AF101A] tabular-nums">
                                   {m.boxscore.points} <span className="text-xs font-normal text-slate-500">PTS</span>
                                 </div>
-                                <div className="text-[11px] text-slate-500 font-mono">
+                                <div className="text-[11px] text-slate-500 font-sans tabular-nums">
                                   {m.boxscore.rebounds} REB • {m.boxscore.assists} AST • {m.boxscore.fibaEfficiency} EFF
                                 </div>
                               </div>
@@ -399,57 +399,57 @@ export default function StatsLineageModal({
                           {isExpanded && (
                             <div className="border-t border-slate-100 bg-slate-50/60 p-4 sm:p-5 space-y-4 animate-in slide-in-from-top-1 duration-200">
                               {/* Boxscore Metrics Grid */}
-                              <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-                                <h4 className="text-xs font-bold text-slate-800 font-mono uppercase tracking-wider flex items-center gap-1.5">
+                              <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3 font-sans">
+                                <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                                   <Award className="w-3.5 h-3.5 text-[#AF101A]" />
                                   <span>ใบบันทึกสถิติรายบุคคลในแมตช์นี้ (Official Boxscore)</span>
                                 </h4>
 
-                                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs font-mono">
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">POINTS</span>
-                                    <span className="font-bold text-sm text-[#AF101A]">{m.boxscore.points}</span>
+                                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs">
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">POINTS</span>
+                                    <span className="font-bold text-sm text-[#AF101A] font-mono tabular-nums">{m.boxscore.points}</span>
                                   </div>
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">2PT (M/A)</span>
-                                    <span className="font-bold text-slate-800">{m.boxscore.fg2Made}/{m.boxscore.fg2Made + m.boxscore.fg2Missed}</span>
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">2PT (M/A)</span>
+                                    <span className="font-bold text-slate-800 font-mono tabular-nums">{m.boxscore.fg2Made}/{m.boxscore.fg2Made + m.boxscore.fg2Missed}</span>
                                   </div>
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">3PT (M/A)</span>
-                                    <span className="font-bold text-slate-800">{m.boxscore.fg3Made}/{m.boxscore.fg3Made + m.boxscore.fg3Missed}</span>
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">3PT (M/A)</span>
+                                    <span className="font-bold text-slate-800 font-mono tabular-nums">{m.boxscore.fg3Made}/{m.boxscore.fg3Made + m.boxscore.fg3Missed}</span>
                                   </div>
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">FT (M/A)</span>
-                                    <span className="font-bold text-slate-800">{m.boxscore.ftMade}/{m.boxscore.ftMade + m.boxscore.ftMissed}</span>
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">FT (M/A)</span>
+                                    <span className="font-bold text-slate-800 font-mono tabular-nums">{m.boxscore.ftMade}/{m.boxscore.ftMade + m.boxscore.ftMissed}</span>
                                   </div>
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">REB (O/D)</span>
-                                    <span className="font-bold text-slate-800">{m.boxscore.rebounds} ({m.boxscore.offensiveRebounds}/{m.boxscore.defensiveRebounds})</span>
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">REB (O/D)</span>
+                                    <span className="font-bold text-slate-800 font-mono tabular-nums">{m.boxscore.rebounds} ({m.boxscore.offensiveRebounds}/{m.boxscore.defensiveRebounds})</span>
                                   </div>
-                                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                    <span className="text-[10px] text-slate-400 block">FIBA EFF</span>
-                                    <span className="font-bold text-emerald-700">+{m.boxscore.fibaEfficiency}</span>
+                                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span className="text-[10px] text-slate-400 block font-mono">FIBA EFF</span>
+                                    <span className="font-bold text-emerald-700 font-mono tabular-nums">+{m.boxscore.fibaEfficiency}</span>
                                   </div>
                                 </div>
 
-                                <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 font-mono pt-1">
-                                  <span>แอสซิสต์: {m.boxscore.assists} • สตีล: {m.boxscore.steals} • บล็อก: {m.boxscore.blocks} • เทิร์นโอเวอร์: {m.boxscore.turnovers} • ฟาวล์: {m.boxscore.fouls}</span>
-                                  <span>ลงเล่น: {m.boxscore.minutesPlayed} นาที {m.boxscore.isStarter ? "(ผู้เล่นตัวจริง)" : "(ตัวสำรอง)"}</span>
+                                <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 font-sans pt-1">
+                                  <span>แอสซิสต์: <strong className="font-mono tabular-nums">{m.boxscore.assists}</strong> • สตีล: <strong className="font-mono tabular-nums">{m.boxscore.steals}</strong> • บล็อก: <strong className="font-mono tabular-nums">{m.boxscore.blocks}</strong> • เทิร์นโอเวอร์: <strong className="font-mono tabular-nums">{m.boxscore.turnovers}</strong> • ฟาวล์: <strong className="font-mono tabular-nums">{m.boxscore.fouls}</strong></span>
+                                  <span>ลงเล่น: <strong className="font-mono tabular-nums">{m.boxscore.minutesPlayed}</strong> นาที {m.boxscore.isStarter ? "(ผู้เล่นตัวจริง)" : "(ตัวสำรอง)"}</span>
                                 </div>
                               </div>
 
                               {/* Certification & Authority Verification Box */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-sans">
                                 <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-2xs">
-                                  <div className="flex items-center gap-1.5 text-slate-700 font-bold font-mono">
+                                  <div className="flex items-center gap-1.5 text-slate-700 font-bold">
                                     <UserCheck className="w-4 h-4 text-emerald-600" />
                                     <span>ผู้รับรองผลการแข่งขัน (Certifying Authority)</span>
                                   </div>
                                   {m.certification.certifiedBy ? (
                                     <div className="space-y-0.5 text-slate-600">
                                       <p className="font-bold text-slate-900">{m.certification.certifiedBy.name}</p>
-                                      <p className="text-[11px] font-mono text-slate-500">{m.certification.certifiedBy.email} ({m.certification.certifiedBy.role})</p>
-                                      <p className="text-[10px] font-mono text-emerald-700">
+                                      <p className="text-[11px] text-slate-500">{m.certification.certifiedBy.email} ({m.certification.certifiedBy.role})</p>
+                                      <p className="text-[10px] text-emerald-700">
                                         ลงนามรับรองเมื่อ: {m.certification.certifiedAt ? new Date(m.certification.certifiedAt).toLocaleString("th-TH") : "-"}
                                       </p>
                                     </div>
@@ -459,15 +459,15 @@ export default function StatsLineageModal({
                                 </div>
 
                                 <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-2xs">
-                                  <div className="flex items-center gap-1.5 text-slate-700 font-bold font-mono">
-                                    <Award className="w-4 h-4 text-indigo-600" />
+                                  <div className="flex items-center gap-1.5 text-slate-700 font-bold">
+                                    <Award className="w-4 h-4 text-[#AF101A]" />
                                     <span>กรรมการบันทึกโต๊ะเทคนิค (Table Officials)</span>
                                   </div>
                                   <div className="space-y-1">
                                     {m.certification.tableOfficials.map((off, idx) => (
-                                      <div key={idx} className="text-slate-600 text-[11px] font-mono">
+                                      <div key={idx} className="text-slate-600 text-[11px]">
                                         <span className="font-bold text-slate-900">{off.name}</span>
-                                        <span className="text-slate-500 ml-1.5">[{off.licenseNumber || "BSAT License"}]</span>
+                                        <span className="text-slate-500 ml-1.5 font-mono">[{off.licenseNumber || "BSAT License"}]</span>
                                       </div>
                                     ))}
                                   </div>
@@ -476,15 +476,15 @@ export default function StatsLineageModal({
 
                               {/* Dispute / Reopen Audit History Alert (if any) */}
                               {m.reopenHistory.length > 0 && (
-                                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1.5">
-                                  <div className="flex items-center gap-1.5 font-bold font-mono text-amber-800">
+                                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1.5 font-sans">
+                                  <div className="flex items-center gap-1.5 font-bold text-amber-800">
                                     <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                                     <span>ประวัติการเปิดคำร้องทักท้วง / ตรวจสอบผลแข่งขัน (Dispute Audit History)</span>
                                   </div>
                                   {m.reopenHistory.map((rh) => (
                                     <div key={rh.id} className="pl-5 text-[11px] space-y-0.5">
                                       <p className="font-semibold text-amber-900">• เหตุผล: &quot;{rh.reason || "ขอเปิดแก้ไขใบบันทึกคะแนน"}&quot;</p>
-                                      <p className="text-slate-600 font-mono">โดย {rh.approverName} เมื่อ {new Date(rh.createdAt).toLocaleString("th-TH")}</p>
+                                      <p className="text-slate-600">โดย {rh.approverName} เมื่อ {new Date(rh.createdAt).toLocaleString("th-TH")}</p>
                                     </div>
                                   ))}
                                 </div>
@@ -492,24 +492,24 @@ export default function StatsLineageModal({
 
                               {/* Play-by-Play Event Ledger Table */}
                               {m.eventsLedger.length > 0 && (
-                                <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2">
+                                <div className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2 font-sans">
                                   <div className="flex items-center justify-between">
-                                    <span className="text-xs font-mono font-bold text-slate-700 uppercase">
+                                    <span className="text-xs font-bold text-slate-700">
                                       ใบบันทึกเหตุการณ์ Play-by-Play ({m.eventsLedger.length} รายการ)
                                     </span>
-                                    <span className="text-[10px] font-mono text-slate-400">บันทึกสดขณะแข่งขัน</span>
+                                    <span className="text-[10px] text-slate-400">บันทึกสดขณะแข่งขัน</span>
                                   </div>
 
                                   <div className="max-h-48 overflow-y-auto divide-y divide-slate-100 text-xs">
                                     {m.eventsLedger.map((ev) => (
-                                      <div key={ev.id} className="py-1.5 flex items-center justify-between gap-2 text-[11px] font-mono">
+                                      <div key={ev.id} className="py-1.5 flex items-center justify-between gap-2 text-[11px]">
                                         <div className="flex items-center gap-2">
-                                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-bold">
+                                          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold font-mono">
                                             Q{ev.quarter} • {ev.gameClockDisplay}
                                           </span>
-                                          <span className="font-semibold text-slate-800">{ev.eventType.replace(/_/g, " ")}</span>
+                                          <span className="font-medium text-slate-800">{ev.eventType.replace(/_/g, " ")}</span>
                                           {ev.points > 0 && (
-                                            <span className="text-[#AF101A] font-bold">+{ev.points} PTS</span>
+                                            <span className="text-[#AF101A] font-bold font-mono tabular-nums">+{ev.points} PTS</span>
                                           )}
                                         </div>
                                         <span className="text-[10px] text-slate-400">ผู้ตรวจ: {ev.officialName}</span>
@@ -529,10 +529,10 @@ export default function StatsLineageModal({
 
               {/* Tab 2: Chronological Audit Timeline */}
               {activeTab === "TIMELINE" && (
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-6 font-sans">
                   <div className="border-b border-slate-100 pb-3">
                     <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      <History className="w-4 h-4 text-indigo-600" />
+                      <History className="w-4 h-4 text-[#AF101A]" />
                       <span>บันทึกสายสัมพันธ์เหตุการณ์ตามลำดับเวลา (Chronological Audit Ledger)</span>
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
@@ -541,7 +541,7 @@ export default function StatsLineageModal({
                   </div>
 
                   {data.timeline.length === 0 ? (
-                    <p className="text-xs text-slate-500 font-mono py-8 text-center">ไม่มีบันทึกเหตุการณ์ประวัติสถิติ</p>
+                    <p className="text-xs text-slate-500 py-8 text-center">ไม่มีบันทึกเหตุการณ์ประวัติสถิติ</p>
                   ) : (
                     <div className="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
                       {data.timeline.map((item) => (
@@ -549,12 +549,12 @@ export default function StatsLineageModal({
                           <span className={`absolute -left-6 top-1 w-3.5 h-3.5 rounded-full border-2 border-white ${item.badgeColor}`} />
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-xs font-bold text-slate-900">{item.title}</span>
-                            <span className="text-[11px] font-mono text-slate-400">
+                            <span className="text-[11px] text-slate-400 font-mono tabular-nums">
                               {new Date(item.timestamp).toLocaleString("th-TH")}
                             </span>
                           </div>
                           <p className="text-xs text-slate-600 font-sans">{item.description}</p>
-                          <span className="inline-block text-[10px] font-mono text-slate-400">ผู้ดำเนินการ: {item.actor}</span>
+                          <span className="inline-block text-[10px] text-slate-400">ผู้ดำเนินการ: {item.actor}</span>
                         </div>
                       ))}
                     </div>
@@ -566,7 +566,7 @@ export default function StatsLineageModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 sm:p-5 bg-white border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+        <div className="p-4 sm:p-5 bg-white border-t border-[#DFE2EB] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans">
           <div className="text-slate-500 text-[11px] flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>มาตรฐานข้อมูลสถิติระดับชาติ สมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT x StatCourtTH)</span>
@@ -576,7 +576,7 @@ export default function StatsLineageModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition cursor-pointer"
             >
               ปิดหน้าต่าง
             </button>

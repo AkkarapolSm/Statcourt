@@ -287,23 +287,23 @@ export default function AccountSecurityModal({
   const passwordStrength = calculatePasswordStrength(newPassword);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden font-sans text-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden font-sans text-slate-800">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-5 sm:px-6 bg-slate-900 text-white shrink-0">
+        <div className="flex items-center justify-between p-5 sm:px-6 bg-[#071322] border-b border-[#213145] text-white shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
-              <KeyRound className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-red-300 shrink-0">
+              <KeyRound className="w-5 h-5 text-[#AF101A]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-rose-400 bg-rose-400/10 border border-rose-400/20 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-400 bg-red-400/10 border border-red-400/20 px-2 py-0.5 rounded-full">
                   ACCOUNT LIFECYCLE &amp; SECURITY
                 </span>
                 <span className="text-slate-400 font-mono text-xs">{currentUser.role}</span>
               </div>
-              <h2 className="text-base sm:text-lg font-bold font-mono tracking-tight text-white mt-0.5">
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5">
                 การจัดการบัญชีและความปลอดภัย
               </h2>
             </div>
@@ -311,19 +311,19 @@ export default function AccountSecurityModal({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#213145]/60 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Strip */}
-        <div className="flex items-center gap-2 p-3 bg-slate-100 border-b border-slate-200 overflow-x-auto text-xs font-mono shrink-0">
+        <div className="flex items-center gap-2 p-3 bg-slate-100 border-b border-slate-200 overflow-x-auto text-xs font-sans shrink-0">
           <button
             onClick={() => { setActiveTab("EMAIL"); setMessage(null); }}
             className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
               activeTab === "EMAIL"
-                ? "bg-slate-900 text-white shadow-xs"
+                ? "bg-[#071322] text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -335,7 +335,7 @@ export default function AccountSecurityModal({
             onClick={() => { setActiveTab("PASSWORD"); setMessage(null); }}
             className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
               activeTab === "PASSWORD"
-                ? "bg-slate-900 text-white shadow-xs"
+                ? "bg-[#071322] text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -347,7 +347,7 @@ export default function AccountSecurityModal({
             onClick={() => { setActiveTab("SESSIONS"); setMessage(null); fetchSessions(); }}
             className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
               activeTab === "SESSIONS"
-                ? "bg-slate-900 text-white shadow-xs"
+                ? "bg-[#071322] text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -360,8 +360,8 @@ export default function AccountSecurityModal({
               onClick={() => { setActiveTab("STEP_UP"); setMessage(null); checkStepUpStatus(); }}
               className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 activeTab === "STEP_UP"
-                  ? "bg-rose-600 text-white shadow-xs"
-                  : "text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200"
+                  ? "bg-[#AF101A] text-white shadow-xs"
+                  : "text-red-700 bg-red-50 hover:bg-red-100 border border-red-200"
               }`}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -373,7 +373,7 @@ export default function AccountSecurityModal({
         {/* Feedback Message */}
         {message && (
           <div
-            className={`p-3 px-6 text-xs font-mono flex items-center justify-between border-b ${
+            className={`p-3 px-6 text-xs font-sans flex items-center justify-between border-b ${
               message.type === "success"
                 ? "bg-emerald-50 text-emerald-800 border-emerald-200"
                 : "bg-red-50 text-red-800 border-red-200"
@@ -400,12 +400,12 @@ export default function AccountSecurityModal({
           {activeTab === "EMAIL" && (
             <div className="space-y-5">
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#AF101A] flex items-center justify-center shrink-0">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-slate-500 uppercase">อีเมลประจำบัญชี:</span>
+                    <span className="text-xs font-bold text-slate-500">อีเมลประจำบัญชี:</span>
                     <span className="text-sm font-bold text-slate-900 font-mono">
                       {emailStatus?.email || currentUser.email}
                     </span>
@@ -413,12 +413,12 @@ export default function AccountSecurityModal({
 
                   <div className="pt-1">
                     {emailStatus?.isVerified ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-xs font-bold">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                         <span>ยืนยันอีเมลแล้ว (Verified)</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-mono text-xs font-bold">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
                         <span>ยังไม่ยืนยันอีเมล (Pending Verification)</span>
                       </span>
@@ -430,10 +430,10 @@ export default function AccountSecurityModal({
               {!emailStatus?.isVerified && (
                 <div className="space-y-4 p-5 rounded-2xl border border-slate-200 bg-white">
                   <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-slate-900 font-mono">
+                    <h3 className="text-sm font-bold text-slate-900">
                       ขั้นตอนยืนยันที่อยู่อีเมล
                     </h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">
+                    <p className="text-xs text-slate-500 leading-relaxed font-sans">
                       กดปุ่มเพื่อรับรหัสยืนยันผ่านอีเมล หรือกรอกรหัสโทเค็น 32 หลักเพื่อยืนยันสถานะบัญชี
                     </p>
                   </div>
@@ -443,7 +443,7 @@ export default function AccountSecurityModal({
                       type="button"
                       onClick={handleRequestVerification}
                       disabled={requestingEmail}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-xs disabled:opacity-50 cursor-pointer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold transition shadow-xs disabled:opacity-50 cursor-pointer"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${requestingEmail ? "animate-spin" : ""}`} />
                       <span>{requestingEmail ? "กำลังส่งคำขอ..." : "ส่งรหัสยืนยันอีเมล"}</span>
@@ -451,7 +451,7 @@ export default function AccountSecurityModal({
                   </div>
 
                   <div className="space-y-2 pt-2 border-t border-slate-100">
-                    <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                    <label className="text-xs font-bold text-slate-700">
                       กรอกรหัสยืนยัน (Verification Token):
                     </label>
                     <div className="flex items-center gap-2">
@@ -460,13 +460,13 @@ export default function AccountSecurityModal({
                         value={verifyTokenInput}
                         onChange={(e) => setVerifyTokenInput(e.target.value)}
                         placeholder="วางโทเค็นที่ได้รับจากอีเมล..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                       />
                       <button
                         type="button"
                         onClick={handleConfirmVerification}
                         disabled={confirmingEmail || !verifyTokenInput.trim()}
-                        className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                        className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer"
                       >
                         {confirmingEmail ? "กำลังตรวจสอบ..." : "ยืนยัน"}
                       </button>
@@ -481,7 +481,7 @@ export default function AccountSecurityModal({
           {activeTab === "PASSWORD" && (
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                <label className="text-xs font-bold text-slate-700">
                   รหัสผ่านปัจจุบัน (Current Password):
                 </label>
                 <div className="relative">
@@ -490,7 +490,7 @@ export default function AccountSecurityModal({
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="กรอกรหัสผ่านปัจจุบัน..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white pr-10 focus:outline-hidden focus:ring-2 focus:ring-slate-800"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white pr-10 focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                   />
                   <button
                     type="button"
@@ -503,7 +503,7 @@ export default function AccountSecurityModal({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                <label className="text-xs font-bold text-slate-700">
                   รหัสผ่านใหม่ (New Password):
                 </label>
                 <input
@@ -511,7 +511,7 @@ export default function AccountSecurityModal({
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="ความยาวอย่างน้อย 12-128 ตัวอักษร..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-800"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                 />
 
                 {/* Password Strength Meter */}
@@ -524,12 +524,12 @@ export default function AccountSecurityModal({
                             ? "bg-emerald-500"
                             : passwordStrength >= 50
                             ? "bg-amber-500"
-                            : "bg-rose-500"
+                            : "bg-[#AF101A]"
                         }`}
                         style={{ width: `${passwordStrength}%` }}
                       />
                     </div>
-                    <div className="flex justify-between text-[10px] font-mono text-slate-400">
+                    <div className="flex justify-between text-[10px] text-slate-400 font-sans">
                       <span>ความปลอดภัยของรหัสผ่าน:</span>
                       <span className="font-bold">
                         {passwordStrength >= 80 ? "แข็งแรงมาก" : passwordStrength >= 50 ? "ปานกลาง" : "สั้นเกินไป"}
@@ -540,7 +540,7 @@ export default function AccountSecurityModal({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                <label className="text-xs font-bold text-slate-700">
                   ยืนยันรหัสผ่านใหม่ (Confirm New Password):
                 </label>
                 <input
@@ -548,11 +548,11 @@ export default function AccountSecurityModal({
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                   placeholder="กรอกรหัสผ่านใหม่อีกครั้ง..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-slate-800"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                 />
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-mono text-slate-600 leading-relaxed">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed font-sans">
                 🛡️ มาตรการความปลอดภัย: เมื่อเปลี่ยนรหัสผ่านสำเร็จ เซสชันบนอุปกรณ์อื่นทั้งหมดจะถูกปิดใช้งานทันที
               </div>
 
@@ -560,7 +560,7 @@ export default function AccountSecurityModal({
                 <button
                   type="submit"
                   disabled={changingPassword || newPassword.length < 12 || newPassword !== confirmNewPassword}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#071322] hover:bg-[#0B1C30] text-white text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
                 >
                   <KeyRound className={`w-3.5 h-3.5 ${changingPassword ? "animate-spin" : ""}`} />
                   <span>{changingPassword ? "กำลังเปลี่ยนรหัสผ่าน..." : "บันทึกรหัสผ่านใหม่"}</span>
@@ -574,10 +574,10 @@ export default function AccountSecurityModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <div>
-                  <h3 className="text-sm font-bold font-mono text-slate-900">
+                  <h3 className="text-sm font-bold text-slate-900">
                     อุปกรณ์ที่เข้าสู่ระบบอยู่ในขณะนี้
                   </h3>
-                  <p className="text-xs text-slate-500 font-mono">
+                  <p className="text-xs text-slate-500 font-sans">
                     คุณสามารถปิดเซสชันอุปกรณ์ที่ไม่รู้จักเพื่อป้องกันการเข้าถึงที่ไม่ได้รับอนุญาต
                   </p>
                 </div>
@@ -587,14 +587,14 @@ export default function AccountSecurityModal({
                     type="button"
                     onClick={handleRevokeOthers}
                     disabled={revokingOthers || sessions.length <= 1}
-                    className="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-mono text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition disabled:opacity-50 cursor-pointer"
                   >
                     {revokingOthers ? "กำลังออกจากระบบ..." : "ออกจากระบบอุปกรณ์อื่นทั้งหมด"}
                   </button>
                   <button
                     type="button"
                     onClick={fetchSessions}
-                    className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition"
+                    className="p-1.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition"
                   >
                     <RefreshCw className={`w-4 h-4 ${loadingSessions ? "animate-spin" : ""}`} />
                   </button>
@@ -606,14 +606,14 @@ export default function AccountSecurityModal({
                   <div
                     key={sess.id}
                     className={`p-4 flex items-center justify-between gap-4 transition ${
-                      sess.isCurrent ? "bg-indigo-50/40" : "hover:bg-slate-50"
+                      sess.isCurrent ? "bg-red-50/20" : "hover:bg-slate-50"
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
                       <div
                         className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                           sess.isCurrent
-                            ? "bg-indigo-600 text-white"
+                            ? "bg-[#AF101A] text-white"
                             : "bg-slate-100 text-slate-600"
                         }`}
                       >
@@ -630,15 +630,15 @@ export default function AccountSecurityModal({
                             {sess.ipAddress}
                           </span>
                           {sess.isCurrent && (
-                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold">
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
                               เซสชันปัจจุบันนี้ (Current)
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-500 font-mono truncate max-w-sm">
+                        <p className="text-[11px] text-slate-500 font-sans truncate max-w-sm">
                           {sess.userAgent}
                         </p>
-                        <p className="text-[10px] text-slate-400 font-mono">
+                        <p className="text-[10px] text-slate-400 font-mono tabular-nums">
                           เข้าสู่ระบบเมื่อ: {new Date(sess.createdAt).toLocaleString("th-TH")}
                         </p>
                       </div>
@@ -649,7 +649,7 @@ export default function AccountSecurityModal({
                         type="button"
                         onClick={() => handleRevokeSession(sess.id)}
                         disabled={revokingSessionId === sess.id}
-                        className="px-3 py-1.5 rounded-lg border border-slate-300 hover:border-red-300 hover:bg-red-50 text-slate-600 hover:text-red-700 font-mono text-xs font-bold transition shrink-0 cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl border border-slate-300 hover:border-red-300 hover:bg-red-50 text-slate-600 hover:text-red-700 text-xs font-bold transition shrink-0 cursor-pointer"
                       >
                         {revokingSessionId === sess.id ? "กำลังปิด..." : "ออกจากระบบ"}
                       </button>
@@ -663,26 +663,26 @@ export default function AccountSecurityModal({
           {/* TAB 4: ADMIN STEP-UP ELEVATION */}
           {activeTab === "STEP_UP" && isAdminOrOfficial && (
             <div className="space-y-5">
-              <div className="p-4 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
+              <div className="p-4 rounded-2xl bg-red-50/70 border border-red-100 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-[#AF101A] text-white flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-rose-950 uppercase">
+                    <span className="text-xs font-bold text-red-950">
                       สถานะการยืนยันสิทธิ์ขั้นสูง (Step-Up Elevation):
                     </span>
                     {isElevated ? (
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[11px] font-bold">
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold">
                         ACTIVE (ใช้งานได้ 15 นาที)
                       </span>
                     ) : (
-                      <span className="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 font-mono text-[11px] font-bold">
+                      <span className="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[11px] font-bold">
                         INACTIVE (ต้องยืนยันตัวตน)
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-rose-900/80 leading-relaxed">
+                  <p className="text-xs text-red-900/80 leading-relaxed font-sans">
                     ระบบป้องกันการแก้ไขคำขอสำคัญและการอนุมัติเจ้าหน้าที่ โดยกำหนดให้ Admin ต้องยืนยันรหัสผ่านหรือ PIN ทุก 15 นาที
                   </p>
                 </div>
@@ -690,7 +690,7 @@ export default function AccountSecurityModal({
 
               {!isElevated ? (
                 <form onSubmit={handleAdminStepUp} className="space-y-3 p-5 rounded-2xl border border-slate-200 bg-white">
-                  <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                  <label className="text-xs font-bold text-slate-700">
                     กรอกรหัสผ่าน Admin หรือ Official PIN:
                   </label>
                   <div className="flex items-center gap-2">
@@ -699,19 +699,19 @@ export default function AccountSecurityModal({
                       value={stepUpSecret}
                       onChange={(e) => setStepUpSecret(e.target.value)}
                       placeholder="รหัสผ่านผู้ดูแลระบบ หรือ PIN 6 หลัก..."
-                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-rose-500"
+                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                     />
                     <button
                       type="submit"
                       disabled={elevating || !stepUpSecret.trim()}
-                      className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-mono text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                      className="px-5 py-2.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer"
                     >
                       {elevating ? "กำลังยืนยัน..." : "ปลดล็อกสิทธิ์"}
                     </button>
                   </div>
                 </form>
               ) : (
-                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono flex items-center justify-between">
+                <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-sans flex items-center justify-between">
                   <span>✅ บัญชีของคุณได้รับการยกระดับสิทธิ์เรียบร้อยแล้ว สามารถปฏิบัติการสำคัญได้ทันที</span>
                   <button
                     type="button"

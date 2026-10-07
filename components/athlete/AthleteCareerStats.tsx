@@ -26,19 +26,19 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
   return (
     <div className="space-y-6">
       {/* FILTER TOOLBAR SECTION */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded p-4 shadow-sm">
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-4">
             {/* Competition Selector */}
             <div className="w-full sm:w-auto">
-              <label className="block text-[11px] font-label-caps text-secondary uppercase font-bold tracking-wider mb-1">
+              <label className="block text-[11px] font-label-caps text-secondary font-bold mb-1">
                 รายการแข่งขันทางการ (OFFICIAL TOURNAMENT)
               </label>
               <div className="relative">
                 <select
                   value={selectedCompetition}
                   onChange={(e) => setSelectedCompetition(e.target.value)}
-                  className="w-full sm:w-auto min-w-[280px] bg-white border border-outline-variant hover:border-slate-400 rounded-lg px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
+                  className="w-full sm:w-auto min-w-[280px] bg-white border border-outline-variant hover:border-slate-400 rounded-xl px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
                 >
                   <option value="ALL">ทัวร์นาเมนต์ทางการทั้งหมด (All Official)</option>
                   <option value="TOA_U18">TOA ชิงแชมป์ประเทศไทย U18 (BSAT)</option>
@@ -52,14 +52,14 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
 
             {/* Statistic Format Selector */}
             <div className="w-full sm:w-auto">
-              <label className="block text-[11px] font-label-caps text-secondary uppercase font-bold tracking-wider mb-1">
+              <label className="block text-[11px] font-label-caps text-secondary font-bold mb-1">
                 รูปแบบการแสดงผลสถิติ (STATISTICAL DISPLAY)
               </label>
               <div className="relative">
                 <select
                   value={statFormat}
                   onChange={(e) => setStatFormat(e.target.value)}
-                  className="w-full sm:w-auto min-w-[240px] bg-white border border-outline-variant hover:border-slate-400 rounded-lg px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
+                  className="w-full sm:w-auto min-w-[240px] bg-white border border-outline-variant hover:border-slate-400 rounded-xl px-3 py-2 pr-9 text-on-surface font-body-md text-sm font-semibold appearance-none focus:ring-2 focus:ring-[#AF101A]/20 focus:border-[#AF101A] cursor-pointer outline-none transition shadow-2xs"
                 >
                   <option value="PER_GAME">ค่าเฉลี่ยต่อเกม (Per Game)</option>
                   <option value="TOTALS">สถิติรวมสะสม (Totals)</option>
@@ -72,12 +72,12 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
 
             {/* Quick Metric Filter Chips */}
             <div className="hidden xl:flex items-end gap-1.5 self-end pb-0.5">
-              <span className="font-label-caps text-[10px] uppercase text-secondary mr-1 self-center">
+              <span className="font-label-caps text-[10px] text-secondary mr-1 self-center font-bold">
                 มุมมอง:
               </span>
               <button
                 onClick={() => setViewMode("STANDARD")}
-                className={`px-2.5 py-1 text-xs font-bold uppercase rounded transition-colors ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
                   viewMode === "STANDARD"
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
@@ -87,7 +87,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
               </button>
               <button
                 onClick={() => setViewMode("SHOOTING")}
-                className={`px-2.5 py-1 text-xs font-bold uppercase rounded transition-colors ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
                   viewMode === "SHOOTING"
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
@@ -97,7 +97,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
               </button>
               <button
                 onClick={() => setViewMode("ADVANCED")}
-                className={`px-2.5 py-1 text-xs font-bold uppercase rounded transition-colors ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
                   viewMode === "ADVANCED"
                     ? "bg-primary text-on-primary"
                     : "bg-surface-container hover:bg-surface-container-high text-on-surface"
@@ -112,7 +112,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-outline-variant">
             <button
               onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant hover:border-primary rounded bg-surface hover:bg-surface-container-low text-on-surface font-label-caps text-label-caps uppercase tracking-wider transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant hover:border-primary rounded-xl bg-surface hover:bg-surface-container-low text-on-surface font-label-caps text-label-caps transition-colors cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm text-primary">help_outline</span>
               <span>คำนิยามสถิติทางการ (STATISTICAL GLOSSARY)</span>
@@ -163,10 +163,10 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
         {/* Table Header & FIBA Validation Strip */}
         <div className="bg-surface-container-low px-4 py-3 border-b border-outline-variant flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
-            <span className="bg-primary-container text-on-primary-container font-headline-sm text-xs px-2 py-0.5 rounded tracking-widest font-bold">
+            <span className="bg-primary-container text-on-primary-container font-headline-sm text-xs px-2.5 py-0.5 rounded-md tracking-wider font-bold">
               FIBA LIVESTATS
             </span>
-            <h2 className="font-headline-sm text-headline-sm uppercase text-on-surface tracking-wide">
+            <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">
               บันทึกสถิติการแข่งขันสะสมระดับทัวร์นาเมนต์ (CAREER &amp; TOURNAMENT STATISTICAL RECORD)
             </h2>
           </div>
@@ -717,15 +717,15 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
-              <span className="bg-primary text-on-primary font-label-caps text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-widest flex items-center gap-1">
+              <span className="bg-primary text-on-primary font-label-caps text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-widest flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
                 สรุปผลงานสำคัญประจำฤดูกาล (SEASON PERFORMANCE SUMMARY)
               </span>
-              <span className="font-headline-sm text-headline-sm uppercase text-on-surface">
+              <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">
                 บันทึกผลงานดีเด่น: สถิติดับเบิล-ดับเบิลเฉลี่ยระดับทัวร์นาเมนต์
               </span>
             </div>
-            <span className="text-tertiary font-bold font-label-caps text-xs uppercase bg-tertiary-fixed/30 px-2 py-0.5 rounded border border-tertiary/20">
+            <span className="text-tertiary font-bold font-label-caps text-xs uppercase bg-tertiary-fixed/30 px-2.5 py-0.5 rounded-full border border-tertiary/20">
               โควตานักกีฬา TCAS อันดับ 1
             </span>
           </div>
@@ -739,49 +739,49 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           {/* Attribute Progress Meters & Radar Specs */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-3 border-t border-outline-variant">
             <div>
-              <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
+              <div className="flex justify-between text-[11px] font-label-caps mb-1">
                 <span className="text-secondary font-bold">ประสิทธิภาพใต้แป้น (Paint Scoring)</span>
-                <span className="text-primary font-bold">96%</span>
+                <span className="text-primary font-bold tabular-nums">96%</span>
               </div>
-              <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
-                <div className="bg-primary h-full rounded" style={{ width: "96%" }}></div>
+              <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+                <div className="bg-primary h-full rounded-full" style={{ width: "96%" }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
+              <div className="flex justify-between text-[11px] font-label-caps mb-1">
                 <span className="text-secondary font-bold">รีบาวด์เกมรุก (Offensive Rebounds)</span>
-                <span className="text-primary font-bold">91%</span>
+                <span className="text-primary font-bold tabular-nums">91%</span>
               </div>
-              <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
-                <div className="bg-primary h-full rounded" style={{ width: "91%" }}></div>
+              <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+                <div className="bg-primary h-full rounded-full" style={{ width: "91%" }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
+              <div className="flex justify-between text-[11px] font-label-caps mb-1">
                 <span className="text-secondary font-bold">ป้องกันห่วง / บล็อก (Rim Protection)</span>
-                <span className="text-primary font-bold">98%</span>
+                <span className="text-primary font-bold tabular-nums">98%</span>
               </div>
-              <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
-                <div className="bg-tertiary h-full rounded" style={{ width: "98%" }}></div>
+              <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+                <div className="bg-tertiary h-full rounded-full" style={{ width: "98%" }}></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-[11px] font-label-caps mb-1 uppercase">
+              <div className="flex justify-between text-[11px] font-label-caps mb-1">
                 <span className="text-secondary font-bold">ความแม่นยำลูกโทษ (Free Throw %)</span>
-                <span className="text-on-surface font-bold">62.5%</span>
+                <span className="text-on-surface font-bold tabular-nums">62.5%</span>
               </div>
-              <div className="w-full bg-surface-container h-1.5 rounded overflow-hidden">
-                <div className="bg-secondary h-full rounded" style={{ width: "62.5%" }}></div>
+              <div className="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+                <div className="bg-secondary h-full rounded-full" style={{ width: "62.5%" }}></div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Secondary Bento Card: Scout Verification Status */}
-        <div className="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded p-5 flex flex-col justify-between shadow-sm">
+        <div className="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 flex flex-col justify-between shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] font-label-caps uppercase text-secondary font-bold tracking-widest">
+              <span className="text-[11px] font-label-caps text-secondary font-bold">
                 การรับรองมาตรฐานสถิติและโควตา (OFFICIAL VERIFICATION)
               </span>
               <span className="w-2 h-2 rounded-full bg-[#16a34a]"></span>
@@ -792,7 +792,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                   verified_user
                 </span>
                 <div>
-                  <span className="block font-headline-sm text-sm uppercase text-on-surface leading-tight">
+                  <span className="block font-headline-sm text-sm uppercase text-on-surface leading-tight font-bold">
                     FIBA LiveStats Tier-1 Verified
                   </span>
                   <span className="text-[11px] text-secondary font-body-sm leading-relaxed block">
@@ -805,7 +805,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
                   school
                 </span>
                 <div>
-                  <span className="block font-headline-sm text-sm uppercase text-on-surface leading-tight">
+                  <span className="block font-headline-sm text-sm text-on-surface leading-tight font-bold">
                     เอกสารรับรองโควตากีฬา TCAS (สพฐ. / กกท.)
                   </span>
                   <span className="text-[11px] text-secondary font-body-sm leading-relaxed block">
@@ -819,7 +819,7 @@ export default function AthleteCareerStats({ athlete, stats }: AthleteCareerStat
           <div className="pt-4 border-t border-outline-variant mt-4">
             <button
               onClick={handleDownload}
-              className="w-full bg-inverse-surface hover:bg-slate-800 text-inverse-on-surface py-2 rounded font-label-caps text-label-caps uppercase tracking-wider font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full bg-inverse-surface hover:bg-slate-800 text-inverse-on-surface py-2.5 rounded-xl font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">download</span>
               <span>

@@ -1,7 +1,8 @@
 /* Route-scoped sports layouts retain the StatCourt palette and type system. */
-.sc-market, .sc-ranking, .sc-athlete-hero { --sc-ink: #0b1c30; --sc-red: #af101a; --sc-ice: #f8f9ff; font-family: "Noto Sans Thai", sans-serif; caret-color: #af101a; }
+.sc-market, .sc-ranking, .sc-athlete-hero { --sc-ink: #0b1c30; --sc-red: #af101a; --sc-ice: #f8f9ff; --sc-focus: #af101a; font-family: "Noto Sans Thai", sans-serif; caret-color: #af101a; }
 .sc-market :is(h1,h2,h3), .sc-ranking h1, .sc-athlete-hero :is(h1,h2), .sc-athlete-number { font-family: "Barlow Condensed", sans-serif; }
-:is(.sc-market,.sc-ranking,.sc-athlete-hero) :is(button,a,input,select,summary):focus-visible { outline: 3px solid #ff7a7a; outline-offset: 4px; }
+:is(.sc-market,.sc-ranking,.sc-athlete-hero) :is(button,a,input,select,summary):focus-visible { outline: 3px solid var(--sc-focus); outline-offset: 4px; }
+.sc-market-hero, .sc-market-top, .sc-market-promos section { --sc-focus: #ff7a7a; }
 :is(.sc-market,.sc-ranking,.sc-athlete-hero) button { cursor: pointer; }
 :is(.sc-market,.sc-ranking,.sc-athlete-hero) button:disabled { opacity: .4; cursor: not-allowed; }
 .sc-market { background: white; color: var(--sc-ink); }
@@ -15,7 +16,7 @@
 .sc-market-hero-copy h1 span { color: #ff7a7a; }
 .sc-market-hero-copy p { font-size: 15px; line-height: 1.8; margin: 26px 0; color: #e2eaf4; }
 .sc-market-hero-copy > div { display: flex; gap: 12px; flex-wrap: wrap; }
-.sc-sport-button { display: inline-flex; justify-content: center; align-items: center; gap: 20px; padding: 13px 19px; min-height: 46px; background: var(--sc-red); color: white; font-size: 12px; font-weight: 700; border: 1px solid transparent; transition: background .18s ease; }
+.sc-sport-button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; min-height: 44px; background: var(--sc-red); color: white; font-size: 12px; font-weight: 700; border-radius: 12px; border: 1px solid transparent; transition: background .18s ease; }
 .sc-sport-button:hover { background: #870c14; }
 .sc-sport-button.is-outline { background: transparent; border-color: #64748b; }
 .sc-sport-button.is-outline:hover { background: #213a55; }
@@ -42,12 +43,13 @@
 .sc-market-search input { width: 100%; min-width: 0; outline: none; font-size: 12px; background: transparent; }
 .sc-market-search input::placeholder { color: #64748b; }
 .sc-market-product-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 30px 20px; }
-.sc-market-product { min-width: 0; }
+.sc-market-product { min-width: 0; background: white; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; transition: transform .18s, box-shadow .18s; }
+.sc-market-product:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(11, 28, 48, 0.08); }
 .sc-market-product-image { position: relative; height: 230px; background: #f2f4f8; overflow: hidden; }
 .sc-market-product-image img { width: 100%; height: 100%; object-fit: cover; }
-.sc-market-product-image > span { position: absolute; top: 12px; left: 12px; padding: 4px 7px; background: white; font-size: 10px; font-weight: 700; }
-.sc-market-product-image button { position: absolute; top: 7px; right: 7px; background: white; color: var(--sc-red); width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; }
-.sc-market-product-meta { padding: 14px 0 0; }
+.sc-market-product-image > span { position: absolute; top: 12px; left: 12px; padding: 4px 8px; background: white; font-size: 10px; font-weight: 700; border-radius: 6px; }
+.sc-market-product-image button { position: absolute; top: 7px; right: 7px; background: white; color: var(--sc-red); width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.sc-market-product-meta { padding: 14px 16px 16px; }
 .sc-market-product-meta > span { font-size: 10px; color: #546579; }
 .sc-market-product-meta h3 { font-size: 21px; line-height: 1.12; font-weight: 700; margin: 6px 0 8px; min-height: 48px; }
 .sc-market-product-meta > strong { font-size: 19px; font-weight: 800; color: var(--sc-red); font-variant-numeric: tabular-nums; }
@@ -55,16 +57,16 @@
 .sc-market-product-meta small { display: block; font-weight: 400; color: #546579; font-size: 10px; margin-top: 3px; }
 .sc-market-history { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--sc-red); min-height: 30px; }
 .sc-market-history svg:last-child { margin-left: auto; }
-.sc-market-inquire { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; margin-top: 10px; background: var(--sc-ink); color: white; font-size: 11px; font-weight: 700; }
+.sc-market-inquire { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; margin-top: 10px; background: var(--sc-ink); color: white; font-size: 11px; font-weight: 700; border-radius: 10px; transition: background .18s; }
 .sc-market-inquire:hover { background: var(--sc-red); }
-.sc-market-empty { text-align: center; padding: 70px 20px; background: #f5f7fa; }
+.sc-market-empty { text-align: center; padding: 70px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; }
 .sc-market-empty svg { margin: auto auto 16px; }
 .sc-market-empty h3 { font-size: 24px; font-family: inherit; }
 .sc-market-empty p { font-size: 13px; margin: 10px 0 20px; }
 .sc-market-empty button { color: var(--sc-red); text-decoration: underline; text-underline-offset: 5px; font-size: 13px; }
 .sc-market-promos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 55px; }
-.sc-market-promos section { position: relative; overflow: hidden; padding: 38px; min-height: 285px; background: var(--sc-ink); color: white; }
-.sc-market-promos section:first-child { background: var(--sc-red); }
+.sc-market-promos section { position: relative; overflow: hidden; padding: 38px; min-height: 285px; background: var(--sc-ink); color: white; border-radius: 20px; }
+.sc-market-promos section:first-child { --sc-focus: #fff; background: var(--sc-red); }
 .sc-market-promos section:first-child .sc-sport-button { background: white; color: var(--sc-ink); }
 .sc-market-promos h2 { position: relative; z-index: 1; font-size: 42px; font-weight: 700; line-height: .95; }
 .sc-market-promos h2 span { color: #ff7a7a; }
@@ -112,42 +114,43 @@
 .sc-athlete-profile-foot { padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #f4f6fa; font-size: 10px; }
 .sc-athlete-profile-foot a { display: flex; align-items: center; gap: 10px; color: var(--sc-red); font-weight: 700; }
 
-.sc-ranking { flex: 1; background: var(--sc-ink); color: white; padding: 40px 24px 60px; }
+.sc-ranking { --sc-focus: #af101a; flex: 1; background: var(--sc-ink); color: white; padding: 40px 24px 60px; }
 .sc-ranking-inner { max-width: 1240px; margin: auto; }
 .sc-ranking-title { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 27px; }
 .sc-ranking-title h1 { font-weight: 800; font-size: 54px; line-height: 1; letter-spacing: -.02em; }
 .sc-ranking-title h1 span { color: #ff7a7a; }
 .sc-ranking-title p { margin-top: 11px; font-size: 12px; color: #b9c9de; }
 .sc-ranking-actions { display: flex; gap: 10px; }
-.sc-ranking-actions button { display: flex; align-items: center; gap: 8px; min-height: 40px; border: 1px solid #3d5068; padding: 10px 12px; font-size: 11px; }
-.sc-ranking-actions button:hover { background: #213a55; }
-.sc-ranking-positions { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 22px; }
-.sc-ranking-positions button { padding: 9px 15px; font-size: 11px; color: #c3d1e4; border-bottom: 2px solid transparent; }
-.sc-ranking-positions button:hover { background: #172d46; }
-.sc-ranking-positions button.is-selected { border-color: #ff7a7a; color: white; background: #243047; }
-.sc-ranking-filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px; padding: 18px 20px; background: #12263e; }
+.sc-ranking-actions button { display: flex; align-items: center; gap: 8px; min-height: 40px; border: 1px solid #213145; background: #071322; border-radius: 12px; padding: 10px 14px; font-size: 11px; font-weight: 600; color: #dfe2eb; transition: all .18s; }
+.sc-ranking-actions button:hover { background: #0d223a; border-color: #3d5068; color: white; }
+.sc-ranking-positions { display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 22px; }
+.sc-ranking-positions button { padding: 8px 16px; font-size: 11px; font-weight: 600; color: #b9c9de; border-radius: 9999px; background: #071322; border: 1px solid #213145; transition: all .18s; }
+.sc-ranking-positions button:hover { background: #0d223a; color: white; border-color: #3d5068; }
+.sc-ranking-positions button.is-selected { border-color: #af101a; color: white; background: #af101a; }
+.sc-ranking-filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px; padding: 18px 20px; background: #071322; border: 1px solid #213145; border-radius: 16px; }
 .sc-ranking-filters label > span { display: block; font-size: 10px; color: #b9c9de; padding-bottom: 6px; }
-.sc-ranking-filters select { background: #0b1c30; border: 1px solid #3a4e68; padding: 9px 28px 9px 10px; color: white; font-size: 11px; min-height: 40px; max-width: 190px; }
-.sc-ranking-search { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #405671; padding: 10px 0; }
+.sc-ranking-filters select { background: #0b1c30; border: 1px solid #213145; border-radius: 12px; padding: 9px 28px 9px 12px; color: white; font-size: 11px; min-height: 40px; max-width: 190px; }
+.sc-ranking-search { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #213145; padding: 10px 0; }
 .sc-ranking-search svg { color: #b9c9de; flex-shrink: 0; }
 .sc-ranking-search input { width: 100%; min-width: 0; font-size: 12px; background: transparent; outline: none; }
 .sc-ranking-search input::placeholder { color: #b9c9de; }
 .sc-ranking-viewbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0 15px; font-size: 11px; color: #b9c9de; }
 .sc-ranking-viewbar > div { display: flex; align-items: center; gap: 8px; }
-.sc-ranking-viewbar button { display: grid; place-items: center; height: 32px; width: 32px; color: #b9c9de; }
-.sc-ranking-viewbar button[aria-pressed="true"] { color: white; background: #af101a; }
+.sc-ranking-viewbar button { display: grid; place-items: center; height: 34px; width: 34px; color: #b9c9de; border-radius: 10px; border: 1px solid #213145; background: #071322; transition: all .18s; }
+.sc-ranking-viewbar button:hover { color: white; background: #0d223a; }
+.sc-ranking-viewbar button[aria-pressed="true"] { color: white; background: #af101a; border-color: #af101a; }
 .sc-ranking-sort { display: flex; align-items: center; gap: 6px; }
-.sc-ranking-sort select { background: #12263e; color: white; padding: 5px 8px; font-size: 11px; }
+.sc-ranking-sort select { background: #071322; border: 1px solid #213145; border-radius: 10px; color: white; padding: 6px 10px; font-size: 11px; }
 .sc-ranking-column-head, .sc-ranking-row { display: grid; grid-template-columns: 65px minmax(0,1fr) 370px 78px 26px; align-items: center; gap: 20px; padding: 12px 20px; }
-.sc-ranking-column-head { background: #071525; font-size: 10px; color: #b9c9de; }
+.sc-ranking-column-head { background: #071322; border: 1px solid #213145; border-radius: 12px 12px 0 0; font-size: 10px; color: #b9c9de; }
 .sc-ranking-column-head > div { display: grid; grid-template-columns: repeat(6,1fr); }
 .sc-ranking-column-head button { display: flex; align-items: center; justify-content: center; gap: 3px; min-height: 24px; }
 .sc-ranking-column-head button:hover { color: #ff7a7a; }
 .sc-ranking-list { list-style: none; padding: 0; margin: 10px 0 0; }
 .sc-ranking-list li + li { margin-top: 8px; }
-.sc-ranking-row { min-height: 88px; background: #172b43; border: 1px solid #2a3d55; transition: background .18s, border-color .18s; border-radius: 4px; }
-.sc-ranking-row:hover { background: #223b57; border-color: #617b99; }
-.sc-ranking-row.is-first { background: #263047; border-color: #713140; }
+.sc-ranking-row { min-height: 88px; background: #0B1C30; border: 1px solid #213145; transition: background .18s, border-color .18s; border-radius: 14px; }
+.sc-ranking-row:hover { background: #0d223a; border-color: #3b5373; }
+.sc-ranking-row.is-first { background: #13243a; border-color: #8E0D15; }
 .sc-ranking-rank { display: flex; align-items: center; justify-content: center; gap: 8px; font-family: "Barlow Condensed"; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .sc-ranking-rank svg { color: #ff7a7a; flex-shrink: 0; }
 .sc-ranking-player { display: flex; align-items: center; min-width: 0; gap: 16px; }
@@ -166,7 +169,7 @@
 .sc-ranking-loading { padding: 70px 20px; text-align: center; font-size: 13px; color: #cfdaea; }
 .sc-ranking-score { text-align: center; }
 .sc-ranking-score span { display: none; font-size: 9px; color: #e5edf7; }
-.sc-ranking-score strong { display: block; padding: 5px 8px; border-radius: 7px; background: var(--sc-red); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sc-ranking-score strong { display: block; padding: 5px 8px; border-radius: 8px; background: #af101a; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .sc-ranking-arrow { color: #d1deef; }
 .sc-ranking-board.is-cards .sc-ranking-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
 .sc-ranking-board.is-cards .sc-ranking-list li { margin: 0; }
@@ -178,15 +181,17 @@
 .sc-ranking-board.is-cards .sc-ranking-arrow { display: none; }
 .sc-ranking-pagination { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; font-size: 11px; color: #b9c9de; }
 .sc-ranking-pagination > div { display: flex; align-items: center; gap: 16px; }
-.sc-ranking-pagination button { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #3d5068; }
-.sc-ranking-formula { border-top: 1px solid #3a4e68; padding-top: 20px; font-size: 11px; color: #b9c9de; line-height: 1.8; }
+.sc-ranking-pagination button { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #213145; background: #071322; border-radius: 12px; color: #dfe2eb; transition: all .18s; }
+.sc-ranking-pagination button:hover:not(:disabled) { background: #0d223a; color: white; border-color: #3d5068; }
+.sc-ranking-formula { border-top: 1px solid #213145; padding-top: 20px; font-size: 11px; color: #b9c9de; line-height: 1.8; }
 .sc-ranking-formula summary { cursor: pointer; color: white; font-weight: 600; }
 .sc-ranking-formula p { margin-top: 12px; }
-.sc-ranking-empty { text-align: center; padding: 60px 20px; background: #12263e; }
+.sc-ranking-empty { text-align: center; padding: 60px 20px; background: #071322; border: 1px solid #213145; border-radius: 20px; }
 .sc-ranking-empty svg { margin: auto auto 16px; }
 .sc-ranking-empty h2 { font-size: 17px; font-weight: 600; }
 .sc-ranking-empty p { font-size: 12px; color: #b9c9de; margin: 12px 0 20px; }
-.sc-ranking-empty button { font-size: 12px; padding: 10px 20px; background: var(--sc-red); }
+.sc-ranking-empty button { font-size: 12px; font-weight: 700; padding: 10px 20px; background: #af101a; border-radius: 12px; transition: background .18s; }
+.sc-ranking-empty button:hover { background: #8e0d15; }
 
 @media (max-width: 1300px) {
   .sc-market-hero-copy, .sc-market-services, .sc-market-body { margin-inline: 32px; }
@@ -263,7 +268,7 @@
   .sc-athlete-stage { min-height: 0; padding: 27px 20px 20px; }
   .sc-athlete-heading h2 { font-size: clamp(32px,9.8vw,49px); }
   .sc-athlete-heading p { font-size: 11px; max-width: 170px; line-height: 1.7; }
-  .sc-athlete-art { position: relative; width: 100%; height: 335px; right: auto; margin-top: -30px; }
+  .sc-athlete-art { position: relative; width: 100%; height: 335px; right: auto; margin-top: 16px; }
   .sc-athlete-art img { object-position: right bottom; }
   .sc-athlete-art figcaption { bottom: 14px; right: 0; font-size: 8px; }
   .sc-athlete-emblem { width: 370px; height: 370px; top: 130px; right: -110px; border-width: 10px; }

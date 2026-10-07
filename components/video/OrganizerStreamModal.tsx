@@ -147,17 +147,17 @@ export default function OrganizerStreamModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-surface-container rounded-2xl border border-borderNeutral max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between pb-3 border-b border-borderNeutral">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-red-100 text-brand-primary flex items-center justify-center font-mono">
-              <Radio className="w-4 h-4" />
+      <div className="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto font-sans text-slate-800">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-red-50 text-[#AF101A] border border-red-200 flex items-center justify-center">
+              <Radio className="w-4 h-4 text-[#AF101A]" />
             </div>
             <div>
-              <div className="text-[10px] font-mono font-bold text-brand-primary uppercase">
+              <div className="text-[10px] font-mono font-bold text-[#AF101A] uppercase tracking-wider">
                 ORGANIZER BROADCAST STUDIO
               </div>
-              <h3 className="font-extrabold text-base text-textHeading">
+              <h3 className="font-extrabold text-base text-[#0B1C30]">
                 {activeStreamToEdit
                   ? `แก้ไขสัญญาณถ่ายทอดสด: ${activeStreamToEdit.courtName}`
                   : "นำสัญญาณถ่ายทอดสดขึ้นเว็บไซต์ (เพิ่มสนามแข่ง)"}
@@ -166,23 +166,23 @@ export default function OrganizerStreamModal({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-textHeading"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {feedback ? (
-          <div className="py-8 text-center space-y-2 font-mono">
+          <div className="py-8 text-center space-y-2 font-sans">
             <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
-            <h4 className="font-bold text-sm text-textHeading">{feedback}</h4>
+            <h4 className="font-bold text-sm text-[#0B1C30]">{feedback}</h4>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
+          <form onSubmit={handleSubmit} className="space-y-4 font-sans text-xs">
             {/* Court & Tournament */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-textHeading font-bold block mb-1">
+                <label className="text-slate-800 font-bold block mb-1">
                   ชื่อสนาม / คอร์ทแข่งขัน (เช่น สนาม 4 หรือ Court D)
                 </label>
                 <input
@@ -191,11 +191,11 @@ export default function OrganizerStreamModal({
                   value={courtName}
                   onChange={(e) => setCourtName(e.target.value)}
                   placeholder="สนาม 4 (Court D)"
-                  className="w-full p-2.5 bg-surface-base border border-borderNeutral rounded-lg text-textHeading focus:outline-none focus:border-brand-primary"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#AF101A]"
                 />
               </div>
               <div>
-                <label className="text-textHeading font-bold block mb-1">
+                <label className="text-slate-800 font-bold block mb-1">
                   ชื่อรายการแข่งขัน / ทัวร์นาเมนต์
                 </label>
                 <input
@@ -204,19 +204,19 @@ export default function OrganizerStreamModal({
                   value={tournament}
                   onChange={(e) => setTournament(e.target.value)}
                   placeholder="TOA Youth Basketball League Thailand 2026"
-                  className="w-full p-2.5 bg-surface-base border border-borderNeutral rounded-lg text-textHeading focus:outline-none focus:border-brand-primary"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#AF101A]"
                 />
               </div>
             </div>
 
             {/* Teams & Scores */}
             <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-              <div className="text-[11px] font-bold text-textHeading uppercase">
+              <div className="text-[11px] font-bold text-slate-800 uppercase">
                 คู่แข่งขันและผลคะแนนสด
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
                 <div>
-                  <label className="text-[10px] text-textSecondary block mb-0.5">
+                  <label className="text-[10px] text-slate-500 font-bold block mb-0.5">
                     ทีมเหย้า (Home Team)
                   </label>
                   <input
@@ -225,7 +225,7 @@ export default function OrganizerStreamModal({
                     value={homeTeamName}
                     onChange={(e) => setHomeTeamName(e.target.value)}
                     placeholder="ชื่อทีมเหย้า"
-                    className="w-full p-2 bg-white border border-borderNeutral rounded-lg"
+                    className="w-full p-2 bg-white border border-slate-300 rounded-xl text-xs"
                   />
                   <input
                     type="text"
@@ -233,12 +233,12 @@ export default function OrganizerStreamModal({
                     value={homeTeamShort}
                     onChange={(e) => setHomeTeamShort(e.target.value)}
                     placeholder="ตัวย่อ (เช่น BCC)"
-                    className="w-full p-1.5 mt-1 bg-white border border-borderNeutral rounded text-[11px]"
+                    className="w-full p-1.5 mt-1 bg-white border border-slate-300 rounded-lg text-[11px] font-mono uppercase font-bold"
                   />
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                  <span className="text-[10px] text-textSecondary uppercase block mb-1">
+                  <span className="text-[10px] text-slate-500 uppercase font-bold block mb-1">
                     คะแนนสด (Home - Away)
                   </span>
                   <div className="flex items-center gap-2">
@@ -246,20 +246,20 @@ export default function OrganizerStreamModal({
                       type="number"
                       value={homeScore}
                       onChange={(e) => setHomeScore(Number(e.target.value))}
-                      className="w-16 p-2 bg-white border border-borderNeutral rounded text-center font-black text-brand-primary"
+                      className="w-16 p-2 bg-white border border-slate-300 rounded-xl text-center font-black text-[#AF101A] font-mono tabular-nums text-base"
                     />
                     <span className="font-bold text-slate-400">-</span>
                     <input
                       type="number"
                       value={awayScore}
                       onChange={(e) => setAwayScore(Number(e.target.value))}
-                      className="w-16 p-2 bg-white border border-borderNeutral rounded text-center font-black text-slate-900"
+                      className="w-16 p-2 bg-white border border-slate-300 rounded-xl text-center font-black text-slate-900 font-mono tabular-nums text-base"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-textSecondary block mb-0.5">
+                  <label className="text-[10px] text-slate-500 font-bold block mb-0.5">
                     ทีมเยือน (Away Team)
                   </label>
                   <input
@@ -268,7 +268,7 @@ export default function OrganizerStreamModal({
                     value={awayTeamName}
                     onChange={(e) => setAwayTeamName(e.target.value)}
                     placeholder="ชื่อทีมเยือน"
-                    className="w-full p-2 bg-white border border-borderNeutral rounded-lg"
+                    className="w-full p-2 bg-white border border-slate-300 rounded-xl text-xs"
                   />
                   <input
                     type="text"
@@ -276,20 +276,20 @@ export default function OrganizerStreamModal({
                     value={awayTeamShort}
                     onChange={(e) => setAwayTeamShort(e.target.value)}
                     placeholder="ตัวย่อ (เช่น DS)"
-                    className="w-full p-1.5 mt-1 bg-white border border-borderNeutral rounded text-[11px]"
+                    className="w-full p-1.5 mt-1 bg-white border border-slate-300 rounded-lg text-[11px] font-mono uppercase font-bold"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="text-[10px] text-textSecondary block mb-0.5">
+                  <label className="text-[10px] text-slate-500 font-bold block mb-0.5">
                     ควอเตอร์ปัจจุบัน
                   </label>
                   <select
                     value={currentQuarter}
                     onChange={(e) => setCurrentQuarter(Number(e.target.value))}
-                    className="w-full p-2 bg-white border border-borderNeutral rounded text-xs"
+                    className="w-full p-2 bg-white border border-slate-300 rounded-xl text-xs font-sans"
                   >
                     <option value={1}>Quarter 1</option>
                     <option value={2}>Quarter 2</option>
@@ -300,7 +300,7 @@ export default function OrganizerStreamModal({
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-textSecondary block mb-0.5">
+                  <label className="text-[10px] text-slate-500 font-bold block mb-0.5">
                     เวลาแข่งขันที่เหลือ
                   </label>
                   <input
@@ -308,7 +308,7 @@ export default function OrganizerStreamModal({
                     value={gameClock}
                     onChange={(e) => setGameClock(e.target.value)}
                     placeholder="05:20"
-                    className="w-full p-2 bg-white border border-borderNeutral rounded text-xs"
+                    className="w-full p-2 bg-white border border-slate-300 rounded-xl text-xs font-mono tabular-nums"
                   />
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function OrganizerStreamModal({
 
             {/* Stream URL */}
             <div>
-              <label className="text-textHeading font-bold block mb-1">
+              <label className="text-slate-800 font-bold block mb-1">
                 URL สัญญาณถ่ายทอดสด (HLS .m3u8 / MP4 / Direct Stream)
               </label>
               <div className="relative">
@@ -327,10 +327,10 @@ export default function OrganizerStreamModal({
                   value={streamUrl}
                   onChange={(e) => setStreamUrl(e.target.value)}
                   placeholder="https://live.statcourt.th/hls/court4.m3u8"
-                  className="w-full pl-9 pr-3 py-2.5 bg-surface-base border border-borderNeutral rounded-lg text-textHeading focus:outline-none focus:border-brand-primary text-xs"
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-[#AF101A] font-mono text-xs"
                 />
               </div>
-              <span className="text-[10px] text-textSecondary mt-1 block">
+              <span className="text-[10px] text-slate-500 mt-1 block">
                 สามารถนำ URL สตรีมจาก OBS, กล้องสนาม หรือ CDN ถ่ายทอดสดมาวางได้ทันที
               </span>
             </div>
@@ -338,7 +338,7 @@ export default function OrganizerStreamModal({
             {/* Status & Organizer info */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-textHeading font-bold block mb-1">
+                <label className="text-slate-800 font-bold block mb-1">
                   สถานะการถ่ายทอดสด
                 </label>
                 <select
@@ -346,7 +346,7 @@ export default function OrganizerStreamModal({
                   onChange={(e) =>
                     setStatus(e.target.value as "LIVE" | "UPCOMING" | "ENDED")
                   }
-                  className="w-full p-2.5 bg-surface-base border border-borderNeutral rounded-lg text-xs"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-sans"
                 >
                   <option value="LIVE">กำลังถ่ายทอดสด (LIVE STREAMING)</option>
                   <option value="UPCOMING">เร็วๆ นี้ (UPCOMING)</option>
@@ -355,7 +355,7 @@ export default function OrganizerStreamModal({
               </div>
 
               <div>
-                <label className="text-textHeading font-bold block mb-1">
+                <label className="text-slate-800 font-bold block mb-1">
                   ชื่อหน่วยงานผู้จัด / ผู้ถ่ายทอดสด
                 </label>
                 <input
@@ -363,18 +363,18 @@ export default function OrganizerStreamModal({
                   value={organizerName}
                   onChange={(e) => setOrganizerName(e.target.value)}
                   placeholder="ฝ่ายจัดการแข่งขัน TOA"
-                  className="w-full p-2.5 bg-surface-base border border-borderNeutral rounded-lg text-xs"
+                  className="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-sans"
                 />
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="pt-3 border-t border-borderNeutral flex items-center justify-between">
+            <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
               {activeStreamToEdit ? (
                 <button
                   type="button"
                   onClick={() => handleDelete(activeStreamToEdit.id)}
-                  className="bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 border border-red-200 transition"
+                  className="bg-red-50 hover:bg-red-100 text-[#AF101A] font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 border border-red-200 transition"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> ลบสัญญาณนี้
                 </button>
@@ -386,13 +386,13 @@ export default function OrganizerStreamModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-xs font-bold text-textSecondary hover:bg-slate-100 rounded-lg transition"
+                  className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition"
                 >
                   ยกเลิก
                 </button>
                 <button
                   type="submit"
-                  className="bg-brand-primary hover:bg-brand-crimson text-white font-bold text-xs px-5 py-2 rounded-lg shadow flex items-center gap-1.5 transition"
+                  className="bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs px-5 py-2 rounded-xl shadow flex items-center gap-1.5 transition"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   {activeStreamToEdit ? "บันทึกการแก้ไข" : "นำขึ้นถ่ายทอดสดทันที"}

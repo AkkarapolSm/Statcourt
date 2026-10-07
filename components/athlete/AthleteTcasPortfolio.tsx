@@ -201,16 +201,16 @@ export default function AthleteTcasPortfolio({
       {/* ----------------------------------------------------------------------- */}
       {/* SECTION A: TCAS University Sports Quota Portfolio (Official Dossier)    */}
       {/* ----------------------------------------------------------------------- */}
-      <section className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 md:p-6 shadow-sm">
+      <section className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 md:p-6 shadow-sm">
         {/* Dossier Header & Export CTA */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-outline-variant">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="material-symbols-outlined text-tertiary text-2xl">military_tech</span>
               <h2 className="font-headline-md text-headline-md uppercase text-on-surface tracking-wide">
-                TCAS UNIVERSITY SPORTS QUOTA PORTFOLIO (OFFICIAL DOSSIER)
+                TCAS UNIVERSITY SPORTS QUOTA PORTFOLIO
               </h2>
-              <span className="px-2 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps uppercase rounded font-bold border border-tertiary">
+              <span className="px-2.5 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps uppercase rounded-full font-bold border border-tertiary">
                 TCAS ROUND 2 QUALIFIED
               </span>
             </div>
@@ -222,7 +222,7 @@ export default function AthleteTcasPortfolio({
           {/* Official Export Button */}
           <button
             onClick={handleExportPdf}
-            className="w-full md:w-auto px-5 py-2.5 bg-primary hover:bg-surface-tint active:scale-95 text-on-primary font-headline-sm text-headline-sm uppercase tracking-wider rounded flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
+            className="w-full md:w-auto px-5 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] active:scale-95 text-white font-headline-sm text-sm font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer shrink-0"
           >
             <span className="material-symbols-outlined text-xl">download</span>
             <span>ดาวน์โหลดแฟ้มเอกสาร TCAS DOSSIER (PDF)</span>
@@ -230,7 +230,7 @@ export default function AthleteTcasPortfolio({
         </div>
 
         {exportPdfNotice && (
-          <div className="mt-3 p-2.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold animate-fadeIn flex items-center gap-1.5">
+          <div className="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold animate-fadeIn flex items-center gap-1.5">
             <Check className="w-4 h-4 text-emerald-700 shrink-0" />
             <span>{exportPdfNotice}</span>
           </div>
@@ -239,14 +239,14 @@ export default function AthleteTcasPortfolio({
         {/* Dossier Bento Grid (4 Technical Cards) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
           {/* Card 1: Official Bio & Physical Index */}
-          <div className="bg-surface-container-low border border-outline-variant rounded p-4 relative flex flex-col justify-between">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
+                <span className="font-body-sm text-xs text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">badge</span>
                   1. ข้อมูลส่วนบุคคลและสรีระ (Biometrics)
                 </span>
-                <span className="font-label-badge text-label-badge px-1 bg-surface-container text-on-surface rounded font-bold">
+                <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface-container text-on-surface rounded-md font-bold font-mono">
                   U18 [2025]
                 </span>
               </div>
@@ -257,29 +257,31 @@ export default function AthleteTcasPortfolio({
                 <div className="text-secondary text-xs">
                   โรงเรียน: {athlete.schoolOrClub || "Chiang Mai University Demonstration School"}
                 </div>
-                <div className="text-on-surface">
-                  ส่วนสูง / ช่วงแขน: <span className="font-bold text-primary">{currentHeightCm} cm / {currentWingspanCm} cm</span>
+                <div className="text-on-surface font-mono">
+                  <span className="font-sans">ส่วนสูง / ช่วงแขน: </span>
+                  <span className="font-bold text-primary">{currentHeightCm} cm / {currentWingspanCm} cm</span>
                 </div>
-                <div className="text-on-surface">
-                  ระยะเอื้อมยืนแตะ: <span className="font-bold">{currentStandingReachCm} cm</span>
+                <div className="text-on-surface font-mono">
+                  <span className="font-sans">ระยะเอื้อมยืนแตะ: </span>
+                  <span className="font-bold">{currentStandingReachCm} cm</span>
                 </div>
               </div>
             </div>
-            <div className="pt-2 mt-3 border-t border-outline-variant/60 font-label-badge text-label-badge text-secondary flex justify-between">
+            <div className="pt-2 mt-3 border-t border-outline-variant/60 font-label-badge text-label-badge text-secondary flex justify-between font-mono">
               <span>FIBA REG: TH-2024-8891</span>
               <span className="text-primary font-bold">VERIFIED</span>
             </div>
           </div>
 
           {/* Card 2: National & Tournament Honors */}
-          <div className="bg-surface-container-low border border-outline-variant rounded p-4 relative flex flex-col justify-between">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
+                <span className="font-body-sm text-xs text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-tertiary">emoji_events</span>
                   2. เกียรติประวัติและผลงานการแข่งขัน
                 </span>
-                <span className="font-label-badge text-label-badge px-1 bg-tertiary-fixed text-on-tertiary-fixed rounded font-bold">
+                <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-tertiary-fixed text-on-tertiary-fixed rounded-md font-bold">
                   CHAMPION
                 </span>
               </div>
@@ -304,61 +306,61 @@ export default function AthleteTcasPortfolio({
           </div>
 
           {/* Card 3: FIBA Efficiency & Metrics */}
-          <div className="bg-surface-container-low border border-outline-variant rounded p-4 relative flex flex-col justify-between">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
+                <span className="font-body-sm text-xs text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">monitoring</span>
                   3. ดัชนีสถิติเฉลี่ยมาตรฐานสากล (FIBA Metrics)
                 </span>
-                <span className="font-label-badge text-label-badge px-1 bg-primary text-on-primary rounded font-bold">
+                <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-primary text-on-primary rounded-md font-bold">
                   TOP 1%
                 </span>
               </div>
               <div className="space-y-1 font-body-sm text-body-sm">
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary text-xs">FIBA EFF:</span>
-                  <span className="font-headline-sm text-headline-sm text-primary">29.6 EFF/G</span>
+                <div className="flex justify-between items-center font-mono">
+                  <span className="text-secondary text-xs font-sans">FIBA EFF:</span>
+                  <span className="font-headline-sm text-headline-sm text-primary font-bold">29.6 EFF/G</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary text-xs">PTS/TO:</span>
+                <div className="flex justify-between items-center font-mono">
+                  <span className="text-secondary text-xs font-sans">PTS/TO:</span>
                   <span className="font-headline-sm text-sm text-on-surface font-bold">19.1 PPG (14.2%)</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary text-xs">REBOUNDS:</span>
+                <div className="flex justify-between items-center font-mono">
+                  <span className="text-secondary text-xs font-sans">REBOUNDS:</span>
                   <span className="font-headline-sm text-sm text-on-surface font-bold">14.2 RPG</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary text-xs">BLOCKS:</span>
+                <div className="flex justify-between items-center font-mono">
+                  <span className="text-secondary text-xs font-sans">BLOCKS:</span>
                   <span className="font-headline-sm text-sm text-on-surface font-bold">3.1 BPG</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary text-xs">TRUE SHOOTING:</span>
+                <div className="flex justify-between items-center font-mono">
+                  <span className="text-secondary text-xs font-sans">TRUE SHOOTING:</span>
                   <span className="font-headline-sm text-sm text-tertiary font-bold">63.4%</span>
                 </div>
               </div>
             </div>
-            <div className="pt-2 mt-3 border-t border-outline-variant/60 font-label-badge text-label-badge text-secondary flex justify-between">
+            <div className="pt-2 mt-3 border-t border-outline-variant/60 font-label-badge text-label-badge text-secondary flex justify-between font-mono">
               <span>PERCENTILE: 99.2%</span>
               <span className="text-primary font-bold">ELITE POST</span>
             </div>
           </div>
 
           {/* Card 4: QR Code & 4K Video Verification */}
-          <div className="bg-surface-container-low border border-outline-variant rounded p-4 relative flex flex-col justify-between">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
+                <span className="font-body-sm text-xs text-secondary font-bold flex items-center gap-1">
                   <span className="material-symbols-outlined text-base text-primary">qr_code_2</span>
                   4. รหัส QR ตรวจสอบวิดีโอทางการ
                 </span>
-                <span className="font-label-badge text-label-badge px-1 bg-surface text-on-surface border border-outline-variant rounded font-semibold">
+                <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface text-on-surface border border-outline-variant rounded-md font-semibold">
                   VERIFIED
                 </span>
               </div>
               <div className="flex items-center gap-3 pt-1">
                 {/* QR Visual Box */}
-                <div className="w-16 h-16 bg-surface-container-lowest border-2 border-on-surface p-1 rounded flex items-center justify-center shrink-0 shadow-inner">
+                <div className="w-16 h-16 bg-surface-container-lowest border-2 border-on-surface p-1 rounded-lg flex items-center justify-center shrink-0 shadow-inner">
                   <div className="grid grid-cols-4 gap-0.5 w-full h-full">
                     <div className="bg-on-surface"></div>
                     <div className="bg-on-surface"></div>
@@ -394,14 +396,17 @@ export default function AthleteTcasPortfolio({
       {/* ----------------------------------------------------------------------- */}
       {/* SECTION B: 1-Minute Verified Highlight Reel Compiler                    */}
       {/* ----------------------------------------------------------------------- */}
-      <section className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 md:p-6 shadow-sm space-y-4">
+      <section className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 md:p-6 shadow-sm space-y-4">
         {/* Compiler Top Bar */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-3 border-b border-outline-variant">
           <div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-2xl">videocam</span>
-              <h2 className="font-headline-md text-headline-md uppercase text-on-surface tracking-wide">
-                1-MINUTE VERIFIED HIGHLIGHT REEL COMPILER (ระบบรวบรวมวิดีโอไฮไลต์ทางการ 60 วินาที)
+              <h2 className="font-headline-md text-headline-md text-on-surface">
+                <span className="uppercase tracking-wide font-bold">1-MINUTE VERIFIED HIGHLIGHT REEL COMPILER</span>
+                <span className="text-secondary text-sm font-normal block sm:inline sm:ml-2">
+                  (ระบบรวบรวมวิดีโอไฮไลต์ทางการ 60 วินาที)
+                </span>
               </h2>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mt-1">
@@ -416,7 +421,7 @@ export default function AthleteTcasPortfolio({
                 const firstSelected = plays.find((p) => selectedClipIds.includes(p.id));
                 if (firstSelected) setPreviewClip(firstSelected);
               }}
-              className="px-3.5 py-2 border border-outline hover:border-primary text-on-surface rounded font-headline-sm text-headline-sm uppercase tracking-wide flex items-center justify-center gap-1.5 hover:bg-surface-container transition-all cursor-pointer"
+              className="px-3.5 py-2 border border-outline hover:border-primary text-on-surface rounded-xl font-headline-sm text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-surface-container transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">play_circle</span>
               <span>ดูตัวอย่างวิดีโอ ({selectedClipIds.length} จังหวะการเล่น)</span>
@@ -424,18 +429,18 @@ export default function AthleteTcasPortfolio({
             <button
               onClick={handleCompile}
               disabled={compileState === "COMPILING"}
-              className={`px-5 py-2 rounded font-headline-sm text-headline-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ${
+              className={`px-5 py-2 rounded-xl font-headline-sm text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ${
                 compileState === "SUCCESS"
                   ? "bg-emerald-600 text-white"
                   : compileState === "COMPILING"
                   ? "bg-tertiary text-white"
-                  : "bg-primary hover:bg-surface-tint active:scale-95 text-on-primary"
+                  : "bg-[#AF101A] hover:bg-[#8E0D15] active:scale-95 text-white"
               }`}
             >
               {compileState === "COMPILING" ? (
                 <>
                   <span className="material-symbols-outlined animate-spin text-lg">sync</span>
-                  <span>GENERATING 60s REEL... (78%)</span>
+                  <span className="font-mono">GENERATING 60s REEL... (78%)</span>
                 </>
               ) : compileState === "SUCCESS" ? (
                 <>
@@ -453,15 +458,15 @@ export default function AthleteTcasPortfolio({
         </div>
 
         {/* Live Duration Progress Tracker */}
-        <div className="p-4 bg-surface-container-low border border-outline-variant rounded space-y-2">
+        <div className="p-4 bg-surface-container-low border border-outline-variant rounded-xl space-y-2">
           <div className="flex flex-wrap justify-between items-center font-headline-sm text-headline-sm gap-2">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-xl">timer</span>
-              <span className="text-on-surface uppercase">ความยาวรวมของคลิปไฮไลต์:</span>
-              <span className={`font-bold text-xl ${totalDuration <= 60 ? "text-primary" : "text-error"}`}>
+              <span className="text-on-surface font-semibold">ความยาวรวมของคลิปไฮไลต์:</span>
+              <span className={`font-bold text-xl font-mono ${totalDuration <= 60 ? "text-primary" : "text-error"}`}>
                 {totalDuration} วินาที
               </span>
-              <span className="text-secondary">/ 60 วินาทีเป้าหมาย</span>
+              <span className="text-secondary text-sm">/ 60 วินาทีเป้าหมาย</span>
             </div>
             <div className="flex items-center gap-2">
               <span className={`w-2.5 h-2.5 rounded-full ${totalDuration <= 60 ? "bg-primary animate-pulse" : "bg-error"}`}></span>
@@ -477,7 +482,7 @@ export default function AthleteTcasPortfolio({
           </div>
 
           {/* Athletic Multi-Segment Progress Bar */}
-          <div className="w-full bg-surface-dim h-3.5 rounded overflow-hidden flex border border-outline-variant p-0.5">
+          <div className="w-full bg-surface-dim h-3.5 rounded-full overflow-hidden flex border border-outline-variant p-0.5">
             {plays
               .filter((p) => selectedClipIds.includes(p.id))
               .map((p, idx) => {
@@ -508,7 +513,7 @@ export default function AthleteTcasPortfolio({
         <div className="space-y-3 pt-1">
           {/* Tournament Selection */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex items-center gap-1 font-label-caps text-label-caps uppercase text-secondary font-bold whitespace-nowrap">
+            <div className="flex items-center gap-1 font-body-sm text-xs text-secondary font-bold whitespace-nowrap">
               <span className="material-symbols-outlined text-base text-primary">filter_alt</span>
               1. รายการแข่งขันทางการ (SELECT TOURNAMENT):
             </div>
@@ -516,13 +521,13 @@ export default function AthleteTcasPortfolio({
               <select
                 value={selectedTournament}
                 onChange={(e) => setSelectedTournament(e.target.value)}
-                className="w-full pl-3 pr-8 py-1.5 bg-surface-container-lowest border border-outline rounded text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary appearance-none cursor-pointer"
+                className="w-full pl-3 pr-8 py-2 bg-surface-container-lowest border border-outline-variant rounded-xl text-body-sm font-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary appearance-none cursor-pointer"
               >
                 <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์)</option>
                 <option value="TOA">TOA Youth Basketball League U18 Thailand Championship 2024 (5 แมตช์)</option>
                 <option value="DPE">การแข่งขันบาสเกตบอลนักเรียน กรมพลศึกษา ประจำปี 2567 (2 แมตช์)</option>
               </select>
-              <span className="material-symbols-outlined absolute right-2.5 top-2 text-secondary pointer-events-none text-lg">
+              <span className="material-symbols-outlined absolute right-2.5 top-2.5 text-secondary pointer-events-none text-lg">
                 expand_more
               </span>
             </div>
@@ -534,7 +539,7 @@ export default function AthleteTcasPortfolio({
           {/* Matches Carousel/Pills */}
           <div className="space-y-1">
             <div className="flex justify-between items-center flex-wrap gap-1">
-              <span className="font-label-caps text-label-caps uppercase text-secondary font-bold flex items-center gap-1">
+              <span className="font-body-sm text-xs text-secondary font-bold flex items-center gap-1">
                 <span className="material-symbols-outlined text-sm">calendar_view_week</span>
                 2. แมตช์การแข่งขันในรายการ (MATCHES IN THIS TOURNAMENT):
               </span>
@@ -547,7 +552,7 @@ export default function AthleteTcasPortfolio({
               {/* Pill: All Matches */}
               <button
                 onClick={() => setSelectedMatch("ALL")}
-                className={`px-3 py-1.5 rounded text-left shrink-0 flex items-center gap-2 shadow-sm transition-all cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-left shrink-0 flex items-center gap-2 shadow-sm transition-all cursor-pointer ${
                   selectedMatch === "ALL"
                     ? "bg-inverse-surface text-inverse-on-surface border-2 border-primary"
                     : "bg-surface-container-lowest border border-outline-variant hover:border-outline text-on-surface"
@@ -555,7 +560,7 @@ export default function AthleteTcasPortfolio({
               >
                 <span className="material-symbols-outlined text-primary-fixed text-lg">view_list</span>
                 <div>
-                  <div className="font-headline-sm text-headline-sm leading-tight">รวมทุกแมตช์การแข่งขัน</div>
+                  <div className="font-headline-sm text-sm font-bold leading-tight">รวมทุกแมตช์การแข่งขัน</div>
                   <div className="font-label-badge text-label-badge text-primary-fixed">รวม 8 จังหวะการเล่น</div>
                 </div>
               </button>
@@ -563,7 +568,7 @@ export default function AthleteTcasPortfolio({
               {/* Pill: Match 1 */}
               <button
                 onClick={() => setSelectedMatch("match-deb")}
-                className={`px-3 py-1.5 rounded text-left shrink-0 transition-colors cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-left shrink-0 transition-colors cursor-pointer ${
                   selectedMatch === "match-deb"
                     ? "bg-inverse-surface text-inverse-on-surface border-2 border-primary"
                     : "bg-surface-container-lowest hover:bg-surface-container border border-outline-variant hover:border-outline text-on-surface"
@@ -571,7 +576,7 @@ export default function AthleteTcasPortfolio({
               >
                 <div className="flex items-center gap-2">
                   <span className="font-label-badge text-label-badge text-secondary font-bold">25 ต.ค. 2024</span>
-                  <span className="font-label-badge text-label-badge px-1 bg-surface-container text-primary font-bold rounded">
+                  <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface-container text-primary font-bold rounded-md font-mono">
                     ชนะ 78 - 76
                   </span>
                 </div>
@@ -582,7 +587,7 @@ export default function AthleteTcasPortfolio({
               {/* Pill: Match 2 */}
               <button
                 onClick={() => setSelectedMatch("match-bcc")}
-                className={`px-3 py-1.5 rounded text-left shrink-0 transition-colors cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-left shrink-0 transition-colors cursor-pointer ${
                   selectedMatch === "match-bcc"
                     ? "bg-inverse-surface text-inverse-on-surface border-2 border-primary"
                     : "bg-surface-container-lowest hover:bg-surface-container border border-outline-variant hover:border-outline text-on-surface"
@@ -590,7 +595,7 @@ export default function AthleteTcasPortfolio({
               >
                 <div className="flex items-center gap-2">
                   <span className="font-label-badge text-label-badge text-secondary font-bold">12 ต.ค. 2024</span>
-                  <span className="font-label-badge text-label-badge px-1 bg-surface-container text-primary font-bold rounded">
+                  <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface-container text-primary font-bold rounded-md font-mono">
                     ชนะ 82 - 79
                   </span>
                 </div>
@@ -601,7 +606,7 @@ export default function AthleteTcasPortfolio({
               {/* Pill: Match 3 */}
               <button
                 onClick={() => setSelectedMatch("match-sk")}
-                className={`px-3 py-1.5 rounded text-left shrink-0 transition-colors cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-left shrink-0 transition-colors cursor-pointer ${
                   selectedMatch === "match-sk"
                     ? "bg-inverse-surface text-inverse-on-surface border-2 border-primary"
                     : "bg-surface-container-lowest hover:bg-surface-container border border-outline-variant hover:border-outline text-on-surface"
@@ -609,7 +614,7 @@ export default function AthleteTcasPortfolio({
               >
                 <div className="flex items-center gap-2">
                   <span className="font-label-badge text-label-badge text-secondary font-bold">28 ก.ย. 2024</span>
-                  <span className="font-label-badge text-label-badge px-1 bg-surface-container text-primary font-bold rounded">
+                  <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface-container text-primary font-bold rounded-md font-mono">
                     ชนะ 69 - 65
                   </span>
                 </div>
@@ -620,7 +625,7 @@ export default function AthleteTcasPortfolio({
               {/* Pill: Match 4 */}
               <button
                 onClick={() => setSelectedMatch("match-ac")}
-                className={`px-3 py-1.5 rounded text-left shrink-0 transition-colors cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-left shrink-0 transition-colors cursor-pointer ${
                   selectedMatch === "match-ac"
                     ? "bg-inverse-surface text-inverse-on-surface border-2 border-primary"
                     : "bg-surface-container-lowest hover:bg-surface-container border border-outline-variant hover:border-outline text-on-surface"
@@ -628,7 +633,7 @@ export default function AthleteTcasPortfolio({
               >
                 <div className="flex items-center gap-2">
                   <span className="font-label-badge text-label-badge text-secondary font-bold">15 ก.ย. 2024</span>
-                  <span className="font-label-badge text-label-badge px-1 bg-surface-container text-secondary font-bold rounded">
+                  <span className="font-label-badge text-label-badge px-1.5 py-0.5 bg-surface-container text-secondary font-bold rounded-md font-mono">
                     แพ้ 71 - 74
                   </span>
                 </div>
@@ -640,10 +645,10 @@ export default function AthleteTcasPortfolio({
 
           {/* Event Type Category Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-outline-variant">
-            <span className="font-label-caps text-label-caps uppercase text-secondary font-bold mr-1">จำแนกตามประเภทจังหวะการเล่น:</span>
+            <span className="font-body-sm text-xs text-secondary font-bold mr-1">จำแนกตามประเภทจังหวะการเล่น:</span>
             <button
               onClick={() => setActiveCategory("ALL")}
-              className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase font-bold tracking-wider transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                 activeCategory === "ALL" ? "bg-primary text-on-primary" : "bg-surface-container-low text-on-surface border border-outline-variant"
               }`}
             >
@@ -651,47 +656,47 @@ export default function AthleteTcasPortfolio({
             </button>
             <button
               onClick={() => setActiveCategory("CLUTCH")}
-              className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                 activeCategory === "CLUTCH"
                   ? "bg-primary text-on-primary font-bold"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant"
               }`}
             >
               <span className="material-symbols-outlined text-sm text-primary">local_fire_department</span>
-              จังหวะชี้ขาดเกม (Clutch)
+              <span>จังหวะชี้ขาดเกม (Clutch)</span>
             </button>
             <button
               onClick={() => setActiveCategory("SCORE")}
-              className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                 activeCategory === "SCORE"
                   ? "bg-primary text-on-primary font-bold"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant"
               }`}
             >
               <span className="material-symbols-outlined text-sm text-tertiary">sports_basketball</span>
-              การทำคะแนนและดังก์ (Score & Dunk)
+              <span>การทำคะแนนและดังก์ (Score & Dunk)</span>
             </button>
             <button
               onClick={() => setActiveCategory("BLOCK")}
-              className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                 activeCategory === "BLOCK"
                   ? "bg-primary text-on-primary font-bold"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant"
               }`}
             >
               <span className="material-symbols-outlined text-sm text-secondary">shield</span>
-              การบล็อกลูกยิง (Blocks)
+              <span>การบล็อกลูกยิง (Blocks)</span>
             </button>
             <button
               onClick={() => setActiveCategory("TRANSITION")}
-              className={`px-3 py-1 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs flex items-center gap-1 transition-colors cursor-pointer ${
                 activeCategory === "TRANSITION"
                   ? "bg-primary text-on-primary font-bold"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant"
               }`}
             >
               <span className="material-symbols-outlined text-sm text-secondary">replay</span>
-              การเปลี่ยนจังหวะเกมรับสู่เกมรุก (Transition)
+              <span>การเปลี่ยนจังหวะเกมรับสู่เกมรุก (Transition)</span>
             </button>
           </div>
         </div>
@@ -706,7 +711,7 @@ export default function AthleteTcasPortfolio({
               <div
                 key={play.id}
                 onClick={() => toggleClip(play.id)}
-                className={`rounded-lg p-4 relative flex flex-col justify-between transition-all cursor-pointer ${
+                className={`rounded-xl p-4 relative flex flex-col justify-between transition-all cursor-pointer ${
                   isSelected
                     ? "bg-surface-container-lowest border-2 border-primary shadow-sm"
                     : "bg-surface-container-lowest border border-outline-variant hover:border-outline opacity-90 hover:opacity-100"
@@ -716,11 +721,11 @@ export default function AthleteTcasPortfolio({
                   {/* Header with Select Checkbox & Badge */}
                   <div className="flex justify-between items-start">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className={`px-1.5 py-0.5 font-headline-sm text-xs uppercase rounded ${play.badge1Color}`}>
+                      <span className={`px-2 py-0.5 font-headline-sm text-xs uppercase rounded-full ${play.badge1Color}`}>
                         {play.badge1}
                       </span>
                       {play.badge2 && (
-                        <span className={`px-1.5 py-0.5 font-label-badge text-label-badge uppercase font-bold rounded flex items-center gap-0.5 ${play.badge2Color}`}>
+                        <span className={`px-2 py-0.5 font-label-badge text-label-badge uppercase font-bold rounded-full flex items-center gap-0.5 ${play.badge2Color}`}>
                           <span className="material-symbols-outlined text-xs">star</span>
                           {play.badge2}
                         </span>
@@ -729,7 +734,7 @@ export default function AthleteTcasPortfolio({
 
                     {/* Checkbox Indicator */}
                     <div
-                      className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
+                      className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors ${
                         isSelected ? "bg-primary text-on-primary" : "border border-outline hover:border-primary"
                       }`}
                     >
@@ -739,7 +744,7 @@ export default function AthleteTcasPortfolio({
 
                   {/* Title & Clip Details */}
                   <div>
-                    <h3 className="font-headline-sm text-headline-sm text-on-surface uppercase leading-tight">
+                    <h3 className="font-headline-sm text-sm font-bold text-on-surface leading-tight">
                       {play.title}
                     </h3>
                     <p className="font-body-sm text-xs text-secondary mt-1 leading-relaxed">
@@ -750,11 +755,11 @@ export default function AthleteTcasPortfolio({
 
                 {/* Card Footer with Metadata & Preview Trigger */}
                 <div className="pt-3 mt-2 border-t border-outline-variant flex items-center justify-between">
-                  <div className="font-body-sm text-[11px] text-secondary">
+                  <div className="font-body-sm text-[11px] text-secondary font-mono">
                     <span>{play.quarterClock} ({play.opponent})</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`font-headline-sm text-headline-sm ${isSelected ? "text-primary font-bold" : "text-secondary"}`}>
+                    <span className={`font-headline-sm text-xs font-mono ${isSelected ? "text-primary font-bold" : "text-secondary"}`}>
                       {play.durationSec} วินาที
                     </span>
                     <button
@@ -762,7 +767,7 @@ export default function AthleteTcasPortfolio({
                         e.stopPropagation();
                         setPreviewClip(play);
                       }}
-                      className="p-1 hover:bg-surface-container rounded text-primary flex items-center cursor-pointer"
+                      className="p-1 hover:bg-surface-container rounded-lg text-primary flex items-center cursor-pointer"
                       title="ดูตัวอย่างคลิป"
                     >
                       <span className="material-symbols-outlined text-lg">play_circle</span>
@@ -774,7 +779,7 @@ export default function AthleteTcasPortfolio({
           })}
 
           {/* CERTIFICATION & AUTOMATION NOTICE CARD */}
-          <div className="bg-surface-container-low border border-outline-variant rounded-lg p-4 flex flex-col justify-between">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 text-primary font-headline-sm text-headline-sm">
                 <span className="material-symbols-outlined text-xl">verified</span>
@@ -799,7 +804,7 @@ export default function AthleteTcasPortfolio({
               </ul>
             </div>
             <div className="pt-2 mt-3 border-t border-outline-variant/60 flex items-center justify-between">
-              <span className="font-label-badge text-label-badge text-secondary uppercase">System v4.2.0-PRO</span>
+              <span className="font-label-badge text-label-badge text-secondary uppercase font-mono">System v4.2.0-PRO</span>
               <span className="font-label-badge text-label-badge text-primary font-bold">READY TO EXPORT</span>
             </div>
           </div>
@@ -809,10 +814,10 @@ export default function AthleteTcasPortfolio({
       {/* Video Preview Modal */}
       {previewClip && (
         <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="bg-surface-container-lowest max-w-lg w-full rounded-xl border border-outline p-5 shadow-2xl space-y-4">
+          <div className="bg-surface-container-lowest max-w-lg w-full rounded-2xl border border-outline p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-headline-sm text-primary uppercase block">
+                <span className="font-headline-sm text-primary font-bold block">
                   {previewClip.title}
                 </span>
                 <span className="text-xs text-secondary font-mono">
@@ -826,17 +831,17 @@ export default function AthleteTcasPortfolio({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="w-full aspect-video bg-black rounded-lg flex flex-col items-center justify-center text-white relative overflow-hidden">
+            <div className="w-full aspect-video bg-black rounded-xl flex flex-col items-center justify-center text-white relative overflow-hidden">
               <span className="material-symbols-outlined text-6xl text-primary/80 animate-pulse">
                 play_circle
               </span>
               <span className="text-xs text-surface-dim mt-2 font-mono">
                 Official Clip Preview • 1080p 60fps
               </span>
-              <span className="absolute bottom-2 left-2 text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded text-white">
+              <span className="absolute bottom-2 left-2 text-[10px] font-mono bg-black/80 px-2 py-0.5 rounded-md text-white">
                 BSAT TIMECODE: {previewClip.quarterClock}
               </span>
-              <span className="absolute bottom-2 right-2 text-[10px] font-mono bg-primary px-1.5 py-0.5 rounded text-white">
+              <span className="absolute bottom-2 right-2 text-[10px] font-mono bg-primary px-2 py-0.5 rounded-md text-white">
                 {previewClip.durationSec}s
               </span>
             </div>

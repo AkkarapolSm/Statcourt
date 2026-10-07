@@ -50,10 +50,10 @@ export default function AthleteOverview({
   return (
     <div className="space-y-6">
       {/* OFFICIAL SEASON STATISTICS TABLE CARD */}
-      <section className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm">
+      <section className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 sm:p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-outline-variant">
           <div className="flex items-center gap-2">
-            <span className="bg-primary text-on-primary font-headline-sm text-headline-sm px-2 py-0.5 rounded tracking-wider">
+            <span className="bg-primary text-on-primary font-headline-sm text-headline-sm px-2.5 py-0.5 rounded-md tracking-wider">
               FIBA LIVESTATS
             </span>
             <span className="font-headline-sm text-headline-sm text-on-surface uppercase">
@@ -65,14 +65,14 @@ export default function AthleteOverview({
               <button
                 type="button"
                 onClick={onOpenLineage}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-mono text-xs font-bold transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-[#AF101A] border border-red-200 text-xs font-bold font-sans transition cursor-pointer"
                 title="ตรวจสอบประวัติและที่มาของสถิติ (Stats Lineage & Certification)"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#AF101A]" />
                 <span>ตรวจสอบที่มาสถิติ (Lineage)</span>
               </button>
             )}
-            <div className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded font-label-caps text-label-caps font-bold">
+            <div className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-label-caps text-label-caps font-bold">
               <span
                 className="material-symbols-outlined text-sm"
                 style={{ fontVariationSettings: "'FILL' 1" }}
@@ -154,7 +154,7 @@ export default function AthleteOverview({
         {/* LEFT COLUMN: Scouting Report & Attributes & Physical Ape Index */}
         <div className="lg:col-span-7 space-y-5">
           {/* Scouting Report & Strengths */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
@@ -164,7 +164,7 @@ export default function AthleteOverview({
                   Traditional Paint Anchor & Rim Protector
                 </h2>
               </div>
-              <span className="bg-surface-container text-on-surface-variant font-label-caps text-label-caps px-2.5 py-1 rounded uppercase font-bold">
+              <span className="bg-surface-container text-on-surface-variant font-label-caps text-label-caps px-3 py-1 rounded-full uppercase font-bold">
                 {athlete.primaryPosition ? athlete.primaryPosition.replace("_", " ") : "CENTER"}
               </span>
             </div>
@@ -177,19 +177,19 @@ export default function AthleteOverview({
               <div className="font-mono text-xs text-slate-500 uppercase font-bold tracking-wider">
                 KEY SCOUTING STRENGTHS
               </div>
-              <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" />
                 <span className="text-xs font-semibold text-slate-800 font-sans">
                   Interior Rim Protection (Elite shot deterrence &amp; vertical contest wall)
                 </span>
               </div>
-              <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" />
                 <span className="text-xs font-semibold text-slate-800 font-sans">
                   Offensive Glass Crashing &amp; Rapid Putback Conversion
                 </span>
               </div>
-              <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" />
                 <span className="text-xs font-semibold text-slate-800 font-sans">
                   High-Efficiency Interior Paint Touch &amp; Drop-Step Hook (59.2% FG)
@@ -235,7 +235,7 @@ export default function AthleteOverview({
                   <div className="flex justify-between items-center text-xs mb-1">
                     <span className="text-slate-800 font-bold uppercase font-sans">Defense &amp; Rim Protection</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-300 px-1.5 py-0.2 rounded uppercase">Tier 1 National</span>
+                      <span className="text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-full uppercase">Tier 1 National</span>
                       <span className="font-bold text-slate-900">98 <span className="text-slate-400 font-normal">/ 100</span></span>
                     </div>
                   </div>
@@ -259,24 +259,24 @@ export default function AthleteOverview({
           </div>
 
           {/* Physical Measurements & Ape Index */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4 border-b border-outline-variant pb-2">
               <span className="font-headline-sm text-headline-sm text-on-surface uppercase">
                 PHYSICAL MEASUREMENTS & APE INDEX
               </span>
-              <span className="bg-surface-container font-label-caps text-label-caps px-2 py-0.5 rounded text-secondary font-bold">
+              <span className="bg-surface-container font-label-caps text-label-caps px-2.5 py-0.5 rounded-full text-secondary font-bold">
                 DRAFT COMBINE PROTOCOL
               </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-              <div className="p-3 bg-surface-container-low rounded border border-outline-variant/60">
+              <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
                 <div className="font-label-caps text-label-caps text-secondary uppercase">HEIGHT</div>
                 <div className="font-headline-md text-headline-md text-on-surface">
                   {height} <span className="text-xs">CM</span>
                 </div>
                 <div className="text-xs text-secondary">Barefoot: {height - 2} cm</div>
               </div>
-              <div className="p-3 bg-surface-container-low rounded border border-outline-variant/60">
+              <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
                 <div className="font-label-caps text-label-caps text-secondary uppercase">WINGSPAN</div>
                 <div className="font-headline-md text-headline-md text-primary">
                   {wingspan} <span className="text-xs">CM</span>
@@ -285,14 +285,14 @@ export default function AthleteOverview({
                   {apeIndex >= 0 ? `+${apeIndex} cm Ape Index` : `${apeIndex} cm`}
                 </div>
               </div>
-              <div className="p-3 bg-surface-container-low rounded border border-outline-variant/60">
+              <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
                 <div className="font-label-caps text-label-caps text-secondary uppercase">STAND REACH</div>
                 <div className="font-headline-md text-headline-md text-on-surface">
                   {reach} <span className="text-xs">CM</span>
                 </div>
                 <div className="text-xs text-secondary">{(reach / 2.54).toFixed(1)} inches</div>
               </div>
-              <div className="p-3 bg-surface-container-low rounded border border-outline-variant/60">
+              <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
                 <div className="font-label-caps text-label-caps text-secondary uppercase">WEIGHT</div>
                 <div className="font-headline-md text-headline-md text-on-surface">
                   {weight} <span className="text-xs">KG</span>
@@ -306,7 +306,7 @@ export default function AthleteOverview({
         {/* RIGHT COLUMN: Shooting Splits, TCAS Quota Verification, Match Footwear */}
         <div className="lg:col-span-5 space-y-5">
           {/* Shooting Accuracy Splits */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-2">
               <span className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider">
                 SHOOTING ACCURACY SPLITS
@@ -371,7 +371,7 @@ export default function AthleteOverview({
 
             <button
               onClick={() => onNavigateTab("SHOT_CHART")}
-              className="mt-5 flex items-center justify-center gap-2 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-mono text-xs font-bold tracking-wider uppercase transition shadow-sm cursor-pointer"
+              className="mt-5 flex items-center justify-center gap-2 w-full py-2.5 bg-[#071322] hover:bg-[#0B1C30] text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
             >
               <Crosshair className="w-4 h-4 text-slate-300" />
               <span>ตรวจสอบแผนภาพการยิง 5-Zone Shot Chart</span>
@@ -381,11 +381,11 @@ export default function AthleteOverview({
 
           {/* TCAS PORTFOLIO QUOTA BOX (Owner / Admin Only) */}
           {isOwner && (
-            <div className="bg-inverse-surface text-surface-bright rounded-xl p-5 border border-outline shadow-md relative overflow-hidden">
+            <div className="bg-inverse-surface text-surface-bright rounded-2xl p-5 border border-outline shadow-md relative overflow-hidden">
               <div className="absolute -right-8 -bottom-8 w-36 h-36 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-0.5 rounded font-bold uppercase">
+                  <span className="bg-[#AF101A] text-white font-label-caps text-label-caps px-2 py-0.5 rounded-full font-bold uppercase">
                     TCAS PORTFOLIO
                   </span>
                   <span className="text-tertiary-fixed-dim font-label-caps text-label-caps font-bold tracking-wider">
@@ -397,22 +397,22 @@ export default function AthleteOverview({
                 </span>
               </div>
 
-              <div className="bg-black/30 border border-outline/70 p-3 rounded mb-3">
+              <div className="bg-black/30 border border-outline/70 p-3.5 rounded-xl mb-3">
                 <div className="font-label-caps text-label-caps text-surface-dim uppercase">
                   OFFICIAL VERIFICATION CODE
                 </div>
-                <div className="font-headline-md text-headline-md text-primary-fixed tracking-widest">
+                <div className="font-headline-md text-headline-md text-primary-fixed tracking-widest font-mono">
                   {tcasCode}
                 </div>
-                <div className="text-xs text-surface-dim mt-1 leading-snug">
+                <div className="text-xs text-surface-dim mt-1 leading-snug font-sans">
                   สถิติรับรองผ่านระบบบันทึกข้อมูลกลางมาตรฐานสากล พร้อมใช้เป็นเอกสารประกอบการคัดเลือกโควตานักกีฬา TCAS รอบที่ 1 แฟ้มสะสมผลงาน (Portfolio) สถาบันอุดมศึกษา
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-16 h-16 bg-surface-bright p-1 rounded border border-outline flex items-center justify-center shrink-0">
+                <div className="w-16 h-16 bg-surface-bright p-1 rounded-xl border border-outline flex items-center justify-center shrink-0">
                   {/* Visual QR representation */}
-                  <div className="grid grid-cols-4 gap-0.5 w-full h-full bg-slate-900 p-1">
+                  <div className="grid grid-cols-4 gap-0.5 w-full h-full bg-slate-900 p-1 rounded-sm">
                     <div className="bg-white"></div>
                     <div className="bg-white"></div>
                     <div className="bg-slate-900"></div>
@@ -434,10 +434,10 @@ export default function AthleteOverview({
                 <div className="flex-grow">
                   <button
                     onClick={() => onNavigateTab("TCAS")}
-                    className="w-full py-2.5 px-3 bg-primary hover:bg-primary-container text-on-primary rounded font-label-caps text-label-caps uppercase tracking-wider font-bold flex items-center justify-center gap-1.5 transition-colors shadow"
+                    className="w-full py-2.5 px-3 bg-[#AF101A] hover:bg-[#8E0D15] text-white rounded-xl text-xs font-bold font-sans flex items-center justify-center gap-1.5 transition-colors shadow cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-sm">bolt</span>
-                    <span>เปิดแฟ้มผลงาน TCAS Portfolio & วิดีโอไฮไลต์</span>
+                    <span>เปิดแฟ้มผลงาน TCAS Portfolio &amp; วิดีโอไฮไลต์</span>
                     <span className="material-symbols-outlined text-sm">open_in_new</span>
                   </button>
                 </div>
@@ -446,9 +446,9 @@ export default function AthleteOverview({
           )}
 
           {/* Official Match Footwear & Gear Reference */}
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm flex items-center justify-between gap-4">
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 sm:p-5 shadow-sm flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded bg-surface-container-low border border-outline-variant flex items-center justify-center text-primary shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-surface-container-low border border-outline-variant flex items-center justify-center text-primary shrink-0">
                 <span className="material-symbols-outlined text-2xl">shopping_bag</span>
               </div>
               <div>
@@ -465,7 +465,7 @@ export default function AthleteOverview({
             </div>
             <Link
               href="/marketplace"
-              className="px-3 py-1.5 bg-on-surface text-surface-bright hover:bg-primary font-label-caps text-label-caps tracking-wider uppercase font-bold rounded transition-colors shrink-0"
+              className="px-3.5 py-2 bg-on-surface text-surface-bright hover:bg-primary font-label-caps text-label-caps tracking-wider uppercase font-bold rounded-xl transition-colors shrink-0"
             >
               Marketplace
             </Link>

@@ -24,22 +24,22 @@ export default function AthleteEffTrend({
   return (
     <div className="space-y-6">
       {/* Header Panel: Competition & Tournament Filter */}
-      <div className="bg-surface-container-lowest p-4 md:p-5 rounded-lg border border-outline-variant shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-surface-container-lowest p-4 md:p-5 rounded-xl border border-outline-variant shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="w-8 h-8 rounded bg-primary-fixed flex items-center justify-center text-primary font-headline-sm shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-primary-fixed flex items-center justify-center text-primary font-headline-sm shrink-0">
             <span className="material-symbols-outlined text-lg">emoji_events</span>
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="font-headline-sm text-headline-sm uppercase text-on-surface">
+              <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                 รายการแข่งขันทางการ (TOURNAMENT / COMPETITION)
               </h2>
-              <span className="bg-surface-container text-primary font-label-badge text-label-badge px-1.5 py-0.5 rounded font-bold">
+              <span className="bg-surface-container text-primary font-label-badge text-label-badge px-2 py-0.5 rounded-full font-bold">
                 7 MATCHES IN SAMPLE
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary">
-              TOA High School National Championship 2024 (Regional Qualifier & National Final Stage)
+              TOA High School National Championship 2024 (Regional Qualifier &amp; National Final Stage)
             </p>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function AthleteEffTrend({
             <select
               value={selectedTournament}
               onChange={(e) => setSelectedTournament(e.target.value)}
-              className="w-full bg-surface-container-low border border-outline-variant font-body-sm py-1.5 pl-3 pr-8 rounded text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
+              className="w-full bg-surface-container-low border border-outline-variant font-body-sm py-2 pl-3 pr-8 rounded-xl text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
             >
               <option value="ALL">รวมสถิติการแข่งขันทางการสะสมทุกรายการ (7 แมตช์รับรองสถิติ)</option>
               <option value="TOA">TOA National High School Championship (U18)</option>
@@ -58,7 +58,7 @@ export default function AthleteEffTrend({
               <option value="BSAT">BSAT Inter-School Division 1 Invitational</option>
             </select>
           </div>
-          <button className="bg-surface-container-high hover:bg-surface-dim text-on-surface px-3 py-1.5 rounded font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-1 border border-outline-variant shrink-0 transition-colors">
+          <button className="bg-surface-container-high hover:bg-surface-dim text-on-surface px-3 py-2 rounded-xl font-label-caps text-label-caps font-semibold flex items-center gap-1 border border-outline-variant shrink-0 transition-colors cursor-pointer">
             <span className="material-symbols-outlined text-sm">filter_list</span>
             <span>กรองข้อมูล</span>
           </button>
@@ -68,7 +68,7 @@ export default function AthleteEffTrend({
       {/* 4 High-Impact KPI Performance Banners */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Consistency Index */}
-        <div className="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant relative overflow-hidden shadow-sm">
+        <div className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant relative overflow-hidden shadow-sm">
           <div className="flex justify-between items-start">
             <span className="font-label-caps text-label-caps text-secondary uppercase tracking-wider font-bold">
               CONSISTENCY INDEX
@@ -76,8 +76,8 @@ export default function AthleteEffTrend({
             <span className="material-symbols-outlined text-primary text-xl">insights</span>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-headline-xl text-headline-xl text-on-surface leading-none">92.4%</span>
-            <span className="font-label-caps text-label-caps bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold">
+            <span className="font-headline-xl text-headline-xl text-on-surface leading-none tabular-nums font-bold">92.4%</span>
+            <span className="font-label-caps text-label-caps bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">
               ระดับยอดเยี่ยม (ELITE TIER)
             </span>
           </div>
@@ -90,7 +90,7 @@ export default function AthleteEffTrend({
         </div>
 
         {/* Performance Floor */}
-        <div className="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant relative overflow-hidden shadow-sm">
+        <div className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant relative overflow-hidden shadow-sm">
           <div className="flex justify-between items-start">
             <span className="font-label-caps text-label-caps text-secondary uppercase tracking-wider font-bold">
               PERFORMANCE FLOOR
@@ -98,8 +98,8 @@ export default function AthleteEffTrend({
             <span className="material-symbols-outlined text-primary text-xl">vertical_align_bottom</span>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-headline-xl text-headline-xl text-on-surface leading-none">22</span>
-            <span className="font-body-sm text-secondary text-xs uppercase font-semibold">EFF ต่ำสุด (Minimum Floor)</span>
+            <span className="font-headline-xl text-headline-xl text-on-surface leading-none tabular-nums font-bold">22</span>
+            <span className="font-body-sm text-secondary text-xs font-semibold">EFF ต่ำสุด (Minimum Floor)</span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
             vs Triam Udom (G3) - Baseline double-double guaranteed.
@@ -110,7 +110,7 @@ export default function AthleteEffTrend({
         </div>
 
         {/* Performance Ceiling */}
-        <div className="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant relative overflow-hidden shadow-sm">
+        <div className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant relative overflow-hidden shadow-sm">
           <div className="flex justify-between items-start">
             <span className="font-label-caps text-label-caps text-secondary uppercase tracking-wider font-bold">
               PERFORMANCE CEILING
@@ -118,8 +118,8 @@ export default function AthleteEffTrend({
             <span className="material-symbols-outlined text-primary text-xl">vertical_align_top</span>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-headline-xl text-headline-xl text-primary leading-none">34</span>
-            <span className="font-body-sm text-primary text-xs uppercase font-semibold">EFF สูงสุด (Maximum Ceiling)</span>
+            <span className="font-headline-xl text-headline-xl text-primary leading-none tabular-nums font-bold">34</span>
+            <span className="font-body-sm text-primary text-xs font-semibold">EFF สูงสุด (Maximum Ceiling)</span>
           </div>
           <p className="font-body-sm text-secondary text-xs mt-1">
             vs BCC Bangkok Christian College (Semi-Final Showdown).
@@ -130,7 +130,7 @@ export default function AthleteEffTrend({
         </div>
 
         {/* Clutch Elevation */}
-        <div className="bg-surface-container-lowest p-4 rounded-lg border border-primary/30 relative overflow-hidden shadow-sm bg-gradient-to-br from-white to-red-50/50">
+        <div className="bg-surface-container-lowest p-4 rounded-xl border border-primary/30 relative overflow-hidden shadow-sm bg-gradient-to-br from-white to-red-50/50">
           <div className="flex justify-between items-start">
             <span className="font-label-caps text-label-caps text-primary uppercase tracking-wider font-bold">
               CLUTCH ELEVATION
@@ -488,7 +488,7 @@ export default function AthleteEffTrend({
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-xl">table_chart</span>
-            <h3 className="font-headline-sm text-headline-sm uppercase text-on-surface">
+            <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
               บันทึกสถิติการแข่งขันรายแมตช์ (MATCH BY MATCH PERFORMANCE LOGS)
             </h3>
           </div>
@@ -723,13 +723,13 @@ export default function AthleteEffTrend({
       {/* Analytical Conclusions & University Recruitment Banners */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Card 1: Playoff Surge & Peaking Summary */}
-        <div className="bg-surface-container-lowest p-4 md:p-5 rounded-lg border-l-4 border-primary border-t border-r border-b border-outline-variant shadow-sm flex items-start gap-3">
+        <div className="bg-surface-container-lowest p-4 md:p-5 rounded-xl border-l-4 border-primary border-t border-r border-b border-outline-variant shadow-sm flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-red-100 text-primary flex items-center justify-center shrink-0 mt-0.5">
             <span className="material-symbols-outlined text-lg">local_fire_department</span>
           </div>
           <div className="space-y-1">
-            <h4 className="font-headline-sm text-headline-sm uppercase text-on-surface">
-              Playoff Surge & Peaking (การยกระดับขีดความสามารถในรอบชิงชนะเลิศ)
+            <h4 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+              Playoff Surge &amp; Peaking (การยกระดับขีดความสามารถในรอบชิงชนะเลิศ)
             </h4>
             <p className="font-body-sm text-secondary leading-relaxed">
               ข้อมูลเชิงสถิติชี้ชัด: ประสิทธิภาพการเล่นสูงสุดอยู่ในรอบรองชนะเลิศ (34 EFF) และรอบชิงชนะเลิศ (32 EFF) สะท้อนความสามารถในการแข่งขันระดับสูง (Tier-1 Competition) โดยสามารถรักษามาตรฐานและทำผลงานได้อย่างยอดเยี่ยมภายใต้สถานการณ์กดดันสูง (Clutch Factor)
@@ -738,12 +738,12 @@ export default function AthleteEffTrend({
         </div>
 
         {/* Card 2: High-Floor Assurance for University Recruiters */}
-        <div className="bg-surface-container-lowest p-4 md:p-5 rounded-lg border-l-4 border-green-600 border-t border-r border-b border-outline-variant shadow-sm flex items-start gap-3">
+        <div className="bg-surface-container-lowest p-4 md:p-5 rounded-xl border-l-4 border-green-600 border-t border-r border-b border-outline-variant shadow-sm flex items-start gap-3">
           <div className="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0 mt-0.5">
             <span className="material-symbols-outlined text-lg">verified_user</span>
           </div>
           <div className="space-y-1">
-            <h4 className="font-headline-sm text-headline-sm uppercase text-on-surface">
+            <h4 className="font-headline-sm text-headline-sm text-on-surface font-bold">
               High-Floor Assurance (เสถียรภาพและมาตรฐานผลงานขั้นพื้นฐาน)
             </h4>
             <p className="font-body-sm text-secondary leading-relaxed">

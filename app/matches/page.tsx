@@ -23,6 +23,8 @@ import {
   Clock,
 } from "lucide-react";
 
+import { fetchWithCache } from "@/lib/cache/clientCache";
+
 export default function MatchesArchivePage() {
   const [matches, setMatches] = useState<Match[]>(mockMatches);
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,12 +36,9 @@ export default function MatchesArchivePage() {
     let isMounted = true;
     async function loadMatches() {
       try {
-        const res = await fetch("/api/matches");
-        if (res.ok) {
-          const json = await res.json();
-          if (json.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
-            setMatches(json.data);
-          }
+        const json = await fetchWithCache<{ data?: Match[] }>("/api/matches", 60000);
+        if (json?.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
+          setMatches(json.data);
         }
       } catch {
         // Fallback to mockMatches

@@ -194,18 +194,18 @@ export default function EditAthleteProfileModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-3xl bg-[#0F172A] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden my-6 text-white font-mono">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#0B1C30]/85 backdrop-blur-sm overflow-y-auto animate-fadeIn">
+      <div className="relative w-full max-w-3xl bg-[#0B1C30] border border-[#213145] rounded-2xl shadow-2xl overflow-hidden my-6 text-white font-sans">
         {/* MODAL HEADER */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#1E293B]/70">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-[#213145] bg-[#071322]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-[#DC2626]">
+            <div className="w-10 h-10 rounded-xl bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-[#AF101A]">
               <Ruler className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-100 flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold font-headline text-white flex items-center gap-2">
                 <span>แก้ไขข้อมูลสรีระและโปรไฟล์นักกีฬา</span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#142C47] text-slate-300 border border-[#213145] font-sans">
                   DRAFT COMBINE
                 </span>
               </h2>
@@ -216,7 +216,7 @@ export default function EditAthleteProfileModal({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-[#142C47] transition cursor-pointer"
             title="ปิดหน้าต่าง"
           >
             <X className="w-5 h-5" />
@@ -228,12 +228,12 @@ export default function EditAthleteProfileModal({
           <div
             className={`px-6 py-3 flex items-center gap-2 text-xs font-bold border-b ${
               statusMessage.type === "success"
-                ? "bg-slate-900 text-white border-slate-800"
+                ? "bg-[#071322] text-emerald-300 border-[#213145]"
                 : "bg-red-950/80 text-red-300 border-red-800"
             }`}
           >
             {statusMessage.type === "success" ? (
-              <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             ) : (
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
             )}
@@ -244,67 +244,67 @@ export default function EditAthleteProfileModal({
         {/* MODAL BODY */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-6">
           {/* LIVE BIOMETRIC HUD CARD */}
-          <div className="bg-gradient-to-r from-slate-900 to-[#1E293B] border border-slate-700/80 rounded-xl p-4 shadow-inner">
-            <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#DC2626]" />
+          <div className="bg-[#071322] border border-[#213145] rounded-xl p-4 shadow-inner">
+            <div className="flex items-center justify-between mb-3 border-b border-[#213145] pb-2">
+              <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#AF101A]" />
                 <span>คำนวณดัชนีสรีระแบบเรียลไทม์ (REAL-TIME BIOMETRICS HUD)</span>
               </span>
-              <span className="text-[11px] text-slate-400">FIBA Combine Standard</span>
+              <span className="text-[11px] text-slate-400 font-mono">FIBA Combine Standard</span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
               {/* Ape Index */}
-              <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+              <div className="bg-[#0d223a] p-3 rounded-xl border border-[#213145]">
+                <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">
                   APE INDEX
                 </div>
-                <div className="text-2xl font-bold text-white mt-0.5">
+                <div className="text-2xl font-bold text-white mt-0.5 tabular-nums font-mono">
                   {apeIndex >= 0 ? `+${apeIndex}` : apeIndex} <span className="text-xs">CM</span>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">
+                <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
                   อัตราส่วน {wingspanRatio}x
                 </div>
               </div>
 
               {/* Height Imperial */}
-              <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+              <div className="bg-[#0d223a] p-3 rounded-xl border border-[#213145]">
+                <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">
                   ส่วนสูง (IMPERIAL)
                 </div>
-                <div className="text-2xl font-bold text-white mt-0.5">
+                <div className="text-2xl font-bold text-white mt-0.5 tabular-nums font-mono">
                   {imperialHeight}
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">{heightCm} cm</div>
+                <div className="text-[10px] text-slate-400 mt-0.5 tabular-nums">{heightCm} cm</div>
               </div>
 
               {/* Standing Reach Imperial */}
-              <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+              <div className="bg-[#0d223a] p-3 rounded-xl border border-[#213145]">
+                <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">
                   ยืนแตะ (STAND REACH)
                 </div>
-                <div className="text-2xl font-bold text-white mt-0.5">
+                <div className="text-2xl font-bold text-white mt-0.5 tabular-nums font-mono">
                   {imperialReach}
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">{reachInches} inches</div>
+                <div className="text-[10px] text-slate-400 mt-0.5 tabular-nums">{reachInches} in</div>
               </div>
 
               {/* Weight Imperial */}
-              <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+              <div className="bg-[#0d223a] p-3 rounded-xl border border-[#213145]">
+                <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">
                   น้ำหนัก (POUNDS)
                 </div>
-                <div className="text-2xl font-bold text-white mt-0.5">
-                  {weightLbs} <span className="text-xs font-normal text-slate-400">LBS</span>
+                <div className="text-2xl font-bold text-white mt-0.5 tabular-nums font-mono">
+                  {weightLbs} <span className="text-xs font-normal text-slate-400 font-sans">LBS</span>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">{weightKg} kg</div>
+                <div className="text-[10px] text-slate-400 mt-0.5 tabular-nums">{weightKg} kg</div>
               </div>
             </div>
 
             {/* Ape Index Evaluation Badge */}
-            <div className={`mt-3 p-2 rounded-lg border text-xs flex items-center gap-2 ${apeTierColor}`}>
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <div className="flex-1">
+            <div className={`mt-3 p-2.5 rounded-xl border text-xs flex items-center gap-2 ${apeTierColor}`}>
+              <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
+              <div className="flex-1 font-sans">
                 <span className="font-bold">การวิเคราะห์สรีระ:</span> {apeTierLabel}
               </div>
             </div>
@@ -312,7 +312,7 @@ export default function EditAthleteProfileModal({
 
           {/* SECTION 1: สัดส่วนสรีระ (Physical Measurements) */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+            <h3 className="text-xs font-bold text-slate-300 flex items-center gap-1.5 border-b border-[#213145] pb-1.5 font-sans">
               <Ruler className="w-4 h-4 text-red-400" />
               <span>1. สัดส่วนและสมรรถภาพทางสรีระ (Measurements)</span>
             </h3>
@@ -321,16 +321,16 @@ export default function EditAthleteProfileModal({
               {/* ส่วนสูง (Height in cm) */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="text-slate-300 font-bold">
+                  <label className="text-slate-300 font-medium">
                     ส่วนสูง (Height) <span className="text-red-400">*</span>
                   </label>
-                  <span className="text-slate-400">{imperialHeight}</span>
+                  <span className="text-slate-400 font-mono">{imperialHeight}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setHeightCm((prev) => Math.max(120, prev - 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
@@ -343,14 +343,14 @@ export default function EditAthleteProfileModal({
                       value={heightCm}
                       onChange={(e) => setHeightCm(parseFloat(e.target.value) || 0)}
                       required
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-bold focus:outline-none focus:border-red-500 pr-10 text-center"
+                      className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white font-bold focus:outline-none focus:border-[#AF101A] pr-10 text-center text-xs tabular-nums"
                     />
                     <span className="absolute right-3 top-2.5 text-xs text-slate-400">cm</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setHeightCm((prev) => Math.min(240, prev + 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -360,16 +360,16 @@ export default function EditAthleteProfileModal({
               {/* น้ำหนัก (Weight in kg) */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="text-slate-300 font-bold">
+                  <label className="text-slate-300 font-medium">
                     น้ำหนัก (Weight) <span className="text-red-400">*</span>
                   </label>
-                  <span className="text-slate-400">{weightLbs} lbs</span>
+                  <span className="text-slate-400 font-mono">{weightLbs} lbs</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setWeightKg((prev) => Math.max(30, prev - 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
@@ -382,14 +382,14 @@ export default function EditAthleteProfileModal({
                       value={weightKg}
                       onChange={(e) => setWeightKg(parseFloat(e.target.value) || 0)}
                       required
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-bold focus:outline-none focus:border-red-500 pr-10 text-center"
+                      className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white font-bold focus:outline-none focus:border-[#AF101A] pr-10 text-center text-xs tabular-nums"
                     />
                     <span className="absolute right-3 top-2.5 text-xs text-slate-400">kg</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setWeightKg((prev) => Math.min(200, prev + 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -399,10 +399,10 @@ export default function EditAthleteProfileModal({
               {/* ช่วงแขน (Wingspan in cm) */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="text-slate-300 font-bold">
+                  <label className="text-slate-300 font-medium">
                     ช่วงแขน (Wingspan) <span className="text-red-400">*</span>
                   </label>
-                  <span className="text-slate-300 font-bold">
+                  <span className="text-slate-300 font-mono">
                     Ape: {apeIndex >= 0 ? `+${apeIndex}` : apeIndex} cm
                   </span>
                 </div>
@@ -410,7 +410,7 @@ export default function EditAthleteProfileModal({
                   <button
                     type="button"
                     onClick={() => setWingspanCm((prev) => Math.max(120, prev - 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
@@ -423,14 +423,14 @@ export default function EditAthleteProfileModal({
                       value={wingspanCm}
                       onChange={(e) => setWingspanCm(parseFloat(e.target.value) || 0)}
                       required
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-bold focus:outline-none focus:border-red-500 pr-10 text-center"
+                      className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white font-bold focus:outline-none focus:border-[#AF101A] pr-10 text-center text-xs tabular-nums"
                     />
                     <span className="absolute right-3 top-2.5 text-xs text-slate-400">cm</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setWingspanCm((prev) => Math.min(260, prev + 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -440,16 +440,16 @@ export default function EditAthleteProfileModal({
               {/* ระยะเอื้อมยืนแตะ (Standing Reach in cm) */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="text-slate-300 font-bold">
+                  <label className="text-slate-300 font-medium">
                     ระยะเอื้อมยืนแตะ (Standing Reach)
                   </label>
-                  <span className="text-slate-400">{reachInches} in</span>
+                  <span className="text-slate-400 font-mono">{reachInches} in</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setStandingReachCm((prev) => Math.max(140, prev - 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
@@ -461,14 +461,14 @@ export default function EditAthleteProfileModal({
                       step={0.5}
                       value={standingReachCm}
                       onChange={(e) => setStandingReachCm(parseFloat(e.target.value) || 0)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-bold focus:outline-none focus:border-red-500 pr-10 text-center"
+                      className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white font-bold focus:outline-none focus:border-[#AF101A] pr-10 text-center text-xs tabular-nums"
                     />
                     <span className="absolute right-3 top-2.5 text-xs text-slate-400">cm</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setStandingReachCm((prev) => Math.min(320, prev + 1))}
-                    className="w-9 h-9 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center justify-center"
+                    className="w-9 h-9 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-200 border border-[#213145] font-bold transition flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -478,22 +478,22 @@ export default function EditAthleteProfileModal({
           </div>
 
           {/* SECTION 2: ข้อมูลการเล่นและสังกัด (Positions & Team) */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+          <div className="space-y-3 font-sans">
+            <h3 className="text-xs font-bold text-slate-300 flex items-center gap-1.5 border-b border-[#213145] pb-1.5">
               <Award className="w-4 h-4 text-amber-400" />
-              <span>2. ข้อมูลตำแหน่ง หมายเลข และสังกัดทีม (Team & Position)</span>
+              <span>2. ข้อมูลตำแหน่ง หมายเลข และสังกัดทีม (Team &amp; Position)</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Primary Position */}
               <div className="space-y-1">
-                <label className="text-xs text-slate-300 font-bold">
+                <label className="text-xs text-slate-300 font-medium">
                   ตำแหน่งหลัก (Primary Position) <span className="text-red-400">*</span>
                 </label>
                 <select
                   value={primaryPosition}
                   onChange={(e) => setPrimaryPosition(e.target.value as Position)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-bold focus:outline-none focus:border-red-500"
+                  className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs font-medium focus:outline-none focus:border-[#AF101A]"
                 >
                   {POSITIONS.map((pos) => (
                     <option key={pos.value} value={pos.value}>
@@ -505,13 +505,13 @@ export default function EditAthleteProfileModal({
 
               {/* Secondary Position */}
               <div className="space-y-1">
-                <label className="text-xs text-slate-300 font-bold">
+                <label className="text-xs text-slate-300 font-medium">
                   ตำแหน่งรอง (Secondary Position)
                 </label>
                 <select
                   value={secondaryPosition}
                   onChange={(e) => setSecondaryPosition(e.target.value as Position | "NONE")}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-bold focus:outline-none focus:border-red-500"
+                  className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs font-medium focus:outline-none focus:border-[#AF101A]"
                 >
                   <option value="NONE">ไม่มี / ไม่ระบุ (None)</option>
                   {POSITIONS.map((pos) => (
@@ -524,7 +524,7 @@ export default function EditAthleteProfileModal({
 
               {/* Jersey Number */}
               <div className="space-y-1">
-                <label className="text-xs text-slate-300 font-bold">
+                <label className="text-xs text-slate-300 font-medium">
                   หมายเลขเสื้อ (Jersey #)
                 </label>
                 <input
@@ -533,7 +533,7 @@ export default function EditAthleteProfileModal({
                   max={99}
                   value={jerseyNumber}
                   onChange={(e) => setJerseyNumber(parseInt(e.target.value, 10) || 0)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-bold focus:outline-none focus:border-red-500 text-center"
+                  className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs font-bold focus:outline-none focus:border-[#AF101A] text-center tabular-nums font-mono"
                 />
               </div>
             </div>
@@ -541,7 +541,7 @@ export default function EditAthleteProfileModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               {/* School or Club */}
               <div className="space-y-1">
-                <label className="text-xs text-slate-300 font-bold">
+                <label className="text-xs text-slate-300 font-medium">
                   โรงเรียน / สโมสรต้นสังกัด (School / Club)
                 </label>
                 <input
@@ -549,29 +549,29 @@ export default function EditAthleteProfileModal({
                   value={schoolOrClub}
                   onChange={(e) => setSchoolOrClub(e.target.value)}
                   placeholder="เช่น Bangkok Christian College"
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs focus:outline-none focus:border-red-500"
+                  className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs focus:outline-none focus:border-[#AF101A]"
                 />
               </div>
 
               {/* Province */}
               <div className="space-y-1">
-                <label className="text-xs text-slate-300 font-bold">จังหวัด (Province)</label>
+                <label className="text-xs text-slate-300 font-medium">จังหวัด (Province)</label>
                 <input
                   type="text"
                   value={province}
                   onChange={(e) => setProvince(e.target.value)}
                   placeholder="เช่น Bangkok หรือ Chiang Mai"
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs focus:outline-none focus:border-red-500"
+                  className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs focus:outline-none focus:border-[#AF101A]"
                 />
               </div>
             </div>
           </div>
 
           {/* SECTION 3: ประวัติและสไตล์การเล่น (Bio & Scouting Notes) */}
-          <div className="space-y-1.5">
-            <label className="text-xs text-slate-300 font-bold flex items-center justify-between">
-              <span>3. ข้อมูลประวัติและรูปแบบการเล่น (Athlete & Scouting Bio)</span>
-              <span className="text-[11px] text-slate-500">
+          <div className="space-y-1.5 font-sans">
+            <label className="text-xs text-slate-300 font-medium flex items-center justify-between">
+              <span>3. ข้อมูลประวัติและรูปแบบการเล่น (Athlete &amp; Scouting Bio)</span>
+              <span className="text-[11px] text-slate-400 tabular-nums">
                 {bio.length} ตัวอักษร
               </span>
             </label>
@@ -580,17 +580,17 @@ export default function EditAthleteProfileModal({
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="ระบุจุดเด่น ทักษะความเชี่ยวชาญ และเป้าหมายทางวิชาการและกีฬาในระดับอุดมศึกษา..."
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs font-sans focus:outline-none focus:border-red-500 resize-none"
+              className="w-full px-3 py-2 bg-[#071322] border border-[#213145] rounded-xl text-white text-xs font-sans focus:outline-none focus:border-[#AF101A] resize-none"
             />
           </div>
 
           {/* MODAL ACTIONS */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#213145] font-sans">
             <button
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition disabled:opacity-50"
+              className="px-4 py-2 rounded-xl bg-[#142C47] hover:bg-[#1E3E64] text-slate-300 text-xs font-medium transition cursor-pointer disabled:opacity-50"
             >
               ยกเลิก
             </button>
@@ -598,7 +598,7 @@ export default function EditAthleteProfileModal({
             <button
               type="submit"
               disabled={isLoading}
-              className="px-5 py-2.5 rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-red-900/30 transition disabled:opacity-50 cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-red-950/40 transition disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? (
                 <>

@@ -98,7 +98,7 @@ export default function TodaysGamesSection() {
                 key={tab.id}
                 type="button"
                 onClick={() => setFilter(tab.id as typeof filter)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors whitespace-nowrap cursor-pointer ${
                   filter === tab.id
                     ? "bg-[#0B1C30] text-white"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -110,7 +110,7 @@ export default function TodaysGamesSection() {
 
             <Link
               href="/matches"
-              className="px-3 py-1.5 rounded-lg border border-borderStrong text-[#0B1C30] hover:border-[#AF101A] hover:text-[#AF101A] text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap ml-1"
+              className="px-3 py-1.5 rounded-xl border border-borderStrong text-[#0B1C30] hover:border-[#AF101A] hover:text-[#AF101A] text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap ml-1"
             >
               <span>ดูทั้งหมด</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -151,7 +151,7 @@ export default function TodaysGamesSection() {
 
         {/* Empty State */}
         {!isLoading && filteredMatches.length === 0 && (
-          <div className="text-center py-12 border border-dashed border-slate-200 rounded-xl mt-6 bg-slate-50/50">
+          <div className="text-center py-12 border border-dashed border-slate-200 rounded-2xl mt-6 bg-slate-50/50">
             <Calendar className="w-10 h-10 text-slate-400 mx-auto mb-2" />
             <p className="text-sm font-bold text-[#0B1C30]">ไม่พบรายการแข่งขันในหมวดนี้</p>
             <p className="text-xs text-[#5B6574] mt-1">
@@ -161,7 +161,7 @@ export default function TodaysGamesSection() {
               <button
                 type="button"
                 onClick={() => window.location.reload()}
-                className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-borderStrong text-xs font-semibold text-[#0B1C30] hover:bg-slate-100 transition cursor-pointer"
+                className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-borderStrong text-xs font-semibold text-[#0B1C30] hover:bg-slate-100 transition cursor-pointer"
               >
                 <span>ลองใหม่อีกครั้ง</span>
               </button>
@@ -181,7 +181,7 @@ export default function TodaysGamesSection() {
               return (
                 <div
                   key={match.id}
-                  className="rounded-xl border border-borderNeutral bg-white hover:border-slate-400 transition-colors p-4 sm:p-5 flex flex-col justify-between space-y-4"
+                  className="rounded-2xl border border-borderNeutral bg-white hover:border-slate-400 transition-colors p-4 sm:p-5 flex flex-col justify-between space-y-4"
                 >
                   {/* Match Card Top Metadata */}
                   <div className="flex items-center justify-between text-xs text-[#5B6574] font-sans pb-3 border-b border-slate-100">
@@ -190,16 +190,16 @@ export default function TodaysGamesSection() {
                     </div>
                     <div>
                       {isLive ? (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-50 text-[#AF101A] text-[11px] font-semibold">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 text-[#AF101A] text-[11px] font-semibold">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A]" />
                           <span>LIVE Q{match.currentQuarter || 1}</span>
                         </span>
                       ) : isDone ? (
-                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
+                        <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium">
                           จบการแข่งขัน
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-medium">
+                        <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-medium">
                           รอเริ่มแข่ง
                         </span>
                       )}

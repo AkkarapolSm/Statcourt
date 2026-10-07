@@ -239,7 +239,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
   return (
     <div className="space-y-6">
       {/* 1. Audit Header Card & Verification Seal */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 md:p-5 shadow-sm">
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 md:p-5 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -250,7 +250,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
               <span className="text-body-md font-bold text-on-surface-variant">
                 (บันทึกสถิติทางการส่งตรงจากโต๊ะกรรมการเทคนิค FIBA Digital Score)
               </span>
-              <span className="bg-[#AF101A] text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center uppercase tracking-wider">
+              <span className="bg-[#AF101A] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center uppercase tracking-wider">
                 <span className="material-symbols-outlined mr-1 text-xs">verified_user</span>
                 100% OFFICIALLY AUDITED
               </span>
@@ -258,7 +258,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             <p className="text-body-sm text-secondary flex flex-wrap items-center gap-x-4 gap-y-1">
               <span>
                 Official Certification Token:{" "}
-                <code className="font-mono bg-surface-container px-1 rounded text-primary font-bold">
+                <code className="font-mono bg-surface-container px-1.5 py-0.5 rounded-md text-primary font-bold">
                   STC-VERIFIED-TH-CMU-015
                 </code>
               </span>
@@ -276,14 +276,14 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handlePrintSheet}
-              className="bg-surface border border-outline-variant hover:border-primary text-on-surface hover:text-primary px-3 py-1.5 rounded text-body-sm font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+              className="bg-surface border border-outline-variant hover:border-primary text-on-surface hover:text-primary px-3.5 py-2 rounded-xl text-body-sm font-bold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">print</span>
               <span>พิมพ์ใบบันทึกคะแนน (Scoresheet)</span>
             </button>
             <button
               onClick={handleExportPdf}
-              className="bg-primary hover:bg-primary-container text-on-primary px-4 py-1.5 rounded text-body-sm font-bold uppercase tracking-wider flex items-center gap-1.5 shadow transition-all cursor-pointer"
+              className="bg-[#AF101A] hover:bg-[#8E0D15] text-white px-4 py-2 rounded-xl text-body-sm font-bold flex items-center gap-1.5 shadow transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">picture_as_pdf</span>
               <span>ส่งออกรายงานสถิติ (PDF)</span>
@@ -292,7 +292,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
         </div>
 
         {exportNotice && (
-          <div className="mt-3 p-2.5 rounded bg-slate-900 border border-slate-800 text-white text-xs font-bold animate-fadeIn flex items-center gap-1.5">
+          <div className="mt-3 p-3 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-bold animate-fadeIn flex items-center gap-1.5">
             <Check className="w-4 h-4 text-[#AF101A] shrink-0" />
             <span>{exportNotice}</span>
           </div>
@@ -302,16 +302,16 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
       {/* 2. Tournament & Match Selectors Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Tournament Dropdown Filter */}
-        <div className="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-4">
-          <label className="block text-label-caps uppercase text-secondary font-bold mb-1 flex items-center justify-between">
+        <div className="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 shadow-sm">
+          <label className="block text-secondary font-bold text-xs mb-1.5 flex items-center justify-between">
             <span>1. รายการแข่งขันทางการ (TOURNAMENT / COMPETITION)</span>
-            <span className="text-primary font-bold text-[10px]">7 Matches Recorded</span>
+            <span className="text-primary font-bold text-[10px] font-mono">7 Matches Recorded</span>
           </label>
           <div className="relative">
             <select
               value={selectedTournament}
               onChange={(e) => setSelectedTournament(e.target.value)}
-              className="w-full bg-surface-container-low border border-outline-variant rounded p-2 text-body-md font-bold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary appearance-none cursor-pointer outline-none"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-xl p-2.5 text-body-md font-bold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary appearance-none cursor-pointer outline-none"
             >
               <option value="BSAT_U18">
                 ชิงชนะเลิศเยาวชนแห่งชาติ U18 (BSAT National Youth Grand Slam 2026)
@@ -329,9 +329,9 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
         </div>
 
         {/* Match Selectors Horizon (Pills Carousel) */}
-        <div className="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-1 flex-wrap gap-1">
-            <span className="text-label-caps uppercase text-secondary font-bold">
+        <div className="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+            <span className="text-secondary font-bold text-xs">
               2. แมตช์การแข่งขันในรายการ (MATCHES IN THIS TOURNAMENT)
             </span>
             <div className="flex items-center gap-2">
@@ -339,7 +339,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
                 <button
                   type="button"
                   onClick={onOpenLineage}
-                  className="inline-flex items-center gap-1 text-[11px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded font-mono font-bold hover:bg-indigo-100 transition cursor-pointer"
+                  className="inline-flex items-center gap-1 text-[11px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-lg font-mono font-bold hover:bg-indigo-100 transition cursor-pointer"
                   title="ตรวจสอบประวัติและใบรับรองผลสถิติอย่างเป็นทางการ"
                 >
                   <span>ตรวจที่มาสถิติ (Provenance)</span>
@@ -355,45 +355,45 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             {/* Match Pill 1 (Active) */}
             <div
               onClick={() => setSelectedMatch("match-1")}
-              className={`p-2 rounded border cursor-pointer transition-all shadow-sm ${
+              className={`p-2.5 rounded-xl border cursor-pointer transition-all shadow-sm ${
                 selectedMatch === "match-1"
                   ? "bg-primary-container text-on-primary-container border-primary"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant"
               }`}
             >
-              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider mb-0.5">
+              <div className="flex items-center justify-between text-[10px] font-bold mb-0.5">
                 <span>28 ม.ค. 2026</span>
-                <span className={selectedMatch === "match-1" ? "bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded font-mono font-bold" : "bg-slate-900 text-white px-1.5 py-0.5 rounded font-mono font-bold"}>
+                <span className={selectedMatch === "match-1" ? "bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded-md font-mono font-bold" : "bg-slate-900 text-white px-1.5 py-0.5 rounded-md font-mono font-bold"}>
                   78 - 74
                 </span>
               </div>
               <div className="font-headline-sm text-sm uppercase leading-tight font-bold">
                 vs Debsirin School
               </div>
-              <div className="text-[10px] flex items-center justify-between mt-0.5 opacity-90">
+              <div className="text-[10px] flex items-center justify-between mt-1 opacity-90">
                 <span>Grand Final</span>
-                <span className="font-bold text-white bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded text-[9px] uppercase">MVP</span>
+                <span className="font-bold text-white bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded-md text-[9px] uppercase font-mono">MVP</span>
               </div>
             </div>
 
             {/* Match Pill 2 */}
             <div
               onClick={() => setSelectedMatch("match-2")}
-              className={`p-2 rounded border cursor-pointer transition-all ${
+              className={`p-2.5 rounded-xl border cursor-pointer transition-all ${
                 selectedMatch === "match-2"
                   ? "bg-primary-container text-on-primary-container border-primary"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant"
               }`}
             >
-              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider mb-0.5 text-secondary">
+              <div className="flex items-center justify-between text-[10px] font-bold mb-0.5 text-secondary">
                 <span>26 ม.ค. 2026</span>
-                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded font-mono font-bold">69 - 61</span>
+                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded-md font-mono font-bold">69 - 61</span>
               </div>
               <div className="font-headline-sm text-sm uppercase leading-tight font-bold">
                 vs Bangkok Christian (BCC)
               </div>
-              <div className="text-[10px] text-secondary flex items-center justify-between mt-0.5">
-                <span>Semi-Final</span>
+              <div className="text-[10px] text-secondary flex items-center justify-between mt-1 font-mono">
+                <span className="font-sans">Semi-Final</span>
                 <span>18 pts / 12 reb</span>
               </div>
             </div>
@@ -401,21 +401,21 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             {/* Match Pill 3 */}
             <div
               onClick={() => setSelectedMatch("match-3")}
-              className={`p-2 rounded border cursor-pointer transition-all ${
+              className={`p-2.5 rounded-xl border cursor-pointer transition-all ${
                 selectedMatch === "match-3"
                   ? "bg-primary-container text-on-primary-container border-primary"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant"
               }`}
             >
-              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider mb-0.5 text-secondary">
+              <div className="flex items-center justify-between text-[10px] font-bold mb-0.5 text-secondary">
                 <span>24 ม.ค. 2026</span>
-                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded font-mono font-bold">82 - 70</span>
+                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded-md font-mono font-bold">82 - 70</span>
               </div>
               <div className="font-headline-sm text-sm uppercase leading-tight font-bold">
                 vs Suankularb Wittayalai
               </div>
-              <div className="text-[10px] text-secondary flex items-center justify-between mt-0.5">
-                <span>Quarter-Final</span>
+              <div className="text-[10px] text-secondary flex items-center justify-between mt-1 font-mono">
+                <span className="font-sans">Quarter-Final</span>
                 <span>16 pts / 15 reb</span>
               </div>
             </div>
@@ -423,21 +423,21 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             {/* Match Pill 4 */}
             <div
               onClick={() => setSelectedMatch("match-4")}
-              className={`p-2 rounded border cursor-pointer transition-all ${
+              className={`p-2.5 rounded-xl border cursor-pointer transition-all ${
                 selectedMatch === "match-4"
                   ? "bg-primary-container text-on-primary-container border-primary"
                   : "bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant"
               }`}
             >
-              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider mb-0.5 text-secondary">
+              <div className="flex items-center justify-between text-[10px] font-bold mb-0.5 text-secondary">
                 <span>21 ม.ค. 2026</span>
-                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded font-mono font-bold">90 - 54</span>
+                <span className="bg-slate-900 text-white px-1.5 py-0.5 rounded-md font-mono font-bold">90 - 54</span>
               </div>
               <div className="font-headline-sm text-sm uppercase leading-tight font-bold">
                 vs Triam Udom Suksa
               </div>
-              <div className="text-[10px] text-secondary flex items-center justify-between mt-0.5">
-                <span>Group Phase</span>
+              <div className="text-[10px] text-secondary flex items-center justify-between mt-1 font-mono">
+                <span className="font-sans">Group Phase</span>
                 <span>24 pts / 10 reb</span>
               </div>
             </div>
@@ -446,11 +446,11 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
       </div>
 
       {/* 3. Official Cumulative Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+      <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 md:p-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
         <div className="flex items-center gap-3">
           <span className="material-symbols-outlined text-[#AF101A] text-2xl shrink-0">gavel</span>
           <div>
-            <h4 className="font-headline-sm text-headline-sm text-white uppercase leading-none">
+            <h4 className="font-headline-sm text-headline-sm text-white font-bold leading-tight">
               บันทึกเหตุการณ์การแข่งขันทางการอย่างเป็นทางการ (Official Cumulative Logs)
             </h4>
             <p className="text-body-sm text-slate-300 mt-0.5">
@@ -459,25 +459,25 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="bg-slate-800 text-slate-200 px-2.5 py-1 rounded text-body-sm font-bold border border-slate-700 shadow-sm font-mono">
+          <span className="bg-[#071322] text-slate-200 px-3 py-1 rounded-lg text-body-sm font-bold border border-[#213145] shadow-sm font-mono">
             รวม 22 เหตุการณ์
           </span>
-          <span className="bg-[#AF101A] text-white px-3 py-1 rounded text-label-caps uppercase font-bold tracking-wider flex items-center">
+          <span className="bg-[#AF101A] text-white px-3 py-1 rounded-full text-label-caps uppercase font-bold tracking-wider flex items-center">
             <span className="material-symbols-outlined text-sm mr-1">check</span> BSAT TABLE SYNCED
           </span>
         </div>
       </div>
 
       {/* 4. Tactical Event Filters Toolbar */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-3 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Primary Action Categories */}
         <div className="flex flex-wrap items-center gap-1.5 text-body-sm">
-          <span className="text-label-caps uppercase text-secondary font-bold mr-1 flex items-center">
-            <span className="material-symbols-outlined text-base mr-0.5">filter_alt</span> ตัวกรองสถิติ:
+          <span className="text-secondary font-bold text-xs mr-1 flex items-center">
+            <span className="material-symbols-outlined text-base mr-1 text-primary">filter_alt</span> ตัวกรองสถิติ:
           </span>
           <button
             onClick={() => setActiveCategory("ALL")}
-            className={`px-3 py-1 rounded font-bold uppercase tracking-wider text-xs transition-colors ${
+            className={`px-3 py-1 rounded-lg font-bold text-xs transition-colors cursor-pointer ${
               activeCategory === "ALL" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
@@ -485,7 +485,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           </button>
           <button
             onClick={() => setActiveCategory("PTS")}
-            className={`px-2.5 py-1 rounded font-bold uppercase tracking-wider text-xs transition-colors ${
+            className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors cursor-pointer ${
               activeCategory === "PTS" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
@@ -493,7 +493,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           </button>
           <button
             onClick={() => setActiveCategory("REB")}
-            className={`px-2.5 py-1 rounded font-bold uppercase tracking-wider text-xs transition-colors ${
+            className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors cursor-pointer ${
               activeCategory === "REB" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
@@ -501,7 +501,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           </button>
           <button
             onClick={() => setActiveCategory("AST")}
-            className={`px-2.5 py-1 rounded font-bold uppercase tracking-wider text-xs transition-colors ${
+            className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors cursor-pointer ${
               activeCategory === "AST" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
@@ -509,7 +509,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           </button>
           <button
             onClick={() => setActiveCategory("DEF")}
-            className={`px-2.5 py-1 rounded font-bold uppercase tracking-wider text-xs transition-colors ${
+            className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-colors cursor-pointer ${
               activeCategory === "DEF" ? "bg-on-surface text-surface-container-lowest" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
@@ -519,43 +519,43 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
           <div className="h-4 w-px bg-outline-variant mx-1 hidden sm:block"></div>
 
           {/* Quarter Filters */}
-          <span className="text-label-caps uppercase text-secondary font-bold mr-1">ควอเตอร์:</span>
+          <span className="text-secondary font-bold text-xs mr-1">ควอเตอร์:</span>
           <button
             onClick={() => setActiveQuarter("ALL")}
-            className={`px-2 py-0.5 rounded text-xs font-bold uppercase transition-colors ${
-              activeQuarter === "ALL" ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
+            className={`px-2 py-0.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+              activeQuarter === "ALL" ? "bg-[#AF101A] text-white" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
             ทุกควอเตอร์
           </button>
           <button
             onClick={() => setActiveQuarter(1)}
-            className={`px-2 py-0.5 rounded text-xs font-bold uppercase transition-colors ${
-              activeQuarter === 1 ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
+            className={`px-2 py-0.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+              activeQuarter === 1 ? "bg-[#AF101A] text-white" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
             Q1
           </button>
           <button
             onClick={() => setActiveQuarter(2)}
-            className={`px-2 py-0.5 rounded text-xs font-bold uppercase transition-colors ${
-              activeQuarter === 2 ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
+            className={`px-2 py-0.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+              activeQuarter === 2 ? "bg-[#AF101A] text-white" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
             Q2
           </button>
           <button
             onClick={() => setActiveQuarter(3)}
-            className={`px-2 py-0.5 rounded text-xs font-bold uppercase transition-colors ${
-              activeQuarter === 3 ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
+            className={`px-2 py-0.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+              activeQuarter === 3 ? "bg-[#AF101A] text-white" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
             Q3
           </button>
           <button
             onClick={() => setActiveQuarter(4)}
-            className={`px-2 py-0.5 rounded text-xs font-bold uppercase transition-colors ${
-              activeQuarter === 4 ? "bg-primary text-on-primary" : "bg-surface-container hover:bg-surface-dim text-on-surface"
+            className={`px-2 py-0.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+              activeQuarter === 4 ? "bg-[#AF101A] text-white" : "bg-surface-container hover:bg-surface-dim text-on-surface"
             }`}
           >
             Q4
@@ -571,13 +571,13 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface-container-low border border-outline-variant rounded pl-7 pr-2 py-1 text-xs text-on-surface placeholder:text-secondary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-xl pl-7 pr-2 py-1.5 text-xs text-on-surface placeholder:text-secondary focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="ค้นหาเหตุการณ์..."
               type="text"
             />
           </div>
           <button
-            className="bg-surface-container-low hover:bg-surface-container p-1.5 rounded border border-outline-variant text-secondary hover:text-primary transition-colors cursor-pointer"
+            className="bg-surface-container-low hover:bg-surface-container p-2 rounded-xl border border-outline-variant text-secondary hover:text-primary transition-colors cursor-pointer"
             title="เรียงจากล่าสุด"
           >
             <span className="material-symbols-outlined text-lg">swap_vert</span>
@@ -586,7 +586,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
       </div>
 
       {/* 5. Comprehensive Chronological Audit Table (FIBA LiveStats Spec) */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
@@ -608,27 +608,27 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
                   </td>
                   <td className="py-2.5 px-3">
                     <div className="font-bold text-xs">{row.matchStage}</div>
-                    <div className="text-[10px] text-secondary">{row.scoreContext}</div>
+                    <div className="text-[10px] text-secondary font-mono">{row.scoreContext}</div>
                   </td>
                   <td className="py-2.5 px-4">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`${row.actionBadgeColor} px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider`}>
+                      <span className={`${row.actionBadgeColor} px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider`}>
                         {row.actionBadge}
                       </span>
                       {row.isClutch && (
-                        <span className="bg-[#AF101A] text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide flex items-center">
+                        <span className="bg-[#AF101A] text-white px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wide flex items-center">
                           <span className="material-symbols-outlined text-xs mr-0.5">bolt</span>
                           {row.clutchLabel}
                         </span>
                       )}
                       {row.championshipPoint && (
-                        <span className="font-bold text-on-surface">[CHAMPIONSHIP POINT]</span>
+                        <span className="font-bold text-on-surface text-xs">[CHAMPIONSHIP POINT]</span>
                       )}
                       <span className="text-secondary text-xs">{row.actionDescription}</span>
                     </div>
                   </td>
                   <td className="py-2.5 px-3 text-center">
-                    <span className={`font-bold px-2 py-0.5 rounded text-xs ${row.pointsClass}`}>
+                    <span className={`font-bold px-2 py-0.5 rounded-md text-xs ${row.pointsClass}`}>
                       {row.points}
                     </span>
                   </td>
@@ -638,7 +638,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
                   <td className="py-2.5 px-3 text-center">
                     <button
                       onClick={() => setActiveVideoModal(row.eventId)}
-                      className="bg-surface-container-low hover:bg-primary hover:text-on-primary text-on-surface px-2 py-1 rounded text-[11px] font-bold flex items-center justify-center mx-auto gap-1 border border-outline-variant transition-colors shadow-xs cursor-pointer"
+                      className="bg-surface-container-low hover:bg-[#AF101A] hover:text-white text-on-surface px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center justify-center mx-auto gap-1 border border-outline-variant transition-colors shadow-xs cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-sm">play_circle</span>
                       <span>{row.videoDuration}</span>
@@ -664,19 +664,19 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
             <span className="text-primary font-bold">บันทึกข้อมูลสถิติสมบูรณ์ตามเกณฑ์มาตรฐาน FIBA</span>
           </div>
           <div className="flex items-center gap-1">
-            <button className="px-2.5 py-1 border border-outline-variant rounded bg-surface-container-lowest text-secondary font-bold text-xs opacity-50 cursor-not-allowed">
+            <button className="px-2.5 py-1 border border-outline-variant rounded-lg bg-surface-container-lowest text-secondary font-bold text-xs opacity-50 cursor-not-allowed">
               « ก่อนหน้า
             </button>
-            <button className="px-2.5 py-1 border border-primary rounded bg-primary text-on-primary font-bold text-xs">
+            <button className="px-2.5 py-1 border border-primary rounded-lg bg-primary text-on-primary font-bold text-xs">
               1
             </button>
-            <button className="px-2.5 py-1 border border-outline-variant rounded bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs">
+            <button className="px-2.5 py-1 border border-outline-variant rounded-lg bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs cursor-pointer">
               2
             </button>
-            <button className="px-2.5 py-1 border border-outline-variant rounded bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs">
+            <button className="px-2.5 py-1 border border-outline-variant rounded-lg bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs cursor-pointer">
               3
             </button>
-            <button className="px-2.5 py-1 border border-outline-variant rounded bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs">
+            <button className="px-2.5 py-1 border border-outline-variant rounded-lg bg-surface-container-lowest text-secondary hover:text-primary font-bold text-xs cursor-pointer">
               ถัดไป »
             </button>
           </div>
@@ -684,7 +684,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
       </div>
 
       {/* 6. Cryptographic Hash Footer & Sports Science Verification Seal */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 md:p-5 shadow-sm">
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 md:p-5 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center text-body-sm">
           {/* Crypto Hash Verification */}
           <div className="flex items-center gap-3">
@@ -729,7 +729,7 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
                 Official Table Verified • License Passed
               </div>
             </div>
-            <div className="bg-surface-container px-2.5 py-1.5 rounded border border-outline-variant text-center shrink-0">
+            <div className="bg-surface-container px-3 py-2 rounded-xl border border-outline-variant text-center shrink-0">
               <span
                 className="material-symbols-outlined text-primary text-xl"
                 style={{ fontVariationSettings: "'FILL' 1" }}
@@ -747,9 +747,9 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
       {/* Video Reel Modal Simulation */}
       {activeVideoModal && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-surface-container-lowest max-w-lg w-full rounded-xl border border-outline p-5 shadow-2xl space-y-4">
+          <div className="bg-surface-container-lowest max-w-lg w-full rounded-2xl border border-outline p-5 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
-              <span className="font-headline-sm uppercase text-primary">
+              <span className="font-headline-sm uppercase text-primary font-bold">
                 Official Highlight Clip • {activeVideoModal}
               </span>
               <button
@@ -759,9 +759,9 @@ export default function AthleteGameLogs({ athlete, stats, onOpenLineage }: Athle
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="w-full aspect-video bg-black rounded-lg flex items-center justify-center text-white/50 relative overflow-hidden">
+            <div className="w-full aspect-video bg-black rounded-xl flex items-center justify-center text-white/50 relative overflow-hidden">
               <span className="material-symbols-outlined text-5xl">play_circle</span>
-              <span className="absolute bottom-2 left-2 text-xs font-mono bg-black/80 px-2 py-0.5 rounded text-white">
+              <span className="absolute bottom-2 left-2 text-xs font-mono bg-black/80 px-2 py-0.5 rounded-md text-white">
                 FIBA LiveSync Timestamp: 00:08 Q4
               </span>
             </div>

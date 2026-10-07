@@ -649,7 +649,9 @@ export default function AdvancedScoutEnginePage() {
                             className="font-bold text-[#0B1C30] text-base hover:text-[#AF101A] transition-colors flex items-center gap-1.5 truncate"
                           >
                             <span className="truncate">{prospect.name}</span>
-                            <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" title="ยืนยันผลงานโดย StatCourtTH" />
+                            <span title="ยืนยันผลงานโดย StatCourtTH" className="inline-flex items-center">
+                              <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0" />
+                            </span>
                           </Link>
                           <div className="text-xs text-[#505A69] font-medium truncate mt-0.5">
                             {prospect.school} • {prospect.province}

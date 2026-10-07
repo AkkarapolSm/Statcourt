@@ -104,40 +104,40 @@ export default function PlayerTradingCard({
   const weight = athlete.weightKg || 78;
 
   return (
-    <div className="w-full max-w-[370px] flex flex-col items-center gap-3.5 select-none mx-auto">
+    <div className="w-full max-w-[370px] flex flex-col items-center gap-3.5 select-none mx-auto font-sans">
       {/* Outer Holographic & Metallic Frame */}
       <div
         ref={cardRef}
-        className="w-full p-[2px] rounded-2xl bg-gradient-to-br from-red-600/70 via-slate-600/70 to-slate-800 shadow-2xl shadow-black/80"
+        className="w-full p-[2px] rounded-2xl bg-gradient-to-br from-[#AF101A] via-slate-600 to-[#0B1C30] shadow-2xl shadow-black/80"
       >
         <div
-          className="rounded-[14px] bg-gradient-to-b from-[#090D18] via-[#0F172A] to-[#070B14] p-4 sm:p-5 text-white relative overflow-hidden flex flex-col space-y-3"
+          className="rounded-[14px] bg-[#0B1C30] p-4 sm:p-5 text-white relative overflow-hidden flex flex-col space-y-3"
           style={{
             backgroundImage: `
-              radial-gradient(ellipse at top center, rgba(220, 38, 38, 0.18), transparent 60%),
-              radial-gradient(ellipse at bottom center, rgba(59, 130, 246, 0.1), transparent 60%),
-              radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)
+              radial-gradient(ellipse at top center, rgba(175, 16, 26, 0.22), transparent 60%),
+              radial-gradient(ellipse at bottom center, rgba(30, 58, 138, 0.15), transparent 60%),
+              radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)
             `,
             backgroundSize: "100% 100%, 100% 100%, 16px 16px",
           }}
         >
           {/* Card Corner Tech Brackets */}
-          <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-red-500/50 pointer-events-none rounded-tl-sm" />
-          <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-red-500/50 pointer-events-none rounded-tr-sm" />
-          <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-red-500/50 pointer-events-none rounded-bl-sm" />
-          <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-red-500/50 pointer-events-none rounded-br-sm" />
+          <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-[#AF101A]/60 pointer-events-none rounded-tl-sm" />
+          <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-[#AF101A]/60 pointer-events-none rounded-tr-sm" />
+          <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-[#AF101A]/60 pointer-events-none rounded-bl-sm" />
+          <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-[#AF101A]/60 pointer-events-none rounded-br-sm" />
 
           {/* Top Micro-Header Bar */}
           <div className="relative z-10 flex items-center justify-between border-b border-slate-800/80 pb-2">
             <div className="flex items-center gap-1.5">
-              <span className="bg-brand-primary text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded font-mono shadow-sm">
+              <span className="bg-[#AF101A] text-white text-[9px] font-black tracking-wider px-2 py-0.5 rounded shadow-xs">
                 STATCOURT.TH
               </span>
-              <span className="text-[9px] font-mono font-bold text-slate-300 tracking-wider uppercase">
+              <span className="text-[9px] font-bold text-slate-300 tracking-wider uppercase">
                 TCAS ATHLETE
               </span>
             </div>
-            <div className="flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/50 px-1.5 py-0.5 rounded text-[8.5px] font-mono text-emerald-300 font-bold">
+            <div className="flex items-center gap-1 bg-emerald-500/15 border border-emerald-500/40 px-2 py-0.5 rounded-full text-[9px] text-emerald-300 font-bold">
               <span className="w-1.5 h-1.5 rounded-full bg-[#15803D] animate-pulse" />
               <span>OFFICIAL VERIFIED</span>
             </div>
@@ -146,7 +146,7 @@ export default function PlayerTradingCard({
           {/* Hero Section: Centered Athlete Photo, Name, and Position */}
           <div className="relative z-10 flex flex-col items-center text-center pt-1">
             {/* Centered Avatar Box */}
-            <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-900 border-2 border-red-500/80 shadow-xl shadow-red-950/50">
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-900 border-2 border-[#AF101A]/80 shadow-xl shadow-red-950/40">
               {athlete.avatarUrl ? (
                 <img
                   src={athlete.avatarUrl}
@@ -155,19 +155,20 @@ export default function PlayerTradingCard({
                   crossOrigin="anonymous"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-brand-primary text-white font-mono font-black text-2xl">
+                <div className="w-full h-full flex items-center justify-center bg-[#AF101A] text-white font-extrabold text-2xl tabular-nums">
                   #{athlete.jerseyNumber || "0"}
                 </div>
               )}
-              <div className="absolute bottom-0 right-0 bg-brand-primary text-white font-mono font-black text-[10px] px-1.5 py-0.5 rounded-tl shadow">
+              <div className="absolute bottom-0 right-0 bg-[#AF101A] text-white font-bold text-[10px] px-1.5 py-0.5 rounded-tl shadow tabular-nums">
                 #{athlete.jerseyNumber || "0"}
               </div>
             </div>
 
             {/* Position Pill */}
-            <div className="mt-2 px-2.5 py-0.5 rounded-full bg-slate-800/90 border border-red-500/40 text-[9.5px] font-mono font-bold text-red-300 uppercase tracking-wider flex items-center gap-1.5">
-              <span>{posInfo.full} ({posInfo.abbr})</span>
-              <span className="text-slate-400 font-sans font-normal text-[9px]">· {posInfo.thai}</span>
+            <div className="mt-2.5 px-3 py-0.5 rounded-full bg-slate-800/90 border border-[#AF101A]/40 text-[10px] font-semibold text-rose-200 flex items-center gap-1.5">
+              <span className="font-bold tracking-wider">{posInfo.abbr}</span>
+              <span className="text-slate-400">·</span>
+              <span className="text-slate-300">{posInfo.thai}</span>
             </div>
 
             {/* Centered Athlete Name */}
@@ -175,9 +176,9 @@ export default function PlayerTradingCard({
               {athlete.firstName} {athlete.lastName}
             </h1>
 
-            {/* Centered School & Province */}
-            <div className="text-xs text-slate-300 font-medium flex items-center justify-center gap-1 mt-0.5 font-mono">
-              <MapPin className="w-3 h-3 text-brand-signal shrink-0" />
+            {/* Centered School & Province (Thai Text - No font-mono) */}
+            <div className="text-xs text-slate-300 font-medium flex items-center justify-center gap-1 mt-0.5">
+              <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
               <span className="truncate max-w-[280px]">
                 {athlete.schoolOrClub} • {athlete.province}
               </span>
@@ -185,49 +186,49 @@ export default function PlayerTradingCard({
           </div>
 
           {/* Physical Biometrics Section */}
-          <div className="relative z-10 grid grid-cols-4 gap-1 py-1.5 px-1 bg-slate-900/90 rounded-xl border border-slate-800 text-center font-mono shadow-inner divide-x divide-slate-800/80">
+          <div className="relative z-10 grid grid-cols-4 gap-1 py-2 px-1 bg-slate-900/90 rounded-xl border border-slate-800 text-center shadow-inner divide-x divide-slate-800/80">
             <div className="px-0.5">
-              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
+              <span className="text-[8.5px] uppercase tracking-wider text-slate-400 block font-bold leading-tight">
                 HEIGHT
               </span>
-              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+              <span className="text-[8px] text-slate-400 block leading-none mt-0.5">
                 ส่วนสูง
               </span>
-              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
-                {height} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block tabular-nums">
+                {height} <span className="text-[9px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
+              <span className="text-[8.5px] uppercase tracking-wider text-slate-400 block font-bold leading-tight">
                 WINGSPAN
               </span>
-              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+              <span className="text-[8px] text-slate-400 block leading-none mt-0.5">
                 วงแขน
               </span>
-              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
-                {wingspan} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block tabular-nums">
+                {wingspan} <span className="text-[9px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
+              <span className="text-[8.5px] uppercase tracking-wider text-slate-400 block font-bold leading-tight">
                 REACH
               </span>
-              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+              <span className="text-[8px] text-slate-400 block leading-none mt-0.5">
                 ระยะเอื้อม
               </span>
-              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
-                {reach} <span className="text-[8.5px] font-normal text-slate-400">cm</span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block tabular-nums">
+                {reach} <span className="text-[9px] font-normal text-slate-400">cm</span>
               </span>
             </div>
             <div className="px-0.5">
-              <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold leading-tight">
+              <span className="text-[8.5px] uppercase tracking-wider text-slate-400 block font-bold leading-tight">
                 WEIGHT
               </span>
-              <span className="text-[7.5px] text-slate-400 block font-sans leading-none mt-0.5">
+              <span className="text-[8px] text-slate-400 block leading-none mt-0.5">
                 น้ำหนัก
               </span>
-              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">
-                {weight} <span className="text-[8.5px] font-normal text-slate-400">kg</span>
+              <span className="text-xs sm:text-sm font-black text-white mt-0.5 block tabular-nums">
+                {weight} <span className="text-[9px] font-normal text-slate-400">kg</span>
               </span>
             </div>
           </div>
@@ -241,8 +242,8 @@ export default function PlayerTradingCard({
               >
                 <defs>
                   <linearGradient id="radarFill" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#EF4444" stopOpacity="0.55" />
-                    <stop offset="100%" stopColor="#991B1B" stopOpacity="0.25" />
+                    <stop offset="0%" stopColor="#AF101A" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#8E0D15" stopOpacity="0.25" />
                   </linearGradient>
                   <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                     <feGaussianBlur stdDeviation="2.5" result="blur" />
@@ -287,16 +288,16 @@ export default function PlayerTradingCard({
                 <polygon
                   points={radarPolygonPoints}
                   fill="url(#radarFill)"
-                  stroke="#EF4444"
+                  stroke="#FF7A7A"
                   strokeWidth="2.5"
                   filter="url(#glow)"
                 />
 
                 {/* Data Points */}
-                <circle cx={pScoring.x} cy={pScoring.y} r="3" fill="#FFFFFF" stroke="#DC2626" strokeWidth="2" />
-                <circle cx={pPlaymaking.x} cy={pPlaymaking.y} r="3" fill="#FFFFFF" stroke="#DC2626" strokeWidth="2" />
-                <circle cx={pDefense.x} cy={pDefense.y} r="3" fill="#FFFFFF" stroke="#DC2626" strokeWidth="2" />
-                <circle cx={pAthleticism.x} cy={pAthleticism.y} r="3" fill="#FFFFFF" stroke="#DC2626" strokeWidth="2" />
+                <circle cx={pScoring.x} cy={pScoring.y} r="3" fill="#FFFFFF" stroke="#AF101A" strokeWidth="2" />
+                <circle cx={pPlaymaking.x} cy={pPlaymaking.y} r="3" fill="#FFFFFF" stroke="#AF101A" strokeWidth="2" />
+                <circle cx={pDefense.x} cy={pDefense.y} r="3" fill="#FFFFFF" stroke="#AF101A" strokeWidth="2" />
+                <circle cx={pAthleticism.x} cy={pAthleticism.y} r="3" fill="#FFFFFF" stroke="#AF101A" strokeWidth="2" />
 
                 {/* Axis Labels */}
                 <text
@@ -306,7 +307,7 @@ export default function PlayerTradingCard({
                   fill="#F1F5F9"
                   fontSize="8.5"
                   fontWeight="800"
-                  fontFamily="monospace"
+                  fontFamily="sans-serif"
                 >
                   SCORING ({scoring})
                 </text>
@@ -318,7 +319,7 @@ export default function PlayerTradingCard({
                   fill="#F1F5F9"
                   fontSize="8.5"
                   fontWeight="800"
-                  fontFamily="monospace"
+                  fontFamily="sans-serif"
                 >
                   PLAYMAKING ({playmaking})
                 </text>
@@ -330,7 +331,7 @@ export default function PlayerTradingCard({
                   fill="#F1F5F9"
                   fontSize="8.5"
                   fontWeight="800"
-                  fontFamily="monospace"
+                  fontFamily="sans-serif"
                 >
                   DEFENSE ({defense})
                 </text>
@@ -342,7 +343,7 @@ export default function PlayerTradingCard({
                   fill="#F1F5F9"
                   fontSize="8.5"
                   fontWeight="800"
-                  fontFamily="monospace"
+                  fontFamily="sans-serif"
                 >
                   ATHLETICISM ({athleticism})
                 </text>
@@ -351,40 +352,40 @@ export default function PlayerTradingCard({
           </div>
 
           {/* FIBA Official Season Averages Ticker */}
-          <div className="relative z-10 grid grid-cols-6 gap-1 p-1.5 bg-slate-900/90 rounded-xl border border-slate-800 text-center font-mono shadow-inner items-center">
-            <div className="bg-brand-primary/15 border border-brand-primary/40 rounded-lg py-1 px-0.5">
-              <span className="text-[7.5px] text-red-400 font-bold block leading-none">FIBA EFF</span>
-              <span className="text-xs font-black text-brand-signal leading-tight mt-0.5 block">
+          <div className="relative z-10 grid grid-cols-6 gap-1 p-2 bg-slate-900/90 rounded-xl border border-slate-800 text-center shadow-inner items-center">
+            <div className="bg-[#AF101A]/20 border border-[#AF101A]/50 rounded-lg py-1 px-0.5">
+              <span className="text-[7.5px] text-rose-300 font-bold block leading-none">FIBA EFF</span>
+              <span className="text-xs font-black text-rose-200 leading-tight mt-0.5 block tabular-nums">
                 {stats?.effPerGame ?? stats?.per ?? "28.0"}
               </span>
             </div>
             <div>
               <span className="text-[7.5px] text-slate-400 block leading-none">PPG</span>
-              <span className="text-xs font-bold text-white leading-tight mt-0.5 block">
+              <span className="text-xs font-bold text-white leading-tight mt-0.5 block tabular-nums">
                 {stats?.ppg ?? "21.4"}
               </span>
             </div>
             <div>
               <span className="text-[7.5px] text-slate-400 block leading-none">APG</span>
-              <span className="text-xs font-bold text-white leading-tight mt-0.5 block">
+              <span className="text-xs font-bold text-white leading-tight mt-0.5 block tabular-nums">
                 {stats?.apg ?? "7.6"}
               </span>
             </div>
             <div>
               <span className="text-[7.5px] text-slate-400 block leading-none">RPG</span>
-              <span className="text-xs font-bold text-white leading-tight mt-0.5 block">
+              <span className="text-xs font-bold text-white leading-tight mt-0.5 block tabular-nums">
                 {stats?.rpg ?? "5.8"}
               </span>
             </div>
             <div>
               <span className="text-[7.5px] text-slate-400 block leading-none">eFG%</span>
-              <span className="text-xs font-bold text-white leading-tight mt-0.5 block">
+              <span className="text-xs font-bold text-white leading-tight mt-0.5 block tabular-nums">
                 {stats?.efgPct ?? "60.1"}%
               </span>
             </div>
             <div>
               <span className="text-[7.5px] text-slate-400 block leading-none">TS%</span>
-              <span className="text-xs font-bold text-white leading-tight mt-0.5 block">
+              <span className="text-xs font-bold text-white leading-tight mt-0.5 block tabular-nums">
                 {stats?.tsPct ?? "63.9"}%
               </span>
             </div>
@@ -397,10 +398,10 @@ export default function PlayerTradingCard({
                 <ShieldCheck className="w-4 h-4 text-[#15803D]" />
               </div>
               <div>
-                <div className="text-[9.5px] font-black uppercase text-white font-mono tracking-wider">
+                <div className="text-[9.5px] font-black uppercase text-white tracking-wider">
                   OFFICIAL TABLE VERIFIED
                 </div>
-                <div className="text-[8.5px] text-slate-400 font-mono tracking-tight">
+                <div className="text-[8.5px] text-slate-400 tabular-nums">
                   REF: {refCode}
                 </div>
               </div>
@@ -408,10 +409,10 @@ export default function PlayerTradingCard({
 
             <div className="flex items-center gap-2">
               <div className="text-right">
-                <div className="text-[8px] uppercase tracking-wider text-slate-300 font-mono font-bold leading-tight">
+                <div className="text-[8px] uppercase tracking-wider text-slate-300 font-bold leading-tight">
                   SCAN PROFILE
                 </div>
-                <div className="text-[7.5px] text-slate-400 font-sans leading-none mt-0.5">
+                <div className="text-[7.5px] text-slate-400 leading-none mt-0.5">
                   BSAT / TCAS
                 </div>
               </div>
@@ -431,36 +432,37 @@ export default function PlayerTradingCard({
         <button
           onClick={handleExportCard}
           disabled={isExporting}
-          className="flex-1 flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-crimson text-white font-bold font-mono text-xs py-2 px-3 rounded-xl shadow-md transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1.5 bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white font-bold text-xs py-2 px-3 rounded-xl shadow-md transition disabled:opacity-50 cursor-pointer"
         >
           <Download className="w-3.5 h-3.5" />
-          <span>{isExporting ? "EXPORTING..." : "EXPORT PNG"}</span>
+          <span>{isExporting ? "กำลังส่งออก..." : "ดาวน์โหลดบัตร (PNG)"}</span>
         </button>
 
         {onVerificationClick && (
           <button
             onClick={onVerificationClick}
-            className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-semibold py-2 px-3 rounded-xl border border-slate-700 transition"
+            className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-700 transition cursor-pointer"
+            title="ดูประวัติการรับรองสถิติ"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>LOGS</span>
+            <span>ประวัติรับรอง</span>
           </button>
         )}
 
         <button
           onClick={handleCopyCode}
-          className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-semibold py-2 px-3 rounded-xl border border-slate-700 transition"
-          title="Copy TCAS Reference Code"
+          className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-700 transition cursor-pointer"
+          title="คัดลอกรหัสอ้างอิง TCAS"
         >
           {copiedCode ? (
             <>
               <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-emerald-400 font-bold">COPIED</span>
+              <span className="text-emerald-400 font-bold">คัดลอกแล้ว</span>
             </>
           ) : (
             <>
               <Share2 className="w-3.5 h-3.5 text-slate-400" />
-              <span>SHARE</span>
+              <span>แชร์รหัส</span>
             </>
           )}
         </button>

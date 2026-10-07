@@ -226,23 +226,23 @@ export default function RosterImportModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden font-sans text-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden font-sans text-slate-800">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-5 sm:px-6 bg-slate-900 text-white shrink-0">
+        <div className="flex items-center justify-between p-5 sm:px-6 bg-[#071322] border-b border-[#213145] text-white shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shrink-0">
-              <FileSpreadsheet className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-[#AF101A]/20 border border-[#AF101A]/40 flex items-center justify-center text-red-300 shrink-0">
+              <FileSpreadsheet className="w-5 h-5 text-[#AF101A]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-400/10 border border-indigo-400/20 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-400 bg-red-400/10 border border-red-400/20 px-2 py-0.5 rounded-full">
                   ROSTER IMPORT &amp; DEDUPLICATION
                 </span>
                 <span className="text-slate-400 font-mono text-xs">FIBA Compatible</span>
               </div>
-              <h2 className="text-base sm:text-lg font-bold font-mono tracking-tight text-white mt-0.5">
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-white mt-0.5">
                 นำเข้ารายชื่อนักกีฬาจาก CSV และตรวจสอบข้อมูลซ้ำ
               </h2>
             </div>
@@ -250,7 +250,7 @@ export default function RosterImportModal({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#213145]/60 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -258,7 +258,7 @@ export default function RosterImportModal({
 
         {/* Error Banner */}
         {errorMessage && (
-          <div className="p-3 px-6 bg-red-50 border-b border-red-200 flex items-center justify-between text-red-800 text-xs font-mono">
+          <div className="p-3 px-6 bg-red-50 border-b border-red-200 flex items-center justify-between text-red-800 text-xs font-sans">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
               <span>{errorMessage}</span>
@@ -279,13 +279,13 @@ export default function RosterImportModal({
           {step === "INPUT" && (
             <div className="space-y-6 max-w-3xl mx-auto">
               {/* Instructions & Template Download */}
-              <div className="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
-                  <h3 className="text-sm font-bold text-indigo-950 flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-[#AF101A]" />
                     <span>ระบบตรวจสอบข้อมูลซ้ำซ้อนอัตโนมัติ (Entity Resolution)</span>
                   </h3>
-                  <p className="text-xs text-indigo-800/80 leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed font-sans">
                     ระบบจะจับคู่ชื่อ-นามสกุล, วันเดือนปีเกิด, รหัสบัตร/TCAS, อีเมล และเบอร์โทรศัพท์ เพื่อป้องกันปัญหานักกีฬาคนเดียวมีหลายโปรไฟล์
                   </p>
                 </div>
@@ -293,22 +293,22 @@ export default function RosterImportModal({
                 <a
                   href="/api/athletes/import/template"
                   download="statcourt_roster_template.csv"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono text-xs font-bold transition shadow-xs shrink-0 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-xs shrink-0 cursor-pointer"
                 >
-                  <Download className="w-4 h-4 text-indigo-600" />
+                  <Download className="w-4 h-4 text-[#AF101A]" />
                   <span>ดาวน์โหลดไฟล์ตัวอย่าง CSV</span>
                 </a>
               </div>
 
               {/* Target Team Selection */}
               <div className="space-y-2">
-                <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                <label className="text-xs font-bold text-slate-700">
                   สังกัด / ทีมที่ต้องการนำเข้า (Target Team):
                 </label>
                 <select
                   value={selectedTeamId}
                   onChange={(e) => setSelectedTeamId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs bg-white focus:outline-hidden focus:ring-2 focus:ring-[#AF101A]"
                 >
                   <option value="">-- ไม่ระบุสังกัด (นำเข้าเป็นนักกีฬาอิสระในระบบ) --</option>
                   {teams.map((t) => (
@@ -321,15 +321,15 @@ export default function RosterImportModal({
 
               {/* File Dropzone */}
               <div className="space-y-2">
-                <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                <label className="text-xs font-bold text-slate-700">
                   อัปโหลดไฟล์ CSV (.csv):
                 </label>
-                <div className="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-6 text-center transition bg-slate-50/50 hover:bg-indigo-50/30">
+                <div className="border-2 border-dashed border-slate-300 hover:border-[#AF101A] rounded-2xl p-6 text-center transition bg-slate-50/50 hover:bg-red-50/20">
                   <UploadCloud className="w-10 h-10 text-slate-400 mx-auto mb-2" />
                   <p className="text-xs text-slate-700 font-medium">
                     คลิกเพื่อเลือกไฟล์ หรือลากไฟล์ CSV มาวางที่นี่
                   </p>
-                  <p className="text-[11px] text-slate-400 font-mono mt-1">
+                  <p className="text-[11px] text-slate-400 mt-1 font-sans">
                     รองรับไฟล์เข้ารหัส UTF-8 และฟอร์แมตมาตรฐานของ StatCourtTH
                   </p>
                   <input
@@ -344,13 +344,13 @@ export default function RosterImportModal({
               {/* Or Paste CSV text */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-bold text-slate-700 uppercase">
+                  <label className="text-xs font-bold text-slate-700">
                     หรือวางข้อความ CSV โดยตรง (Paste CSV Content):
                   </label>
                   {csvText && (
                     <button
                       onClick={() => setCsvText("")}
-                      className="text-[11px] font-mono text-slate-400 hover:text-red-600 cursor-pointer"
+                      className="text-[11px] text-slate-400 hover:text-red-600 cursor-pointer"
                     >
                       ล้างข้อความ
                     </button>
@@ -361,7 +361,7 @@ export default function RosterImportModal({
                   value={csvText}
                   onChange={(e) => setCsvText(e.target.value)}
                   placeholder={`firstName,lastName,birthDate,position,heightCm,weightKg,jerseyNumber,schoolOrClub,province,email,phoneNumber,nationalId\nณัฐภัทร,วิจิตรจันทร์,2008-04-12,POINT_GUARD,183,74,7,กรุงเทพคริสเตียนวิทยาลัย,กรุงเทพมหานคร,nattapat@example.com,0812345678,1100501234567`}
-                  className="w-full p-3.5 rounded-xl border border-slate-300 font-mono text-xs focus:outline-hidden focus:ring-2 focus:ring-indigo-500 bg-white"
+                  className="w-full p-3.5 rounded-xl border border-slate-300 font-mono text-xs focus:outline-hidden focus:ring-2 focus:ring-[#AF101A] bg-white"
                 />
               </div>
 
@@ -370,7 +370,7 @@ export default function RosterImportModal({
                   type="button"
                   onClick={handleParseCsv}
                   disabled={parsing || !csvText.trim()}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
                 >
                   <RefreshCw className={`w-4 h-4 ${parsing ? "animate-spin" : ""}`} />
                   <span>{parsing ? "กำลังประมวลผล..." : "ตรวจสอบข้อมูลและตรวจความซ้ำซ้อน"}</span>
@@ -390,12 +390,12 @@ export default function RosterImportModal({
                   onClick={() => setActiveFilter("ALL")}
                   className={`p-3.5 rounded-2xl border text-left transition cursor-pointer ${
                     activeFilter === "ALL"
-                      ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                      ? "bg-[#071322] text-white border-[#213145] shadow-sm"
                       : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                   }`}
                 >
-                  <div className="text-[11px] font-mono font-bold uppercase opacity-80">ทั้งหมด (Total)</div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">{summary.totalRows}</div>
+                  <div className="text-[11px] font-bold opacity-80">ทั้งหมด (Total)</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums mt-0.5">{summary.totalRows}</div>
                 </button>
 
                 <button
@@ -406,8 +406,8 @@ export default function RosterImportModal({
                       : "bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100"
                   }`}
                 >
-                  <div className="text-[11px] font-mono font-bold uppercase opacity-80">สร้างใหม่ (New)</div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">{summary.newCount}</div>
+                  <div className="text-[11px] font-bold opacity-80">สร้างใหม่ (New)</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums mt-0.5">{summary.newCount}</div>
                 </button>
 
                 <button
@@ -418,8 +418,8 @@ export default function RosterImportModal({
                       : "bg-blue-50 border-blue-200 text-blue-800 hover:bg-blue-100"
                   }`}
                 >
-                  <div className="text-[11px] font-mono font-bold uppercase opacity-80">ตรงกับเดิม (Exact)</div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">{summary.exactMatchCount}</div>
+                  <div className="text-[11px] font-bold opacity-80">ตรงกับเดิม (Exact)</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums mt-0.5">{summary.exactMatchCount}</div>
                 </button>
 
                 <button
@@ -430,8 +430,8 @@ export default function RosterImportModal({
                       : "bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100"
                   }`}
                 >
-                  <div className="text-[11px] font-mono font-bold uppercase opacity-80">อาจซ้ำซ้อน (Dupe)</div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">{summary.potentialDuplicateCount}</div>
+                  <div className="text-[11px] font-bold opacity-80">อาจซ้ำซ้อน (Dupe)</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums mt-0.5">{summary.potentialDuplicateCount}</div>
                 </button>
 
                 <button
@@ -442,26 +442,26 @@ export default function RosterImportModal({
                       : "bg-red-50 border-red-200 text-red-800 hover:bg-red-100"
                   }`}
                 >
-                  <div className="text-[11px] font-mono font-bold uppercase opacity-80">ไม่สมบูรณ์ (Invalid)</div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">{summary.invalidCount}</div>
+                  <div className="text-[11px] font-bold opacity-80">ไม่สมบูรณ์ (Invalid)</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums mt-0.5">{summary.invalidCount}</div>
                 </button>
               </div>
 
               {/* Bulk Action Controls */}
-              <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs font-mono">
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-500 font-bold uppercase">ตัวช่วยตัดสินใจด่วน:</span>
+                  <span className="text-slate-500 font-bold">ตัวช่วยตัดสินใจด่วน:</span>
                   <button
                     type="button"
                     onClick={() => handleBulkAction("LINK_ALL")}
-                    className="px-2.5 py-1.5 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold transition cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold transition cursor-pointer"
                   >
                     เชื่อมโยงข้อมูลเดิมทั้งหมด
                   </button>
                   <button
                     type="button"
                     onClick={() => handleBulkAction("SKIP_INVALID")}
-                    className="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition cursor-pointer"
+                    className="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition cursor-pointer"
                   >
                     ข้ามรายการที่ผิดพลาดทั้งหมด
                   </button>
@@ -476,7 +476,7 @@ export default function RosterImportModal({
               <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
                 <div className="overflow-x-auto max-h-[46vh]">
                   <table className="w-full text-left border-collapse text-xs">
-                    <thead className="bg-slate-900 text-white font-mono uppercase text-[11px] sticky top-0 z-10">
+                    <thead className="bg-[#071322] text-white uppercase text-[11px] sticky top-0 z-10">
                       <tr>
                         <th className="p-3 w-12 text-center">#</th>
                         <th className="p-3">ข้อมูลในไฟล์ CSV</th>
@@ -502,51 +502,51 @@ export default function RosterImportModal({
                                   <span className="ml-1 text-slate-400 font-mono">#{item.data.jerseyNumber}</span>
                                 )}
                               </div>
-                              <div className="text-[11px] text-slate-500 font-mono space-x-2">
+                              <div className="text-[11px] text-slate-500 font-sans space-x-2">
                                 <span>{item.data.primaryPosition}</span>
                                 <span>•</span>
-                                <span>{item.data.heightCm} ซม.</span>
+                                <span className="font-mono tabular-nums">{item.data.heightCm} ซม.</span>
                                 <span>•</span>
                                 <span>เกิด: {item.data.birthDate || "-"}</span>
                               </div>
-                              <div className="text-[11px] text-slate-600 font-mono mt-0.5">
+                              <div className="text-[11px] text-slate-600 font-sans mt-0.5">
                                 🏫 {item.data.schoolOrClub} ({item.data.province})
                               </div>
                             </td>
 
                             <td className="p-3">
                               {item.status === "NEW" && (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
                                   <UserPlus className="w-3 h-3" />
                                   <span>สร้างใหม่</span>
                                 </span>
                               )}
                               {item.status === "EXACT_MATCH" && (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-mono text-[10px] font-bold">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold">
                                   <ShieldCheck className="w-3 h-3" />
                                   <span>ตรงกับเดิม (100%)</span>
                                 </span>
                               )}
                               {item.status === "POTENTIAL_DUPLICATE" && (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-mono text-[10px] font-bold">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
                                   <AlertTriangle className="w-3 h-3" />
                                   <span>อาจซ้ำซ้อน ({item.matchConfidence}%)</span>
                                 </span>
                               )}
                               {item.status === "INVALID" && (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-mono text-[10px] font-bold">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-800 text-[10px] font-bold">
                                   <XCircle className="w-3 h-3" />
                                   <span>ข้อมูลไม่สมบูรณ์</span>
                                 </span>
                               )}
 
                               {item.matchReason && (
-                                <p className="text-[11px] text-slate-500 font-mono mt-1">
+                                <p className="text-[11px] text-slate-500 font-sans mt-1">
                                   {item.matchReason}
                                 </p>
                               )}
                               {item.validationErrors.length > 0 && (
-                                <p className="text-[11px] text-red-600 font-mono mt-1">
+                                <p className="text-[11px] text-red-600 font-sans mt-1">
                                   {item.validationErrors.join(", ")}
                                 </p>
                               )}
@@ -554,7 +554,7 @@ export default function RosterImportModal({
 
                             <td className="p-3">
                               {item.existingAthlete ? (
-                                <div className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-mono space-y-0.5">
+                                <div className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] space-y-0.5 font-sans">
                                   <div className="font-bold text-slate-800">
                                     {item.existingAthlete.fullName}
                                   </div>
@@ -566,7 +566,7 @@ export default function RosterImportModal({
                                   </div>
                                 </div>
                               ) : (
-                                <span className="text-slate-400 font-mono text-[11px]">- ไม่พบข้อมูลเดิม -</span>
+                                <span className="text-slate-400 text-[11px] font-sans">- ไม่พบข้อมูลเดิม -</span>
                               )}
                             </td>
 
@@ -577,7 +577,7 @@ export default function RosterImportModal({
                                   const val = e.target.value as "CREATE_NEW" | "LINK_EXISTING" | "SKIP";
                                   setRowActions((prev) => ({ ...prev, [item.rowNumber]: val }));
                                 }}
-                                className={`px-2.5 py-1.5 rounded-lg font-mono text-xs font-bold border transition cursor-pointer ${
+                                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer ${
                                   currentAction === "CREATE_NEW"
                                     ? "bg-emerald-50 text-emerald-800 border-emerald-300"
                                     : currentAction === "LINK_EXISTING"
@@ -607,7 +607,7 @@ export default function RosterImportModal({
                 <button
                   type="button"
                   onClick={() => setStep("INPUT")}
-                  className="px-4 py-2.5 rounded-xl border border-slate-300 font-mono text-xs font-bold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
                 >
                   ← กลับไปแก้ไข CSV
                 </button>
@@ -616,7 +616,7 @@ export default function RosterImportModal({
                   type="button"
                   onClick={handleCommitImport}
                   disabled={committing || stagedItems.length === 0}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
                 >
                   <Check className={`w-4 h-4 ${committing ? "animate-spin" : ""}`} />
                   <span>{committing ? "กำลังบันทึกลงระบบ..." : "ยืนยันการนำเข้าข้อมูล (Commit Roster)"}</span>
@@ -633,24 +633,24 @@ export default function RosterImportModal({
               </div>
 
               <div>
-                <h3 className="text-xl font-bold font-mono text-slate-900">
+                <h3 className="text-xl font-bold text-slate-900">
                   นำเข้าและตรวจสอบข้อมูลสำเร็จ!
                 </h3>
-                <p className="text-xs text-slate-600 mt-1">{commitResult.message}</p>
+                <p className="text-xs text-slate-600 mt-1 font-sans">{commitResult.message}</p>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs font-mono">
+              <div className="grid grid-cols-3 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
                 <div>
                   <div className="text-slate-400 font-bold uppercase text-[10px]">สร้างใหม่</div>
-                  <div className="text-lg font-bold text-emerald-700">{commitResult.createdCount} คน</div>
+                  <div className="text-lg font-bold text-emerald-700 font-mono tabular-nums">{commitResult.createdCount} คน</div>
                 </div>
                 <div>
                   <div className="text-slate-400 font-bold uppercase text-[10px]">เชื่อมโยงเดิม</div>
-                  <div className="text-lg font-bold text-blue-700">{commitResult.linkedCount} คน</div>
+                  <div className="text-lg font-bold text-blue-700 font-mono tabular-nums">{commitResult.linkedCount} คน</div>
                 </div>
                 <div>
                   <div className="text-slate-400 font-bold uppercase text-[10px]">ข้ามรายการ</div>
-                  <div className="text-lg font-bold text-slate-500">{commitResult.skippedCount} คน</div>
+                  <div className="text-lg font-bold text-slate-500 font-mono tabular-nums">{commitResult.skippedCount} คน</div>
                 </div>
               </div>
 
@@ -661,7 +661,7 @@ export default function RosterImportModal({
                     onClose();
                     if (onSuccess) onSuccess();
                   }}
-                  className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold transition shadow-sm cursor-pointer"
+                  className="w-full py-3 rounded-xl bg-[#071322] hover:bg-[#0B1C30] text-white text-xs font-bold transition shadow-sm cursor-pointer"
                 >
                   เสร็จสิ้นและปิดหน้าต่าง
                 </button>

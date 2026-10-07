@@ -60,6 +60,8 @@ const provinceMap: Record<string, string> = {
   "Nakhon Ratchasima": "นครราชสีมา",
 };
 
+import { fetchWithCache } from "@/lib/cache/clientCache";
+
 export default function LeaderboardPage() {
   const [seasonFilter, setSeasonFilter] = useState<string>("2026");
   const [positionFilter, setPositionFilter] = useState<Position | "ALL">("ALL");
@@ -83,28 +85,29 @@ export default function LeaderboardPage() {
 
   // Keep a previous season's response from replacing the current selection.
   useEffect(() => {
-    const controller = new AbortController();
+    let isCancelled = false;
     async function loadAthletes() {
       setDataStatus("loading");
       try {
         const query = seasonFilter !== "ALL" ? `?season=${seasonFilter}` : "";
-        const res = await fetch(`/api/leaderboard${query}`, { signal: controller.signal });
-        if (!res.ok) throw new Error("Leaderboard unavailable");
-        const json = await res.json();
-        if (!json.success || !Array.isArray(json.data)) throw new Error("Invalid leaderboard response");
+        const json = await fetchWithCache<{ success?: boolean; data?: any[] }>(`/api/leaderboard${query}`, 30000);
+        if (isCancelled) return;
+        if (!json?.success || !Array.isArray(json.data)) throw new Error("Invalid leaderboard response");
         setAthletesData(json.data.map((entry: AthleteSeasonStats & { effectiveFgPct?: number; trueShootingPct?: number }) => ({
           ...entry, efgPct: entry.effectiveFgPct ?? entry.efgPct, tsPct: entry.trueShootingPct ?? entry.tsPct,
         })));
         setDataStatus("ready");
       } catch (err) {
-        if (controller.signal.aborted) return;
+        if (isCancelled) return;
         setAthletesData(mockLeaderboardAthletes);
         setDataStatus("fallback");
         console.warn("Using local fallback leaderboard data:", err);
       }
     }
     loadAthletes();
-    return () => controller.abort();
+    return () => {
+      isCancelled = true;
+    };
   }, [seasonFilter, currentUser.tier]);
 
   const getProvinceThai = useCallback((prov: string) => provinceMap[prov] || prov, []);

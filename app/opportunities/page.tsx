@@ -86,7 +86,7 @@ export default function OpportunitiesPage() {
   // Selected for application
   const [applyingOpportunity, setApplyingOpportunity] = useState<OpportunityPosting | null>(null);
   const [applicantName] = useState(currentUser.name || "Thanakorn Siriphan");
-  const [applicantTcasCode] = useState(currentUser.tcasReferenceCode || "STC-VERIFIED-TH-BCC-007");
+  const [applicantTcasCode] = useState(currentUser.tcasReferenceCode || currentUser.athleteId || "STC-VERIFIED-TH-BCC-007");
   const [applicantGpax] = useState("3.68");
   const [applicantPosition] = useState("Point Guard (PG)");
   const [applicantPhone, setApplicantPhone] = useState("081-234-5678");
@@ -416,20 +416,20 @@ export default function OpportunitiesPage() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="apply-modal-title"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/70 backdrop-blur-xs p-4 overflow-y-auto"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1C30]/75 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in duration-200"
           >
-            <div className="bg-white border border-[#DFE2EB] w-full max-w-xl rounded-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <div className="bg-white border border-[#DFE2EB] w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
               {/* Modal Header */}
-              <div className="px-6 py-4 bg-[#0B1C30] text-white flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-sm bg-[#AF101A] flex items-center justify-center text-white">
+              <div className="px-6 py-4.5 bg-[#0B1C30] text-white flex items-center justify-between border-b border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#AF101A] to-[#8E0D15] flex items-center justify-center text-white shadow-md">
                     <Send className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 id="apply-modal-title" className="font-headline-lg uppercase text-base sm:text-lg tracking-wide font-normal">
+                    <h3 id="apply-modal-title" className="font-thai text-base sm:text-lg font-bold text-white tracking-normal">
                       สมัครคัดตัวด้วย StatCourt ID
                     </h3>
-                    <p className="text-[11px] text-slate-300 font-mono">
+                    <p className="text-xs text-slate-300 font-thai">
                       ระบบจะส่ง Digital Pass และสถิติที่ผ่านการรับรองตรงสู่กรรมการคัดเลือก
                     </p>
                   </div>
@@ -438,42 +438,42 @@ export default function OpportunitiesPage() {
                   type="button"
                   onClick={handleCloseModal}
                   aria-label="ปิดหน้าต่างสมัคร"
-                  className="text-slate-400 hover:text-white p-1 rounded-sm hover:bg-white/10 transition cursor-pointer"
+                  className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Modal Body */}
-              <div className="p-6 overflow-y-auto space-y-5 text-[#0B1C30] text-xs font-mono">
+              <div className="p-6 overflow-y-auto space-y-5 text-[#0B1C30] font-thai">
                 {isSubmitted ? (
                   <div className="text-center py-6 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-[#AF101A] flex items-center justify-center mx-auto text-white shadow-md">
+                    <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-sm">
                       <CheckCircle2 className="w-8 h-8" />
                     </div>
-                    <div className="space-y-1">
-                      <h4 className="font-headline-lg uppercase text-xl text-[#0B1C30] font-normal">
+                    <div className="space-y-1 font-thai">
+                      <h4 className="text-xl text-[#0B1C30] font-bold">
                         ส่งใบสมัครและพอร์ตสำเร็จ!
                       </h4>
-                      <p className="text-[#505A69]">
+                      <p className="text-sm text-[#5B6574]">
                         โครงการ: {applyingOpportunity.title}
                       </p>
-                      <p className="text-[11px] text-[#0B1C30] font-bold">
+                      <p className="text-xs text-slate-500 font-mono pt-1">
                         รหัสการสมัคร: APP-CU-2026-{(Math.random() * 9000 + 1000).toFixed(0)}
                       </p>
                     </div>
 
-                    <div className="bg-[#F8F9FF] p-4 rounded-sm border border-[#DFE2EB] text-left space-y-2 text-[11px]">
-                      <div className="flex items-center gap-2 text-[#0B1C30]">
-                        <Check className="w-4 h-4 text-[#AF101A]" />
+                    <div className="bg-[#F8F9FF] p-4 rounded-xl border border-[#DFE2EB] text-left space-y-2.5 text-xs text-[#0B1C30]">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                         <span>แนบเอกสาร Digital Player Pass &amp; QR Code ยืนยันตัวตน</span>
                       </div>
-                      <div className="flex items-center gap-2 text-[#0B1C30]">
-                        <Check className="w-4 h-4 text-[#AF101A]" />
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                         <span>แนบประวัติสถิติ FIBA Box Score และวิดีโอคลิปการแข่งขัน</span>
                       </div>
-                      <div className="flex items-center gap-2 text-[#0B1C30]">
-                        <Check className="w-4 h-4 text-[#AF101A]" />
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                         <span>แนบเกรดเฉลี่ยสะสม GPAX ({applicantGpax}) และใบ ปพ.1 ดิจิทัล</span>
                       </div>
                     </div>
@@ -481,68 +481,66 @@ export default function OpportunitiesPage() {
                     <button
                       type="button"
                       onClick={handleCloseModal}
-                      className="w-full py-2.5 rounded-sm bg-[#0B1C30] hover:bg-[#142338] text-white font-bold uppercase transition cursor-pointer"
+                      className="w-full py-3 rounded-xl bg-[#0B1C30] hover:bg-[#142338] text-white font-semibold transition cursor-pointer shadow-md"
                     >
                       เสร็จสิ้น
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleApplySubmit} className="space-y-4">
-                    <div className="bg-[#F8F9FF] p-3.5 rounded-sm border border-[#DFE2EB] space-y-1">
-                      <span className="text-[10px] text-[#505A69] uppercase font-bold">โครงการที่สมัคร</span>
-                      <div className="font-bold text-[#0B1C30] text-sm">
+                  <form onSubmit={handleApplySubmit} className="space-y-4 font-thai">
+                    
+                    {/* Selected Opportunity Card */}
+                    <div className="bg-[#F8F9FF] p-4 rounded-xl border border-[#DFE2EB] space-y-1.5">
+                      <span className="text-[11px] text-[#5B6574] font-medium block">
+                        โครงการที่เลือกสมัคร
+                      </span>
+                      <div className="font-bold text-[#0B1C30] text-sm sm:text-base leading-snug">
                         {applyingOpportunity.title}
                       </div>
-                      <div className="text-[#AF101A] text-[11px] font-semibold">
-                        {applyingOpportunity.institution} • {applyingOpportunity.scholarshipDisplay}
+                      <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                        <span className="text-xs text-[#5B6574]">
+                          {applyingOpportunity.institution}
+                        </span>
+                        <span className="text-slate-300">•</span>
+                        <span className="px-2 py-0.5 rounded-full bg-red-50 text-[#AF101A] text-xs font-semibold border border-red-100">
+                          {applyingOpportunity.scholarshipDisplay || "ทุนโควตานักกีฬา"}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Pre-filled Dossier Credentials */}
-                    <div className="space-y-3">
-                      <div>
-                        <label htmlFor="applicant-name" className="block text-[#505A69] mb-1 uppercase font-bold">
-                          ชื่อ-นามสกุล นักกีฬา (Verified Profile)
-                        </label>
-                        <input
-                          id="applicant-name"
-                          type="text"
-                          disabled
-                          value={applicantName}
-                          className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#505A69] cursor-not-allowed font-sans"
-                        />
+                    {/* Zone A: Verified Athlete Dossier Card */}
+                    <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/90 space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-slate-700 flex items-center gap-1.5">
+                          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                          ข้อมูลนักกีฬาที่ผ่านการรับรอง (Verified Dossier)
+                        </span>
+                        <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-medium">
+                          พร้อมแนบพอร์ต
+                        </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <label htmlFor="applicant-tcas" className="block text-[#505A69] mb-1 uppercase font-bold">
-                            รหัส TCAS / StatCourt ID
-                          </label>
-                          <input
-                            id="applicant-tcas"
-                            type="text"
-                            disabled
-                            value={applicantTcasCode}
-                            className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#0B1C30] font-bold cursor-not-allowed"
-                          />
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs pt-1">
+                        <div className="bg-white p-2.5 rounded-lg border border-slate-200/80">
+                          <span className="text-[11px] text-slate-500 block">ชื่อ-นามสกุล</span>
+                          <span className="font-bold text-[#0B1C30] truncate block">{applicantName || "นักกีฬา"}</span>
                         </div>
-                        <div>
-                          <label htmlFor="applicant-gpax" className="block text-[#505A69] mb-1 uppercase font-bold">
-                            ผลการเรียนเฉลี่ยสะสม (GPAX)
-                          </label>
-                          <input
-                            id="applicant-gpax"
-                            type="text"
-                            disabled
-                            value={applicantGpax}
-                            className="w-full px-3 py-2 rounded-sm bg-[#F8F9FF] border border-[#DFE2EB] text-[#0B1C30] font-bold cursor-not-allowed"
-                          />
+                        <div className="bg-white p-2.5 rounded-lg border border-slate-200/80">
+                          <span className="text-[11px] text-slate-500 block">รหัส StatCourt ID</span>
+                          <span className="font-bold text-[#0B1C30] font-mono text-[11px] truncate block">{applicantTcasCode || "-"}</span>
+                        </div>
+                        <div className="bg-white p-2.5 rounded-lg border border-slate-200/80">
+                          <span className="text-[11px] text-slate-500 block">GPAX เฉลี่ย</span>
+                          <span className="font-bold text-emerald-700 block">{applicantGpax || "2.00"}</span>
                         </div>
                       </div>
+                    </div>
 
+                    {/* Zone B: User Additional Inputs */}
+                    <div className="space-y-3 pt-1">
                       <div>
-                        <label htmlFor="applicant-phone" className="block text-[#505A69] mb-1 uppercase font-bold">
-                          เบอร์โทรศัพท์สำหรับติดต่อกลับ *
+                        <label htmlFor="applicant-phone" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                          เบอร์โทรศัพท์สำหรับติดต่อกลับ <span className="text-red-500">*</span>
                         </label>
                         <input
                           id="applicant-phone"
@@ -550,46 +548,49 @@ export default function OpportunitiesPage() {
                           required
                           value={applicantPhone}
                           onChange={(e) => setApplicantPhone(e.target.value)}
-                          className="w-full px-3 py-2 rounded-sm bg-white border border-[#DFE2EB] text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                          placeholder="เช่น 081-234-5678"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DFE2EB] text-sm text-[#0B1C30] focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-[#AF101A] transition"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="applicant-notes" className="block text-[#505A69] mb-1 uppercase font-bold">
-                          ข้อความเพิ่มเติมถึงสตาฟฟ์โค้ชผู้คัดเลือก
+                        <label htmlFor="applicant-notes" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                          ข้อความเพิ่มเติมถึงสตาฟฟ์โค้ชผู้คัดเลือก <span className="text-slate-400 font-normal">(ถ้ามี)</span>
                         </label>
                         <textarea
                           id="applicant-notes"
-                          rows={2}
+                          rows={3}
                           value={applicantNotes}
                           onChange={(e) => setApplicantNotes(e.target.value)}
-                          placeholder="ระบุประสบการณ์แข่งพิเศษ, เป้าหมายการเรียน หรือตำแหน่งที่ถนัด"
-                          className="w-full px-3 py-2 rounded-sm bg-white border border-[#DFE2EB] text-[#0B1C30] placeholder:text-[#505A69] focus:outline-none focus:border-[#AF101A] font-sans"
+                          placeholder="ระบุประสบการณ์แข่งพิเศษ, เป้าหมายการเรียน หรือตำแหน่งการเล่นที่ถนัด..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#DFE2EB] text-sm text-[#0B1C30] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-[#AF101A] transition resize-none"
                         />
                       </div>
                     </div>
 
                     {submitError && (
-                      <div className="p-3 bg-red-50 border border-red-200 text-[#AF101A] rounded-sm flex items-center gap-2 text-xs font-mono">
+                      <div className="p-3 bg-red-50 border border-red-200 text-[#AF101A] rounded-xl flex items-center gap-2 text-xs">
                         <AlertCircle className="w-4 h-4 text-[#AF101A] shrink-0" />
                         <span>{submitError}</span>
                       </div>
                     )}
 
-                    <div className="p-3 bg-[#F8F9FF] border border-[#DFE2EB] rounded-sm flex items-start gap-2.5 text-[11px] text-[#505A69]">
-                      <ShieldCheck className="w-4 h-4 text-[#AF101A] shrink-0 mt-0.5" />
+                    {/* Privacy & Legal Consent */}
+                    <div className="p-3 bg-[#F8F9FF] border border-[#DFE2EB] rounded-xl flex items-start gap-2.5 text-xs text-[#5B6574] leading-relaxed">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <span>
                         การกดส่งใบสมัครเป็นการยินยอมให้ระบบส่งรายงานสถิติ FIBA, ผลการเรียน GPAX และประวัติการแข่งขันให้แก่ทีมงานสเกาต์ของสถาบันเพื่อการพิจารณาคัดตัว
                       </span>
                     </div>
 
+                    {/* Action Submit Button */}
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-2.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-mono font-bold text-xs uppercase tracking-wider transition shadow-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                      className="group w-full py-3 rounded-xl bg-gradient-to-r from-[#AF101A] to-[#8E0D15] hover:from-[#C71520] hover:to-[#9F1018] text-white font-semibold text-sm transition-all shadow-md hover:shadow-red-900/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                     >
-                      <Send className="w-4 h-4" />
-                      <span>{isSubmitting ? "กำลังตรวจสอบและส่งใบสมัคร..." : "ยืนยันการส่งใบสมัครและพอร์ตโฟลิโอ"}</span>
+                      <Send className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                      <span>{isSubmitting ? "กำลังส่งใบสมัครและพอร์ตโฟลิโอ..." : "ยืนยันการส่งใบสมัครและพอร์ตโฟลิโอ"}</span>
                     </button>
                   </form>
                 )}

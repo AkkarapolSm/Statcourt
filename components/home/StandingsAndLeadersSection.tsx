@@ -110,7 +110,7 @@ export default function StandingsAndLeadersSection() {
           {/* ========================================================= */}
           {/* LEFT: TOURNAMENT LEAGUE STANDINGS TABLE (7 COLS)          */}
           {/* ========================================================= */}
-          <div className="lg:col-span-7 bg-white rounded-lg border border-borderNeutral p-5 sm:p-6 space-y-4">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 space-y-4 shadow-xs">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="space-y-0.5">
                 <span className="text-xs text-slate-500 font-sans block">{tournamentTitle}</span>
@@ -181,7 +181,7 @@ export default function StandingsAndLeadersSection() {
           {/* ========================================================= */}
           {/* RIGHT: STAT LEADERS SHOWCASE (5 COLS)                     */}
           {/* ========================================================= */}
-          <div className="lg:col-span-5 bg-white rounded-lg border border-borderNeutral p-5 sm:p-6 space-y-4">
+          <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 space-y-4 shadow-xs">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="space-y-0.5">
                 <span className="text-xs text-slate-500 font-sans block">Season 2026</span>
@@ -200,7 +200,7 @@ export default function StandingsAndLeadersSection() {
             </div>
 
             {/* Category Selector Buttons */}
-            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-lg font-sans text-xs font-medium text-slate-600">
+            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-xl font-sans text-xs font-medium text-slate-600">
               {[
                 { id: "PPG", label: "คะแนน" },
                 { id: "RPG", label: "รีบาวด์" },
@@ -211,7 +211,7 @@ export default function StandingsAndLeadersSection() {
                   key={c.id}
                   type="button"
                   onClick={() => setLeaderCategory(c.id as typeof leaderCategory)}
-                  className={`py-1.5 rounded-md transition-colors cursor-pointer text-center ${
+                  className={`py-1.5 rounded-lg transition-colors cursor-pointer text-center ${
                     leaderCategory === c.id
                       ? "bg-white text-[#AF101A] font-semibold shadow-xs"
                       : "hover:text-[#0B1C30]"
@@ -246,7 +246,7 @@ export default function StandingsAndLeadersSection() {
                   <Link
                     key={athlete.athleteId}
                     href={`/athlete/${athlete.athleteId}`}
-                    className="flex items-center justify-between p-2.5 rounded-lg border border-slate-100 hover:border-slate-300 hover:bg-slate-50/70 transition-colors group font-sans"
+                    className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 hover:border-slate-300 hover:bg-slate-50/70 transition-colors group font-sans"
                   >
                     <div className="flex items-center gap-3">
                       <span

@@ -102,23 +102,24 @@ export default function LiveMatchBroadcastPlayer({
   return (
     <div
       ref={containerRef}
-      className="relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800 text-white flex flex-col select-none"
+      className="relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-[#213145] text-white flex flex-col select-none"
     >
       {/* Live Stream Top Overlay Bar */}
       <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/90 via-black/50 to-transparent p-3 sm:p-4 flex items-center justify-between pointer-events-auto">
         {/* Live Indicator & Tournament / Court Tag */}
         <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 bg-brand-primary text-white text-xs font-mono font-black px-2.5 py-1 rounded-md shadow animate-pulse">
+          <div className="flex items-center gap-1.5 bg-[#AF101A] text-white text-xs font-mono font-black px-2.5 py-1 rounded-full shadow-xs animate-pulse">
             <span className="w-2 h-2 rounded-full bg-white animate-ping" />
             <span>LIVE</span>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-sm border border-slate-700 px-2.5 py-1 rounded-md text-xs font-mono text-slate-300">
+          <div className="flex items-center gap-1.5 bg-[#0B1C30]/80 backdrop-blur-xs border border-[#213145] px-2.5 py-1 rounded-xl text-xs text-slate-300">
             <Eye className="w-3.5 h-3.5 text-red-400" />
-            <span>{viewerCount.toLocaleString()} กำลังรับชม</span>
+            <span className="font-mono tabular-nums">{viewerCount.toLocaleString()}</span>
+            <span>กำลังรับชม</span>
           </div>
 
-          <span className="text-xs font-bold text-slate-200 bg-red-950/60 border border-red-800/40 px-2 py-0.5 rounded font-mono hidden sm:inline">
+          <span className="text-xs font-bold text-slate-200 bg-[#AF101A]/20 border border-[#AF101A]/40 px-2.5 py-0.5 rounded-full font-mono hidden sm:inline">
             {stream.courtName}
           </span>
         </div>
@@ -127,7 +128,7 @@ export default function LiveMatchBroadcastPlayer({
         {isOrganizer && onEditStream && (
           <button
             onClick={onEditStream}
-            className="flex items-center gap-1.5 text-xs font-mono bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg shadow transition"
+            className="flex items-center gap-1.5 text-xs bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold px-3 py-1.5 rounded-xl shadow-xs transition cursor-pointer"
             title="จัดการสัญญาณถ่ายทอดสดคอร์ทนี้ (เฉพาะผู้จัด)"
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -150,17 +151,17 @@ export default function LiveMatchBroadcastPlayer({
         />
 
         {/* Top-Left Live Official Table Watermark */}
-        <div className="absolute top-14 left-4 z-10 hidden sm:flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-lg shadow-lg">
+        <div className="absolute top-14 left-4 z-10 hidden sm:flex items-center gap-2 bg-[#071322]/90 backdrop-blur-md border border-[#213145] px-3 py-1.5 rounded-xl shadow-lg">
           <div className="flex items-center gap-2 font-mono text-xs">
             <span className="font-bold text-white">
               {stream.homeTeam.shortName}{" "}
-              <span className="text-brand-signal font-black">
+              <span className="text-[#AF101A] font-black tabular-nums">
                 {stream.homeTeam.score}
               </span>
             </span>
             <span className="text-slate-500 font-bold">-</span>
             <span className="font-bold text-white">
-              <span className="text-white font-black">
+              <span className="text-white font-black tabular-nums">
                 {stream.awayTeam.score}
               </span>{" "}
               {stream.awayTeam.shortName}
@@ -176,7 +177,7 @@ export default function LiveMatchBroadcastPlayer({
         {!isPlaying && (
           <button
             onClick={togglePlay}
-            className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-brand-primary/90 hover:bg-brand-primary text-white flex items-center justify-center shadow-2xl transition transform hover:scale-105 pointer-events-auto"
+            className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-[#AF101A]/90 hover:bg-[#AF101A] text-white flex items-center justify-center shadow-2xl transition transform hover:scale-105 pointer-events-auto"
             title="เล่นถ่ายทอดสด"
           >
             <Play className="w-8 h-8 ml-1 fill-white" />
@@ -185,12 +186,12 @@ export default function LiveMatchBroadcastPlayer({
       </div>
 
       {/* Live Player Bottom Controls Bar */}
-      <div className="bg-slate-950 px-4 py-3 flex items-center justify-between border-t border-slate-900">
+      <div className="bg-[#071322] px-4 py-3 flex items-center justify-between border-t border-[#213145]">
         {/* Left Play/Pause & Live Info */}
         <div className="flex items-center gap-3">
           <button
             onClick={togglePlay}
-            className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition"
+            className="p-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-white transition cursor-pointer"
             title={isPlaying ? "หยุดชั่วคราว" : "เล่น"}
           >
             {isPlaying ? (
@@ -200,11 +201,11 @@ export default function LiveMatchBroadcastPlayer({
             )}
           </button>
 
-          <div className="flex items-center gap-1.5 text-xs font-mono">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping" />
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#AF101A] animate-ping" />
             <span className="text-red-400 font-bold">กำลังถ่ายทอดสด</span>
             <span className="text-slate-500">•</span>
-            <span className="text-slate-300 font-semibold">{stream.courtName}</span>
+            <span className="text-slate-300 font-semibold font-mono">{stream.courtName}</span>
           </div>
         </div>
 
@@ -213,7 +214,7 @@ export default function LiveMatchBroadcastPlayer({
           <div className="flex items-center gap-2">
             <button
               onClick={toggleMute}
-              className="p-2 text-slate-400 hover:text-white transition"
+              className="p-2 text-slate-400 hover:text-white transition cursor-pointer"
               title={isMuted ? "เปิดเสียง" : "ปิดเสียง"}
             >
               {isMuted || volume === 0 ? (
@@ -229,13 +230,13 @@ export default function LiveMatchBroadcastPlayer({
               step={0.05}
               value={isMuted ? 0 : volume}
               onChange={handleVolumeChange}
-              className="w-16 sm:w-20 h-1 bg-slate-700 rounded appearance-none accent-red-600 cursor-pointer"
+              className="w-16 sm:w-20 h-1 bg-slate-700 rounded-full appearance-none accent-[#AF101A] cursor-pointer"
             />
           </div>
 
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white transition"
+            className="p-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-slate-300 hover:text-white transition cursor-pointer"
             title="เต็มจอ (Fullscreen)"
           >
             <Maximize2 className="w-4 h-4" />

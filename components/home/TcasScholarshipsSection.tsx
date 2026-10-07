@@ -15,7 +15,7 @@ export default function TcasScholarshipsSection() {
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="inline-block bg-emerald-100 text-emerald-800 font-mono uppercase font-bold px-3 py-1 rounded text-xs mb-2">
+            <div className="inline-block bg-emerald-100 text-emerald-800 font-mono uppercase font-bold px-3 py-1 rounded-full text-xs mb-2">
               TCAS ATHLETIC QUOTAS &amp; SCHOLARSHIPS
             </div>
             <h2 className="font-sans font-bold text-2xl sm:text-3xl text-[#0B1C30] tracking-tight">
@@ -28,7 +28,7 @@ export default function TcasScholarshipsSection() {
 
           <Link
             href="/opportunities"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded bg-slate-900 hover:bg-[#AF101A] text-white font-mono font-bold text-xs uppercase transition shadow-xs shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#AF101A] text-white font-semibold text-xs transition shadow-xs shrink-0"
           >
             <span>สำรวจโควตาทั้งหมด 12 สถาบัน</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -39,20 +39,20 @@ export default function TcasScholarshipsSection() {
           {featuredOpportunities.map((opp) => (
             <div
               key={opp.id}
-              className="bg-white border border-slate-200 rounded-lg p-5 hover:shadow-md hover:border-[#AF101A]/40 transition flex flex-col justify-between"
+              className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-[#AF101A]/40 transition flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex justify-between items-start">
-                  <span className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center font-headline-md font-bold text-slate-800 text-sm">
+                  <span className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-headline-md font-bold text-slate-800 text-sm">
                     {opp.institutionLogo}
                   </span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    {opp.quotaCount} โควตา
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    <span className="font-mono tabular-nums">{opp.quotaCount}</span> โควตา
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-mono text-[#AF101A] font-bold block mb-0.5">
+                  <span className="text-[11px] text-[#AF101A] font-bold block mb-0.5">
                     {opp.institution}
                   </span>
                   <h4 className="font-sans font-bold text-slate-900 text-base leading-snug line-clamp-2">
@@ -60,29 +60,29 @@ export default function TcasScholarshipsSection() {
                   </h4>
                 </div>
 
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-100 font-mono text-xs space-y-1">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1.5">
                   <div className="flex justify-between text-slate-600">
                     <span>สิทธิประโยชน์:</span>
-                    <span className="font-bold text-slate-900 text-right">{opp.scholarshipDisplay}</span>
+                    <span className="font-semibold text-slate-900 text-right">{opp.scholarshipDisplay}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>เกรดเฉลี่ยขั้นต่ำ (GPAX):</span>
-                    <span className="font-bold text-slate-900">{opp.minGpax ? opp.minGpax.toFixed(2) : "ไม่กำหนด"}</span>
+                    <span className="font-semibold text-slate-900 font-mono tabular-nums">{opp.minGpax ? opp.minGpax.toFixed(2) : "ไม่กำหนด"}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>กำหนดปิดรับสมัคร:</span>
-                    <span className="font-bold text-red-600">{opp.deadline}</span>
+                    <span className="font-semibold text-red-600 font-mono tabular-nums">{opp.deadline}</span>
                   </div>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="text-[11px] font-mono text-[#5B6574]">
+                <span className="text-[11px] text-[#5B6574]">
                   รอบ 1 Portfolio (TCAS)
                 </span>
                 <Link
                   href="/opportunities"
-                  className="text-xs font-mono font-bold text-[#AF101A] hover:underline flex items-center gap-1"
+                  className="text-xs font-semibold text-[#AF101A] hover:underline flex items-center gap-1"
                 >
                   <span>ดูระเบียบการ</span>
                   <ChevronRight className="w-3.5 h-3.5" />

@@ -127,19 +127,19 @@ export default function TournamentCreationWizardModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden text-slate-800 flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden text-slate-800 flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#AF101A] flex items-center justify-center text-white shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-[#AF101A] flex items-center justify-center text-white shadow-md">
               <Trophy className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#0B1C30] tracking-wide">
+              <h2 className="text-lg font-bold text-[#0B1C30] tracking-tight">
                 เปิดระบบทัวร์นาเมนต์ใหม่ (Tournament Onboarding)
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 font-sans">
                 ติดตั้งระบบ Table Official Console &amp; Live SSE Broadcasting ใน 3 ขั้นตอน
               </p>
             </div>
@@ -154,9 +154,9 @@ export default function TournamentCreationWizardModal({
 
         {/* Stepper Progress */}
         {!createdData && (
-          <div className="px-6 pt-4 pb-3 bg-white border-b border-slate-100 flex items-center justify-between font-mono text-xs">
+          <div className="px-6 pt-4 pb-3 bg-white border-b border-slate-100 flex items-center justify-between text-xs font-sans">
             <div className={`flex items-center gap-2 ${step >= 1 ? "text-[#AF101A] font-bold" : "text-slate-400"}`}>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step >= 1 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${step >= 1 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
                 1
               </span>
               <span>ข้อมูลการแข่งขัน</span>
@@ -165,7 +165,7 @@ export default function TournamentCreationWizardModal({
               <div className={`h-full bg-[#AF101A] transition-all duration-300 ${step === 1 ? "w-0" : step === 2 ? "w-1/2" : "w-full"}`} />
             </div>
             <div className={`flex items-center gap-2 ${step >= 2 ? "text-[#AF101A] font-bold" : "text-slate-400"}`}>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step >= 2 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${step >= 2 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
                 2
               </span>
               <span>ระเบียบ &amp; การรับสมัคร</span>
@@ -174,7 +174,7 @@ export default function TournamentCreationWizardModal({
               <div className={`h-full bg-[#AF101A] transition-all duration-300 ${step === 3 ? "w-full" : "w-0"}`} />
             </div>
             <div className={`flex items-center gap-2 ${step === 3 ? "text-[#AF101A] font-bold" : "text-slate-400"}`}>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${step === 3 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${step === 3 ? "bg-[#AF101A] text-white" : "bg-slate-100 text-slate-500"}`}>
                 3
               </span>
               <span>ยืนยันเปิดระบบ</span>
@@ -203,7 +203,7 @@ export default function TournamentCreationWizardModal({
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left font-mono text-xs space-y-2 max-w-md mx-auto">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left font-sans text-xs space-y-2 max-w-md mx-auto">
                 <div className="text-[#0B1C30] font-bold text-sm">{createdData.name}</div>
                 <div className="text-slate-600 flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#AF101A]" />
@@ -211,15 +211,15 @@ export default function TournamentCreationWizardModal({
                 </div>
                 <div className="text-slate-600 flex items-center gap-2">
                   <Users className="w-3.5 h-3.5 text-amber-600" />
-                  <span>รุ่น {createdData.category} • รับสูงสุด {createdData.maxTeams} ทีม</span>
+                  <span>รุ่น {createdData.category} • รับสูงสุด <strong className="font-mono tabular-nums">{createdData.maxTeams}</strong> ทีม</span>
                 </div>
                 <div className="text-slate-600 flex items-center gap-2">
                   <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>ค่าสมัคร {createdData.entryFeeThb.toLocaleString()} บาท/ทีม</span>
+                  <span>ค่าสมัคร <strong className="font-mono tabular-nums">{createdData.entryFeeThb.toLocaleString()}</strong> บาท/ทีม</span>
                 </div>
               </div>
 
-              <div className="pt-4 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
+              <div className="pt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-sans">
                 <Link
                   href="/tournaments"
                   onClick={resetAndClose}
@@ -244,7 +244,7 @@ export default function TournamentCreationWizardModal({
               {step === 1 && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
                       ชื่อรายการแข่งขัน (Tournament Name) *
                     </label>
                     <input
@@ -259,7 +259,7 @@ export default function TournamentCreationWizardModal({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         หน่วยงาน / ผู้จัดการแข่งขัน (Organizer)
                       </label>
                       <input
@@ -271,7 +271,7 @@ export default function TournamentCreationWizardModal({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         รุ่นอายุการแข่งขัน (Category)
                       </label>
                       <select
@@ -289,7 +289,7 @@ export default function TournamentCreationWizardModal({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         ภูมิภาค (Region)
                       </label>
                       <select
@@ -306,7 +306,7 @@ export default function TournamentCreationWizardModal({
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         จังหวัด (Province)
                       </label>
                       <input
@@ -320,7 +320,7 @@ export default function TournamentCreationWizardModal({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
                       สถานที่แข่งขัน / ยิมเนเซียม (Venue) *
                     </label>
                     <input
@@ -335,25 +335,25 @@ export default function TournamentCreationWizardModal({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         วันที่เริ่มแข่งขัน (Start Date)
                       </label>
                       <input
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono"
+                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono tabular-nums"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         วันที่สิ้นสุด (End Date)
                       </label>
                       <input
                         type="date"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
-                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono"
+                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono tabular-nums"
                       />
                     </div>
                   </div>
@@ -365,13 +365,13 @@ export default function TournamentCreationWizardModal({
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         จำนวนทีมสูงสุด (Max Teams)
                       </label>
                       <select
                         value={maxTeams}
                         onChange={(e) => setMaxTeams(Number(e.target.value))}
-                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono"
+                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-sans"
                       >
                         <option value={8}>8 ทีม (Quarterfinals)</option>
                         <option value={16}>16 ทีม (Round of 16)</option>
@@ -380,7 +380,7 @@ export default function TournamentCreationWizardModal({
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         ค่าสมัครต่อทีม (THB)
                       </label>
                       <input
@@ -388,14 +388,14 @@ export default function TournamentCreationWizardModal({
                         value={entryFeeThb}
                         onChange={(e) => setEntryFeeThb(Number(e.target.value))}
                         placeholder="8500"
-                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono"
+                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono tabular-nums"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         ชื่อผู้ประสานงานหลัก (Contact Person) *
                       </label>
                       <input
@@ -408,7 +408,7 @@ export default function TournamentCreationWizardModal({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-slate-700 mb-1.5 font-bold">
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         เบอร์โทรศัพท์ติดต่อ (Phone) *
                       </label>
                       <input
@@ -416,7 +416,7 @@ export default function TournamentCreationWizardModal({
                         value={contactPhone}
                         onChange={(e) => setContactPhone(e.target.value)}
                         placeholder="เช่น 081-888-9999"
-                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono"
+                        className="w-full bg-[#F8F9FC] border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 outline-none focus:border-[#AF101A] focus:bg-white transition text-sm font-mono tabular-nums"
                         required
                       />
                     </div>
@@ -424,7 +424,7 @@ export default function TournamentCreationWizardModal({
 
                   {/* Included SaaS Features */}
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span className="text-xs font-mono text-[#AF101A] font-bold block uppercase tracking-wider">
+                    <span className="text-xs text-[#AF101A] font-bold block uppercase tracking-wider font-mono">
                       ฟีเจอร์ระดับองค์กรที่ติดตั้งให้อัตโนมัติ:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 font-sans">
@@ -452,10 +452,10 @@ export default function TournamentCreationWizardModal({
               {/* STEP 3: Confirmation Summary */}
               {step === 3 && (
                 <div className="space-y-4">
-                  <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 font-mono text-xs">
+                  <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 font-sans text-xs">
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="text-[10px] bg-[#AF101A] text-white font-bold px-2 py-0.5 rounded uppercase">
+                        <span className="text-[10px] bg-[#AF101A] text-white font-bold px-2 py-0.5 rounded-md uppercase font-mono">
                           {category} TOURNAMENT
                         </span>
                         <h4 className="text-base font-bold text-[#0B1C30] mt-1.5">{name}</h4>
@@ -463,7 +463,7 @@ export default function TournamentCreationWizardModal({
                           จัดโดย: {organizer || "ฝ่ายจัดการแข่งขันอิสระ"}
                         </div>
                       </div>
-                      <span className="text-emerald-700 font-bold text-sm">
+                      <span className="text-emerald-700 font-bold text-sm font-mono tabular-nums">
                         {entryFeeThb.toLocaleString()} THB
                       </span>
                     </div>
@@ -479,7 +479,7 @@ export default function TournamentCreationWizardModal({
                       </div>
                       <div>
                         <span className="text-slate-400 block">ช่วงเวลา:</span>
-                        <span className="font-bold text-amber-700">{startDate} ถึง {endDate}</span>
+                        <span className="font-bold text-amber-700 font-mono tabular-nums">{startDate} ถึง {endDate}</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block">ผู้ประสานงาน:</span>
@@ -488,7 +488,7 @@ export default function TournamentCreationWizardModal({
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs font-mono">
+                  <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs font-sans">
                     <div className="flex items-center gap-2 text-emerald-800">
                       <Radio className="w-4 h-4 text-red-500 animate-pulse" />
                       <span>สถานะระบบถ่ายทอดสด:</span>
@@ -503,7 +503,7 @@ export default function TournamentCreationWizardModal({
 
         {/* Footer Buttons */}
         {!createdData && (
-          <div className="p-6 border-t border-slate-200 bg-slate-50 flex items-center justify-between font-mono text-xs">
+          <div className="p-6 border-t border-slate-200 bg-slate-50 flex items-center justify-between font-sans text-xs">
             {step > 1 ? (
               <button
                 type="button"

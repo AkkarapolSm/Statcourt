@@ -167,11 +167,11 @@ export default function TournamentRegisterModal({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 bg-[#0B1C30]/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fadeIn"
+      className="fixed inset-0 z-50 bg-[#0B1C30]/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-fadeIn font-sans"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-xl max-w-xl w-full overflow-hidden shadow-2xl border border-[#DFE2EB] flex flex-col"
+        className="bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-[#DFE2EB] flex flex-col"
       >
         {/* Header */}
         <div className="bg-[#0B1C30] text-white p-5 sm:p-6 relative border-b border-[#213145]">
@@ -179,13 +179,13 @@ export default function TournamentRegisterModal({
             type="button"
             onClick={onClose}
             aria-label="Close registration modal"
-            className="absolute top-4 right-4 text-slate-400 hover:text-white transition p-1.5 rounded-lg hover:bg-[#142C47] cursor-pointer"
+            className="absolute top-4 right-4 text-slate-400 hover:text-white transition p-2 rounded-xl hover:bg-[#142C47] cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
 
           <div className="space-y-1 pr-8">
-            <h2 className="text-xl sm:text-2xl font-bold font-headline uppercase tracking-wide text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-normal">
               ลงทะเบียนทีมเข้าร่วมแข่งขัน
             </h2>
             <p className="text-xs text-slate-300 font-sans line-clamp-1">
@@ -195,23 +195,23 @@ export default function TournamentRegisterModal({
 
           {/* Stepper Bar */}
           {!successMessage && (
-            <div className="flex items-center gap-2 pt-4 mt-1 border-t border-[#213145] text-xs font-headline font-bold uppercase tracking-wider">
+            <div className="flex items-center gap-2 pt-4 mt-1 border-t border-[#213145] text-xs font-bold">
               <span className={`flex items-center gap-1.5 ${step >= 1 ? "text-white" : "text-slate-500"}`}>
-                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${step >= 1 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] tabular-nums font-bold ${step >= 1 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
                   1
                 </span>
                 <span>คุณสมบัติ</span>
               </span>
               <span className="text-slate-600">→</span>
               <span className={`flex items-center gap-1.5 ${step >= 2 ? "text-white" : "text-slate-500"}`}>
-                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${step >= 2 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] tabular-nums font-bold ${step >= 2 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
                   2
                 </span>
                 <span>ข้อมูลทีม</span>
               </span>
               <span className="text-slate-600">→</span>
               <span className={`flex items-center gap-1.5 ${step >= 3 ? "text-white" : "text-slate-500"}`}>
-                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] ${step >= 3 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] tabular-nums font-bold ${step >= 3 ? "bg-[#AF101A] text-white" : "bg-slate-800 text-slate-400"}`}>
                   3
                 </span>
                 <span>ยืนยันสิทธิ์</span>
@@ -227,14 +227,14 @@ export default function TournamentRegisterModal({
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-xl font-bold font-headline uppercase text-[#0B1C30]">
+              <h3 className="text-xl font-bold text-[#0B1C30]">
                 ส่งใบสมัครเข้าร่วมเรียบร้อยแล้ว
               </h3>
               <p className="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
                 {successMessage}
               </p>
             </div>
-            <div className="p-3 bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg text-xs text-slate-700 max-w-sm mx-auto text-left space-y-1">
+            <div className="p-4 bg-[#F8F9FF] border border-[#DFE2EB] rounded-xl text-xs text-slate-700 max-w-sm mx-auto text-left space-y-1.5">
               <p className="font-bold text-[#0B1C30]">ขั้นตอนต่อไปสำหรับผู้จัดการทีม:</p>
               <p>1. เตรียมเอกสารบัตรประชาชน / ใบรับรองสถานะการศึกษาของนักกีฬา</p>
               <p>2. ส่งรายชื่อ 12-15 คนเข้าระบบเพื่อออกบัตร Digital Player Pass</p>
@@ -243,7 +243,7 @@ export default function TournamentRegisterModal({
             <button
               type="button"
               onClick={onClose}
-              className="bg-[#0B1C30] hover:bg-[#142C47] text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition cursor-pointer"
+              className="bg-[#0B1C30] hover:bg-[#142C47] text-white px-6 py-2.5 rounded-xl font-bold text-xs transition cursor-pointer"
             >
               ปิดหน้าต่าง
             </button>
@@ -251,7 +251,7 @@ export default function TournamentRegisterModal({
         ) : (
           <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4 font-sans text-xs">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg flex items-start gap-2">
+              <div className="bg-red-50 border border-red-200 text-red-800 p-3.5 rounded-xl flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
@@ -260,42 +260,42 @@ export default function TournamentRegisterModal({
             {/* STEP 1: Perks & Rules Overview */}
             {step === 1 && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg">
+                <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#F8F9FF] border border-[#DFE2EB] rounded-xl">
                   <div>
-                    <span className="text-slate-500 block font-sans text-[11px]">ค่าธรรมเนียมสมัคร:</span>
-                    <span className="font-headline font-black text-[#AF101A] text-base tabular-nums">
+                    <span className="text-slate-500 block text-[11px]">ค่าธรรมเนียมสมัคร:</span>
+                    <span className="font-black text-[#AF101A] text-base tabular-nums">
                       {tournament.entryFeeThb ? `฿${tournament.entryFeeThb.toLocaleString()}` : "ฟรี"}
-                      <span className="text-xs text-slate-500 font-normal font-sans"> / ทีม</span>
+                      <span className="text-xs text-slate-500 font-normal"> / ทีม</span>
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block font-sans text-[11px]">รุ่นอายุที่แข่งขัน:</span>
-                    <span className="font-bold text-[#0B1C30] text-sm font-headline">
+                    <span className="text-slate-500 block text-[11px]">รุ่นอายุที่แข่งขัน:</span>
+                    <span className="font-bold text-[#0B1C30] text-sm">
                       {tournament.ageCategories?.join(", ") || tournament.category || "U18"}
                     </span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="font-bold text-[#0B1C30] text-xs uppercase tracking-wide">
+                  <span className="font-bold text-[#0B1C30] text-xs">
                     สิทธิประโยชน์ที่ทีมจะได้รับในทัวร์นาเมนต์นี้:
                   </span>
                   <div className="space-y-2">
-                    <div className="p-2.5 bg-white border border-[#DFE2EB] rounded-lg flex items-start gap-2.5">
+                    <div className="p-3 bg-white border border-[#DFE2EB] rounded-xl flex items-start gap-2.5">
                       <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold text-[#0B1C30]">บัตรนักกีฬา Digital Player Pass รับรอง FIBA</span>
                         <p className="text-slate-500 text-[11px]">สแกนเช็กอินหน้าสนาม ป้องกันปัญหานักกีฬาผิดรุ่นหรือข้ามสังกัด</p>
                       </div>
                     </div>
-                    <div className="p-2.5 bg-white border border-[#DFE2EB] rounded-lg flex items-start gap-2.5">
+                    <div className="p-3 bg-white border border-[#DFE2EB] rounded-xl flex items-start gap-2.5">
                       <Trophy className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold text-[#0B1C30]">บันทึกสถิติ FIBA LiveStats ทุกเสี้ยววินาที</span>
                         <p className="text-slate-500 text-[11px]">คะแนน, รีบาวด์, แอสซิสต์, Box Score สด พร้อมคลาวด์จัดเก็บสถิติ</p>
                       </div>
                     </div>
-                    <div className="p-2.5 bg-white border border-[#DFE2EB] rounded-lg flex items-start gap-2.5">
+                    <div className="p-3 bg-white border border-[#DFE2EB] rounded-xl flex items-start gap-2.5">
                       <FileCheck className="w-4 h-4 text-[#AF101A] shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold text-[#0B1C30]">วิดีโอเพลย์ต่อเพลย์สำหรับ Portfolio โควตากีฬา (TCAS)</span>
@@ -312,11 +312,11 @@ export default function TournamentRegisterModal({
               <div className="space-y-3.5">
                 {/* Switch between registered teams and new team */}
                 {teams.length > 0 && (
-                  <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-lg">
+                  <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl">
                     <button
                       type="button"
                       onClick={() => setIsNewTeam(false)}
-                      className={`flex-1 py-1.5 rounded-md font-bold text-xs transition cursor-pointer ${
+                      className={`flex-1 py-1.5 rounded-xl font-bold text-xs transition cursor-pointer ${
                         !isNewTeam ? "bg-white text-[#0B1C30] shadow-xs" : "text-slate-600 hover:text-[#0B1C30]"
                       }`}
                     >
@@ -325,7 +325,7 @@ export default function TournamentRegisterModal({
                     <button
                       type="button"
                       onClick={() => setIsNewTeam(true)}
-                      className={`flex-1 py-1.5 rounded-md font-bold text-xs transition cursor-pointer ${
+                      className={`flex-1 py-1.5 rounded-xl font-bold text-xs transition cursor-pointer ${
                         isNewTeam ? "bg-white text-[#0B1C30] shadow-xs" : "text-slate-600 hover:text-[#0B1C30]"
                       }`}
                     >
@@ -342,7 +342,7 @@ export default function TournamentRegisterModal({
                     <select
                       value={selectedTeamId}
                       onChange={(e) => setSelectedTeamId(e.target.value)}
-                      className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs font-bold text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                      className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs font-bold text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                     >
                       {teams.map((t) => (
                         <option key={t.id} value={t.id}>
@@ -362,7 +362,7 @@ export default function TournamentRegisterModal({
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
                         placeholder="เช่น กรุงเทพคริสเตียนวิทยาลัย U18, ไฮ-เทค จูเนียร์"
-                        className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                        className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
                     <div>
@@ -374,7 +374,7 @@ export default function TournamentRegisterModal({
                         value={institution}
                         onChange={(e) => setInstitution(e.target.value)}
                         placeholder="เช่น โรงเรียนกรุงเทพคริสเตียนวิทยาลัย หรือ ชมรมบาสเกตบอล..."
-                        className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                        className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                       />
                     </div>
                   </div>
@@ -391,7 +391,7 @@ export default function TournamentRegisterModal({
                       value={coachName}
                       onChange={(e) => setCoachName(e.target.value)}
                       placeholder="ชื่อ-นามสกุล"
-                      className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                      className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                     />
                   </div>
                   <div>
@@ -403,7 +403,7 @@ export default function TournamentRegisterModal({
                       value={coachPhone}
                       onChange={(e) => setCoachPhone(e.target.value)}
                       placeholder="08X-XXX-XXXX"
-                      className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                      className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                     />
                   </div>
                 </div>
@@ -417,7 +417,7 @@ export default function TournamentRegisterModal({
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="เช่น ชุดหลักสีขาว ชุดเยือนสีกรมท่า..."
                     rows={2}
-                    className="w-full bg-white border border-[#CBD5E1] rounded-lg px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
+                    className="w-full bg-white border border-[#CBD5E1] rounded-xl px-3 py-2 text-xs text-[#0B1C30] focus:outline-none focus:border-[#AF101A]"
                   />
                 </div>
               </div>
@@ -426,7 +426,7 @@ export default function TournamentRegisterModal({
             {/* STEP 3: Summary & Fee Settlement */}
             {step === 3 && (
               <div className="space-y-4">
-                <div className="p-4 bg-[#F8F9FF] border border-[#DFE2EB] rounded-lg space-y-2">
+                <div className="p-4 bg-[#F8F9FF] border border-[#DFE2EB] rounded-xl space-y-2">
                   <div className="flex items-center justify-between pb-2 border-b border-[#DFE2EB]">
                     <span className="text-slate-600 font-medium">รายการแข่งขัน:</span>
                     <span className="font-bold text-[#0B1C30] text-right line-clamp-1">{tournament.name}</span>
@@ -443,25 +443,25 @@ export default function TournamentRegisterModal({
                   </div>
                   <div className="flex items-center justify-between pt-1 text-sm">
                     <span className="font-bold text-[#0B1C30]">ยอดค่าธรรมเนียมสมัครสุทธิ:</span>
-                    <span className="font-headline font-black text-[#AF101A] text-lg tabular-nums">
+                    <span className="font-black text-[#AF101A] text-lg tabular-nums">
                       {tournament.entryFeeThb ? `฿${tournament.entryFeeThb.toLocaleString()}` : "ฟรี"}
                     </span>
                   </div>
                 </div>
 
                 {tournament.entryFeeThb && tournament.entryFeeThb > 0 ? (
-                  <div className="p-3 bg-amber-50/60 border border-amber-200 rounded-lg space-y-1.5 text-[11px] text-amber-900">
+                  <div className="p-3.5 bg-amber-50/60 border border-amber-200 rounded-xl space-y-1.5 text-[11px] text-amber-900">
                     <p className="font-bold">ช่องทางการชำระเงินบัญชีกลางฝ่ายจัดการแข่งขัน:</p>
                     <p>ธนาคารกรุงไทย • บัญชี: สมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (โต๊ะกลาง)</p>
-                    <p className="font-mono font-bold text-xs">เลขที่บัญชี: 021-0-XXXXX-X</p>
+                    <p className="font-bold text-xs tabular-nums">เลขที่บัญชี: 021-0-XXXXX-X</p>
                     <p className="text-slate-500">
                       * สามารถส่งใบสมัครเพื่อล็อกโควตาทีมไว้ก่อน และแนบสลิปชำระเงินภายใน 48 ชั่วโมง
                     </p>
                   </div>
                 ) : null}
 
-                {/* Agreement Checkbox to prevent accidental double-click skip */}
-                <label className="flex items-start gap-2.5 p-3 rounded-lg border border-[#CBD5E1] bg-slate-50 cursor-pointer hover:bg-slate-100 transition">
+                {/* Agreement Checkbox */}
+                <label className="flex items-start gap-2.5 p-3 rounded-xl border border-[#CBD5E1] bg-slate-50 cursor-pointer hover:bg-slate-100 transition">
                   <input
                     type="checkbox"
                     checked={agreedTerms}
@@ -481,7 +481,7 @@ export default function TournamentRegisterModal({
                 <button
                   type="button"
                   onClick={handlePrevStep}
-                  className="px-4 py-2 border border-[#CBD5E1] rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer flex items-center gap-1"
+                  className="px-4 py-2 border border-[#CBD5E1] rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer flex items-center gap-1"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
                   <span>ย้อนกลับ</span>
@@ -490,7 +490,7 @@ export default function TournamentRegisterModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 border border-[#CBD5E1] rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
+                  className="px-4 py-2 border border-[#CBD5E1] rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
                 >
                   ปิดหน้าต่าง
                 </button>
@@ -500,7 +500,7 @@ export default function TournamentRegisterModal({
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="px-5 py-2 bg-[#0B1C30] hover:bg-[#142C47] text-white rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-1 cursor-pointer"
+                  className="px-5 py-2 bg-[#0B1C30] hover:bg-[#142C47] text-white rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer"
                 >
                   <span>ต่อไป</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -509,7 +509,7 @@ export default function TournamentRegisterModal({
                 <button
                   type="submit"
                   disabled={submitting || !agreedTerms}
-                  className="px-6 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center gap-2 cursor-pointer shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 bg-[#AF101A] hover:bg-[#8E0D15] active:scale-[0.98] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     <>

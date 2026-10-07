@@ -34,10 +34,10 @@ export default function AthleteActivityIndex({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-outline-variant gap-2">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="font-headline-md text-headline-md uppercase tracking-wide text-on-surface">
-                ประวัติการลงแข่งขัน (Match Experience & Activity Index)
+              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
+                ประวัติการลงแข่งขัน (Match Experience &amp; Activity Index)
               </h2>
-              <span className="bg-primary-container text-on-primary font-label-badge text-label-badge uppercase px-2 py-0.5 rounded font-bold">
+              <span className="bg-primary-container text-on-primary font-label-badge text-label-badge uppercase px-2 py-0.5 rounded-md font-bold">
                 VERIFIED 2026
               </span>
             </div>
@@ -46,13 +46,13 @@ export default function AthleteActivityIndex({
             </p>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
-            <span className="inline-flex items-center px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-caps text-label-caps font-bold">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-caps text-label-caps font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-600 mr-1.5"></span>
               ACTIVE COMPETITOR
             </span>
             <button
               onClick={handleExport}
-              className="px-3 py-1 bg-inverse-surface text-inverse-on-surface hover:bg-black font-label-caps text-label-caps uppercase rounded flex items-center gap-1 transition-colors"
+              className="px-3 py-1 bg-inverse-surface text-inverse-on-surface hover:bg-black font-label-caps text-label-caps uppercase rounded-xl flex items-center gap-1 transition-colors cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">download</span>
               <span>{downloadSuccess ? "Exported" : "Export Sheet"}</span>
@@ -63,17 +63,17 @@ export default function AthleteActivityIndex({
         {/* 4 Core High-Octane Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           {/* Card 1: Starter Ratio */}
-          <div className="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative overflow-hidden">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative overflow-hidden">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
+                <span className="font-label-caps text-label-caps text-secondary font-bold">
                   สัดส่วนการลงเล่น 5 คนแรก (STARTING 5 RATIO)
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-headline-xl text-headline-xl text-primary leading-none">
+                  <span className="font-headline-xl text-headline-xl text-primary leading-none tabular-nums font-bold">
                     95.2%
                   </span>
-                  <span className="font-body-sm text-body-sm text-secondary font-semibold">
+                  <span className="font-body-sm text-body-sm text-secondary font-semibold tabular-nums">
                     40 จาก 42 นัด
                   </span>
                 </div>
@@ -96,14 +96,14 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Card 2: Top-tier Competition */}
-          <div className="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative overflow-hidden">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative overflow-hidden">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
+                <span className="font-label-caps text-label-caps text-secondary font-bold">
                   การแข่งขันระดับชาติ (TIER-1 COMPETITION)
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-headline-xl text-headline-xl text-on-surface leading-none">
+                  <span className="font-headline-xl text-headline-xl text-on-surface leading-none tabular-nums font-bold">
                     84.2%
                   </span>
                   <span className="font-body-sm text-body-sm text-secondary font-semibold">
@@ -124,14 +124,14 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Card 3: Total Court Time */}
-          <div className="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative overflow-hidden">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative overflow-hidden">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
+                <span className="font-label-caps text-label-caps text-secondary font-bold">
                   เวลาลงสนามรวมสะสม (TOTAL COURT TIME)
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-headline-xl text-headline-xl text-on-surface leading-none">
+                  <span className="font-headline-xl text-headline-xl text-on-surface leading-none tabular-nums font-bold">
                     921
                   </span>
                   <span className="font-body-sm text-body-sm text-secondary font-semibold">
@@ -152,17 +152,17 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Card 4: Tournament Win Rate */}
-          <div className="bg-surface-container-low border border-outline-variant rounded-lg p-4 relative overflow-hidden">
+          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-4 relative overflow-hidden">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">
+                <span className="font-label-caps text-label-caps text-secondary font-bold">
                   อัตราชนะการแข่งขันสะสม (OVERALL WIN RATE)
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-headline-xl text-headline-xl text-primary leading-none">
+                  <span className="font-headline-xl text-headline-xl text-primary leading-none tabular-nums font-bold">
                     76.2%
                   </span>
-                  <span className="font-body-sm text-body-sm text-secondary font-semibold">
+                  <span className="font-body-sm text-body-sm text-secondary font-semibold tabular-nums">
                     32W - 10L
                   </span>
                 </div>
@@ -182,33 +182,32 @@ export default function AthleteActivityIndex({
 
         {/* Sub-record Inset Breakdown Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 pt-4 border-t border-outline-variant text-center">
-          <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">รางวัลชนะเลิศ</span>
-            <div className="font-title-stat text-title-stat text-primary">
-              4 <span className="font-body-sm text-body-sm text-secondary">รายการ</span>
+          <div className="p-2.5 bg-surface rounded-xl border border-outline-variant">
+            <span className="font-label-badge text-label-badge text-secondary font-medium">รางวัลชนะเลิศ</span>
+            <div className="font-title-stat text-title-stat text-primary tabular-nums">
+              4 <span className="font-body-sm text-body-sm text-secondary font-normal">รายการ</span>
             </div>
             <span className="font-body-sm text-body-sm text-secondary">ระดับตัวแทนภาค / ชิงชนะเลิศแห่งประเทศไทย</span>
           </div>
-          <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">รางวัลรองชนะเลิศ</span>
-            <div className="font-title-stat text-title-stat text-on-surface">
-              2 <span className="font-body-sm text-body-sm text-secondary">รายการ</span>
+          <div className="p-2.5 bg-surface rounded-xl border border-outline-variant">
+            <span className="font-label-badge text-label-badge text-secondary font-medium">รางวัลรองชนะเลิศ</span>
+            <div className="font-title-stat text-title-stat text-on-surface tabular-nums">
+              2 <span className="font-body-sm text-body-sm text-secondary font-normal">รายการ</span>
             </div>
             <span className="font-body-sm text-body-sm text-secondary">สพฐ. ลีก &amp; กีฬาเยาวชนแห่งชาติ</span>
           </div>
-          <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">ผลการแข่งขันที่ชนะ (Wins)</span>
-            <div className="font-title-stat text-title-stat text-emerald-700">
-              32 <span className="font-body-sm text-body-sm text-secondary">นัดทางการ</span>
+          <div className="p-2.5 bg-surface rounded-xl border border-outline-variant">
+            <span className="font-label-badge text-label-badge text-secondary font-medium">ผลการแข่งขันที่ชนะ (Wins)</span>
+            <div className="font-title-stat text-title-stat text-emerald-700 tabular-nums">
+              32 <span className="font-body-sm text-body-sm text-secondary font-normal">นัดทางการ</span>
             </div>
             <span className="font-body-sm text-body-sm text-secondary">ผลต่างคะแนนเฉลี่ย +14.2 คะแนน</span>
           </div>
-          <div className="p-2 bg-surface rounded border border-outline-variant">
-            <span className="font-label-badge text-label-badge uppercase text-secondary">จำนวนการลงสนามรวม</span>
-            <div className="font-title-stat text-title-stat text-on-surface">
-              42 <span className="font-body-sm text-body-sm text-secondary">นัดที่ได้รับการรับรอง</span>
+          <div className="p-2.5 bg-surface rounded-xl border border-outline-variant">
+            <span className="font-label-badge text-label-badge text-secondary font-medium">จำนวนการลงสนามรวม</span>
+            <div className="font-title-stat text-title-stat text-on-surface tabular-nums">
+              42 <span className="font-body-sm text-body-sm text-secondary font-normal">นัดที่ได้รับการรับรอง</span>
             </div>
-            <span className="font-body-sm text-body-sm text-secondary">บันทึกสถิติอย่างเป็นทางการตามมาตรฐาน FIBA LiveStats</span>
           </div>
         </div>
       </section>
@@ -224,8 +223,8 @@ export default function AthleteActivityIndex({
               trophy
             </span>
             <div>
-              <h2 className="font-headline-md text-headline-md uppercase tracking-wide text-on-surface">
-                ประวัติเข้าร่วมการแข่งขันและเกียรติประวัติ (Tournament History & Honors)
+              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
+                ประวัติเข้าร่วมการแข่งขันและเกียรติประวัติ (Tournament History &amp; Honors)
               </h2>
               <p className="font-body-sm text-body-sm text-secondary">
                 การคัดกรองผลงานอย่างเป็นทางการสำหรับการพิจารณาโควตากีฬาและคัดสรรตัวแทนทีมชาติ
@@ -235,7 +234,7 @@ export default function AthleteActivityIndex({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setTournamentFilter("ALL")}
-              className={`px-2.5 py-1 font-label-caps text-label-caps uppercase rounded font-bold transition-colors ${
+              className={`px-3 py-1.5 font-label-caps text-label-caps rounded-xl font-bold transition-colors cursor-pointer ${
                 tournamentFilter === "ALL"
                   ? "bg-primary text-on-primary"
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
@@ -245,7 +244,7 @@ export default function AthleteActivityIndex({
             </button>
             <button
               onClick={() => setTournamentFilter("RECENT")}
-              className={`px-2.5 py-1 font-label-caps text-label-caps uppercase rounded font-bold transition-colors ${
+              className={`px-3 py-1.5 font-label-caps text-label-caps rounded-xl font-bold transition-colors cursor-pointer ${
                 tournamentFilter === "RECENT"
                   ? "bg-primary text-on-primary"
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
@@ -255,7 +254,7 @@ export default function AthleteActivityIndex({
             </button>
             <button
               onClick={() => setTournamentFilter("NATIONAL")}
-              className={`px-2.5 py-1 font-label-caps text-label-caps uppercase rounded font-bold transition-colors ${
+              className={`px-3 py-1.5 font-label-caps text-label-caps rounded-xl font-bold transition-colors cursor-pointer ${
                 tournamentFilter === "NATIONAL"
                   ? "bg-primary text-on-primary"
                   : "bg-surface-container text-on-surface hover:bg-surface-container-high"
@@ -531,7 +530,7 @@ export default function AthleteActivityIndex({
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">timeline</span>
             <div>
-              <h2 className="font-headline-md text-headline-md uppercase tracking-wide text-on-surface">
+              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
                 บันทึกผลงานการแข่งขันรายนัดล่าสุด (Recent Match Performance Logs)
               </h2>
               <p className="font-body-sm text-body-sm text-secondary">
@@ -541,7 +540,7 @@ export default function AthleteActivityIndex({
           </div>
           <button
             onClick={onNavigateLogs}
-            className="font-label-caps text-label-caps uppercase text-primary font-bold flex items-center gap-1 hover:underline cursor-pointer"
+            className="font-label-caps text-label-caps text-primary font-bold flex items-center gap-1 hover:underline cursor-pointer"
           >
             ดูบันทึกการแข่งขันทั้งหมด 42 นัด →
           </button>
@@ -758,8 +757,8 @@ export default function AthleteActivityIndex({
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">monitor_heart</span>
             <div>
-              <h2 className="font-headline-md text-headline-md uppercase tracking-wide text-on-surface">
-                การประเมินการแจกแจงเวลาและสมรรถภาพตามควอเตอร์ (Workload & Conditioning Profile)
+              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
+                การประเมินการแจกแจงเวลาและสมรรถภาพตามควอเตอร์ (Workload &amp; Conditioning Profile)
               </h2>
               <p className="font-body-sm text-body-sm text-secondary">
                 การกระจายนาทีการลงเล่นเฉลี่ยในแต่ละควอเตอร์ (Q1-Q4) สะท้อนความทนทานของกล้ามเนื้อและการยืนระยะสม่ำเสมอตลอด 40 นาที
@@ -767,11 +766,11 @@ export default function AthleteActivityIndex({
             </div>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex items-center px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-badge text-label-badge uppercase font-bold">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-badge text-label-badge uppercase font-bold">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1"></span>
               OPTIMAL CONDITION
             </span>
-            <span className="inline-flex items-center px-2 py-0.5 rounded bg-primary-fixed text-primary border border-outline-variant font-label-badge text-label-badge uppercase font-bold">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-primary border border-outline-variant font-label-badge text-label-badge uppercase font-bold">
               Q4 FINISH RATE: 98%
             </span>
           </div>
@@ -780,10 +779,10 @@ export default function AthleteActivityIndex({
         {/* Quarter Breakdown Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           {/* Quarter 1 */}
-          <div className="bg-surface rounded-lg p-4 border border-outline-variant relative">
+          <div className="bg-surface rounded-xl p-4 border border-outline-variant relative">
             <div className="flex justify-between items-baseline mb-1">
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 1</span>
-              <span className="font-headline-sm text-headline-sm text-primary">8.2 MIN</span>
+              <span className="font-headline-sm text-headline-sm text-primary tabular-nums font-bold">8.2 MIN</span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mb-3">ลงเล่นเพื่อจัดระเบียบเกมรับและควบคุมการรีบาวด์</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
@@ -796,10 +795,10 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Quarter 2 */}
-          <div className="bg-surface rounded-lg p-4 border border-outline-variant relative">
+          <div className="bg-surface rounded-xl p-4 border border-outline-variant relative">
             <div className="flex justify-between items-baseline mb-1">
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 2</span>
-              <span className="font-headline-sm text-headline-sm text-primary">7.8 MIN</span>
+              <span className="font-headline-sm text-headline-sm text-primary tabular-nums font-bold">7.8 MIN</span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mb-3">ปรับเปลี่ยนผู้เล่นเพื่อควบคุมจำนวนฟาวล์สะสมและรักษาความสด</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
@@ -812,10 +811,10 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Quarter 3 */}
-          <div className="bg-surface rounded-lg p-4 border border-outline-variant relative">
+          <div className="bg-surface rounded-xl p-4 border border-outline-variant relative">
             <div className="flex justify-between items-baseline mb-1">
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 3</span>
-              <span className="font-headline-sm text-headline-sm text-primary">8.5 MIN</span>
+              <span className="font-headline-sm text-headline-sm text-primary tabular-nums font-bold">8.5 MIN</span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mb-3">เพิ่มประสิทธิภาพเกมรุกและเกมรับใต้แป้นช่วงเปิดครึ่งหลัง</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
@@ -828,10 +827,10 @@ export default function AthleteActivityIndex({
           </div>
 
           {/* Quarter 4 */}
-          <div className="bg-surface rounded-lg p-4 border border-outline-variant relative">
+          <div className="bg-surface rounded-xl p-4 border border-outline-variant relative">
             <div className="flex justify-between items-baseline mb-1">
               <span className="font-headline-sm text-headline-sm text-on-surface">QUARTER 4</span>
-              <span className="font-headline-sm text-headline-sm text-primary">8.0 MIN</span>
+              <span className="font-headline-sm text-headline-sm text-primary tabular-nums font-bold">8.0 MIN</span>
             </div>
             <p className="font-body-sm text-body-sm text-secondary mb-3">ควบคุมจังหวะการเล่นช่วงท้ายเกมและป้องกันคะแนนชี้ขาด</p>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">

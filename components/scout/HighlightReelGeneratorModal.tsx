@@ -108,38 +108,38 @@ export default function HighlightReelGeneratorModal({
   const selectedClipsCount = clips.filter((c) => c.isSelected).length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-[#0F172A] border border-slate-700 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto font-sans">
+      <div className="bg-[#0B1C30] border border-[#213145] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-4 bg-[#071322] border-b border-[#213145] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded bg-[#AF101A] flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-xl bg-[#AF101A] flex items-center justify-center text-white shadow-sm">
               <Film className="w-4 h-4" />
             </div>
             <div>
               <h2 className="text-white font-headline-lg uppercase text-lg sm:text-xl tracking-wide font-normal flex items-center gap-2">
                 <span>Highlight Reel Generator</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/60 font-bold">
                   1-MIN REEL COMPILER
                 </span>
               </h2>
-              <p className="text-xs text-slate-400 font-mono">
+              <p className="text-xs text-slate-400">
                 {athleteName} (#{jerseyNumber}) • {schoolName}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Demo Simulation Notice */}
-        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs font-mono text-amber-300">
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center justify-between text-xs text-amber-300">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0">
+            <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold uppercase text-[10px] border border-amber-400/30 shrink-0 font-mono">
               รุ่นทดลอง / DEMO SIMULATION
             </span>
             <span>
@@ -152,48 +152,48 @@ export default function HighlightReelGeneratorModal({
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-200">
           
           {/* Top Bar: Duration & Format Controls */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-[#071322] p-4 rounded-xl border border-[#213145]">
             {/* Duration Meter */}
             <div className="md:col-span-6 space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-mono">
+              <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-300 font-bold uppercase flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-red-400" />
                   <span>TOTAL RUNTIME:</span>
                 </span>
                 <span
-                  className={`font-bold ${
+                  className={`font-bold font-mono tabular-nums ${
                     totalDuration > maxAllowedSec ? "text-amber-400" : "text-emerald-400"
                   }`}
                 >
                   00:{totalDuration < 10 ? `0${totalDuration}` : totalDuration} / 01:00 MAX
                 </span>
               </div>
-              <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div className="w-full bg-[#0d223a] h-2.5 rounded-full overflow-hidden border border-[#213145]">
                 <div
                   className={`h-full transition-all duration-300 ${
-                    totalDuration > maxAllowedSec ? "bg-amber-500" : "bg-[#DC2626]"
+                    totalDuration > maxAllowedSec ? "bg-amber-500" : "bg-[#AF101A]"
                   }`}
                   style={{ width: `${Math.min(100, (totalDuration / maxAllowedSec) * 100)}%` }}
                 />
               </div>
-              <div className="text-[11px] text-slate-400 font-mono">
-                เลือกจำนวน {selectedClipsCount} จังหวะการเล่น • เหมาะสำหรับสื่อสังคมออนไลน์และเอกสารประกอบ TCAS Portfolio
+              <div className="text-[11px] text-slate-400">
+                เลือกจำนวน <span className="tabular-nums font-semibold text-white">{selectedClipsCount}</span> จังหวะการเล่น • เหมาะสำหรับสื่อสังคมออนไลน์และเอกสารประกอบ TCAS Portfolio
               </div>
             </div>
 
             {/* Aspect Ratio Switch */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
+              <label className="text-[11px] text-slate-400 uppercase font-bold block">
                 ASPECT RATIO
               </label>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setSelectedFormat("9:16")}
-                  className={`flex-1 py-1.5 px-2.5 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 border transition ${
+                  className={`flex-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 border transition cursor-pointer ${
                     selectedFormat === "9:16"
                       ? "bg-[#AF101A] border-red-500 text-white"
-                      : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                      : "bg-[#0d223a] border-[#213145] text-slate-300 hover:bg-[#142C47]"
                   }`}
                 >
                   <Smartphone className="w-3.5 h-3.5" />
@@ -202,10 +202,10 @@ export default function HighlightReelGeneratorModal({
                 <button
                   type="button"
                   onClick={() => setSelectedFormat("16:9")}
-                  className={`flex-1 py-1.5 px-2.5 rounded text-xs font-mono font-bold flex items-center justify-center gap-1.5 border transition ${
+                  className={`flex-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 border transition cursor-pointer ${
                     selectedFormat === "16:9"
                       ? "bg-[#AF101A] border-red-500 text-white"
-                      : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                      : "bg-[#0d223a] border-[#213145] text-slate-300 hover:bg-[#142C47]"
                   }`}
                 >
                   <Monitor className="w-3.5 h-3.5" />
@@ -216,13 +216,13 @@ export default function HighlightReelGeneratorModal({
 
             {/* Soundtrack Selector */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-mono text-slate-400 uppercase font-bold block">
+              <label className="text-[11px] text-slate-400 uppercase font-bold block">
                 SOUNDTRACK
               </label>
               <select
                 value={selectedSoundtrack}
                 onChange={(e) => setSelectedSoundtrack(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded text-xs py-1.5 px-2.5 text-white font-mono focus:outline-none focus:border-red-500"
+                className="w-full bg-[#0d223a] border border-[#213145] rounded-xl text-xs py-1.5 px-2.5 text-white focus:outline-none focus:border-[#AF101A]"
               >
                 <option value="trap">Trap Beat (140 BPM)</option>
                 <option value="hiphop">Energetic Hiphop (128 BPM)</option>
@@ -245,25 +245,25 @@ export default function HighlightReelGeneratorModal({
                 {/* Intro Title Overlay or Playing State */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-between p-4 z-10 pointer-events-none">
                   <div className="flex items-center justify-between">
-                    <span className="bg-red-600/90 text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+                    <span className="bg-[#AF101A] text-white font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                       STATCOURT REEL
                     </span>
                     {includeWatermark && (
-                      <span className="flex items-center gap-1 text-[10px] font-mono text-slate-300 bg-black/60 px-2 py-0.5 rounded border border-white/10">
-                        <ShieldCheck className="w-3 h-3 text-red-500" />
+                      <span className="flex items-center gap-1 text-[10px] font-mono text-slate-300 bg-black/60 px-2.5 py-0.5 rounded-full border border-white/10">
+                        <ShieldCheck className="w-3 h-3 text-[#AF101A]" />
                         <span>FIBA VERIFIED</span>
                       </span>
                     )}
                   </div>
 
-                  <div className="space-y-1 text-center bg-black/75 p-3 rounded-lg border border-white/10 backdrop-blur-xs">
+                  <div className="space-y-1 text-center bg-black/75 p-3 rounded-xl border border-white/10 backdrop-blur-xs">
                     <div className="text-white font-headline-lg text-lg uppercase tracking-wide">
                       {athleteName} #{jerseyNumber}
                     </div>
-                    <div className="text-[11px] text-slate-300 font-mono">
+                    <div className="text-[11px] text-slate-300">
                       {schoolName}
                     </div>
-                    <div className="text-[10px] text-red-400 font-mono font-bold pt-1">
+                    <div className="text-[10px] text-red-400 font-mono font-bold pt-1 tabular-nums">
                       {statsSummary}
                     </div>
                     <div className="text-[9px] text-slate-400 font-mono">
@@ -277,7 +277,7 @@ export default function HighlightReelGeneratorModal({
                   <button
                     type="button"
                     onClick={() => setIsPlayingPreview(!isPlayingPreview)}
-                    className="w-14 h-14 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center shadow-xl hover:scale-105 transition cursor-pointer"
+                    className="w-14 h-14 rounded-full bg-[#AF101A] hover:bg-[#8E0D15] text-white flex items-center justify-center shadow-xl hover:scale-105 transition cursor-pointer"
                   >
                     {isPlayingPreview ? (
                       <Pause className="w-6 h-6" />
@@ -289,33 +289,33 @@ export default function HighlightReelGeneratorModal({
               </div>
 
               {/* Toggles */}
-              <div className="space-y-2 bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs font-mono">
+              <div className="space-y-2 bg-[#071322] p-3.5 rounded-xl border border-[#213145] text-xs">
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={includeIntroSlide}
                     onChange={(e) => setIncludeIntroSlide(e.target.checked)}
-                    className="accent-red-600 w-4 h-4 rounded"
+                    className="accent-[#AF101A] w-4 h-4 rounded"
                   />
-                  <span>ผนวกหน้าแนะนำตัวนักกีฬาพร้อมข้อมูลสถิติและรหัส TCAS (+3 วินาที)</span>
+                  <span>ผนวกหน้าแนะนำตัวนักกีฬาพร้อมข้อมูลสถิติและรหัส TCAS <span className="font-mono text-slate-400 tabular-nums">(+3 วินาที)</span></span>
                 </label>
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={includeWatermark}
                     onChange={(e) => setIncludeWatermark(e.target.checked)}
-                    className="accent-red-600 w-4 h-4 rounded"
+                    className="accent-[#AF101A] w-4 h-4 rounded"
                   />
-                  <span>ประทับตราสัญลักษณ์รับรองความถูกต้อง StatCourt FIBA Verified Watermark</span>
+                  <span>ประทับตราสัญลักษณ์รับรองความถูกต้อง <span className="font-mono text-slate-300">StatCourt FIBA Verified Watermark</span></span>
                 </label>
               </div>
             </div>
 
             {/* Right: Clip Sequencing List */}
             <div className="lg:col-span-7 space-y-3">
-              <div className="flex items-center justify-between text-xs font-mono pb-1 border-b border-slate-800">
-                <span className="font-bold uppercase text-white flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-red-500" />
+              <div className="flex items-center justify-between text-xs pb-1 border-b border-[#213145]">
+                <span className="font-bold text-white flex items-center gap-1.5 font-mono">
+                  <Layers className="w-3.5 h-3.5 text-[#AF101A]" />
                   <span>SEQUENCE CLIPS ({selectedClipsCount} SELECTED)</span>
                 </span>
                 <span className="text-slate-400">จัดลำดับคลิปจากบนลงล่าง</span>
@@ -327,8 +327,8 @@ export default function HighlightReelGeneratorModal({
                     key={clip.id}
                     className={`p-3 rounded-xl border transition flex items-center justify-between gap-3 ${
                       clip.isSelected
-                        ? "bg-slate-900 border-slate-700 text-white"
-                        : "bg-slate-950/60 border-slate-800 text-slate-500 opacity-60"
+                        ? "bg-[#0d223a] border-[#213145] text-white"
+                        : "bg-[#071322]/80 border-[#213145]/70 text-slate-500 opacity-60"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -336,15 +336,15 @@ export default function HighlightReelGeneratorModal({
                         type="checkbox"
                         checked={clip.isSelected}
                         onChange={() => handleToggleSelect(clip.id)}
-                        className="accent-red-600 w-4 h-4 rounded cursor-pointer shrink-0"
+                        className="accent-[#AF101A] w-4 h-4 rounded cursor-pointer shrink-0"
                       />
-                      <div className="w-7 h-7 rounded bg-slate-800 flex items-center justify-center font-mono text-xs font-bold text-slate-300 shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-[#071322] border border-[#213145] flex items-center justify-center font-mono text-xs font-bold text-slate-300 shrink-0">
                         {index + 1}
                       </div>
                       <div>
                         <div className="font-bold text-xs sm:text-sm text-white flex items-center gap-2">
                           <span>{clip.title}</span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-900/50">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-950/80 text-red-300 border border-red-800/60 tabular-nums">
                             {clip.timestampDisplay}
                           </span>
                         </div>
@@ -355,14 +355,14 @@ export default function HighlightReelGeneratorModal({
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="text-xs font-mono font-bold text-slate-400 mr-2">
+                      <span className="text-xs font-mono font-bold text-slate-400 mr-2 tabular-nums">
                         {clip.durationSec}s
                       </span>
                       <button
                         type="button"
                         onClick={() => handleMoveUp(index)}
                         disabled={index === 0}
-                        className="p-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300"
+                        className="p-1 rounded-lg bg-[#071322] hover:bg-[#142C47] border border-[#213145] disabled:opacity-30 text-slate-300 transition cursor-pointer"
                         title="Move Up"
                       >
                         <ArrowUp className="w-3.5 h-3.5" />
@@ -371,7 +371,7 @@ export default function HighlightReelGeneratorModal({
                         type="button"
                         onClick={() => handleMoveDown(index)}
                         disabled={index === clips.length - 1}
-                        className="p-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-300"
+                        className="p-1 rounded-lg bg-[#071322] hover:bg-[#142C47] border border-[#213145] disabled:opacity-30 text-slate-300 transition cursor-pointer"
                         title="Move Down"
                       >
                         <ArrowDown className="w-3.5 h-3.5" />
@@ -413,7 +413,7 @@ export default function HighlightReelGeneratorModal({
                   <h4 className="text-sm font-bold text-white">
                     ประมวลผลวิดีโอไฮไลต์ทางการสำเร็จ
                   </h4>
-                  <p className="text-xs text-emerald-300/80 font-mono">
+                  <p className="text-xs text-emerald-300/80">
                     ไฟล์วิดีโอพร้อมสำหรับการส่งให้ผู้ฝึกสอนสถาบันอุดมศึกษา หรือประกอบแฟ้มผลงาน
                   </p>
                 </div>
@@ -422,7 +422,7 @@ export default function HighlightReelGeneratorModal({
                 <button
                   type="button"
                   onClick={() => alert("ดาวน์โหลดไฟล์ไฮไลต์ MP4 (1080p) เรียบร้อยแล้ว")}
-                  className="px-3.5 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 transition"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>ดาวน์โหลด MP4</span>
@@ -434,23 +434,23 @@ export default function HighlightReelGeneratorModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div className="px-6 py-4 bg-[#071322] border-t border-[#213145] flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded text-xs font-mono text-slate-400 hover:text-white transition"
+            className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
           >
             ปิดหน้าต่าง
           </button>
 
-          <div className="flex items-center gap-3 font-mono text-xs">
+          <div className="flex items-center gap-3 text-xs">
             <button
               type="button"
               onClick={() => {
                 navigator.clipboard?.writeText(window.location.href);
                 alert("คัดลอกลิงก์ไฮไลต์ส่วนตัวสำหรับส่งโค้ชมหาวิทยาลัยแล้ว!");
               }}
-              className="px-4 py-2.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-2 transition"
+              className="px-4 py-2.5 rounded-xl bg-[#0d223a] hover:bg-[#142C47] text-slate-200 border border-[#213145] font-semibold flex items-center gap-2 transition cursor-pointer"
             >
               <Share2 className="w-3.5 h-3.5" />
               <span>คัดลอกลิงก์สำหรับผู้ฝึกสอน</span>
@@ -460,7 +460,7 @@ export default function HighlightReelGeneratorModal({
               type="button"
               disabled={isExporting || totalDuration === 0}
               onClick={handleStartExport}
-              className="px-5 py-2.5 rounded bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-50 text-white font-bold uppercase tracking-wider flex items-center gap-2 transition shadow-lg shadow-red-950/50"
+              className="px-5 py-2.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] disabled:opacity-50 text-white font-bold flex items-center gap-2 transition shadow-lg shadow-red-950/50 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>ประมวลผลและส่งออกวิดีโอไฮไลต์ (60 วินาที)</span>

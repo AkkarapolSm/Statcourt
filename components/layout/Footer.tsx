@@ -13,15 +13,15 @@ export default function Footer() {
 
 
   return (
-    <footer className="bg-[#0B1C30] border-t border-[#7F8A9E]/30 text-[#DFE2EB]">
+    <footer className="bg-[#071322] border-t border-[#213145] text-[#DFE2EB]">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Col 1: Brand & Certification */}
         <div className="md:col-span-1 space-y-3">
           <div className="flex items-center gap-2">
             <svg width="20" height="18" viewBox="0 0 24 22" fill="none" aria-hidden="true">
-              <rect x="2" y="10" width="4.5" height="12" rx="1" fill="#FF7A7A" />
-              <rect x="9.5" y="4" width="4.5" height="18" rx="1" fill="#FF7A7A" />
-              <rect x="17" y="0" width="4.5" height="22" rx="1" fill="#FF7A7A" />
+              <rect x="2" y="10" width="4.5" height="12" rx="1" fill="#AF101A" />
+              <rect x="9.5" y="4" width="4.5" height="18" rx="1" fill="#AF101A" />
+              <rect x="17" y="0" width="4.5" height="22" rx="1" fill="#AF101A" />
             </svg>
             <span className="font-barlow font-black text-xl text-white">
               STATCOURT<span className="text-[#FF7A7A]">.TH</span>
@@ -114,7 +114,7 @@ export default function Footer() {
           {hasConsoleAccess ? (
             <Link
               href="/official/console/match-bcc-ds-01"
-              className="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-2 px-3 rounded-lg border border-white/20 transition-all flex items-center justify-center gap-2 text-xs"
+              className="w-full bg-[#0B1C30] hover:bg-[#0d223a] text-white font-semibold py-2.5 px-3 rounded-xl border border-[#213145] hover:border-amber-400/40 transition-all flex items-center justify-center gap-2 text-xs shadow-sm"
             >
               <KeyRound className="w-4 h-4 text-amber-400" />
               <span>Table Dispatch Console</span>
@@ -122,7 +122,7 @@ export default function Footer() {
           ) : (
             <Link
               href="/academy"
-              className="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-2 px-3 rounded-lg border border-white/20 transition-all flex items-center justify-center gap-2 text-xs"
+              className="w-full bg-[#0B1C30] hover:bg-[#0d223a] text-white font-semibold py-2.5 px-3 rounded-xl border border-[#213145] hover:border-[#AF101A]/40 transition-all flex items-center justify-center gap-2 text-xs shadow-sm"
             >
               <Award className="w-4 h-4 text-amber-400" />
               <span>StatCourt Academy Portal</span>
@@ -132,7 +132,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright Sub-bar */}
-      <div className="border-t border-white/10 py-4 text-[#DFE2EB]/60 text-xs">
+      <div className="border-t border-[#213145]/80 py-4 text-[#DFE2EB]/60 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <span>
             © 2026 STATCOURT.TH Basketball Intelligence &amp; Analytics. Standardized to FIBA Official Basketball Rules &amp; BSAT Guidelines. All rights reserved.

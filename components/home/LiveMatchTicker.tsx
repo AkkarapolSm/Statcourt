@@ -24,7 +24,7 @@ export default function LiveMatchTicker() {
   ];
 
   return (
-    <section className="bg-[#0B1C30] text-slate-300 py-2.5 px-4 sm:px-6 border-b border-slate-800 font-sans text-xs">
+    <section className="bg-[#0B1C30] text-slate-300 py-2.5 px-4 sm:px-6 border-b border-[#213145] font-sans text-xs">
       <div className="max-w-[1536px] mx-auto flex items-center justify-between gap-4">
         {/* Left: Tournament Indicator */}
         <div className="flex items-center gap-2 shrink-0">
@@ -32,7 +32,7 @@ export default function LiveMatchTicker() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7A7A] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF7A7A]" />
           </span>
-          <span className="font-semibold text-white tracking-wide">
+          <span className="font-semibold text-white">
             สดจากสนาม (Live)
           </span>
           <span className="text-slate-400 hidden lg:inline">
@@ -46,7 +46,7 @@ export default function LiveMatchTicker() {
             <div key={idx} className="flex items-center gap-1.5 sm:gap-2 text-xs whitespace-nowrap shrink-0">
               <span className="text-slate-400 text-[11px]">{m.court}:</span>
               <span className="font-barlow font-bold text-white tabular-nums tracking-wide">{m.teams}</span>
-              <span className="text-slate-300 bg-white/10 px-1.5 py-0.5 rounded text-[11px] font-barlow tabular-nums">
+              <span className="text-slate-300 bg-white/10 px-1.5 py-0.5 rounded-md text-[11px] font-barlow tabular-nums">
                 {m.time}
               </span>
             </div>

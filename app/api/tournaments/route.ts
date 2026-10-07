@@ -31,8 +31,14 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+    const page = Math.max(1, Number(searchParams.get("page") || 1));
+    const limit = Math.min(100, Math.max(1, Number(searchParams.get("limit") || 50)));
+    const skip = (page - 1) * limit;
+
     const tournaments = await prisma.tournament.findMany({
       where,
+      take: limit,
+      skip,
       include: {
         matches: {
           select: {
@@ -51,22 +57,38 @@ export async function GET(request: NextRequest) {
     });
 
     if (tournaments.length > 0) {
-      return NextResponse.json({
-        success: true,
-        count: tournaments.length,
-        data: tournaments,
-        source: "PRISMA_SQLITE_PERSISTENT",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          count: tournaments.length,
+          page,
+          limit,
+          data: tournaments,
+          source: "PRISMA_SQLITE_PERSISTENT",
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+          },
+        }
+      );
     }
 
     // Check seed data
     const { mockTournaments } = await import("@/lib/db/seed-data");
-    return NextResponse.json({
-      success: true,
-      count: mockTournaments.length,
-      data: mockTournaments,
-      source: "FALLBACK_MOCK",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        count: mockTournaments.length,
+        data: mockTournaments.slice(skip, skip + limit),
+        source: "FALLBACK_MOCK",
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+        },
+      }
+    );
   } catch (error) {
     console.error("[API TOURNAMENTS] Database error:", error);
     return NextResponse.json(

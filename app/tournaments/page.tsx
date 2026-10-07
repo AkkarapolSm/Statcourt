@@ -25,6 +25,7 @@ import Footer from "@/components/layout/Footer";
 import TournamentRegisterModal from "@/components/tournament/TournamentRegisterModal";
 import TournamentStandingsModal from "@/components/tournament/TournamentStandingsModal";
 import TournamentBracketManager from "@/components/tournaments/TournamentBracketManager";
+import { fetchWithCache } from "@/lib/cache/clientCache";
 
 interface TournamentItem {
   id: string;
@@ -177,11 +178,10 @@ export default function TournamentsDirectoryPage() {
   const [activeStandingsModal, setActiveStandingsModal] = useState<TournamentItem | null>(null);
   const [activeBracketModal, setActiveBracketModal] = useState<TournamentItem | null>(null);
 
-  const fetchTournaments = () => {
-    fetch("/api/tournaments")
-      .then((res) => res.json())
+  const fetchTournaments = (force = false) => {
+    fetchWithCache<{ success?: boolean; data?: any[] }>("/api/tournaments", force ? 0 : 60000)
       .then((json) => {
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
           const mapped: TournamentItem[] = json.data.map((item: any) => ({
             id: item.id,
             name: item.name,

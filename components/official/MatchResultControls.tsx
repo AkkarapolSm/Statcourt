@@ -57,17 +57,17 @@ export default function MatchResultControls({
 
   return (
     <>
-      <div className="bg-[#0B1C30] border-b border-[#1E3A5F] px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-200">
+      <div className="bg-[#0B1C30] border-b border-[#213145] px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-200 font-sans">
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-bold text-white flex items-center gap-2">
             <span>สถานะผลแข่งขัน:</span>
             <span
-              className={`px-2 py-0.5 rounded-sm font-mono font-bold uppercase text-[11px] border ${
+              className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] border ${
                 status === "FINAL"
-                  ? "bg-emerald-950/80 text-emerald-400 border-emerald-500/50"
+                  ? "bg-emerald-950/80 text-emerald-300 border-emerald-500/50"
                   : status === "PENDING_APPROVAL"
                   ? "bg-amber-950/80 text-amber-300 border-amber-500/50"
-                  : "bg-slate-800 text-slate-300 border-slate-700"
+                  : "bg-[#0d223a] text-slate-300 border-[#213145]"
               }`}
             >
               {status === "DRAFT"
@@ -84,7 +84,7 @@ export default function MatchResultControls({
             <button
               disabled={busy || pendingSyncCount > 0}
               onClick={submit}
-              className="rounded-sm bg-[#AF101A] hover:bg-[#8F0D15] px-3.5 py-1.5 font-bold font-mono text-white transition disabled:opacity-50 cursor-pointer shadow-xs active:scale-95"
+              className="rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] px-4 py-1.5 font-bold text-white transition disabled:opacity-50 cursor-pointer shadow-xs active:scale-95"
             >
               {busy ? "กำลังส่ง..." : "ส่งผลเพื่อขอรับรอง"}
             </button>
@@ -94,14 +94,14 @@ export default function MatchResultControls({
           <button
             type="button"
             onClick={() => setAuditOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-indigo-950/80 border border-indigo-400/50 hover:bg-indigo-900 text-indigo-300 font-mono font-bold transition cursor-pointer shadow-xs active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0d223a] border border-[#213145] hover:bg-[#142e4e] text-slate-200 font-semibold transition cursor-pointer shadow-xs active:scale-95"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>ตรวจความครบถ้วนก่อนรับรอง</span>
           </button>
         </div>
 
-        {error && <span role="alert" className="text-red-400 font-mono text-xs font-semibold">{error}</span>}
+        {error && <span role="alert" className="text-red-400 text-xs font-semibold">{error}</span>}
       </div>
 
       <PreApprovalAuditModal

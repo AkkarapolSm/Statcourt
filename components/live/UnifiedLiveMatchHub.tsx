@@ -473,9 +473,9 @@ export default function UnifiedLiveMatchHub({
     <div className="space-y-4">
       {/* 1. GUEST MODE COMPACT STRIP */}
       {!isMember && (
-        <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white shadow-xs">
+        <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white shadow-xs">
           <div className="flex items-center gap-2.5">
-            <span className="p-1 rounded-sm bg-amber-400/15 text-amber-400 shrink-0 border border-amber-400/30">
+            <span className="p-1 rounded-lg bg-amber-400/15 text-amber-400 shrink-0 border border-amber-400/30">
               <Lock className="w-3.5 h-3.5" />
             </span>
             <div className="font-sans text-slate-300">
@@ -486,7 +486,7 @@ export default function UnifiedLiveMatchHub({
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/auth/register"
-              className="bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs px-3.5 py-1.5 rounded-sm transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>สมัครสมาชิกฟรี</span>
@@ -494,7 +494,7 @@ export default function UnifiedLiveMatchHub({
             <button
               type="button"
               onClick={() => loginAs("FAN")}
-              className="bg-[#142338] hover:bg-[#1E3452] text-slate-200 font-semibold text-xs px-3 py-1.5 rounded-sm border border-[#1E3A5F] transition cursor-pointer"
+              className="bg-[#0d223a] hover:bg-[#142e4e] text-slate-200 font-semibold text-xs px-3 py-1.5 rounded-xl border border-[#213145] transition cursor-pointer"
             >
               เข้าสู่ระบบด่วน (FAN)
             </button>
@@ -503,8 +503,8 @@ export default function UnifiedLiveMatchHub({
       )}
 
       {/* 2. MULTI-COURT ARENA SELECTOR */}
-      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-3.5 shadow-xs select-none">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-[#1E3A5F] text-xs">
+      <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 shadow-xs select-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-[#213145] text-xs">
           <div className="flex items-center gap-2 font-mono uppercase tracking-wider text-slate-300">
             <Radio className="w-3.5 h-3.5 text-[#AF101A] animate-pulse" />
             <span className="font-bold text-white">ARENA COURTS SELECTOR</span>
@@ -539,10 +539,10 @@ export default function UnifiedLiveMatchHub({
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-1")}
-            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
+            className={`p-3 rounded-xl border text-left transition cursor-pointer ${
               activeCourt === "court-1"
-                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
-                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
+                ? "bg-[#0d223a] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#071322] border-[#213145] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
             <div className="flex items-center justify-between text-xs mb-1.5">
@@ -550,7 +550,7 @@ export default function UnifiedLiveMatchHub({
                 <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A] animate-pulse" />
                 สนาม 1 (MAIN COURT)
               </span>
-              <span className="bg-[#AF101A] text-white text-[9px] px-1.5 py-0.5 rounded-sm font-mono font-bold uppercase tracking-wider">
+              <span className="bg-[#AF101A] text-white text-[9px] px-2 py-0.5 rounded-full font-mono font-bold uppercase tracking-wider">
                 LIVE
               </span>
             </div>
@@ -566,10 +566,10 @@ export default function UnifiedLiveMatchHub({
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-2")}
-            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
+            className={`p-3 rounded-xl border text-left transition cursor-pointer ${
               activeCourt === "court-2"
-                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
-                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
+                ? "bg-[#0d223a] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#071322] border-[#213145] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
             <div className="flex items-center justify-between text-xs mb-1.5">
@@ -594,10 +594,10 @@ export default function UnifiedLiveMatchHub({
           <button
             type="button"
             onClick={() => handleCourtSwitch("court-3")}
-            className={`p-3 rounded-sm border text-left transition cursor-pointer ${
+            className={`p-3 rounded-xl border text-left transition cursor-pointer ${
               activeCourt === "court-3"
-                ? "bg-[#142338] border-[#AF101A] text-white shadow-xs"
-                : "bg-[#081422] border-[#1E3A5F] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
+                ? "bg-[#0d223a] border-[#AF101A] text-white shadow-xs"
+                : "bg-[#071322] border-[#213145] text-slate-400 hover:border-[#385B88] hover:text-slate-200"
             }`}
           >
             <div className="flex items-center justify-between text-xs mb-1.5">
@@ -621,11 +621,11 @@ export default function UnifiedLiveMatchHub({
       </div>
 
       {/* 3. BROADCAST COMMAND BAR (Scoreboard & Match Details) */}
-      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Match Identity */}
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] px-2 py-0.5 rounded-sm font-mono font-bold uppercase flex items-center gap-1">
+            <span className="bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] px-2.5 py-0.5 rounded-full font-mono font-bold uppercase flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-[#AF101A] animate-pulse" />
               LIVE BROADCAST
             </span>
@@ -647,7 +647,7 @@ export default function UnifiedLiveMatchHub({
         {/* Scoreboard & Tactical Action Rail */}
         <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3 shrink-0">
           {/* Editorial Score Display */}
-          <div className="bg-[#081422] border border-[#1E3A5F] px-4 py-2 rounded-sm flex items-center gap-4">
+          <div className="bg-[#071322] border border-[#213145] px-4 py-2 rounded-xl flex items-center gap-4">
             <div className="text-center min-w-[48px]">
               <span className="text-[11px] text-slate-400 block font-mono font-bold uppercase tracking-wider">
                 {liveState?.homeTeam.shortName || "BCC"}
@@ -676,8 +676,8 @@ export default function UnifiedLiveMatchHub({
               </span>
             </div>
 
-            <div className="pl-3 border-l border-[#1E3A5F] text-right font-mono">
-              <span className="px-2 py-0.5 rounded-sm bg-[#AF101A] text-white font-bold text-[10px] block uppercase tracking-wide">
+            <div className="pl-3 border-l border-[#213145] text-right font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-[#AF101A] text-white font-bold text-[10px] block uppercase tracking-wide">
                 {liveState ? liveState.quarterDisplay : "Q4"}
               </span>
               <span className="text-sm font-bold text-amber-400 mt-0.5 block tabular-nums">
@@ -686,7 +686,7 @@ export default function UnifiedLiveMatchHub({
             </div>
 
             {liveState?.shotClockSec !== undefined && (
-              <div className="pl-2 border-l border-[#1E3A5F] text-center font-mono">
+              <div className="pl-2 border-l border-[#213145] text-center font-mono">
                 <span className="text-[8px] text-slate-400 block font-bold uppercase">SHOT</span>
                 <span
                   className={`text-xs font-bold tabular-nums ${
@@ -706,22 +706,22 @@ export default function UnifiedLiveMatchHub({
             <button
               type="button"
               onClick={handleOpenChallengeModal}
-              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] border border-[#1E3A5F] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-3.5 py-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] border border-[#213145] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="ระบบชาเลนจ์และตรวจสอบภาพช้าผู้ตัดสิน FIBA IRS"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span className="font-mono tracking-wide">ชาเลนจ์ (IRS)</span>
+              <span>ชาเลนจ์ (IRS)</span>
               {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
 
             <button
               type="button"
               onClick={handleOpenSocialModal}
-              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] border border-[#1E3A5F] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-3.5 py-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] border border-[#213145] text-white font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="สร้างภาพกราฟิกสรุปผลคะแนนสำหรับโซเชียลมีเดีย"
             >
               <Share2 className="w-3.5 h-3.5 text-slate-300" />
-              <span className="font-mono tracking-wide">ภาพสรุป</span>
+              <span>ภาพสรุป</span>
               {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
 
@@ -734,11 +734,11 @@ export default function UnifiedLiveMatchHub({
                   team: "BCC",
                 })
               }
-              className="px-3.5 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-4 py-2 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="ตรวจบัตรประจำตัวนักกีฬาทางการ"
             >
               <BadgeCheck className="w-3.5 h-3.5" />
-              <span className="font-mono tracking-wide">ตรวจบัตรนักกีฬา</span>
+              <span>ตรวจบัตรนักกีฬา</span>
               {!isMember && <Lock className="w-3 h-3 text-white/80" />}
             </button>
           </div>
@@ -749,20 +749,20 @@ export default function UnifiedLiveMatchHub({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* LEFT: 16:9 BROADCAST THEATER CANVAS (8 Cols) */}
         <div className="lg:col-span-8 space-y-3">
-          <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-[#1E3A5F] shadow-lg flex items-center justify-center group select-none">
+          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-[#213145] shadow-lg flex items-center justify-center group select-none">
             {/* Arena Canvas Graphic */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0B1C30] via-[#081422] to-black">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0B1C30] via-[#071322] to-black">
               <div className="absolute inset-0 court-grid-pattern opacity-10 pointer-events-none" />
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-80 h-80 rounded-full border border-red-600/10" />
-                <div className="w-[480px] h-[280px] border border-amber-500/10 rounded-lg" />
+                <div className="w-[480px] h-[280px] border border-amber-500/10 rounded-2xl" />
               </div>
             </div>
 
             {/* Top-Left Live Score Bug */}
-            <div className="absolute top-3.5 left-3.5 z-20 flex items-center gap-2 bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 px-3 py-1.5 rounded-sm font-mono text-xs shadow-md">
+            <div className="absolute top-3.5 left-3.5 z-20 flex items-center gap-2 bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 px-3 py-1.5 rounded-xl font-mono text-xs shadow-md">
               <span className="w-2 h-2 rounded-full bg-[#AF101A] animate-pulse" />
-              <span className="bg-[#AF101A] text-white font-bold text-[10px] px-1.5 py-0.2 rounded-sm uppercase">
+              <span className="bg-[#AF101A] text-white font-bold text-[10px] px-2 py-0.5 rounded-full uppercase">
                 {liveState ? liveState.quarterDisplay : "Q4"}
               </span>
               <span className="font-bold text-white tracking-wide">
@@ -791,7 +791,7 @@ export default function UnifiedLiveMatchHub({
               </span>
               {liveState?.shotClockSec !== undefined && (
                 <span
-                  className={`ml-0.5 px-1.5 py-0.2 rounded-sm text-[10px] font-bold tabular-nums border ${
+                  className={`ml-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold tabular-nums border ${
                     liveState.shotClockSec <= 5
                       ? "bg-[#AF101A]/30 text-red-200 border-[#AF101A]/50 animate-pulse"
                       : "bg-black/60 text-amber-400 border-amber-400/40"
@@ -803,11 +803,11 @@ export default function UnifiedLiveMatchHub({
             </div>
 
             {/* Top-Right Camera Switcher Buttons */}
-            <div className="absolute top-3.5 right-3.5 z-20 flex items-center bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 rounded-sm p-1 font-mono text-xs shadow-md">
+            <div className="absolute top-3.5 right-3.5 z-20 flex items-center bg-[#0B1C30]/90 backdrop-blur-xs border border-white/10 rounded-xl p-1 font-mono text-xs shadow-md">
               <button
                 type="button"
                 onClick={() => setActiveCam("CAM1")}
-                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                   activeCam === "CAM1"
                     ? "bg-[#AF101A] text-white shadow-xs"
                     : "text-slate-400 hover:text-white"
@@ -819,7 +819,7 @@ export default function UnifiedLiveMatchHub({
               <button
                 type="button"
                 onClick={() => setActiveCam("CAM2")}
-                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                   activeCam === "CAM2"
                     ? "bg-[#AF101A] text-white shadow-xs"
                     : "text-slate-400 hover:text-white"
@@ -831,7 +831,7 @@ export default function UnifiedLiveMatchHub({
               <button
                 type="button"
                 onClick={() => setActiveCam("CAM3")}
-                className={`px-2.5 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                   activeCam === "CAM3"
                     ? "bg-[#AF101A] text-white shadow-xs"
                     : "text-slate-400 hover:text-white"
@@ -850,24 +850,24 @@ export default function UnifiedLiveMatchHub({
               <div className="font-mono text-xs text-slate-400 tracking-widest uppercase">
                 OFFICIAL BROADCAST FEED • 1080P 60FPS
               </div>
-              <div className="text-[11px] text-slate-500 font-sans">
+              <div className="text-[11px] text-slate-400 font-sans">
                 สัญญาณตรงจากสนามแข่งขัน อาคารนิมิบุตร
               </div>
             </div>
 
             {/* Click-to-Clip Active Video Banner (Overlay) */}
             {currentClip && (
-              <div className="absolute bottom-12 inset-x-3.5 z-20 bg-[#0B1C30]/95 backdrop-blur-xs border border-[#AF101A] p-3 rounded-md shadow-2xl flex items-center justify-between gap-3 text-xs animate-slideUp">
+              <div className="absolute bottom-12 inset-x-3.5 z-20 bg-[#0B1C30]/95 backdrop-blur-xs border border-[#AF101A] p-3 rounded-xl shadow-2xl flex items-center justify-between gap-3 text-xs animate-slideUp">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-sm bg-[#AF101A] text-white flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#AF101A] text-white flex items-center justify-center shrink-0">
                     <Flame className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 truncate">
-                      <span className="text-red-200 font-bold font-mono truncate">
-                        ไฮไลท์เพลย์: {currentClip.playerName} (#{currentClip.jerseyNumber})
+                      <span className="text-red-200 font-bold truncate">
+                        ไฮไลท์เพลย์: {currentClip.playerName} (<span className="font-mono tabular-nums">#{currentClip.jerseyNumber}</span>)
                       </span>
-                      <span className="bg-[#142338] text-slate-200 text-[10px] px-1.5 py-0.2 rounded-sm font-mono tabular-nums shrink-0">
+                      <span className="bg-[#0d223a] text-slate-200 text-[10px] px-2 py-0.5 rounded-full font-mono tabular-nums shrink-0">
                         {currentClip.quarterClock}
                       </span>
                     </div>
@@ -883,7 +883,7 @@ export default function UnifiedLiveMatchHub({
                     onClick={handlePrevClip}
                     disabled={currentClipIndex === 0}
                     aria-label="คลิปก่อนหน้า"
-                    className="p-1.5 rounded-sm bg-[#142338] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
+                    className="p-1.5 rounded-lg bg-[#0d223a] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
                     title="คลิปก่อนหน้า"
                   >
                     <SkipBack className="w-3.5 h-3.5" />
@@ -893,7 +893,7 @@ export default function UnifiedLiveMatchHub({
                     onClick={handleNextClip}
                     disabled={!activeClipQueue || currentClipIndex === activeClipQueue.length - 1}
                     aria-label="คลิปถัดไป"
-                    className="p-1.5 rounded-sm bg-[#142338] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
+                    className="p-1.5 rounded-lg bg-[#0d223a] text-slate-300 hover:text-white disabled:opacity-30 transition cursor-pointer"
                     title="คลิปถัดไป"
                   >
                     <SkipForward className="w-3.5 h-3.5" />
@@ -902,7 +902,7 @@ export default function UnifiedLiveMatchHub({
                     type="button"
                     onClick={() => setActiveClipQueue(null)}
                     aria-label="ปิดโหมดคลิป"
-                    className="p-1.5 rounded-sm bg-[#AF101A]/30 text-red-200 hover:bg-[#AF101A] hover:text-white ml-1.5 transition cursor-pointer"
+                    className="p-1.5 rounded-lg bg-[#AF101A]/30 text-red-200 hover:bg-[#AF101A] hover:text-white ml-1.5 transition cursor-pointer"
                     title="ออกจากโหมดคลิป กลับสู่ Live สด"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -918,7 +918,7 @@ export default function UnifiedLiveMatchHub({
                   type="button"
                   onClick={() => setIsPlaying(!isPlaying)}
                   aria-label={isPlaying ? "หยุดชั่วคราว" : "เล่นต่อ"}
-                  className="p-1.5 rounded-sm bg-white/10 hover:bg-white/20 transition cursor-pointer"
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
                 </button>
@@ -933,7 +933,7 @@ export default function UnifiedLiveMatchHub({
 
               <div className="flex items-center gap-3 text-slate-400 text-xs">
                 <span className="hidden sm:inline font-sans">อาคารนิมิบุตร</span>
-                <span className="bg-[#AF101A] text-white font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-sm uppercase">
+                <span className="bg-[#AF101A] text-white font-mono font-bold text-[9px] px-2 py-0.5 rounded-full uppercase">
                   1080p 60fps
                 </span>
                 <button
@@ -957,17 +957,17 @@ export default function UnifiedLiveMatchHub({
         </div>
 
         {/* RIGHT: INTERACTIVE SIDEBAR DOCK (4 Cols) */}
-        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg overflow-hidden flex flex-col h-[520px] shadow-xs">
+        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#213145] rounded-2xl overflow-hidden flex flex-col h-[520px] shadow-xs">
           {/* Sidebar Tab Bar */}
-          <div className="p-1.5 bg-[#081422] border-b border-[#1E3A5F] flex items-center gap-1 text-xs">
+          <div className="p-1.5 bg-[#071322] border-b border-[#213145] flex items-center gap-1 text-xs">
             <button
               type="button"
               onClick={() => setActiveTab("CHAT")}
               aria-pressed={activeTab === "CHAT"}
-              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
+              className={`flex-1 py-1.5 rounded-xl font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "CHAT"
                   ? "bg-[#AF101A] text-white shadow-xs"
-                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
+                  : "text-slate-400 hover:text-white hover:bg-[#0d223a]"
               }`}
             >
               แชตสด ({chatMessages.length})
@@ -976,10 +976,10 @@ export default function UnifiedLiveMatchHub({
               type="button"
               onClick={() => setActiveTab("PROGRAM")}
               aria-pressed={activeTab === "PROGRAM"}
-              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
+              className={`flex-1 py-1.5 rounded-xl font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "PROGRAM"
                   ? "bg-[#AF101A] text-white shadow-xs"
-                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
+                  : "text-slate-400 hover:text-white hover:bg-[#0d223a]"
               }`}
             >
               สูจิบัตรดิจิทัล
@@ -988,10 +988,10 @@ export default function UnifiedLiveMatchHub({
               type="button"
               onClick={() => setActiveTab("LINEUP")}
               aria-pressed={activeTab === "LINEUP"}
-              className={`flex-1 py-1.5 rounded-sm font-mono font-bold tracking-wide transition text-center cursor-pointer ${
+              className={`flex-1 py-1.5 rounded-xl font-bold tracking-wide transition text-center cursor-pointer ${
                 activeTab === "LINEUP"
                   ? "bg-[#AF101A] text-white shadow-xs"
-                  : "text-slate-400 hover:text-white hover:bg-[#142338]"
+                  : "text-slate-400 hover:text-white hover:bg-[#0d223a]"
               }`}
             >
               5 ตัวจริง
@@ -1002,15 +1002,15 @@ export default function UnifiedLiveMatchHub({
           {activeTab === "CHAT" && (
             <div className="flex-1 flex flex-col justify-between p-3.5 text-xs overflow-hidden">
               {/* Team Cheer Filter */}
-              <div className="flex items-center gap-1.5 pb-2.5 border-b border-[#1E3A5F] text-[11px] font-mono">
+              <div className="flex items-center gap-1.5 pb-2.5 border-b border-[#213145] text-[11px]">
                 <span className="text-slate-400 text-[10px]">ทีม:</span>
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("ALL")}
-                  className={`px-2 py-0.5 rounded-sm font-medium transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-full font-medium transition cursor-pointer ${
                     selectedTeamCheer === "ALL"
-                      ? "bg-[#1E3A5F] text-white"
-                      : "bg-[#081422] text-slate-400 hover:text-white"
+                      ? "bg-[#142e4e] text-white"
+                      : "bg-[#071322] text-slate-400 hover:text-white"
                   }`}
                 >
                   ทั้งหมด
@@ -1018,10 +1018,10 @@ export default function UnifiedLiveMatchHub({
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("BCC")}
-                  className={`px-2 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-full font-bold transition cursor-pointer ${
                     selectedTeamCheer === "BCC"
                       ? "bg-[#AF101A] text-white shadow-xs"
-                      : "bg-[#081422] text-red-300 hover:bg-[#AF101A]/20"
+                      : "bg-[#071322] text-red-300 hover:bg-[#AF101A]/20"
                   }`}
                 >
                   เชียร์ BCC
@@ -1029,10 +1029,10 @@ export default function UnifiedLiveMatchHub({
                 <button
                   type="button"
                   onClick={() => setSelectedTeamCheer("DS")}
-                  className={`px-2 py-0.5 rounded-sm font-bold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-full font-bold transition cursor-pointer ${
                     selectedTeamCheer === "DS"
                       ? "bg-amber-600 text-white shadow-xs"
-                      : "bg-[#081422] text-amber-300 hover:bg-amber-600/20"
+                      : "bg-[#071322] text-amber-300 hover:bg-amber-600/20"
                   }`}
                 >
                   เชียร์ DS
@@ -1048,18 +1048,18 @@ export default function UnifiedLiveMatchHub({
                   .map((msg) => (
                     <div
                       key={msg.id}
-                      className={`p-2.5 rounded-sm border text-xs space-y-1 transition-all ${
+                      className={`p-2.5 rounded-xl border text-xs space-y-1 transition-all ${
                         msg.badgeType === "BCC"
                           ? "bg-[#AF101A]/10 border-[#AF101A]/30"
                           : msg.badgeType === "DS"
                           ? "bg-amber-500/10 border-amber-500/30"
-                          : "bg-[#081422] border-[#1E3A5F]"
+                          : "bg-[#071322] border-[#213145]"
                       }`}
                     >
                       <div className="flex items-center justify-between text-[11px]">
                         <div className="flex items-center gap-1.5">
                           <span
-                            className={`px-1.5 py-0.2 rounded-sm font-mono font-bold uppercase text-[10px] ${
+                            className={`px-2 py-0.5 rounded-full font-mono font-bold uppercase text-[10px] ${
                               msg.badgeType === "BCC"
                                 ? "bg-[#AF101A] text-white"
                                 : msg.badgeType === "DS"
@@ -1082,7 +1082,7 @@ export default function UnifiedLiveMatchHub({
 
               {/* Chat Input or Member Gate */}
               {!isMember ? (
-                <div className="pt-2 border-t border-[#1E3A5F] bg-[#081422] -mx-3.5 -mb-3.5 p-3 rounded-b-lg text-center space-y-1.5">
+                <div className="pt-2 border-t border-[#213145] bg-[#071322] -mx-3.5 -mb-3.5 p-3 rounded-b-2xl text-center space-y-1.5">
                   <div className="flex items-center justify-center gap-1.5 text-amber-400 font-bold text-xs">
                     <Lock className="w-3.5 h-3.5 shrink-0" />
                     <span>เฉพาะสมาชิกเท่านั้นที่สามารถส่งข้อความแชตได้</span>
@@ -1090,21 +1090,21 @@ export default function UnifiedLiveMatchHub({
                   <div className="flex items-center justify-center gap-2 pt-0.5">
                     <Link
                       href="/auth/register"
-                      className="px-3.5 py-1 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition shadow-xs"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition shadow-xs"
                     >
                       สมัครสมาชิกฟรี
                     </Link>
                     <button
                       type="button"
                       onClick={() => loginAs("FAN")}
-                      className="px-3 py-1 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-slate-200 text-xs border border-[#1E3A5F] transition cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-slate-200 text-xs border border-[#213145] transition cursor-pointer"
                     >
                       ล็อกอิน (FAN)
                     </button>
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSendChat} className="pt-2.5 border-t border-[#1E3A5F] flex items-center gap-2">
+                <form onSubmit={handleSendChat} className="pt-2.5 border-t border-[#213145] flex items-center gap-2">
                   <label htmlFor="live-chat-input" className="sr-only">
                     ส่งข้อความเชียร์ในสนาม
                   </label>
@@ -1114,12 +1114,12 @@ export default function UnifiedLiveMatchHub({
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="ส่งข้อความเชียร์ในสนาม..."
-                    className="flex-1 bg-[#081422] border border-[#1E3A5F] focus:border-[#AF101A] rounded-sm px-3 py-1.5 text-xs text-white outline-none transition placeholder:text-slate-500 font-sans"
+                    className="flex-1 bg-[#071322] border border-[#213145] focus:border-[#AF101A] rounded-xl px-3 py-1.5 text-xs text-white outline-none transition placeholder:text-slate-500 font-sans"
                   />
                   <button
                     type="submit"
                     aria-label="ส่งข้อความแชต"
-                    className="px-3.5 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>ส่ง</span>
@@ -1133,8 +1133,8 @@ export default function UnifiedLiveMatchHub({
           {activeTab === "PROGRAM" && (
             <div className="p-3.5 overflow-y-auto broadcast-scrollbar flex-1 text-xs space-y-3.5">
               {/* QR Code */}
-              <div className="bg-[#081422] p-3.5 rounded-sm border border-[#1E3A5F] text-center space-y-2">
-                <div className="w-14 h-14 rounded-sm bg-white text-slate-950 p-1 mx-auto flex items-center justify-center shadow-xs">
+              <div className="bg-[#071322] p-3.5 rounded-xl border border-[#213145] text-center space-y-2">
+                <div className="w-14 h-14 rounded-xl bg-white text-slate-950 p-1 mx-auto flex items-center justify-center shadow-xs">
                   <QrCode className="w-12 h-12" />
                 </div>
                 <div className="text-xs font-bold text-white font-mono uppercase tracking-wider">
@@ -1150,7 +1150,7 @@ export default function UnifiedLiveMatchHub({
                 <span className="text-[10px] text-slate-400 uppercase font-mono font-bold tracking-wider block">
                   HEAD-TO-HEAD
                 </span>
-                <div className="p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] space-y-1.5 text-xs font-mono">
+                <div className="p-3 rounded-xl bg-[#071322] border border-[#213145] space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between items-center text-white font-bold">
                     <span>Bangkok Christian College</span>
                     <span className="text-emerald-400 tabular-nums">ชนะ 4 แพ้ 0</span>
@@ -1163,7 +1163,7 @@ export default function UnifiedLiveMatchHub({
               </div>
 
               {/* Match Details */}
-              <div className="space-y-1.5 text-[11px] text-slate-400 p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] font-sans">
+              <div className="space-y-1.5 text-[11px] text-slate-400 p-3 rounded-xl bg-[#071322] border border-[#213145] font-sans">
                 <div>
                   ผู้ตัดสินโต๊ะเทคนิค: <span className="text-white font-bold">BSAT Certified Official Crew</span>
                 </div>
@@ -1203,7 +1203,7 @@ export default function UnifiedLiveMatchHub({
                     return (
                       <div
                         key={p.number}
-                        className="p-2 rounded-sm bg-[#081422] border border-[#1E3A5F] flex items-center justify-between gap-2 text-white text-xs"
+                        className="p-2 rounded-xl bg-[#071322] border border-[#213145] flex items-center justify-between gap-2 text-white text-xs"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 truncate">
@@ -1217,7 +1217,7 @@ export default function UnifiedLiveMatchHub({
                           <span className="text-amber-400 font-bold">{p.pts} PTS</span>
                           <span className="text-slate-400">{p.reb} REB</span>
                           <span className="text-slate-400">{p.ast} AST</span>
-                          <span className={`text-[10px] px-1 rounded-sm ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
                             {p.fouls} PF
                           </span>
                         </div>
@@ -1228,7 +1228,7 @@ export default function UnifiedLiveMatchHub({
               </div>
 
               {/* DS Starting 5 */}
-              <div className="space-y-2 pt-2 border-t border-[#1E3A5F]">
+              <div className="space-y-2 pt-2 border-t border-[#213145]">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-amber-300 font-bold font-mono uppercase tracking-wider block">
                     DEBSIRIN STARTING 5 (เทพศิรินทร์)
@@ -1250,7 +1250,7 @@ export default function UnifiedLiveMatchHub({
                     return (
                       <div
                         key={p.number}
-                        className="p-2 rounded-sm bg-[#081422] border border-[#1E3A5F] flex items-center justify-between gap-2 text-white text-xs"
+                        className="p-2 rounded-xl bg-[#071322] border border-[#213145] flex items-center justify-between gap-2 text-white text-xs"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 truncate">
@@ -1264,7 +1264,7 @@ export default function UnifiedLiveMatchHub({
                           <span className="text-amber-400 font-bold">{p.pts} PTS</span>
                           <span className="text-slate-400">{p.reb} REB</span>
                           <span className="text-slate-400">{p.ast} AST</span>
-                          <span className={`text-[10px] px-1 rounded-sm ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${p.fouls >= 4 ? "bg-[#AF101A] text-white" : "text-slate-400"}`}>
                             {p.fouls} PF
                           </span>
                         </div>
@@ -1281,8 +1281,8 @@ export default function UnifiedLiveMatchHub({
       {/* 5. PLAY-BY-PLAY FEED & FIBA OFFICIAL OPERATOR BOX */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Play-by-Play Feed (8 Cols) */}
-        <div className="lg:col-span-8 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs space-y-3">
-          <div className="flex items-center justify-between pb-2.5 border-b border-[#1E3A5F] text-xs">
+        <div className="lg:col-span-8 bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 sm:p-5 shadow-xs space-y-3">
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#213145] text-xs">
             <div className="flex items-center gap-2 text-white font-bold font-mono uppercase tracking-wider">
               <Clock className="w-4 h-4 text-[#AF101A]" />
               <span>ลำดับเหตุการณ์การแข่งขัน (PLAY-BY-PLAY FEED)</span>
@@ -1298,7 +1298,7 @@ export default function UnifiedLiveMatchHub({
               <div
                 key={clip.id}
                 onClick={() => handleSelectSingleEvent(clip.title, clip.quarterClock)}
-                className="p-3 rounded-sm bg-[#081422] border border-[#1E3A5F] hover:border-[#AF101A] transition flex items-center justify-between gap-3 cursor-pointer group"
+                className="p-3.5 rounded-xl bg-[#071322] border border-[#213145] hover:border-[#AF101A] transition flex items-center justify-between gap-3 cursor-pointer group"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="text-center shrink-0 font-mono">
@@ -1307,7 +1307,7 @@ export default function UnifiedLiveMatchHub({
                   </div>
 
                   <span
-                    className={`px-2 py-0.5 rounded-sm text-[10px] font-mono font-bold shrink-0 ${
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold shrink-0 ${
                       clip.team === "BCC" ? "bg-[#AF101A] text-white" : "bg-amber-600 text-white"
                     }`}
                   >
@@ -1328,7 +1328,7 @@ export default function UnifiedLiveMatchHub({
                     <span>{!isMember ? "คลิป (สมาชิก)" : "ดูคลิป"}</span>
                   </span>
                   {clip.points > 0 && (
-                    <span className="px-2 py-0.5 rounded-sm bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] font-bold tabular-nums">
+                    <span className="px-2 py-0.5 rounded-full bg-[#AF101A]/20 text-red-200 border border-[#AF101A]/40 text-[10px] font-bold tabular-nums">
                       +{clip.points} PTS
                     </span>
                   )}
@@ -1339,14 +1339,14 @@ export default function UnifiedLiveMatchHub({
         </div>
 
         {/* FIBA Official Operator Accreditation Card (4 Cols) */}
-        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-4 bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-white font-bold text-xs border-b border-[#1E3A5F] pb-2.5 font-mono uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-white font-bold text-xs border-b border-[#213145] pb-2.5 font-mono uppercase tracking-wider">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>เจ้าหน้าที่โต๊ะบันทึกคะแนน FIBA</span>
             </div>
 
-            <div className="p-3.5 rounded-sm bg-[#081422] border border-[#1E3A5F] space-y-2.5 text-xs">
+            <div className="p-3.5 rounded-xl bg-[#071322] border border-[#213145] space-y-2.5 text-xs">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="font-bold text-emerald-400 uppercase text-[11px] font-mono tracking-wide">
@@ -1357,7 +1357,7 @@ export default function UnifiedLiveMatchHub({
                 ข้อมูลสถิติถูกบันทึกและรับรองเรียลไทม์โดยกรรมการสมาคมกีฬาบาสเกตบอลแห่งประเทศไทย (BSAT)
                 สอดคล้องกับมาตรฐาน FIBA LiveStats 2026
               </p>
-              <div className="pt-2 border-t border-[#1E3A5F] space-y-1 text-xs text-slate-400 font-sans">
+              <div className="pt-2 border-t border-[#213145] space-y-1 text-xs text-slate-400 font-sans">
                 <div>รหัสเจ้าหน้าที่: <span className="text-white font-mono font-bold">BSAT-TABLE-2026-088</span></div>
                 <div>หัวหน้าโต๊ะเทคนิค: <span className="text-white">อ.สมศักดิ์ วัฒนาเสถียร</span></div>
                 <div>ระดับใบอนุญาต: <span className="text-amber-400 font-mono font-bold">NATIONAL LEVEL 1</span></div>
@@ -1365,7 +1365,7 @@ export default function UnifiedLiveMatchHub({
             </div>
           </div>
 
-          <div className="bg-[#081422] p-3 rounded-sm border border-[#1E3A5F] flex items-center justify-between text-xs">
+          <div className="bg-[#071322] p-3 rounded-xl border border-[#213145] flex items-center justify-between text-xs">
             <span className="text-slate-400 font-sans">กติกา FIBA 2026:</span>
             <span className="text-emerald-400 font-mono font-bold flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -1376,8 +1376,8 @@ export default function UnifiedLiveMatchHub({
       </div>
 
       {/* 6. CLICK-TO-CLIP BOX SCORE SECTION */}
-      <div className="bg-[#0B1C30] border border-[#1E3A5F] rounded-lg p-4 sm:p-5 shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E3A5F] text-xs">
+      <div className="bg-[#0B1C30] border border-[#213145] rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#213145] text-xs">
           <div className="flex items-center gap-2 text-white font-bold font-mono text-sm uppercase tracking-wide">
             <Sparkles className="w-4 h-4 text-amber-400" />
             <span>สถิติการเล่นรายบุคคล (CLICK-TO-CLIP BOX SCORE)</span>
@@ -1401,10 +1401,10 @@ export default function UnifiedLiveMatchHub({
                   window.print();
                 }
               }}
-              className="px-3 py-1.5 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-white font-semibold flex items-center gap-1.5 transition text-xs border border-[#1E3A5F] shadow-xs shrink-0 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-white font-semibold flex items-center gap-1.5 transition text-xs border border-[#213145] shadow-xs shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span className="font-mono tracking-wide">พิมพ์ใบบันทึกคะแนน (PRINT)</span>
+              <span>พิมพ์ใบบันทึกคะแนน (PRINT)</span>
               {!isMember && <Lock className="w-3 h-3 text-amber-400" />}
             </button>
           </div>
@@ -1414,14 +1414,14 @@ export default function UnifiedLiveMatchHub({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 text-xs font-mono">
           {/* BCC Table */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between bg-[#142338] border border-[#1E3A5F] px-3.5 py-2 rounded-sm text-white font-bold">
+            <div className="flex items-center justify-between bg-[#0d223a] border border-[#213145] px-3.5 py-2 rounded-xl text-white font-bold">
               <span className="tracking-wide">BANGKOK CHRISTIAN COLLEGE (BCC)</span>
               <span className="text-base text-red-300 tabular-nums">75 PTS</span>
             </div>
 
-            <div className="overflow-x-auto rounded-sm border border-[#1E3A5F] bg-[#081422]">
+            <div className="overflow-x-auto rounded-xl border border-[#213145] bg-[#071322]">
               <table className="w-full text-left">
-                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#1E3A5F]">
+                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#213145]">
                   <tr>
                     <th className="py-2.5 px-3 w-10 text-center">#</th>
                     <th className="py-2.5 px-3">นักกีฬา (คลิกดูคลิป)</th>
@@ -1432,7 +1432,7 @@ export default function UnifiedLiveMatchHub({
                     <th className="py-2.5 px-2 w-16 text-center">PASS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E3A5F]/60 text-xs">
+                <tbody className="divide-y divide-[#213145]/60 text-xs">
                   {[
                     { number: 7, name: "Thanakorn Siriphan", pts: 18, reb: 3, ast: 8, fg: "54.5%" },
                     { number: 24, name: "Kittipong Rattana.", pts: 21, reb: 7, ast: 4, fg: "62.5%" },
@@ -1442,7 +1442,7 @@ export default function UnifiedLiveMatchHub({
                   ].map((player) => (
                     <tr
                       key={player.number}
-                      className="hover:bg-[#142338]/50 transition-colors cursor-pointer group"
+                      className="hover:bg-[#0d223a]/60 transition-colors cursor-pointer group"
                       onClick={() => handlePlayPlayerClips(player.name, player.number)}
                     >
                       <td className="py-2 px-3 font-bold text-center text-[#AF101A]">#{player.number}</td>
@@ -1460,7 +1460,7 @@ export default function UnifiedLiveMatchHub({
                             e.stopPropagation();
                             handleOpenPlayerPass({ ...player, team: "BCC" });
                           }}
-                          className="px-2 py-0.5 rounded-sm bg-[#1E3A5F] hover:bg-[#AF101A] text-white text-[10px] font-bold transition cursor-pointer"
+                          className="px-2.5 py-0.5 rounded-full bg-[#142e4e] hover:bg-[#AF101A] text-white text-[10px] font-bold transition cursor-pointer"
                         >
                           PASS
                         </button>
@@ -1474,14 +1474,14 @@ export default function UnifiedLiveMatchHub({
 
           {/* DS Table */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between bg-[#142338] border border-[#1E3A5F] px-3.5 py-2 rounded-sm text-white font-bold">
+            <div className="flex items-center justify-between bg-[#0d223a] border border-[#213145] px-3.5 py-2 rounded-xl text-white font-bold">
               <span className="tracking-wide">DEBSIRIN SCHOOL (DS)</span>
               <span className="text-base text-amber-300 tabular-nums">63 PTS</span>
             </div>
 
-            <div className="overflow-x-auto rounded-sm border border-[#1E3A5F] bg-[#081422]">
+            <div className="overflow-x-auto rounded-xl border border-[#213145] bg-[#071322]">
               <table className="w-full text-left">
-                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#1E3A5F]">
+                <thead className="bg-[#0B1C30] text-slate-400 text-xs uppercase border-b border-[#213145]">
                   <tr>
                     <th className="py-2.5 px-3 w-10 text-center">#</th>
                     <th className="py-2.5 px-3">นักกีฬา (คลิกดูคลิป)</th>
@@ -1492,7 +1492,7 @@ export default function UnifiedLiveMatchHub({
                     <th className="py-2.5 px-2 w-16 text-center">PASS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E3A5F]/60 text-xs">
+                <tbody className="divide-y divide-[#213145]/60 text-xs">
                   {[
                     { number: 23, name: "Nattapat Sukprasert", pts: 21, reb: 4, ast: 1, fg: "52.0%" },
                     { number: 34, name: "Teerawat Prasertkul", pts: 15, reb: 8, ast: 2, fg: "46.5%" },
@@ -1502,7 +1502,7 @@ export default function UnifiedLiveMatchHub({
                   ].map((player) => (
                     <tr
                       key={player.number}
-                      className="hover:bg-[#142338]/50 transition-colors cursor-pointer group"
+                      className="hover:bg-[#0d223a]/60 transition-colors cursor-pointer group"
                       onClick={() => handlePlayPlayerClips(player.name, player.number)}
                     >
                       <td className="py-2 px-3 font-bold text-center text-amber-400">#{player.number}</td>
@@ -1520,7 +1520,7 @@ export default function UnifiedLiveMatchHub({
                             e.stopPropagation();
                             handleOpenPlayerPass({ ...player, team: "DS" });
                           }}
-                          className="px-2 py-0.5 rounded-sm bg-[#1E3A5F] hover:bg-amber-600 text-white text-[10px] font-bold transition cursor-pointer"
+                          className="px-2.5 py-0.5 rounded-full bg-[#142e4e] hover:bg-amber-600 text-white text-[10px] font-bold transition cursor-pointer"
                         >
                           PASS
                         </button>
@@ -1579,16 +1579,16 @@ export default function UnifiedLiveMatchHub({
           aria-labelledby="member-modal-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150"
         >
-          <div className="bg-[#0B1C30] border border-[#1E3A5F] w-full max-w-md rounded-lg shadow-2xl p-6 relative overflow-hidden">
+          <div className="bg-[#0B1C30] border border-[#213145] w-full max-w-md rounded-2xl shadow-2xl p-6 relative overflow-hidden">
             <div className="flex items-start justify-between gap-3 mb-4">
-              <div className="w-10 h-10 rounded-sm bg-amber-400/15 border border-amber-400/30 text-amber-400 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 text-amber-400 flex items-center justify-center shrink-0">
                 <Lock className="w-5 h-5" />
               </div>
               <button
                 type="button"
                 onClick={() => setMemberModalConfig((prev) => ({ ...prev, isOpen: false }))}
                 aria-label="ปิดหน้าต่าง"
-                className="p-1.5 rounded-sm text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1606,7 +1606,7 @@ export default function UnifiedLiveMatchHub({
               <Link
                 href="/auth/register"
                 onClick={() => setMemberModalConfig((prev) => ({ ...prev, isOpen: false }))}
-                className="w-full py-2.5 px-4 rounded-sm bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <UserPlus className="w-4 h-4" />
                 <span>สมัครสมาชิกทั่วไปฟรี (เปิดใช้งานทันที)</span>
@@ -1618,7 +1618,7 @@ export default function UnifiedLiveMatchHub({
                   loginAs("FAN");
                   setMemberModalConfig((prev) => ({ ...prev, isOpen: false }));
                 }}
-                className="w-full py-2 px-4 rounded-sm bg-[#142338] hover:bg-[#1E3452] text-white font-semibold text-xs border border-[#1E3A5F] transition cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 rounded-xl bg-[#0d223a] hover:bg-[#142e4e] text-white font-semibold text-xs border border-[#213145] transition cursor-pointer flex items-center justify-center gap-2"
               >
                 <LogIn className="w-4 h-4 text-amber-400" />
                 <span>เข้าสู่ระบบเพื่อใช้งาน</span>

@@ -10,7 +10,6 @@ import {
   Copy,
 } from "lucide-react";
 import { POTWData } from "@/lib/types";
-import html2canvas from "html2canvas";
 
 interface POTWShareModalProps {
   isOpen: boolean;
@@ -50,6 +49,7 @@ export default function POTWShareModal({
 
     try {
       const element = cardRef.current;
+      const html2canvas = (await import("html2canvas")).default;
       const canvas = await html2canvas(element, {
         scale: 3, // Crisp 3x resolution for IG Story
         useCORS: true,
@@ -90,11 +90,11 @@ export default function POTWShareModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg bg-[#0B1C30] border border-[#1E3A5F] rounded-lg shadow-2xl overflow-hidden my-6 text-white font-mono flex flex-col max-h-[95vh]"
+        className="relative w-full max-w-lg bg-[#0B1C30] border border-[#213145] rounded-2xl shadow-2xl overflow-hidden my-6 text-white font-sans flex flex-col max-h-[95vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#1E3A5F] bg-[#081422] shrink-0">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#213145] bg-[#071322] shrink-0">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-[#AF101A]" />
             <h2
@@ -108,7 +108,7 @@ export default function POTWShareModal({
             type="button"
             onClick={onClose}
             aria-label="ปิดหน้าต่างแชร์รูปสถิติ"
-            className="p-1 rounded-sm text-slate-400 hover:text-white hover:bg-[#1E3A5F]/60 transition cursor-pointer"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -142,7 +142,7 @@ export default function POTWShareModal({
                     STATCOURT.TH
                   </span>
                 </div>
-                <div className="px-2 py-0.5 rounded-sm bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-300 text-[9px] font-bold tracking-widest uppercase">
+                <div className="px-2.5 py-0.5 rounded-full bg-[#AF101A]/20 border border-[#AF101A]/40 text-red-300 text-[9px] font-bold tracking-widest uppercase">
                   รุ่น {potw.ageCategory}
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function POTWShareModal({
 
             {/* PLAYER PORTRAIT & DETAILS */}
             <div className="relative z-10 flex flex-col items-center my-auto py-2">
-              <div className="relative w-32 h-36 rounded-md overflow-hidden border-2 border-[#1E3A5F] shadow-lg bg-[#081422]">
+              <div className="relative w-32 h-36 rounded-xl overflow-hidden border-2 border-[#1E3A5F] shadow-lg bg-[#081422]">
                 <img
                   src={potw.avatarUrl}
                   alt={potw.athleteName}
@@ -179,7 +179,7 @@ export default function POTWShareModal({
               </p>
 
               {/* STATS MATRIX (4 CORE METRICS) */}
-              <div className="grid grid-cols-4 gap-1.5 w-full mt-3 bg-[#081422] border border-[#1E3A5F] rounded-sm p-2 text-center font-mono">
+              <div className="grid grid-cols-4 gap-1.5 w-full mt-3 bg-[#081422] border border-[#1E3A5F] rounded-xl p-2 text-center font-mono">
                 <div>
                   <div className="text-[9px] text-amber-400 font-bold">EFF</div>
                   <div className="text-base font-bold text-white leading-none mt-1 tabular-nums">
@@ -219,12 +219,12 @@ export default function POTWShareModal({
         </div>
 
         {/* MODAL ACTION BUTTONS */}
-        <div className="p-4 border-t border-[#1E3A5F] bg-[#081422] shrink-0 flex flex-wrap items-center justify-between gap-2.5">
+        <div className="p-4 border-t border-[#213145] bg-[#071322] shrink-0 flex flex-wrap items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopyLink}
               type="button"
-              className="px-3 py-2 rounded-sm bg-[#142338] hover:bg-[#1E3A5F] text-slate-200 border border-[#1E3A5F] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-[#0d223a] hover:bg-[#142C47] text-slate-200 border border-[#213145] text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer"
             >
               <Copy className="w-3.5 h-3.5" />
               <span>{copied ? "คัดลอกลิงก์แล้ว!" : "คัดลอกลิงก์"}</span>
@@ -235,7 +235,7 @@ export default function POTWShareModal({
             onClick={handleDownloadImage}
             disabled={isExporting}
             type="button"
-            className="px-5 py-2 rounded-sm bg-[#AF101A] hover:bg-[#8F0D15] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition cursor-pointer disabled:opacity-50"
+            className="px-5 py-2 rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition cursor-pointer disabled:opacity-50"
           >
             {isExporting ? (
               <>

@@ -30,8 +30,12 @@ import {
   mockPOTWDivisions,
 } from "@/lib/db/news-data";
 import { NewsArticle, NewsCategory } from "@/lib/types";
+import { useAuthStore } from "@/lib/auth/useAuthStore";
 
 export default function NewsAndRecapsPage() {
+  const { currentUser } = useAuthStore();
+  const isAdmin = currentUser?.role === "ADMIN";
+
   const [articles, setArticles] = useState<NewsArticle[]>(mockNewsArticles);
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<"ALL" | NewsCategory>("ALL");
@@ -129,15 +133,17 @@ export default function NewsAndRecapsPage() {
                 </h2>
               </div>
 
-              {/* ADMIN POST BUTTON */}
-              <button
-                type="button"
-                onClick={() => setIsCreateModalOpen(true)}
-                className="px-3.5 py-1.5 rounded-sm bg-[#AF101A] hover:bg-[#8F0D15] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer"
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span>เขียนข่าวใหม่ (ADMIN POST)</span>
-              </button>
+              {/* ADMIN POST BUTTON - Only visible to ADMIN */}
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#AF101A] to-[#8E0D15] hover:from-[#C71520] hover:to-[#9F1018] text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md hover:shadow-red-900/20 cursor-pointer"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  <span>+ เขียนข่าวใหม่</span>
+                </button>
+              )}
             </div>
 
             {/* Main Hero Grid: Left Big Hero + Right 3 Stories */}
@@ -1018,11 +1024,13 @@ export default function NewsAndRecapsPage() {
         />
       )}
 
-      <CreateArticleModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onArticleCreated={handleArticleCreated}
-      />
+      {isAdmin && (
+        <CreateArticleModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onArticleCreated={handleArticleCreated}
+        />
+      )}
 
       <ArticleDetailModal
         isOpen={Boolean(selectedArticle)}

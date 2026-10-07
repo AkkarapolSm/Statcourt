@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { User, LogOut, ChevronDown, Shield, Users, Award, Clock, Heart, ExternalLink, KeyRound, Zap } from "lucide-react";
+import { User, LogOut, ChevronDown, Shield, Users, Award, Clock, Heart, ExternalLink, KeyRound, Zap, Compass } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/useAuthStore";
 import { ROLE_METADATA } from "@/lib/auth/rbac";
 import AccountSecurityModal from "@/components/auth/AccountSecurityModal";
@@ -29,24 +29,16 @@ export default function UserRoleProfileMenu() {
 
   if (currentUser.role === "PUBLIC") {
     return (
-      <div className="flex items-center gap-2 text-xs font-mono font-bold">
-        <Link
-          href="/demo"
-          className="text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
-          title="เปิดศูนย์รวมทางลัดทดสอบระบบ (Demo Hub)"
-        >
-          <Zap className="w-3.5 h-3.5 text-emerald-600" />
-          <span>ทดสอบระบบ</span>
-        </Link>
+      <div className="flex items-center gap-2 font-thai text-xs sm:text-sm font-medium">
         <Link
           href="/auth/login"
-          className="text-[#0B1C30] hover:text-[#AF101A] px-2.5 py-1.5 rounded transition"
+          className="text-[#0B1C30] hover:text-[#AF101A] px-3 py-1.5 rounded-xl transition"
         >
           เข้าสู่ระบบ
         </Link>
         <Link
           href="/auth/register"
-          className="rounded-lg bg-[#AF101A] hover:bg-[#8E0D15] px-3 py-1.5 text-white transition shadow-xs"
+          className="rounded-xl bg-[#AF101A] hover:bg-[#8E0D15] px-3.5 py-1.5 text-white font-semibold transition shadow-xs"
         >
           สมัครสมาชิก
         </Link>
@@ -92,7 +84,7 @@ export default function UserRoleProfileMenu() {
     <div className="relative" ref={containerRef}>
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-1.5 sm:gap-2 px-2 py-1 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition cursor-pointer"
+        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition cursor-pointer"
         aria-expanded={dropdownOpen}
       >
         <div className="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
@@ -116,7 +108,7 @@ export default function UserRoleProfileMenu() {
       </button>
 
       {dropdownOpen && (
-        <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+        <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
           <div className="px-3.5 py-2 border-b border-slate-100">
             <p className="text-xs font-bold text-slate-900 truncate">
               {currentUser.name}
@@ -126,11 +118,11 @@ export default function UserRoleProfileMenu() {
             </p>
             <div className="mt-1 flex items-center gap-1.5">
               <span
-                className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${roleMeta.badgeBg} ${roleMeta.badgeText} ${roleMeta.badgeBorder}`}
+                className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border ${roleMeta.badgeBg} ${roleMeta.badgeText} ${roleMeta.badgeBorder}`}
               >
                 {currentUser.role}
               </span>
-              <span className="text-[9px] font-mono font-bold bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded">
+              <span className="text-[9px] font-mono font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
                 {currentUser.tier}
               </span>
             </div>
@@ -145,6 +137,20 @@ export default function UserRoleProfileMenu() {
               <span>{getWorkspaceLabel()}</span>
               <ExternalLink className="w-3 h-3 text-slate-400" />
             </Link>
+
+            {currentUser.role === "COACH" && (
+              <Link
+                href="/scout"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center justify-between px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <Compass className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>ศูนย์ค้นหาดาวรุ่ง (Scout Hub)</span>
+                </div>
+                <ExternalLink className="w-3 h-3 text-slate-400" />
+              </Link>
+            )}
 
             <Link
               href="/demo"
@@ -179,7 +185,7 @@ export default function UserRoleProfileMenu() {
                 setDropdownOpen(false);
                 logout();
               }}
-              className="w-full flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition cursor-pointer"
+              className="w-full flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-[#AF101A] hover:bg-red-50 transition cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>ออกจากระบบ (Sign Out)</span>

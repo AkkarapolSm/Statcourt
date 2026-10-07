@@ -137,6 +137,9 @@ model AthleteProfile {
   attendances         PlayerAttendance[]
   injuryLogs          InjuryLog[]
   opportunityApplications OpportunityApplication[]
+
+  @@index([province, primaryPosition])
+  @@index([schoolOrClub])
 }
 
 model AthleteSeasonStats {
@@ -190,6 +193,7 @@ model AthleteSeasonStats {
 
   @@unique([athleteId, season, ageCategory])
   @@index([athleteId, season])
+  @@index([season, ageCategory])
 }
 
 model CoachProfile {
@@ -237,6 +241,9 @@ model Team {
   memberships             TeamMembership[]
   tournamentRegistrations TournamentRegistration[]
   tournamentStandings     TournamentStanding[]
+
+  @@index([institution])
+  @@index([coachId])
 }
 
 model RosterMember {
@@ -275,6 +282,9 @@ model Tournament {
   standings          TournamentStanding[]
   athleteSeasonStats AthleteSeasonStats[]
   createdAt          DateTime          @default(now())
+
+  @@index([status, startDate])
+  @@index([category, region])
 }
 
 model Match {
@@ -305,6 +315,12 @@ model Match {
   officialAssignments MatchOfficialAssignment[]
   resultApprovals    MatchResultApproval[]
   createdAt          DateTime          @default(now())
+
+  @@index([tournamentId, status])
+  @@index([status, scheduledAt])
+  @@index([homeTeamId])
+  @@index([awayTeamId])
+  @@index([createdAt])
 }
 
 model MatchEvent {

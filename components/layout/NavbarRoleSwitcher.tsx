@@ -241,7 +241,7 @@ export default function NavbarRoleSwitcher() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`inline-flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-mono font-bold transition shadow-xs cursor-pointer ${activeRoleOption.colorScheme.pillBg} ${activeRoleOption.colorScheme.pillText} ${activeRoleOption.colorScheme.pillBorder}`}
+        className={`inline-flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-xs cursor-pointer ${activeRoleOption.colorScheme.pillBg} ${activeRoleOption.colorScheme.pillText} ${activeRoleOption.colorScheme.pillBorder}`}
         title="คลิกเพื่อสลับสิทธิ์ผู้ใช้งาน (Developer Role Switcher)"
         aria-expanded={isOpen}
       >
@@ -258,12 +258,12 @@ export default function NavbarRoleSwitcher() {
           สิทธิ์:
         </span>
 
-        <span className="tracking-wider uppercase font-black">
+        <span className="tracking-wider uppercase font-black font-mono">
           {activeRoleOption.badge}
         </span>
 
         {currentUser.tier === "PRO" && (
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 text-[9px] font-black tracking-widest shadow-2xs">
+          <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[9px] font-black tracking-widest font-mono shadow-2xs">
             <Sparkles className="w-2.5 h-2.5" />
             PRO
           </span>
@@ -278,9 +278,9 @@ export default function NavbarRoleSwitcher() {
 
       {/* Dropdown Modal Flyout */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-[340px] sm:w-[420px] max-w-[95vw] bg-[#0B1C30] border border-slate-700/80 rounded-2xl shadow-2xl p-4 text-white z-50 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-[340px] sm:w-[420px] max-w-[95vw] bg-[#0B1C30] border border-[#213145] rounded-2xl shadow-2xl p-4 text-white z-50 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
           {/* Header */}
-          <div className="flex items-start justify-between pb-3 border-b border-slate-800">
+          <div className="flex items-start justify-between pb-3 border-b border-[#213145]">
             <div>
               <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#FF7A7A]">
                 <Zap className="w-3.5 h-3.5" />
@@ -302,7 +302,7 @@ export default function NavbarRoleSwitcher() {
           </div>
 
           {/* Quick Subscription Tier Toggle (Free vs Pro) */}
-          <div className="my-3 p-2.5 bg-slate-900/90 rounded-xl border border-slate-800 flex items-center justify-between gap-3">
+          <div className="my-3 p-2.5 bg-[#071322] rounded-xl border border-[#213145] flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
               <div>
@@ -319,10 +319,10 @@ export default function NavbarRoleSwitcher() {
             <button
               onClick={handleTierToggle}
               disabled={switching === "TIER"}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 shrink-0 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer ${
                 currentUser.tier === "PRO"
-                  ? "bg-amber-400 hover:bg-amber-300 text-slate-950"
-                  : "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700"
+                  ? "bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono"
+                  : "bg-[#0d223a] hover:bg-[#142e4e] text-slate-300 border border-[#213145]"
               }`}
             >
               {switching === "TIER" ? (
@@ -351,14 +351,14 @@ export default function NavbarRoleSwitcher() {
                   className={`p-2.5 rounded-xl border transition-all text-left flex flex-col gap-2 ${
                     isCurrent
                       ? `${option.colorScheme.activeBorder} border-2`
-                      : "bg-slate-900/60 hover:bg-slate-850 border-slate-800/80 hover:border-slate-700"
+                      : "bg-[#071322]/80 hover:bg-[#0d223a] border-[#213145]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-2.5 min-w-0">
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                          isCurrent ? "bg-white/10" : "bg-slate-800"
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                          isCurrent ? "bg-white/10" : "bg-[#0d223a]"
                         } ${option.colorScheme.iconColor}`}
                       >
                         <IconComp className="w-4 h-4" />
@@ -369,7 +369,7 @@ export default function NavbarRoleSwitcher() {
                             {option.nameTh}
                           </span>
                           <span
-                            className={`text-[9px] font-mono font-black px-1.5 py-0.2 rounded border ${option.colorScheme.pillBg} ${option.colorScheme.pillText} ${option.colorScheme.pillBorder}`}
+                            className={`text-[9px] font-mono font-black px-1.5 py-0.5 rounded-full border ${option.colorScheme.pillBg} ${option.colorScheme.pillText} ${option.colorScheme.pillBorder}`}
                           >
                             {option.badge}
                           </span>
@@ -385,10 +385,10 @@ export default function NavbarRoleSwitcher() {
                       type="button"
                       onClick={() => handleRoleSelect(option, false)}
                       disabled={isThisSwitching}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-bold tracking-wider uppercase transition shrink-0 cursor-pointer ${
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
                         isCurrent
                           ? "bg-white/20 text-white cursor-default"
-                          : "bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700"
+                          : "bg-[#0d223a] hover:bg-[#142e4e] text-slate-300 hover:text-white border border-[#213145]"
                       }`}
                     >
                       {isThisSwitching ? (
@@ -405,7 +405,7 @@ export default function NavbarRoleSwitcher() {
                   </div>
 
                   {/* Quick Link to Suggested Page */}
-                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[10px] font-mono">
+                  <div className="flex items-center justify-between pt-1 border-t border-[#213145]/60 text-[10px]">
                     <span className="text-slate-500">ปลายทางแนะนำ:</span>
                     <button
                       type="button"
@@ -422,8 +422,8 @@ export default function NavbarRoleSwitcher() {
           </div>
 
           {/* Footer note */}
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 text-center">
-            <p className="text-[10px] font-mono text-slate-400">
+          <div className="mt-3 pt-2.5 border-t border-[#213145] text-center">
+            <p className="text-[10px] text-slate-400">
               * ข้อมูลจะถูกซิงค์ทั้ง Session Server และ Client State พร้อมกันแบบ Real-time
             </p>
           </div>
